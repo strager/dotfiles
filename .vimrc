@@ -37,3 +37,5 @@ function! s:insert_gates()
 	normal! O
 endfunction
 autocmd BufNewFile *.{h,hpp} call <SID>insert_gates()
+
+set exrc secure
