@@ -1,4 +1,5 @@
-set sw=4 ts=4 cin noai sb spr aw nowrap
+set sw=4 ts=4 et
+set cin noai sb spr aw nowrap
 set tw=0
 set sidescroll=5
 set listchars+=precedes:<,extends:>
