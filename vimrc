@@ -15,13 +15,7 @@ highlight comment term=bold cterm=bold ctermfg=4
 
 map <F1> <ESC>:make<CR>
 map! <F1> <ESC>:make<CR>
-map <F2> :make oswan<CR>
-map! <F2> :make oswan<CR>
-map <F3> :make && exec nocash *.nds &<CR>
 map <F9> :!ctags -R --c++-kinds=+p --fields=+iaS --extra=+q .<CR>
-
-" Declaration => Implementation
-map <F8> :GHPH
 
 " Alt-right/left to navigate forward/backward in the tags stack
 map <M-Left> <C-T>
@@ -38,5 +32,21 @@ function! s:insert_gates()
 	normal! O
 endfunction
 autocmd BufNewFile *.{h,hpp} call <SID>insert_gates()
+
+function! s:insert_js_template()
+    let classname = substitute(expand("%:t"), "\\.js$", "", "g")
+	execute "normal! iexports.$ = (function () {"
+
+    execute "normal! ovar " . classname . " = function() {"
+    execute "normal! <<"
+    execute "normal! o};"
+    execute "normal! o"
+    execute "normal! oreturn " . classname . ";"
+
+	execute "normal! o}());"
+    execute "normal! <<"
+    execute "normal! 4k0"
+endfunction
+autocmd BufNewFile [A-Z]*.js call <SID>insert_js_template()
 
 set exrc secure
