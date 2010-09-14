@@ -31,12 +31,12 @@ map <M-Right> <C-]>
 " Automatic C++ header guards
 " (http://vim.wikia.com/wiki/Automatic_insertion_of_C/C%2B%2B_header_gates)
 function! s:insert_gates()
-	let gatename = substitute(toupper(expand("%:t")), "\\.", "_", "g")
-	execute "normal! i#ifndef " . gatename
-	execute "normal! o#define " . gatename
-	execute "normal! Go#endif /* " . gatename . " */"
-	normal! O
-	normal! O
+    let gatename = substitute(toupper(expand("%:t")), "\\.", "_", "g")
+    execute "normal! i#ifndef " . gatename
+    execute "normal! o#define " . gatename
+    execute "normal! Go#endif /* " . gatename . " */"
+    normal! O
+    normal! O
 endfunction
 
 function! s:insert_js_template()
@@ -45,7 +45,7 @@ function! s:insert_js_template()
     " Clear buffer
     execute "normal! [[d]]"
 
-	execute "normal! iexports.$ = (function () {"
+    execute "normal! iexports.$ = (function () {"
 
     execute "normal! ovar " . classname . " = function() {"
     " Lame bug fix
@@ -54,7 +54,7 @@ function! s:insert_js_template()
     execute "normal! o"
     execute "normal! oreturn " . classname . ";"
 
-	execute "normal! o}());"
+    execute "normal! o}());"
     " Lame bug fix
     execute "normal! <<"
     execute "normal! 4k0"
@@ -68,7 +68,7 @@ function! s:insert_js_test_template()
     " Clear buffer
     execute "normal! [[d]]"
 
-	execute "normal! i(function () {"
+    execute "normal! i(function () {"
 
     execute "normal! ovar assert = require('assert');"
     " Lame bug fix
@@ -77,7 +77,7 @@ function! s:insert_js_test_template()
     execute "normal! o"
 
     " Lame bug fix
-	execute "normal! o}());"
+    execute "normal! o}());"
     execute "normal! <<"
     execute "normal! 1k0"
 endfunction
