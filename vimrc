@@ -73,7 +73,7 @@ function! s:insert_js_test_template()
     execute "normal! ovar assert = require('assert');"
     " Lame bug fix
     execute "normal! <<>>"
-    execute "normal! ovar " . classname . " = require('" . classpath . "')"
+    execute "normal! ovar " . classname . " = require('" . classpath . "');"
     execute "normal! o"
 
     " Lame bug fix
