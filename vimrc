@@ -18,7 +18,7 @@ highlight comment term=bold cterm=bold ctermfg=4
 
 highlight StatusLine ctermfg=82
 highlight StatusLineNC ctermfg=81
-highlight VertSplit ctermfg=80
+highlight VertSplit ctermfg=16
 
 map <F1> <ESC>:make<CR>
 map! <F1> <ESC>:make<CR>
@@ -38,22 +38,55 @@ function! s:insert_gates()
 	normal! O
 	normal! O
 endfunction
-autocmd BufNewFile *.{h,hpp} call <SID>insert_gates()
 
 function! s:insert_js_template()
     let classname = substitute(expand("%:t"), "\\.js$", "", "g")
+
+    " Clear buffer
+    execute "normal! [[d]]"
+
 	execute "normal! iexports.$ = (function () {"
 
     execute "normal! ovar " . classname . " = function() {"
+    " Lame bug fix
     execute "normal! <<"
     execute "normal! o};"
     execute "normal! o"
     execute "normal! oreturn " . classname . ";"
 
 	execute "normal! o}());"
+    " Lame bug fix
     execute "normal! <<"
     execute "normal! 4k0"
 endfunction
-autocmd BufNewFile [A-Z]*.js call <SID>insert_js_template()
+
+function! s:insert_js_test_template()
+    let classname = substitute(expand("%:t"), "\\.js$", "", "g")
+    let classpath = expand("%:r")
+    let classpath = substitute(classpath, "^tests\\?/", "", "")
+
+    " Clear buffer
+    execute "normal! [[d]]"
+
+	execute "normal! i(function () {"
+
+    execute "normal! ovar assert = require('assert');"
+    " Lame bug fix
+    execute "normal! <<>>"
+    execute "normal! ovar " . classname . " = require('" . classpath . "')"
+    execute "normal! o"
+
+    " Lame bug fix
+	execute "normal! o}());"
+    execute "normal! <<"
+    execute "normal! 1k0"
+endfunction
+
+augroup FileTemplates
+    autocmd!
+    autocmd BufNewFile *.{h,hpp} call <SID>insert_gates()
+    autocmd BufNewFile [A-Z]*.js call <SID>insert_js_template()
+    autocmd BufNewFile */test{,s}/*/[A-Z]*.js call <SID>insert_js_test_template()
+augroup END
 
 set exrc secure
