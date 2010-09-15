@@ -32,12 +32,21 @@ map <F9> :!ctags -R --c++-kinds=+p --fields=+iaS --extra=+q .<CR>
 map <M-Left> <C-T>
 map <M-Right> <C-]>
 
+" Window navigation
+nmap th <C-W>h
+nmap tl <C-W>l
+nmap tj <C-W>j
+nmap tk <C-W>k
+nmap ts :split<SPACE>
+nmap tv :vsplit<SPACE>
+nmap tc <C-W>c
+
 " Tab navigation
-nmap th :tabp<CR>
-nmap tl :tabn<CR>
-nmap te :tabe<SPACE>
-nmap tn :tabe .<CR>
-nmap tc :tabc<CR>
+nmap Th :tabp<CR>
+nmap Tl :tabn<CR>
+nmap Te :tabe<SPACE>
+nmap Tn :tabe .<CR>
+nmap Tc :tabc<CR>
 
 " Find the identifier under the cursor
 " (Use n and N as in / or ?)
@@ -46,6 +55,12 @@ nmap TT #
 
 " Make Y consistent with D (i.e. D : d$ :: Y : y$)
 nmap Y y$
+
+" Log Vim commands
+if has('cmdlog')
+    set cmdlogdir=~/.vimlogs/
+    " set cmdloginsert
+end
 
 " Automatic C++ header guards
 " (http://vim.wikia.com/wiki/Automatic_insertion_of_C/C%2B%2B_header_gates)
