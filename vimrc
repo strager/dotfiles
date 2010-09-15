@@ -59,15 +59,11 @@ function! s:insert_js_template()
     execute "normal! iexports.$ = (function () {"
 
     execute "normal! ovar " . classname . " = function() {"
-    " Lame bug fix
-    execute "normal! <<"
     execute "normal! o};"
     execute "normal! o"
     execute "normal! oreturn " . classname . ";"
 
     execute "normal! o}());"
-    " Lame bug fix
-    execute "normal! <<"
     execute "normal! 4k0"
 endfunction
 
@@ -82,14 +78,10 @@ function! s:insert_js_test_template()
     execute "normal! i(function () {"
 
     execute "normal! ovar assert = require('assert');"
-    " Lame bug fix
-    execute "normal! <<>>"
     execute "normal! ovar " . classname . " = require('" . classpath . "');"
     execute "normal! o"
 
-    " Lame bug fix
     execute "normal! o}());"
-    execute "normal! <<"
     execute "normal! 1k0"
 endfunction
 
@@ -97,6 +89,7 @@ augroup FileTemplates
     autocmd!
     autocmd BufNewFile *.{h,hpp} call <SID>insert_gates()
     autocmd BufNewFile [A-Z]*.js call <SID>insert_js_template()
+    autocmd BufNewFile */test{,s}/[A-Z]*.js call <SID>insert_js_test_template()
     autocmd BufNewFile */test{,s}/*/[A-Z]*.js call <SID>insert_js_test_template()
 augroup END
 
