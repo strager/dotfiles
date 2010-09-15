@@ -32,6 +32,13 @@ map <F9> :!ctags -R --c++-kinds=+p --fields=+iaS --extra=+q .<CR>
 map <M-Left> <C-T>
 map <M-Right> <C-]>
 
+" Tab navigation
+nmap th :tabp<CR>
+nmap tl :tabn<CR>
+nmap te :tabe<SPACE>
+nmap tn :tabe .<CR>
+nmap tc :tabc<CR>
+
 " Automatic C++ header guards
 " (http://vim.wikia.com/wiki/Automatic_insertion_of_C/C%2B%2B_header_gates)
 function! s:insert_gates()
