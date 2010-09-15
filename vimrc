@@ -12,7 +12,11 @@ set completeopt-=preview
 let c_space_errors=1
 let c_no_comment_fold=1
 let c_no_if0_fold=1
+
 syntax on
+filetype on
+filetype indent on
+filetype plugin on
 
 highlight comment term=bold cterm=bold ctermfg=4
 
