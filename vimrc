@@ -39,6 +39,14 @@ nmap te :tabe<SPACE>
 nmap tn :tabe .<CR>
 nmap tc :tabc<CR>
 
+" Find the identifier under the cursor
+" (Use n and N as in / or ?)
+nmap tt *
+nmap TT #
+
+" Make Y consistent with D (i.e. D : d$ :: Y : y$)
+nmap Y y$
+
 " Automatic C++ header guards
 " (http://vim.wikia.com/wiki/Automatic_insertion_of_C/C%2B%2B_header_gates)
 function! s:insert_gates()
