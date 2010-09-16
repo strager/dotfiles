@@ -87,7 +87,7 @@ function! s:insert_js_template()
 
     execute "normal! iexports.$ = (function () {"
 
-    execute "normal! ovar " . classname . " = function() {"
+    execute "normal! ovar " . classname . " = function () {"
     execute "normal! o};"
     execute "normal! o"
     execute "normal! oreturn " . classname . ";"
