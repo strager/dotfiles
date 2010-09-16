@@ -62,6 +62,14 @@ nmap TT #
 " Make Y consistent with D (i.e. D : d$ :: Y : y$)
 nmap Y y$
 
+" Omnicomplete shortcut
+imap <C-O> <C-X><C-P>
+
+" Git shortcuts
+nmap gs :!git status<CR>
+nmap gc :!git commit<CR>
+nmap g. :!git add<SPACE>
+
 " Log Vim commands
 if has('cmdlog')
     set cmdlogdir=~/.vimlogs/
