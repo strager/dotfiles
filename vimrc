@@ -54,6 +54,14 @@ nmap TE :tabe<SPACE>
 nmap TN :tabe .<CR>
 nmap TC :tabc<CR>
 
+nmap tH :tabp<CR>
+nmap tL :tabn<CR>
+nmap tE :tabe<SPACE>
+nmap tN :tabe .<CR>
+nmap tC :tabc<CR>
+
+nmap te :tabe<SPACE>
+
 " Find the identifier under the cursor
 " (Use n and N as in / or ?)
 nmap tt *
