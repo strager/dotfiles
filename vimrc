@@ -5,6 +5,12 @@ set incsearch
 set nocompatible
 set statusline=%<%f\ %h%m%r%=%-14.(%l,%c%V%)\ %P
 set sidescroll=5
+
+set wildmenu
+set ruler
+set laststatus=2
+set bs=indent,eol,start
+
 set listchars+=precedes:<,extends:>
 set foldmethod=marker
 set tags+=/usr/local/share/ctags/qt4
@@ -69,6 +75,18 @@ nmap TT #
 
 " Make Y consistent with D (i.e. D : d$ :: Y : y$)
 nmap Y y$
+
+" Sane searching
+nnoremap / /\v
+vnoremap / /\v
+nnoremap ? ?\v
+vnoremap ? ?\v
+set hlsearch
+set incsearch
+
+" Use tab for %
+nnoremap <tab> %
+vnoremap <tab> %
 
 " Omnicomplete shortcut
 imap <C-O> <C-X><C-P>
