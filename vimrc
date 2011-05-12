@@ -90,7 +90,9 @@ imap <C-O> <C-X><C-P>
 " Git shortcuts
 nmap gs :!git status<CR>
 nmap gc :!git commit -v<CR>
-nmap g. :!git add -i<CR>
+nmap g. :!git add -p<CR>
+nmap g; :!git add -i<CR>
+nmap g? :!git diff --cached<CR>
 
 " Log Vim commands
 if has('cmdlog')
