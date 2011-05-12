@@ -79,6 +79,7 @@ nmap Y y$
 " Sane searching
 set hlsearch
 set incsearch
+set smartcase ignorecase
 
 " Use tab for %
 nnoremap <tab> %
