@@ -77,10 +77,6 @@ nmap TT #
 nmap Y y$
 
 " Sane searching
-nnoremap / /\v
-vnoremap / /\v
-nnoremap ? ?\v
-vnoremap ? ?\v
 set hlsearch
 set incsearch
 
