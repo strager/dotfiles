@@ -30,13 +30,12 @@ highlight StatusLine ctermfg=82
 highlight StatusLineNC ctermfg=81
 highlight VertSplit ctermfg=16
 
-map <F1> <ESC>:make<CR>
-map! <F1> <ESC>:make<CR>
+map <F1> <ESC>:make -j4<CR>
 map <F9> :!ctags -R --c++-kinds=+p --fields=+iaS --extra=+q .<CR>
 
-" Alt-right/left to navigate forward/backward in the tags stack
-map <M-Left> <C-T>
-map <M-Right> <C-]>
+" Alt-j/k to navigate forward/backward in the tags stack
+map <M-J> <C-T>
+map <M-K> <C-]>
 
 " Window navigation
 nmap th <C-W>h
@@ -68,13 +67,19 @@ nmap tC :tabc<CR>
 
 nmap te :tabe<SPACE>
 
-" Find the identifier under the cursor
-" (Use n and N as in / or ?)
-nmap tt *
-nmap TT #
+" Use arrow keys for gj, gk
+nmap <Up> gk
+nmap <Down> gj
+
+" Use space to find space
+" (Note the space after f, F)
+nmap <Space> f 
 
 " Make Y consistent with D (i.e. D : d$ :: Y : y$)
 nmap Y y$
+
+" Disable ctrl-C
+noremap! <C-C> capslock
 
 " Sane searching
 set hlsearch
@@ -93,7 +98,11 @@ nmap gs :!git status<CR>
 nmap gc :!git commit -v<CR>
 nmap g. :!git add -p<CR>
 nmap g; :!git add -i<CR>
-nmap g? :!git diff --cached<CR>
+nmap g? :!git diff<CR>
+nmap g/ :!git diff --cached<CR>
+nmap gv :!git pull<CR>
+nmap gV :!git pull --ff --commit<CR>
+nmap g^ :!git push<CR>
 
 " Log Vim commands
 if has('cmdlog')
