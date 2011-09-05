@@ -123,18 +123,20 @@ endfunction
 
 function! s:insert_js_template()
     let classname = substitute(expand("%:t"), "\\.js$", "", "g")
+    let classpath = expand("%:r")
+    let classpath = substitute(classpath, "^tests\\?/", "", "")
 
     " Clear buffer
-    execute "normal! [[d]]"
+    execute "normal! ggdG"
 
-    execute "normal! iexports.$ = (function () {"
+    execute "normal! idefine('" . classpath . "', [ ], function () {"
 
     execute "normal! ovar " . classname . " = function () {"
     execute "normal! o};"
     execute "normal! o"
     execute "normal! oreturn " . classname . ";"
 
-    execute "normal! o}());"
+    execute "normal! o});"
     execute "normal! 4k0"
 endfunction
 
@@ -144,16 +146,16 @@ function! s:insert_js_test_template()
     let classpath = substitute(classpath, "^tests\\?/", "", "")
 
     " Clear buffer
-    execute "normal! [[d]]"
+    execute "normal! ggdG"
 
-    execute "normal! i(function () {"
+    execute "normal! idefine([ 'assert', '" . classpath . "' ], function (assert, " . classname . ") {"
 
-    execute "normal! ovar assert = require('assert');"
-    execute "normal! ovar " . classname . " = require('" . classpath . "');"
+    execute "normal! ovar tests = { };"
     execute "normal! o"
+    execute "normal! oreturn tests;"
 
-    execute "normal! o}());"
-    execute "normal! 1k0"
+    execute "normal! o});"
+    execute "normal! 2k0"
 endfunction
 
 augroup FileTemplates
