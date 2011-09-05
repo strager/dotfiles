@@ -93,6 +93,10 @@ vnoremap <tab> %
 " Omnicomplete shortcut
 imap <C-O> <C-X><C-P>
 
+" Command-T goodness
+nmap ' :CommandT<CR>
+let g:CommandTCancelMap='<Esc>'
+
 " Git shortcuts
 nmap gs :!git status<CR>
 nmap gc :!git commit -v<CR>
@@ -165,5 +169,7 @@ augroup FileTemplates
     autocmd BufNewFile */test{,s}/[A-Z]*.js call <SID>insert_js_test_template()
     autocmd BufNewFile */test{,s}/*/[A-Z]*.js call <SID>insert_js_test_template()
 augroup END
+
+call pathogen#infect()
 
 set exrc secure
