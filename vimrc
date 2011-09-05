@@ -131,8 +131,8 @@ function! s:insert_js_template()
 
     execute "normal! idefine('" . classpath . "', [ ], function () {"
 
-    execute "normal! ovar " . classname . " = function () {"
-    execute "normal! o};"
+    execute "normal! ofunction " . classname . "() {"
+    execute "normal! o}"
     execute "normal! o"
     execute "normal! oreturn " . classname . ";"
 
