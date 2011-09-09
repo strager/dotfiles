@@ -95,6 +95,7 @@ imap <C-O> <C-X><C-P>
 
 " Command-T goodness
 nmap ' :CommandT<CR>
+nmap t' :tabnew<CR>:CommandT<CR>
 let g:CommandTCancelMap='<Esc>'
 
 " Git shortcuts
