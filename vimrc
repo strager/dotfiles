@@ -73,7 +73,7 @@ nmap <Down> gj
 
 " Use space to find space
 " (Note the space after f, F)
-nmap <Space> f 
+nmap <Space> ef 
 
 " Make Y consistent with D (i.e. D : d$ :: Y : y$)
 nmap Y y$
