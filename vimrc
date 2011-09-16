@@ -115,62 +115,16 @@ if has('cmdlog')
     " set cmdloginsert
 end
 
-" Automatic C++ header guards
-" (http://vim.wikia.com/wiki/Automatic_insertion_of_C/C%2B%2B_header_gates)
-function! s:insert_gates()
-    let gatename = substitute(toupper(expand("%:t")), "\\.", "_", "g")
-    execute "normal! i#ifndef " . gatename
-    execute "normal! o#define " . gatename
-    execute "normal! Go#endif /* " . gatename . " */"
-    normal! O
-    normal! O
-endfunction
-
-function! s:insert_js_template()
-    let classname = substitute(expand("%:t"), "\\.js$", "", "g")
-    let classpath = expand("%:r")
-    let classpath = substitute(classpath, "^tests\\?/", "", "")
-
-    " Clear buffer
-    execute "normal! ggdG"
-
-    execute "normal! idefine('" . classpath . "', [ ], function () {"
-
-    execute "normal! ofunction " . classname . "() {"
-    execute "normal! o}"
-    execute "normal! o"
-    execute "normal! oreturn " . classname . ";"
-
-    execute "normal! o});"
-    execute "normal! 4k0"
-endfunction
-
-function! s:insert_js_test_template()
-    let classname = substitute(expand("%:t"), "\\.js$", "", "g")
-    let classpath = expand("%:r")
-    let classpath = substitute(classpath, "^tests\\?/", "", "")
-
-    " Clear buffer
-    execute "normal! ggdG"
-
-    execute "normal! idefine([ 'assert', '" . classpath . "' ], function (assert, " . classname . ") {"
-
-    execute "normal! ovar tests = { };"
-    execute "normal! o"
-    execute "normal! oreturn tests;"
-
-    execute "normal! o});"
-    execute "normal! 2k0"
-endfunction
+call pathogen#infect()
 
 augroup FileTemplates
     autocmd!
-    autocmd BufNewFile *.{h,hpp} call <SID>insert_gates()
-    autocmd BufNewFile [A-Z]*.js call <SID>insert_js_template()
-    autocmd BufNewFile */test{,s}/[A-Z]*.js call <SID>insert_js_test_template()
-    autocmd BufNewFile */test{,s}/*/[A-Z]*.js call <SID>insert_js_test_template()
+    autocmd BufNewFile *.sh TSkeletonSetup prefab/shell.sh
+    autocmd BufNewFile [A-Z]*.php TSkeletonSetup prefab/php.class.php
+    autocmd BufNewFile [a-z]*.php TSkeletonSetup prefab/php.inc.php
+    autocmd BufNewFile *.html TSkeletonSetup prefab/html.html
+    autocmd BufNewFile [A-Z]*.js TSkeletonSetup prefab/js.require.js
+    autocmd BufNewFile *.h TSkeletonSetup prefab/h.h
 augroup END
-
-call pathogen#infect()
 
 set exrc secure
