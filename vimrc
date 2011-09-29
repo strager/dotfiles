@@ -85,6 +85,7 @@ noremap! <C-C> capslock
 set hlsearch
 set incsearch
 set smartcase ignorecase
+noremap <ESC><ESC> :nohlsearch<CR>
 
 " Use tab for %
 nnoremap <tab> %
