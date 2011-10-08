@@ -30,6 +30,8 @@ highlight StatusLine ctermfg=82
 highlight StatusLineNC ctermfg=81
 highlight VertSplit ctermfg=16
 
+highlight Directory term=bold cterm=bold ctermfg=4
+
 map <F1> <ESC>:make -j4<CR>
 map <F9> :!ctags -R --c++-kinds=+p --fields=+iaS --extra=+q .<CR>
 
