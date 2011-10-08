@@ -102,15 +102,15 @@ nmap t' :tabnew<CR>:CommandT<CR>
 let g:CommandTCancelMap='<Esc>'
 
 " Git shortcuts
-nmap gs :!git status<CR>
+nmap gs :!git status -s -b<CR>
 nmap gc :!git commit -v<CR>
 nmap g. :!git add -p<CR>
 nmap g; :!git add -i<CR>
 nmap g? :!git diff<CR>
 nmap g/ :!git diff --cached<CR>
-nmap gv :!git pull<CR>
-nmap gV :!git pull --ff --commit<CR>
+nmap gv :!git pull --ff --commit<CR>
 nmap g^ :!git push<CR>
+nmap gp :!git checkout -p<CR>
 
 " Log Vim commands
 if has('cmdlog')
