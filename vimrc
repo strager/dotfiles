@@ -1,10 +1,13 @@
 set sw=4 ts=4 sts=4 et
+set nosmartindent
 set cin noai sb spr aw nowrap
 set tw=0
 set incsearch
 set nocompatible
 set statusline=%<%f\ %h%m%r%=%-14.(%l,%c%V%)\ %P
 set sidescroll=5
+set shortmess=a     " Abbreviate status line
+set shortmess+=tToO " Other crap
 
 set wildmenu
 set ruler
