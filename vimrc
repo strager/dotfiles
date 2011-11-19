@@ -123,14 +123,18 @@ end
 
 call pathogen#infect()
 
-augroup FileTemplates
-    autocmd!
-    autocmd BufNewFile *.sh TSkeletonSetup prefab/shell.sh
-    autocmd BufNewFile [A-Z]*.php TSkeletonSetup prefab/php.class.php
-    autocmd BufNewFile [a-z]*.php TSkeletonSetup prefab/php.inc.php
-    autocmd BufNewFile *.html TSkeletonSetup prefab/html.html
-    autocmd BufNewFile [A-Z]*.js TSkeletonSetup prefab/js.require.js
-    autocmd BufNewFile *.h TSkeletonSetup prefab/h.h
-augroup END
+set background=dark
+let g:solarized_termtrans=1
+colorscheme solarized
+
+"augroup FileTemplates
+"    autocmd!
+"    autocmd BufNewFile *.sh TSkeletonSetup prefab/shell.sh
+"    autocmd BufNewFile [A-Z]*.php TSkeletonSetup prefab/php.class.php
+"    autocmd BufNewFile [a-z]*.php TSkeletonSetup prefab/php.inc.php
+"    autocmd BufNewFile *.html TSkeletonSetup prefab/html.html
+"    autocmd BufNewFile [A-Z]*.js TSkeletonSetup prefab/js.require.js
+"    autocmd BufNewFile *.h TSkeletonSetup prefab/h.h
+"augroup END
 
 set exrc secure
