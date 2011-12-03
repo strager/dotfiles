@@ -135,8 +135,6 @@ highlight StatusLine ctermfg=82
 highlight StatusLineNC ctermfg=81
 highlight VertSplit ctermfg=16
 
-highlight Directory term=bold cterm=bold ctermfg=4
-
 let c_space_errors=1
 let c_no_comment_fold=1
 let c_no_if0_fold=1
