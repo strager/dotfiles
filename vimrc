@@ -2,11 +2,19 @@
 set nocompatible
 
 """ Plugins
+" Let vimballs extract themselves in bundle/out/
+" so we can play with them ourselves.
+let g:vimball_home=$HOME."/.vim/bundle/out"
+
 " Log Vim commands
 if has('cmdlog')
     set cmdlogdir=~/.vimlogs/
     " set cmdloginsert
 end
+
+" Haskell mode
+let g:haddock_browser="nothing"
+au BufEnter *.hs compiler ghcx
 
 " Pathogen, activate!
 call pathogen#infect()
