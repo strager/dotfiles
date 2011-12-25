@@ -156,15 +156,16 @@ map <F1> <ESC>:make -j4<CR>
 map <F9> :!ctags -R --c++-kinds=+p --fields=+iaS --extra=+q .<CR>
 
 " Git
-nmap gs :!git status -s -b<CR>
+nmap gs :!git status -s -b .<CR>
+nmap gS :!git status -s -b<CR>
 nmap gc :!git commit -v<CR>
-nmap g. :!git add -p<CR>
-nmap g; :!git add -i<CR>
-nmap g? :!git diff<CR>
-nmap g/ :!git diff --cached<CR>
+nmap g. :!git add -p .<CR>
+nmap g; :!git add -i .<CR>
+nmap g? :!git diff .<CR>
+nmap g/ :!git diff --cached .<CR>
 nmap gv :!git pull --ff --commit<CR>
 nmap g^ :!git push<CR>
-nmap gp :!git checkout -p<CR>
+nmap gP :!git checkout -p .<CR>
 
 " Must be last.  Forgot why.
 set exrc secure
