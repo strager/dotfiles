@@ -13,8 +13,8 @@ if has('cmdlog')
 end
 
 " Haskell mode
-let g:haddock_browser="nothing"
-au BufEnter *.hs compiler ghcx
+"let g:haddock_browser="nothing"
+"au BufEnter *.hs compiler ghcx
 
 " Pathogen, activate!
 call pathogen#infect()
