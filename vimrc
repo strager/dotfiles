@@ -112,7 +112,7 @@ set wildignore+=*/.git/*,*/node_modules/*
 
 " CtrlP goodness (http://kien.github.com/ctrlp.vim/)
 nmap ' :CtrlP<CR>
-nmap t' :tabnew<CR>:TrlP<CR>
+nmap t' :tabnew<CR>:CtrlP<CR>
 let g:ctrlp_working_path_mode = 0 " Don't touch cwd
 let g:ctrlp_max_height = 999
 let g:ctrlp_jump_to_buffer = 2 " Not sure if I will like this
