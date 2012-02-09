@@ -40,7 +40,7 @@ set tw=0
 
 """ Text manipulation
 set bs=indent,eol,start
-set completeopt=menu,longest
+set completeopt=menu,preview
 
 " Make Y consistent with D (i.e. D : d$ :: Y : y$)
 nmap Y y$
