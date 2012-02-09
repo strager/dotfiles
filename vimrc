@@ -109,24 +109,39 @@ nmap te :tabe<SPACE>
 """ File management
 set autowrite 
 
-set wildignore+=*/.git/*,*/node_modules/*
+" wildignore ('wig is cooler to write)
+" Version control
+set wig+=*/.git/*,*/.svn/*
+" Build/package systems
+set wig+=*/node_modules/*,*/dist/*
+" Vim bullshit
+set wig+=*.swp,*.swa
 
-" CtrlP goodness (http://kien.github.com/ctrlp.vim/)
+" CtrlP okayness (http://kien.github.com/ctrlp.vim/)
 nmap ' :CtrlP<CR>
 nmap t' :tabnew<CR>:CtrlP<CR>
 let g:ctrlp_working_path_mode = 0 " Don't touch cwd
 let g:ctrlp_max_height = 999
-let g:ctrlp_jump_to_buffer = 2 " Not sure if I will like this
+let g:ctrlp_jump_to_buffer = 0
+let g:ctrlp_dotfiles = 1
+let g:ctrlp_max_depth = 4
+let g:ctrlp_lazy_update = 100
 
 """ Display
 set nowrap
 set ruler
 set laststatus=2
 set listchars+=precedes:<,extends:>
-set statusline=%<%f\ %h%m%r%=%-14.(%l,%c%V%)\ %P
 set sidescroll=5
 set shortmess=a     " Abbreviate status line
 set shortmess+=tToO " Other crap
+
+" filename [Help][-][RO]
+set statusline=%<%f\ %h%m%r
+" Line, col
+set statusline+=%=%-14.(%l,%c%V%)
+" File %
+set statusline+=\ %P
 
 """ Command line
 set wildmenu
