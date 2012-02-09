@@ -38,11 +38,6 @@ set nosmartindent
 set cin noai
 set tw=0
 
-" Auto-detect whitespace
-let g:detectindent_preferred_expandtab = 1
-let g:detectindent_preferred_indent = 4
-autocmd BufReadPost * :DetectIndent
-
 """ Text manipulation
 set bs=indent,eol,start
 set completeopt=menu,longest

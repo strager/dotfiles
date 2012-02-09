@@ -10,6 +10,3 @@
 [submodule "bundle/ctrlp"]
 	path = bundle/ctrlp
 	url = https://github.com/kien/ctrlp.vim
-[submodule "bundle/detectindent"]
-	path = bundle/detectindent
-	url = https://github.com/ciaranm/detectindent.git
