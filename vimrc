@@ -114,7 +114,7 @@ set autowrite
 " Version control
 set wig+=*/.git/*,*/.svn/*
 " Build/package systems
-set wig+=*/node_modules/*,*/dist/*
+set wig+=*/node_modules/*,*/dist/*,*/build/*,*/.build/*
 " Vim bullshit
 set wig+=*.swp,*.swa
 
