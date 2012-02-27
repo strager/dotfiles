@@ -20,18 +20,6 @@ au BufEnter *.hs compiler ghcx
 " Pathogen, activate!
 call pathogen#infect()
 
-" Skeleton (Jelly) kept screwing things up,
-" so it's disabled for now.
-"augroup FileTemplates
-"    autocmd!
-"    autocmd BufNewFile *.sh TSkeletonSetup prefab/shell.sh
-"    autocmd BufNewFile [A-Z]*.php TSkeletonSetup prefab/php.class.php
-"    autocmd BufNewFile [a-z]*.php TSkeletonSetup prefab/php.inc.php
-"    autocmd BufNewFile *.html TSkeletonSetup prefab/html.html
-"    autocmd BufNewFile [A-Z]*.js TSkeletonSetup prefab/js.require.js
-"    autocmd BufNewFile *.h TSkeletonSetup prefab/h.h
-"augroup END
-
 """ Whitespace, indention, etc.
 set sw=4 ts=4 sts=4 et
 set nosmartindent
