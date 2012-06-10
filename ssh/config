@@ -24,3 +24,8 @@ Host buildserver
 	HostName 10.0.1.12
 	User buildserver
 	Port 22
+
+Host vm
+	HostName vm
+	User mg
+	Port 22
