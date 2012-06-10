@@ -5,7 +5,7 @@
 # 1 - Incorrect usage
 
 if [ "$#" -ne "2" ]; then
-    echo "Usage: symlink.sh from to" 2>&1
+    echo "Usage: symlink.sh from to" >&2
     exit 1
 fi
 
@@ -17,7 +17,7 @@ if [ -e "$TO" ]; then
         # Already linked; ignore
         exit 0
     else
-        echo "$TO already exists; ignoring" 2>&1
+        echo "$TO already exists; ignoring" >&2
         exit 0
     fi
 fi

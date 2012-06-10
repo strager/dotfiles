@@ -3,7 +3,7 @@
 set -e -E
 
 if [ "$#" -ne "1" ]; then
-    echo "Usage: install.sh \$HOME" 2>&1
+    echo "Usage: install.sh \$HOME" >&2
     exit 1
 fi
 
