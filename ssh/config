@@ -1,0 +1,26 @@
+ConnectTimeout 30
+
+Host strappon
+	HostName home.strager.net
+	User strager
+	Port 2222
+
+Host train
+	HostName strager.net
+	User strager
+	Port 22
+
+Host igor
+	HostName dev.liranuna.com
+	User strager
+	Port 22
+
+Host linode panpan
+	HostName linode.strager.net
+	User strager
+	Port 22
+
+Host buildserver
+    HostName 10.0.1.12
+    User buildserver
+    Port 22
