@@ -113,7 +113,7 @@ let g:ctrlp_working_path_mode = 0 " Don't touch cwd
 let g:ctrlp_max_height = 999
 let g:ctrlp_jump_to_buffer = 0
 let g:ctrlp_dotfiles = 1
-let g:ctrlp_max_depth = 4
+let g:ctrlp_max_depth = 5
 let g:ctrlp_lazy_update = 100
 
 """ Display
@@ -122,6 +122,7 @@ set ruler
 set laststatus=2
 set listchars+=precedes:<,extends:>
 set sidescroll=5
+set scrolloff=5
 set shortmess=a     " Abbreviate status line
 set shortmess+=tToO " Other crap
 
@@ -143,6 +144,9 @@ syntax on
 filetype on
 filetype indent on
 filetype plugin on
+
+au BufNewFile *.as set filetype=javascript
+au BufRead *.as set filetype=javascript
 
 set background=dark
 let g:solarized_termtrans=1
