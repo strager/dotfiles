@@ -100,9 +100,9 @@ set autowrite
 
 " wildignore ('wig is cooler to write)
 " Version control
-set wig+=*/.git/*,*/.svn/*
+set wig+=*/.git/*,*/.svn/*,*/_darcs/*
 " Build/package systems
-set wig+=*/node_modules/*,*/dist/*,*/build/*,*/.build/*
+set wig+=*/node_modules/*,*/dist/*,*/build/*,*/.build/*,*/cabal-dev/*
 " Vim bullshit
 set wig+=*.swp,*.swa
 
