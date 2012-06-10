@@ -21,6 +21,6 @@ Host linode panpan
 	Port 22
 
 Host buildserver
-    HostName 10.0.1.12
-    User buildserver
-    Port 22
+	HostName 10.0.1.12
+	User buildserver
+	Port 22
