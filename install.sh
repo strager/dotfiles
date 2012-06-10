@@ -14,7 +14,7 @@ cd "$HERE"
 
 echo "Symlinking files..."
 S="$HERE/symlink.sh"
-for project in bash fish git ssh vim xmonad; do
+for project in bash fish git gnome-terminal ssh vim xmonad; do
     echo "($project)"
     HEREP="$HERE/$project"
     . "$HEREP/install.sh"
