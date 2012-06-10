@@ -176,5 +176,7 @@ nmap gv :!git pull --ff --commit<CR>
 nmap g^ :!git push<CR>
 nmap gP :!git checkout -p .<CR>
 
+set shell=/bin/bash
+
 " Must be last.  Forgot why.
 set exrc secure
