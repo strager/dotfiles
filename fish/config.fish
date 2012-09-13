@@ -38,9 +38,14 @@ end
 
 set PATH $HOME/bin $PATH
 set PATH $HOME/local/node/bin $PATH
+set PATH $HOME/local/node/lib/node_modules/npm/bin/node-gyp-bin $PATH
 set PATH $HOME/local/flex/bin $PATH
 set PATH $HOME/local/zinnia/bin $PATH
 set PATH $HOME/local/bin $PATH
+set PATH $HOME/local/android/tools $PATH
+set PATH $HOME/local/android-ndk $PATH
 set PATH $HOME/.cabal/bin $PATH
 set --export EDITOR vim
 set --export CABAL cabal-dev
+
+set --export NDKROOT $HOME/local/android-ndk
