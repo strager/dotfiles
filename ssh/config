@@ -24,3 +24,7 @@ Host buildserver
 	HostName 10.0.1.12
 	User buildserver
 	Port 22
+
+Host jenkinsvm
+    HostName 10.0.1.11
+    Port 2222
