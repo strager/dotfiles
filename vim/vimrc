@@ -27,7 +27,7 @@ call pathogen#infect()
 set sw=4 ts=4 sts=4 et
 set nosmartindent
 set cin noai
-set tw=0
+set tw=60
 
 """ Text manipulation
 set bs=indent,eol,start
