@@ -33,6 +33,8 @@ set tw=60
 set bs=indent,eol,start
 set completeopt=menu,preview
 
+set noesckeys
+
 " Make Y consistent with D (i.e. D : d$ :: Y : y$)
 nmap Y y$
 
