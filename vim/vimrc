@@ -166,7 +166,7 @@ let c_no_comment_fold=1
 let c_no_if0_fold=1
 
 """ Shortcuts
-map <F1> <ESC>:make -j4<CR>
+map <F1> <ESC>:make -j4 -w<CR>
 map <F9> :!ctags -R --c++-kinds=+p --fields=+iaS --extra=+q .<CR>
 
 " Git
