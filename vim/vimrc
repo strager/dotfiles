@@ -40,7 +40,9 @@ nmap Y y$
 
 """ Navigation
 set foldmethod=marker
-set relativenumber
+if v:version >= 730
+    set relativenumber
+endif
 
 " Sane searching
 set hlsearch

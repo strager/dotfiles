@@ -10,13 +10,13 @@ if status --is-interactive
     git add -p $argv
   end
   function gi
-    git add -i $argv # Different from Vim
+    git add -i $argv
   end
-  function g?
+  function gd
     git diff $argv
   end
-  function g??
-    git diff --cached $argv # Different from Vim
+  function gD
+    git diff --cached $argv
   end
   function gv
     git pull --ff --commit $argv
