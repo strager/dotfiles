@@ -16,8 +16,11 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     -- M-S-enter: terminal
     [ ((modm .|. shiftMask, xK_Return), spawn $ XMonad.terminal conf)
 
-    -- M-S-F4: close focused
-    , ((modm .|. shiftMask, xK_F4), kill)
+    -- M-S-q: recompile and restart/reload xmonad
+    , ((modm .|. shiftMask, xK_q), spawn "xmonad --recompile && xmonad --restart")
+
+    -- M-C-q: close focused
+    , ((modm .|. controlMask, xK_q), kill)
 
     -- M-S-p: dmenu
     , ((modm .|. shiftMask, xK_p), spawn "exe=`dmenu_path | dmenu` && eval \"exec $exe\"")
@@ -57,9 +60,6 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
 
     -- M-S-u: unfloat
     , ((modm .|. shiftMask, xK_u), withFocused $ windows . W.sink)
-
-    -- M-S-q: recompile and restart/reload xmonad
-    , ((modm .|. shiftMask, xK_q), spawn "xmonad --recompile && xmonad --restart")
     ]
 
     ++
