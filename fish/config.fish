@@ -40,7 +40,16 @@ set PATH $HOME/bin $PATH
 set PATH $HOME/local/node/bin $PATH
 set PATH $HOME/local/flex/bin $PATH
 set PATH $HOME/local/zinnia/bin $PATH
+set PATH $HOME/local/android/tools $PATH
+set PATH $HOME/local/android/platform-tools $PATH
 set PATH $HOME/local/bin $PATH
 set PATH $HOME/.cabal/bin $PATH
+set PATH $HOME/Library/Haskell/bin $PATH
+set PATH $HOME/Projects/fruitstrap $PATH
+set PATH $HOME/local/flex-sdk/bin $PATH
 set --export EDITOR vim
 set --export CABAL cabal-dev
+
+set --export ANDROID_SDK $HOME/local/android
+set --export NDKROOT $HOME/local/android-ndk
+set --export FLEX_HOME $HOME/local/flex-sdk
