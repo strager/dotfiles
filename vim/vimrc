@@ -40,7 +40,7 @@ nmap Y y$
 
 """ Navigation
 set foldmethod=marker
-if v:version >= 730
+if v:version >= 703
     set relativenumber
 endif
 
