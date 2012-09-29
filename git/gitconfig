@@ -10,6 +10,7 @@
     autosetupmerge = true
 [alias]
     co = checkout
+    l = log --color --graph --pretty=format:'%Cgreen%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
 
 [branch "master"]
     mergeoptions = --no-ff --no-commit
@@ -34,8 +35,7 @@
     changed = green
     untracked = cyan
 
-[giggle]
-    main-window-maximized = true
-    main-window-geometry = 700x550+0+24
-    history-view-vpane-position = 435
-    main-window-view = HistoryView
+[url "git@github.com:strager/"]
+    insteadOf = github:
+[url "git@github.com:sibblingz/"]
+    insteadOf = sib:

@@ -17,6 +17,9 @@ end
 
 au BufEnter *.hs compiler ghcx
 
+" Ack.vim
+let g:ackprg="ack-grep -H --nocolor --nogroup --column"
+
 " Pathogen, activate!
 call pathogen#infect()
 
@@ -24,18 +27,20 @@ call pathogen#infect()
 set sw=4 ts=4 sts=4 et
 set nosmartindent
 set cin noai
-set tw=0
+set tw=60
 
 """ Text manipulation
 set bs=indent,eol,start
 set completeopt=menu,preview
+
+set noesckeys
 
 " Make Y consistent with D (i.e. D : d$ :: Y : y$)
 nmap Y y$
 
 """ Navigation
 set foldmethod=marker
-if v:version >= 730
+if v:version >= 703
     set relativenumber
 endif
 
@@ -104,7 +109,7 @@ set autowrite
 " Version control
 set wig+=*/.git/*,*/.svn/*,*/_darcs/*
 " Build/package systems
-set wig+=*/node_modules/*,*/dist/*,*/build/*,*/.build/*,*/cabal-dev/*
+set wig+=*/node_modules/*,*/dist/*,*/build/*,*/.build/*,*/cabal-dev/*,*.pyc
 " Vim bullshit
 set wig+=*.swp,*.swa
 
@@ -163,7 +168,7 @@ let c_no_comment_fold=1
 let c_no_if0_fold=1
 
 """ Shortcuts
-map <F1> <ESC>:make -j4<CR>
+map <F1> <ESC>:make -j4 -w<CR>
 map <F9> :!ctags -R --c++-kinds=+p --fields=+iaS --extra=+q .<CR>
 
 " Git
@@ -179,6 +184,17 @@ nmap g^ :!git push<CR>
 nmap gP :!git checkout -p .<CR>
 
 set shell=/bin/bash
+
+""" Code generation
+
+" C/C++
+
+function! s:insert_include_guards()
+  let name = substitute(toupper(expand("%:t")), "\\.", "_", "g") . "_" . system("uuidgen | tr 'a-z-' 'A-Z_'")
+  execute "normal! i#ifndef " . name . "#define " . name . "#endif"
+  normal! k
+endfunction
+autocmd BufNewFile *.{h,hpp} call <SID>insert_include_guards()
 
 " Must be last.  Forgot why.
 set exrc secure
