@@ -40,6 +40,7 @@ set PATH $HOME/bin $PATH
 set PATH $HOME/local/node/bin $PATH
 set PATH $HOME/local/flex/bin $PATH
 set PATH $HOME/local/zinnia/bin $PATH
+set PATH $HOME/Library/Haskell/bin $PATH
 set PATH $HOME/local/bin $PATH
 set PATH $HOME/.cabal/bin $PATH
 set --export EDITOR vim
