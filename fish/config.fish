@@ -50,6 +50,7 @@ set PATH $HOME/.cabal/bin $PATH
 set PATH $HOME/Library/Haskell/bin $PATH
 set PATH $HOME/Projects/fruitstrap $PATH
 set PATH $HOME/local/flex-sdk/bin $PATH
+set PATH $HOME/local/gyp $PATH
 set --export EDITOR vim
 set --export CABAL cabal-dev
 
