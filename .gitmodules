@@ -12,4 +12,4 @@
 	url = git://github.com/mileszs/ack.vim.git
 [submodule "vim/vim/bundle/Haskell-Conceal"]
 	path = vim/vim/bundle/Haskell-Conceal
-	url = https://github.com/vim-scripts/Haskell-Conceal.git
+	url = https://github.com/strager/Haskell-Conceal.git
