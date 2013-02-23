@@ -201,6 +201,9 @@ nmap gP :!git checkout -p .<CR>
 
 set shell=/bin/bash
 
+" Paste toggle
+nmap <LEADER>p :set paste!<CR>
+
 """ Code generation
 
 " C/C++
