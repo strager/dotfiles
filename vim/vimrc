@@ -121,7 +121,7 @@ let g:ctrlp_working_path_mode = 0 " Don't touch cwd
 let g:ctrlp_max_height = 999
 let g:ctrlp_jump_to_buffer = 0
 let g:ctrlp_dotfiles = 1
-let g:ctrlp_max_depth = 5
+let g:ctrlp_max_depth = 8
 let g:ctrlp_lazy_update = 100
 
 """ Display
