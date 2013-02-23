@@ -18,7 +18,8 @@ end
 au BufEnter *.hs compiler ghcx
 
 " Ack.vim
-let g:ackprg="ack-grep -H --nocolor --nogroup --column"
+"let g:ackprg="ack-grep -H --nocolor --nogroup --column"
+let g:ackprg="ack -H --nocolor --nogroup --column"
 
 " Pathogen, activate!
 call pathogen#infect()
