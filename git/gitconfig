@@ -39,3 +39,5 @@
     insteadOf = gh:
 [url "git@github.com:sibblingz/"]
     insteadOf = sib:
+[diff]
+	algorithm = patience
