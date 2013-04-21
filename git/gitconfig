@@ -36,6 +36,6 @@
     untracked = cyan
 
 [url "git@github.com:strager/"]
-    insteadOf = github:
+    insteadOf = gh:
 [url "git@github.com:sibblingz/"]
     insteadOf = sib:
