@@ -221,6 +221,8 @@ set concealcursor=nv
 """ Shortcuts
 map <F1> <ESC>:make -j4 -w<CR>
 map <F9> :!ctags -R --c++-kinds=+p --fields=+iaS --extra=+q .<CR>
+nmap <Leader>s vip!sort -nf \| sort -u<CR>
+vmap <Leader>s !sort -nf \| sort -u<CR>
 
 " Git
 nmap gs :!git status -s -b .<CR>
