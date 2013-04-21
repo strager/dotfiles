@@ -91,6 +91,9 @@ set hlsearch
 set incsearch
 set smartcase ignorecase
 
+" Save searches
+set viminfo+=/200
+
 " TODO Find a better key for this
 noremap <ESC><ESC> :nohlsearch<CR>
 
@@ -187,6 +190,10 @@ set wildmenu
 set wildmode=longest,full
 
 set tags+=/usr/local/share/ctags/qt4
+
+" Save history
+set history=200
+set viminfo+=:200
 
 """ Syntax hilighting
 syntax on
