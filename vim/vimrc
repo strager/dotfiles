@@ -33,6 +33,7 @@ set tw=60
 """ Text manipulation
 set bs=indent,eol,start
 set completeopt=menu,preview
+set noesckeys
 
 """ Text alignment
 """ http://vim.wikia.com/wiki/Regex-based_text_alignment
@@ -61,24 +62,8 @@ function! AlignLine(line, sep, maxpos, extra)
   return m[1] . spaces . m[2]
 endfunction
 
-
 " Make Y consistent with D (i.e. D : d$ :: Y : y$)
 nmap Y y$
-
-" Emacs mode for ex prompt
-" http://statico.github.com/vim.html
-set esckeys
-cnoremap <C-a>  <Home>
-cnoremap <C-b>  <Left>
-cnoremap <C-f>  <Right>
-cnoremap <C-d>  <Delete>
-cnoremap <M-b>  <S-Left>
-cnoremap <M-f>  <S-Right>
-cnoremap <M-d>  <S-right><Delete>
-cnoremap <Esc>b <S-Left>
-cnoremap <Esc>f <S-Right>
-cnoremap <Esc>d <S-right><Delete>
-cnoremap <C-g>  <C-c>
 
 """ Navigation
 set foldmethod=marker
