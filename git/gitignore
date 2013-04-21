@@ -1,3 +1,5 @@
 .*.swp
 .*.swq
 .swp
+cabal-dev/
+.DS_Store
