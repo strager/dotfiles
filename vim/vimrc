@@ -75,16 +75,10 @@ endif
 set hlsearch
 set incsearch
 set smartcase ignorecase
+nmap <Leader>l :nohlsearch<CR>
 
 " Save searches
 set viminfo+=/200
-
-" TODO Find a better key for this
-noremap <ESC><ESC> :nohlsearch<CR>
-
-" Use arrow keys for gj, gk
-nmap <Up> gk
-nmap <Down> gj
 
 " Alt-j/k to navigate forward/backward in the tags stack
 map <M-J> <C-T>
@@ -93,15 +87,17 @@ map <M-K> <C-]>
 " Use space to find space
 " (Note the space after f, F)
 " Kinda broken right now...
-nmap <Space> ef 
+nmap <Space> ef<Space>
 
 " Use tab for %
 nnoremap <tab> %
 vnoremap <tab> %
 
-""" Window and tab management
-set splitbelow splitright
+" Navigate jump list with \j, \k
+nnoremap <Leader>j <C-I>
+nnoremap <Leader>k <C-O>
 
+""" Window and tab management
 " Windows
 nmap th <C-W>h
 nmap tl <C-W>l
@@ -110,6 +106,7 @@ nmap tk <C-W>k
 nmap ts :split<SPACE>
 nmap tv :vsplit<SPACE>
 nmap tc <C-W>c
+set splitbelow splitright
 
 " Tabs
 nmap Th :tabp<CR>
@@ -204,10 +201,12 @@ let c_no_if0_fold=1
 set concealcursor=nv
 
 """ Shortcuts
-map <F1> <ESC>:make -j4 -w<CR>
+map <F1> <ESC>:make<CR>
+set makeprg=make\ -j4\ -w
 map <F9> :!ctags -R --c++-kinds=+p --fields=+iaS --extra=+q .<CR>
 nmap <Leader>s vip!sort -nf \| sort -u<CR>
 vmap <Leader>s !sort -nf \| sort -u<CR>
+map <Leader>w :wa<CR>
 
 " Git
 nmap gs :!git status -s -b .<CR>
@@ -224,7 +223,7 @@ nmap gP :!git checkout -p .<CR>
 set shell=/bin/bash
 
 " Paste toggle
-nmap <LEADER>p :set paste!<CR>
+nmap <Leader>p :set paste!<CR>
 
 """ Code generation
 
