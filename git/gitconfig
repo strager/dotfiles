@@ -1,43 +1,45 @@
 [user]
-    name = Matt Glazar
-    email = matt.glazar@gmail.com
+	name = Matthew Glazar
+	email = strager@fb.com
 	signingkey = CFAD39FB
 [core]
-    excludesfile = ~/.gitignore
+	excludesfile = ~/.gitignore
 [push]
-    default = tracking
+	default = tracking
 [branch]
-    autosetupmerge = true
+	autosetupmerge = true
 [alias]
-    co = checkout
-    l = log --color --graph --pretty=format:'%Cgreen%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
+	co = checkout
+	l = log --color --graph --pretty=format:'%Cgreen%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
 
 [branch "master"]
-    mergeoptions = --no-ff --no-commit
+	mergeoptions = --no-ff --no-commit
 [branch "devel"]
-    mergeoptions = --no-ff --no-commit
+	mergeoptions = --no-ff --no-commit
 [branch "develop"]
-    mergeoptions = --no-ff --no-commit
+	mergeoptions = --no-ff --no-commit
 
 [color]
-    ui = auto
+	ui = auto
 [color "branch"]
-    current = red bold
-    local = yellow
-    remote = green
+	current = red bold
+	local = yellow
+	remote = green
 [color "diff"]
-    meta = yellow bold
-    frag = magenta bold
-    old = red
-    new = green
+	meta = yellow bold
+	frag = magenta bold
+	old = red
+	new = green
 [color "status"]
-    added = yellow
-    changed = green
-    untracked = cyan
+	added = yellow
+	changed = green
+	untracked = cyan
 
 [url "git@github.com:strager/"]
-    insteadOf = gh:
+	insteadOf = gh:
 [url "git@github.com:sibblingz/"]
-    insteadOf = sib:
+	insteadOf = sib:
 [diff]
 	algorithm = patience
+[merge]
+	conflictstyle = diff3
