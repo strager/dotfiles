@@ -207,6 +207,8 @@ set makeprg=make\ -j4\ -w
 map <F9> :!ctags -R --c++-kinds=+p --fields=+iaS --extra=+q .<CR>
 nmap <Leader>s vip!sort -nf \| sort -u<CR>
 vmap <Leader>s !sort -nf \| sort -u<CR>
+nmap <Leader>S vip!sort -nf \| sort -uf<CR>
+vmap <Leader>S !sort -nf \| sort -uf<CR>
 map <Leader>w :wa<CR>
 
 " Git
