@@ -27,6 +27,12 @@ if status --is-interactive
   function gp
     git checkout -p $argv
   end
+  function gr
+    git rebase $argv
+  end
+  function grc
+    git rebase --continue $argv
+  end
   function go
     git checkout $argv
   end
