@@ -1,4 +1,5 @@
 ConnectTimeout 30
+ForwardAgent yes
 
 Host strappon
 	HostName home.strager.net
