@@ -42,6 +42,8 @@ if status --is-interactive
   end
 end
 
+set PATH /usr/local/bin $PATH
+
 set PATH $HOME/bin $PATH
 set PATH $HOME/local/node/bin $PATH
 set PATH $HOME/local/node/lib/node_modules/npm/bin/node-gyp-bin $PATH
@@ -58,6 +60,7 @@ set PATH $HOME/Library/Haskell/bin $PATH
 set PATH $HOME/Projects/fruitstrap $PATH
 set PATH $HOME/local/flex-sdk/bin $PATH
 set PATH $HOME/local/gyp $PATH
+
 set --export EDITOR vim
 set --export CABAL cabal-dev
 
