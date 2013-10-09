@@ -5,7 +5,12 @@ if exists("did\_load\_filetypes")
 endif
 
 augroup markdown
- au!
- au BufRead,BufNewFile *.md setfiletype mkd
- au BufRead *.md  set ai formatoptions=tcroqn2 comments=n:&gt;
+  au!
+  au BufRead,BufNewFile *.md setfiletype mkd
+  au BufRead *.md  set ai formatoptions=tcroqn2 comments=n:&gt;
+augroup END
+
+augroup kitten
+  au!
+  au BufRead,BufNewFile *.ktn setfiletype kitten
 augroup END
