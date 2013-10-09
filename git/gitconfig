@@ -12,13 +12,6 @@
 	co = checkout
 	l = log --color --graph --pretty=format:'%Cgreen%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
 
-[branch "master"]
-	mergeoptions = --no-ff --no-commit
-[branch "devel"]
-	mergeoptions = --no-ff --no-commit
-[branch "develop"]
-	mergeoptions = --no-ff --no-commit
-
 [color]
 	ui = auto
 [color "branch"]
