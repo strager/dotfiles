@@ -3,3 +3,4 @@
 .swp
 cabal-dev/
 .DS_Store
+.idea/
