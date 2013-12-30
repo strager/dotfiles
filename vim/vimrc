@@ -45,6 +45,9 @@ set bs=indent,eol,start
 set completeopt=menu,preview
 set noesckeys
 
+" Synchronize default Vim register and system clipboard.
+set clipboard=unnamed
+
 """ Text alignment
 """ http://vim.wikia.com/wiki/Regex-based_text_alignment
 command! -nargs=? -range Align <line1>,<line2>call AlignSection('<args>')
