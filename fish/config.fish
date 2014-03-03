@@ -70,6 +70,8 @@ set --export FLEX_HOME $HOME/local/flex-sdk
 
 # Adapted from default fish_prompt.
 function fish_prompt --description 'Write out the prompt'
+  set -g __fish_prompt_status $status
+
   if not set -q __fish_prompt_normal
     set -g __fish_prompt_normal (set_color normal)
   end
@@ -90,7 +92,18 @@ function fish_prompt --description 'Write out the prompt'
     end
   end
 
-  printf '%s%s%s> ' "$__fish_prompt_cwd" (prompt_pwd) "$__fish_prompt_normal"
+  if test "$__fish_prompt_status" -eq 0
+    set -g __fish_prompt_status_string ""
+  else
+    set -g __fish_prompt_status_string (printf ' %d' "$__fish_prompt_status")
+  end
+
+  printf '%s%s%s%s%s> ' \
+    "$__fish_prompt_cwd" \
+    (prompt_pwd) \
+    (set_color $fish_color_error) \
+    "$__fish_prompt_status_string" \
+    "$__fish_prompt_normal"
 end
 
 # Adapted from default prompt_pwd.
