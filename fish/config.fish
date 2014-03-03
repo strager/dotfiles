@@ -107,11 +107,11 @@ function fish_prompt --description 'Write out the prompt'
 end
 
 # Adapted from default prompt_pwd.
-function prompt_pwd --description 'Print the current working directory, shortend to fit the prompt'
-  if test "$PWD" != "$HOME"
-    printf "%s" (echo $PWD|sed -e "s|^$HOME|~|" -e 's-/\(\.\{0,1\}[^/]\)\([^/]*\)-/\1-g')
-    echo $PWD|sed -e 's-.*/\.\{0,1\}[^/]\([^/]*$\)-\1-'
-  else
+function prompt_pwd --description '$PWD shortened'
+  if test "$PWD" = "$HOME"
     echo '~'
+  else
+    printf "%s" (echo "$PWD" | sed -e "s|^$HOME|~|" -e 's-/\(\.\{0,1\}[^/]\)\([^/]*\)-/\1-g')
+    echo "$PWD" | sed -e 's-.*/\.\{0,1\}[^/]\([^/]*$\)-\1-'
   end
 end
