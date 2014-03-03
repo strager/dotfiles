@@ -62,7 +62,7 @@ set PATH $HOME/local/flex-sdk/bin $PATH
 set PATH $HOME/local/gyp $PATH
 
 set --export EDITOR vim
-set --export CABAL cabal-dev
+set --export CABAL cabal
 
 set --export ANDROID_SDK $HOME/local/android
 set --export NDKROOT $HOME/local/android-ndk
