@@ -27,7 +27,8 @@ nmap <Leader>a :Ack<SPACE>
 call pathogen#infect()
 
 """ Whitespace, indention, etc.
-set sw=4 ts=4 sts=4 et
+set sw=4 sts=4 et
+set ts=8
 set nosmartindent
 set cin noai
 set tw=60
