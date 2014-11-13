@@ -154,6 +154,14 @@ set wig+=*/node_modules/*,*/dist/*,*/build/*,*/.build/*,*/cabal-dev/*,*.pyc
 " Vim bullshit
 set wig+=*.swp,*.swa
 
+" Put swap files in ~/.vim/swap/.  Note the double /:
+"
+" > - For Unix and Win32, if a directory ends in two path separators "//"
+" >  or "\\", the swap file name will be built from the complete path to
+" >  the file with all path separators substituted to percent '%' signs.
+" >  This will ensure file name uniqueness in the preserve directory.
+set directory=~/.vim/swap//,.
+
 " CtrlP okayness (http://kien.github.com/ctrlp.vim/)
 nmap ' :CtrlP<CR>
 nmap t' :tabnew<CR>:CtrlP<CR>
