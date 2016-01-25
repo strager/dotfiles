@@ -1,6 +1,6 @@
 [user]
 	name = Matthew Glazar
-	email = strager@fb.com
+	email = strager.nds@gmail.com
 	signingkey = CFAD39FB
 [core]
 	excludesfile = ~/.gitignore
