@@ -1,6 +1,12 @@
+# Operating system
+.DS_Store
+
+# Editor
 .*.swp
 .*.swq
 .swp
-cabal-dev/
-.DS_Store
 .idea/
+
+# Haskell
+cabal-dev/
+cabal.sandbox.config
