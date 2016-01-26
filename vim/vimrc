@@ -31,7 +31,7 @@ set sw=4 sts=4 et
 set ts=8
 set nosmartindent
 set cin noai
-set tw=60
+set tw=60 cc=60
 
 " Copyright Saleem Abdulrasool <compnerd@compnerd.org>
 command! GNUFormat :setlocal
