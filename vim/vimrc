@@ -249,16 +249,5 @@ set shell=/bin/bash
 " Paste toggle
 nmap <Leader>p :set paste!<CR>
 
-""" Code generation
-
-" C/C++
-
-function! s:insert_include_guards()
-  let name = substitute(toupper(expand("%:t")), "\\.", "_", "g") . "_" . system("uuidgen | tr 'a-z-' 'A-Z_'")
-  execute "normal! i#ifndef " . name . "#define " . name . "#endif"
-  normal! k
-endfunction
-autocmd BufNewFile *.{h,hpp} call <SID>insert_include_guards()
-
 " Must be last.  Forgot why.
 set exrc secure
