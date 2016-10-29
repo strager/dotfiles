@@ -8,6 +8,7 @@
 	default = tracking
 [branch]
 	autosetupmerge = true
+	autosetuprebase = always
 [alias]
 	co = checkout
 	l = log --color --graph --pretty=format:'%Cgreen%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
