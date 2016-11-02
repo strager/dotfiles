@@ -24,6 +24,8 @@
 	<true/>
 	<key>Control</key>
 	<integer>1</integer>
+	<key>ConvertDosNewlines</key>
+	<false/>
 	<key>CopyLastNewline</key>
 	<false/>
 	<key>CopySelection</key>
@@ -253,6 +255,8 @@
 	<true/>
 	<key>EnableRendezvous</key>
 	<false/>
+	<key>EscapeShellCharsWithBackslash</key>
+	<true/>
 	<key>FocusFollowsMouse</key>
 	<false/>
 	<key>FsTabDelay</key>
@@ -377,6 +381,10 @@
 	<false/>
 	<key>HideTab</key>
 	<false/>
+	<key>HideTabCloseButton</key>
+	<false/>
+	<key>HideTabNumber</key>
+	<true/>
 	<key>HighlightTabLabels</key>
 	<false/>
 	<key>HotKeyBookmark</key>
@@ -409,6 +417,8 @@
 	<string>1</string>
 	<key>NSNavLastRootDirectory</key>
 	<string>~/Documents</string>
+	<key>NSNavPanelExpandedSizeForOpenMode</key>
+	<string>{712, 448}</string>
 	<key>NSNavPanelExpandedSizeForSaveMode</key>
 	<string>{712, 565}</string>
 	<key>NSQuotedKeystrokeBinding</key>
@@ -416,6 +426,8 @@
 	<key>NSRepeatCountBinding</key>
 	<string></string>
 	<key>NSScrollAnimationEnabled</key>
+	<false/>
+	<key>NSScrollViewShouldScrollUnderTitlebar</key>
 	<false/>
 	<key>NSTableView Columns KeyBingingTable</key>
 	<array>
@@ -428,7 +440,7 @@
 		BAtzdHJlYW10eXBlZIHoA4QBQISEhAhOU1N0cmluZwGEhAhOU09iamVjdACF
 		hAErATGG
 		</data>
-		<string>302</string>
+		<string>322</string>
 	</array>
 	<key>NSTableView Columns NSNavOutlineColumnSettings.v1</key>
 	<array>
@@ -536,6 +548,10 @@
 	<string>146 257 924 485 0 0 1440 877 </string>
 	<key>NSWindow Frame SUStatusFrame</key>
 	<string>526 561 384 129 0 0 1440 878 </string>
+	<key>NSWindow Frame SUUpdateAlert</key>
+	<string>368 191 700 622 0 0 1440 877 </string>
+	<key>NSWindow Frame SharedPreferences</key>
+	<string>184 196 796 474 0 0 1440 877 </string>
 	<key>NSWindow Frame UKCrashReporter</key>
 	<string>99 293 592 584 0 0 1440 877 </string>
 	<key>NSWindow Frame iTerm Window 0</key>
@@ -1272,6 +1288,20 @@
 			<string>/Users/mg</string>
 		</dict>
 	</array>
+	<key>NoSyncDoNotWarnBeforeMultilinePaste</key>
+	<true/>
+	<key>NoSyncDoNotWarnBeforeMultilinePaste_selection</key>
+	<integer>0</integer>
+	<key>NoSyncHaveShownPromoWithId_4</key>
+	<true/>
+	<key>NoSyncInstallationId</key>
+	<string>91050789-C534-4573-99AA-4FFD703D2DCB</string>
+	<key>NoSyncNeverAskAboutSettingAlternateMouseScroll</key>
+	<true/>
+	<key>NoSyncPermissionToShowTip</key>
+	<false/>
+	<key>NoSyncTimeOfFirstLaunchOfVersionWithTip</key>
+	<real>487228324.95909703</real>
 	<key>NoSyncTimeOfLastPromo</key>
 	<real>453364364.83077103</real>
 	<key>NoSyncTimeOfLastPromoDownload</key>
@@ -1292,6 +1322,18 @@
 	<false/>
 	<key>PasteFromClipboard</key>
 	<false/>
+	<key>PasteSpecialChunkDelay</key>
+	<real>0.01</real>
+	<key>PasteSpecialChunkSize</key>
+	<integer>1024</integer>
+	<key>PasteSpecialRegex</key>
+	<string></string>
+	<key>PasteSpecialSubstitution</key>
+	<string></string>
+	<key>PasteSpecialUseRegexSubstitution</key>
+	<false/>
+	<key>PasteTabToStringTabStopSize</key>
+	<integer>4</integer>
 	<key>PointerActions</key>
 	<dict>
 		<key>Button,1,1,,</key>
@@ -1332,6 +1374,8 @@
 	</dict>
 	<key>PrefsCustomFolder</key>
 	<string></string>
+	<key>Print In Black And White</key>
+	<true/>
 	<key>PromptOnQuit</key>
 	<true/>
 	<key>QuitWhenAllWindowsClosed</key>
@@ -1342,6 +1386,8 @@
 	<integer>3</integer>
 	<key>SUEnableAutomaticChecks</key>
 	<true/>
+	<key>SUFeedAlternateAppNameKey</key>
+	<string>iTerm</string>
 	<key>SUFeedURL</key>
 	<string>http://iterm2.com/appcasts/testing.xml</string>
 	<key>SUHasLaunchedBefore</key>
@@ -1354,6 +1400,10 @@
 	<false/>
 	<key>ShowBookmarkName</key>
 	<false/>
+	<key>ShowFullScreenTabBar</key>
+	<true/>
+	<key>ShowNewOutputIndicator</key>
+	<true/>
 	<key>ShowPaneTitles</key>
 	<true/>
 	<key>SmartPlacement</key>
@@ -1364,6 +1414,8 @@
 	<integer>4</integer>
 	<key>SwitchWindowModifier</key>
 	<integer>6</integer>
+	<key>TabStyle</key>
+	<integer>0</integer>
 	<key>TabViewType</key>
 	<integer>0</integer>
 	<key>ThreeFingerEmulates</key>
