@@ -14,7 +14,22 @@ setopt interactive_comments
 
 # Keyboard bindings.
 bindkey -e
+
 # TODO(strager): select-word-style bash (except for ^W).
+
+bindkey "${terminfo[kdch1]}" delete-char
+
+autoload -U up-line-or-beginning-search
+zle -N up-line-or-beginning-search
+bindkey "^[[A" up-line-or-beginning-search # Up
+
+autoload -U down-line-or-beginning-search
+zle -N down-line-or-beginning-search
+bindkey "^[[B" down-line-or-beginning-search # down
+
+autoload -U edit-command-line
+zle -N edit-command-line
+bindkey '\C-x\C-e' edit-command-line
 
 # Completion.
 autoload -Uz compinit
