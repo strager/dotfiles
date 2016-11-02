@@ -209,6 +209,12 @@ filetype plugin on
 au BufNewFile *.as set filetype=javascript
 au BufRead *.as set filetype=javascript
 
+" Prefer 8-color over 256-color. The colour scheme is tuned
+" for 8-color with iTerm.
+if &term =~ "xterm-256color"
+  set term=xterm
+endif
+
 set background=dark
 let g:solarized_termtrans=1
 colorscheme solarized
