@@ -36,6 +36,7 @@ compinit
 
 # Environment.
 export EDITOR=vim
+export PATH="${HOME}/bin:${PATH}"
 
 # The prompt:
 #
