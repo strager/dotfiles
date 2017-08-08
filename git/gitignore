@@ -2,9 +2,6 @@
 .DS_Store
 
 # Editor
-.*.swp
-.*.swq
-.swp
 .idea/
 
 # CPython
