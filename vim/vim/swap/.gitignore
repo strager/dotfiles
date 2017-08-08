@@ -1,0 +1,4 @@
+# This directory contains Vim's swap files. (See the
+# 'directory setting in vimrc.) Swap files should not be
+# committed, so make Git ignore them.
+/*.swp
