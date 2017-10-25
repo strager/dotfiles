@@ -10,3 +10,4 @@
 # Haskell
 cabal-dev/
 cabal.sandbox.config
+.stack-work/
