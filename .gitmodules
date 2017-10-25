@@ -19,3 +19,9 @@
 [submodule "zsh/zsh-syntax-highlighting"]
 	path = zsh/zsh-syntax-highlighting
 	url = https://github.com/zsh-users/zsh-syntax-highlighting.git
+[submodule "vim/vim/bundle/fzf.vim"]
+	path = vim/vim/bundle/fzf.vim
+	url = https://github.com/junegunn/fzf.vim
+[submodule "vim/vim/bundle/fzf"]
+	path = vim/vim/bundle/fzf
+	url = https://github.com/junegunn/fzf
