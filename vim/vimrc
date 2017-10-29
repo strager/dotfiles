@@ -164,6 +164,8 @@ set wig+=*.swp,*.swa
 set directory=~/.vim/swap//,.
 
 " fzf
+" TODO(strager): Move $FZF_DEFAULT_OPTS outside Vim.
+let $FZF_DEFAULT_OPTS = '--no-progress --inline-info'
 nmap ' :Buffers<CR>
 nmap <C-P> :Files<CR>
 
@@ -247,6 +249,109 @@ set shell=/bin/bash
 
 " Paste toggle
 nmap <Leader>p :set paste!<CR>
+
+function! s:escape_sub(s)
+  " See |sub-replace-special| and 'magic.
+  return escape(a:s, '&~\\')
+endfunction
+
+function! s:get_make_command(makeprg, make_args)
+  " See the replace_makeprg C function in vim/src/ex_docmd.c for undocumented
+  " behaviour.
+  " See 'grepprg/'makeprg for '$*'.
+  " See |string-match| for '\$\*'.
+  let expanded=substitute(a:makeprg, '\$\*', s:escape_sub(a:make_args), 'g')
+  if expanded ==# a:makeprg
+    return a:makeprg.' '.a:make_args
+  else
+    return expanded
+  endif
+endfunction
+
+function! s:get_make_redirect(shellpipe, shellquote, error_file_path)
+  " See the replace_makeprg C function in vim/src/ex_docmd.c for undocumented
+  " behaviour.
+  " See the append_redir C function in vim/src/ex_cmds.c for undocumented
+  " behaviour.
+  " TODO(strager): Support empty 'shellpipe.
+  " TODO(strager): Support %% in 'shellpipe.
+  " TODO(strager): Maybe crash if 'shellpipe is '%s%s'.
+  let expanded_shellpipe=substitute(a:shellpipe, '%s', s:escape_sub(a:error_file_path), '')
+  if expanded_shellpipe ==# a:shellpipe
+    return a:shellpipe.' '.a:error_file_path
+  else
+    return ' '.expanded_shellpipe
+  endif
+endfunction
+
+function! s:StragerMake(bang, make_args)
+  " TODO(strager): Support 'makeef.
+  let error_file_path=tempname()
+  " NOTE(strager): Despite what the documentation for :make says, this deletion
+  " is unconditional.
+  call delete(error_file_path)
+
+  " TODO(strager): Support :grep, etc.
+  let command=s:get_make_command(get(b:, 'makeprg', &makeprg), a:make_args)
+  let redirect=s:get_make_redirect(&shellpipe, &shellquote, error_file_path)
+  " TODO(strager): Support 'shellquote.
+
+  " TODO(strager): Trigger QuickFixCmdPre.
+  " TODO(strager): Ensure encoding is correct.
+  " TODO(strager): Support 'autowrite and 'autowriteall.
+
+  " FIXME(strager): This is temporary...
+  " TODO(strager): Escape. The rules are giving me a headache right now.
+  execute '!'.command.redirect
+
+  " See the ex_make C function in vim/src/quickfix.c for ':'.
+  let quickfix_title=':'.command
+
+  let error_format=get(b:, 'errorformat', &errorformat)
+
+  " TODO(strager): Support :grepadd, etc.
+  " TODO(strager): Support :lmake, etc.
+  " See the ex_make C function in vim/src/quickfix.c for ' ' and 'nr': 0.
+  let error=setqflist([], ' ', {
+    \ 'efm': error_format,
+    \ 'nr': 0,
+    \ 'title': quickfix_title,
+  \ })
+  " TODO(strager): Check for errors.
+  let quickfix_list_info=getqflist({'id': 0, 'nr': 0})
+
+  " TODO(strager): Switch to the correct quickfix list.
+  " FIXME(strager): This changes 'errorfile.
+  " FIXME(strager): This triggers QuickFixCmdPre and QuickFixCmdPost.
+  " TODO(strager): Escape. The rules are giving me a headache right now.
+  execute 'caddfile '.error_file_path
+
+  " TODO(strager): Trigger QuickFixCmdPost.
+
+  " Automatically jump to the first error if desired.
+  if !a:bang
+    " See the ex_make C function in vim/src/quickfix.c.
+    let cur_quickfix_list_id=getqflist({'id': 0})['id']
+    if cur_quickfix_list_id == quickfix_list_info['id']
+      " FIXME(strager): I think this is wrong.
+      let quickfix_list_entry_count=getqflist({'size': 0})['size']
+      if quickfix_list_entry_count > 0
+        cc
+      endif
+    endif
+  endif
+
+  " See the ex_make C function in vim/src/quickfix.c.
+  call delete(error_file_path)
+endfunction
+
+" BANG = -bang
+" EXTRA = ???
+" NOTRLCOM = (default; -bar overrides)
+" TRLBAR = (default; -bar overrides)
+" XFILE = ???
+" ADDR_LINES = (unused, I think)
+command -bang -complete=file -nargs=* StragerMake call s:StragerMake(<bang>0, <q-args>)
 
 " Must be last.  Forgot why.
 set exrc secure
