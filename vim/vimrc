@@ -181,8 +181,6 @@ set shortmess+=tToO " Other crap
 set statusline=%<%f\ %h%m%r
 " Line, col
 set statusline+=%=%-14.(%l,%c%V%)
-" File %
-set statusline+=\ %P
 
 """ Command line
 set wildmenu
