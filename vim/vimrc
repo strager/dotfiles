@@ -284,7 +284,43 @@ function! s:get_make_redirect(shellpipe, shellquote, error_file_path)
   endif
 endfunction
 
-function! s:StragerMake(bang, make_args)
+function s:StragerMakeCallback(channel, message)
+endfunction
+
+function s:StragerMakeCloseCallback(channel)
+endfunction
+
+function s:StragerMakeExitCallback(make_invocation, job, exit_status)
+  " TODO(strager): Ensure encoding is correct.
+
+  " TODO(strager): Update 'errorformat.
+  " TODO(strager): Update the correct quickfix list.
+  " FIXME(strager): This changes 'errorfile.
+  " FIXME(strager): This triggers QuickFixCmdPre and QuickFixCmdPost.
+  " TODO(strager): Escape. The rules are giving me a headache right now.
+  execute 'caddfile '.a:make_invocation['error_file_path']
+
+  " TODO(strager): Trigger QuickFixCmdPost.
+
+  " Automatically jump to the first error if desired.
+  " TODO(strager): Do this only once.
+  if a:make_invocation['jump_to_first_error']
+    " See the ex_make C function in vim/src/quickfix.c.
+    let cur_quickfix_list_id=getqflist({'id': 0})['id']
+    if cur_quickfix_list_id == a:make_invocation['quickfix_list_id']
+      " FIXME(strager): I think this is wrong.
+      let quickfix_list_entry_count=getqflist({'size': 0})['size']
+      if quickfix_list_entry_count > 0
+        cc
+      endif
+    endif
+  endif
+
+  " See the ex_make C function in vim/src/quickfix.c.
+  call delete(a:make_invocation['error_file_path'])
+endfunction
+
+function s:StragerMake(bang, make_args)
   " TODO(strager): Support 'makeef.
   let error_file_path=tempname()
   " NOTE(strager): Despite what the documentation for :make says, this deletion
@@ -300,14 +336,37 @@ function! s:StragerMake(bang, make_args)
   " TODO(strager): Ensure encoding is correct.
   " TODO(strager): Support 'autowrite and 'autowriteall.
 
-  " FIXME(strager): This is temporary...
-  " TODO(strager): Escape. The rules are giving me a headache right now.
-  execute '!'.command.redirect
+  let make_invocation={
+    \ 'error_file_path': error_file_path,
+    \ 'jump_to_first_error': !a:bang,
+  \ }
+
+  " TODO(strager): Support Windows.
+  " FIXME(strager): I think this is wrong. Vim is confusing.
+  let exec_command=[&shell,&shellcmdflag,command.redirect]
+  let terminal_buffer_number=term_start(exec_command, {
+    \ 'callback': function('s:StragerMakeCallback'),
+    \ 'close_cb': function('s:StragerMakeCloseCallback'),
+    \ 'err_msg': 0,
+    \ 'exit_cb': function('s:StragerMakeExitCallback', [make_invocation]),
+    \ 'hidden': 1,
+    \ 'out_msg': 0,
+    \ 'stoponexit': 'term',
+    \ 'term_name': command,
+  \ })
+  if terminal_buffer_number == 0
+    " TODO(strager): Handle errors.
+    echomsg 'Error in term_start()'
+  endif
+  let make_invocation['terminal_buffer_number']=terminal_buffer_number
+
+  " TODO(strager): Trigger ShellCmdPost.
+
+  let error_format=get(b:, 'errorformat', &errorformat)
+  let make_invocation['error_format']=error_format
 
   " See the ex_make C function in vim/src/quickfix.c for ':'.
   let quickfix_title=':'.command
-
-  let error_format=get(b:, 'errorformat', &errorformat)
 
   " TODO(strager): Support :grepadd, etc.
   " TODO(strager): Support :lmake, etc.
@@ -319,30 +378,7 @@ function! s:StragerMake(bang, make_args)
   \ })
   " TODO(strager): Check for errors.
   let quickfix_list_info=getqflist({'id': 0, 'nr': 0})
-
-  " TODO(strager): Switch to the correct quickfix list.
-  " FIXME(strager): This changes 'errorfile.
-  " FIXME(strager): This triggers QuickFixCmdPre and QuickFixCmdPost.
-  " TODO(strager): Escape. The rules are giving me a headache right now.
-  execute 'caddfile '.error_file_path
-
-  " TODO(strager): Trigger QuickFixCmdPost.
-
-  " Automatically jump to the first error if desired.
-  if !a:bang
-    " See the ex_make C function in vim/src/quickfix.c.
-    let cur_quickfix_list_id=getqflist({'id': 0})['id']
-    if cur_quickfix_list_id == quickfix_list_info['id']
-      " FIXME(strager): I think this is wrong.
-      let quickfix_list_entry_count=getqflist({'size': 0})['size']
-      if quickfix_list_entry_count > 0
-        cc
-      endif
-    endif
-  endif
-
-  " See the ex_make C function in vim/src/quickfix.c.
-  call delete(error_file_path)
+  let make_invocation['quickfix_list_id']=quickfix_list_info['id']
 endfunction
 
 " BANG = -bang
