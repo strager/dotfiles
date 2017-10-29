@@ -163,15 +163,9 @@ set wig+=*.swp,*.swa
 " >  This will ensure file name uniqueness in the preserve directory.
 set directory=~/.vim/swap//,.
 
-" CtrlP okayness (http://kien.github.com/ctrlp.vim/)
-nmap ' :CtrlP<CR>
-nmap t' :tabnew<CR>:CtrlP<CR>
-let g:ctrlp_working_path_mode = 0 " Don't touch cwd
-let g:ctrlp_max_height = 999
-let g:ctrlp_jump_to_buffer = 0
-let g:ctrlp_dotfiles = 1
-let g:ctrlp_max_depth = 8
-let g:ctrlp_lazy_update = 100
+" fzf
+nmap ' :Buffers<CR>
+nmap <C-P> :Files<CR>
 
 """ Display
 set nowrap
