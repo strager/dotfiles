@@ -402,6 +402,10 @@ function s:StragerMake(bang, make_args)
   " TODO(strager): Support Windows.
   " FIXME(strager): I think this is wrong. Vim is confusing.
   let exec_command=[&shell,&shellcmdflag,command.redirect]
+  " HACK(strager): For some reason, term_start() moves the cursor to the
+  " beginning of the buffer. Save and restore the window state to work around
+  " this.
+  let window_view=winsaveview()
   let terminal_buffer_number=term_start(exec_command, {
     \ 'callback': function('s:StragerMakeCallback', [make_invocation]),
     \ 'close_cb': function('s:StragerMakeCloseCallback'),
@@ -412,6 +416,7 @@ function s:StragerMake(bang, make_args)
     \ 'stoponexit': 'term',
     \ 'term_name': command,
   \ })
+  call winrestview(window_view)
   if terminal_buffer_number == 0
     " TODO(strager): Handle errors.
     echomsg 'Error in term_start()'
