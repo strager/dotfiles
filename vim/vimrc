@@ -284,40 +284,96 @@ function! s:get_make_redirect(shellpipe, shellquote, error_file_path)
   endif
 endfunction
 
-function s:StragerMakeCallback(channel, message)
+function s:StragerMakeCallback(make_invocation, channel, message)
+  if a:make_invocation['done']
+    return
+  endif
+
+  call s:update_quickfix_list(a:make_invocation, 'incremental')
 endfunction
 
 function s:StragerMakeCloseCallback(channel)
 endfunction
 
-function s:StragerMakeExitCallback(make_invocation, job, exit_status)
-  " TODO(strager): Ensure encoding is correct.
+function s:StragerMakeExitCallback(make_invocation, _job, _exit_status)
+  if a:make_invocation['done']
+    return
+  endif
 
-  " TODO(strager): Update 'errorformat.
-  " TODO(strager): Update the correct quickfix list.
-  " FIXME(strager): This changes 'errorfile.
-  " FIXME(strager): This triggers QuickFixCmdPre and QuickFixCmdPost.
-  " TODO(strager): Escape. The rules are giving me a headache right now.
-  execute 'caddfile '.a:make_invocation['error_file_path']
+  call s:update_quickfix_list(a:make_invocation, 'full')
+
+  " See the ex_make C function in vim/src/quickfix.c.
+  call delete(a:make_invocation['error_file_path'])
+  let a:make_invocation['done']=v:true
+endfunction
+
+function s:list_index_where(list, predicate)
+  let index=0
+  for x in a:list
+    if a:predicate(x)
+      return index
+    endif
+    let index=index + 1
+  endfor
+  return -1
+endfunction
+
+function s:parse_new_quickfix_entries_from_error_file(make_invocation, incremental_or_full)
+  " TODO(strager): Support <CR><LF>.
+  " TODO(strager): Ensure encoding is correct.
+  " TODO(strager): Use a buffer instead.
+  " TODO(strager): Verify multi-line error messages are parsed properly.
+  let raw_lines=readfile(a:make_invocation['error_file_path'], 'b')
+  if a:incremental_or_full ==# 'incremental'
+    " Strip off the last line.
+    " * If the last line in the file is incomplete (i.e. lacks a trailing <LF>),
+    "   we don't want to parse it to avoid truncated messages.
+    " * If the last line in the file is complete (i.e. has a trailing <LF>),
+    "   readfile() returns an empty string as the last item in the list
+    let lines_to_parse=raw_lines[:-2]
+  elseif a:incremental_or_full ==# 'full'
+    let lines_to_parse=raw_lines
+  else
+    " TODO(strager): Communicate a proper error.
+    echomsg 'Invalid value '.string(a:incremental_or_full).'; expected "incremental" or "full"'
+    return []
+  endif
+  let parsed_quickfix_entries=getqflist({
+    \ 'efm': a:make_invocation['error_format'],
+    \ 'lines': lines_to_parse,
+  \ })['items']
+  let current_quickfix_entries=getqflist({
+    \ 'id': a:make_invocation['quickfix_list_id'],
+    \ 'items': v:true,
+  \ })['items']
+
+  " TODO(strager): Return only new entries.
+  return parsed_quickfix_entries
+endfunction
+
+function s:update_quickfix_list(make_invocation, incremental_or_full)
+  let new_quickfix_entries=s:parse_new_quickfix_entries_from_error_file(a:make_invocation, a:incremental_or_full)
+  " TODO(strager): Append instead of replacing.
+  call setqflist([], 'r', {
+    \ 'id': a:make_invocation['quickfix_list_id'],
+    \ 'items': new_quickfix_entries,
+  \ })
 
   " TODO(strager): Trigger QuickFixCmdPost.
 
   " Automatically jump to the first error if desired.
-  " TODO(strager): Do this only once.
-  if a:make_invocation['jump_to_first_error']
+  if a:make_invocation['jump_to_first_error'] && !a:make_invocation['did_jump_to_first_error']
     " See the ex_make C function in vim/src/quickfix.c.
     let cur_quickfix_list_id=getqflist({'id': 0})['id']
     if cur_quickfix_list_id == a:make_invocation['quickfix_list_id']
-      " FIXME(strager): I think this is wrong.
-      let quickfix_list_entry_count=getqflist({'size': 0})['size']
-      if quickfix_list_entry_count > 0
-        cc
+      " TODO(strager): Check new_quickfix_entries instead.
+      let index=s:list_index_where(getqflist(), {entry -> entry['valid']})
+      if index != -1
+        execute 'cc '.(index + 1)
+        let a:make_invocation['did_jump_to_first_error']=v:true
       endif
     endif
   endif
-
-  " See the ex_make C function in vim/src/quickfix.c.
-  call delete(a:make_invocation['error_file_path'])
 endfunction
 
 function s:StragerMake(bang, make_args)
@@ -337,6 +393,8 @@ function s:StragerMake(bang, make_args)
   " TODO(strager): Support 'autowrite and 'autowriteall.
 
   let make_invocation={
+    \ 'did_jump_to_first_error': v:false,
+    \ 'done': v:false,
     \ 'error_file_path': error_file_path,
     \ 'jump_to_first_error': !a:bang,
   \ }
@@ -345,12 +403,12 @@ function s:StragerMake(bang, make_args)
   " FIXME(strager): I think this is wrong. Vim is confusing.
   let exec_command=[&shell,&shellcmdflag,command.redirect]
   let terminal_buffer_number=term_start(exec_command, {
-    \ 'callback': function('s:StragerMakeCallback'),
+    \ 'callback': function('s:StragerMakeCallback', [make_invocation]),
     \ 'close_cb': function('s:StragerMakeCloseCallback'),
-    \ 'err_msg': 0,
+    \ 'err_msg': v:false,
     \ 'exit_cb': function('s:StragerMakeExitCallback', [make_invocation]),
-    \ 'hidden': 1,
-    \ 'out_msg': 0,
+    \ 'hidden': v:true,
+    \ 'out_msg': v:false,
     \ 'stoponexit': 'term',
     \ 'term_name': command,
   \ })
