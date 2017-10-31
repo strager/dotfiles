@@ -271,20 +271,20 @@ function! s:escape_sub(s)
   return escape(a:s, '&~\\')
 endfunction
 
-function! s:get_make_command(makeprg, make_args)
+function! s:get_work_command(prg, args)
   " See the replace_makeprg C function in vim/src/ex_docmd.c for undocumented
   " behaviour.
   " See 'grepprg/'makeprg for '$*'.
   " See |string-match| for '\$\*'.
-  let expanded=substitute(a:makeprg, '\$\*', s:escape_sub(a:make_args), 'g')
-  if expanded ==# a:makeprg
-    return a:makeprg.' '.a:make_args
+  let expanded=substitute(a:prg, '\$\*', s:escape_sub(a:args), 'g')
+  if expanded ==# a:prg
+    return a:prg.' '.a:args
   else
     return expanded
   endif
 endfunction
 
-function! s:get_make_redirect(shellpipe, shellquote, error_file_path)
+function! s:get_work_redirect(shellpipe, shellquote, error_file_path)
   " See the replace_makeprg C function in vim/src/ex_docmd.c for undocumented
   " behaviour.
   " See the append_redir C function in vim/src/ex_cmds.c for undocumented
@@ -294,33 +294,33 @@ function! s:get_make_redirect(shellpipe, shellquote, error_file_path)
   " TODO(strager): Maybe crash if 'shellpipe is '%s%s'.
   let expanded_shellpipe=substitute(a:shellpipe, '%s', s:escape_sub(a:error_file_path), '')
   if expanded_shellpipe ==# a:shellpipe
-    return a:shellpipe.' '.a:error_file_path
+    return ' '.a:shellpipe.' '.a:error_file_path
   else
     return ' '.expanded_shellpipe
   endif
 endfunction
 
-function s:StragerMakeCallback(make_invocation, channel, message)
-  if a:make_invocation['done']
+function s:StragerMakeCallback(work, channel, message)
+  if a:work['done']
     return
   endif
 
-  call s:update_quickfix_list(a:make_invocation, 'incremental')
+  call s:update_quickfix_list(a:work, 'incremental')
 endfunction
 
 function s:StragerMakeCloseCallback(channel)
 endfunction
 
-function s:StragerMakeExitCallback(make_invocation, _job, _exit_status)
-  if a:make_invocation['done']
+function s:StragerMakeExitCallback(work, _job, _exit_status)
+  if a:work['done']
     return
   endif
 
-  call s:update_quickfix_list(a:make_invocation, 'full')
+  call s:update_quickfix_list(a:work, 'full')
 
   " See the ex_make C function in vim/src/quickfix.c.
-  call delete(a:make_invocation['error_file_path'])
-  let a:make_invocation['done']=v:true
+  call delete(a:work['error_file_path'])
+  let a:work['done']=v:true
 endfunction
 
 function s:list_index_where(list, predicate)
@@ -334,12 +334,12 @@ function s:list_index_where(list, predicate)
   return -1
 endfunction
 
-function s:parse_new_quickfix_entries_from_error_file(make_invocation, incremental_or_full)
+function s:parse_new_quickfix_entries_from_error_file(work, incremental_or_full)
   " TODO(strager): Support <CR><LF>.
   " TODO(strager): Ensure encoding is correct.
   " TODO(strager): Use a buffer instead.
   " TODO(strager): Verify multi-line error messages are parsed properly.
-  let raw_lines=readfile(a:make_invocation['error_file_path'], 'b')
+  let raw_lines=readfile(a:work['error_file_path'], 'b')
   if a:incremental_or_full ==# 'incremental'
     " Strip off the last line.
     " * If the last line in the file is incomplete (i.e. lacks a trailing <LF>),
@@ -355,11 +355,11 @@ function s:parse_new_quickfix_entries_from_error_file(make_invocation, increment
     return []
   endif
   let parsed_quickfix_entries=getqflist({
-    \ 'efm': a:make_invocation['error_format'],
+    \ 'efm': a:work['error_format'],
     \ 'lines': lines_to_parse,
   \ })['items']
   let current_quickfix_entries=getqflist({
-    \ 'id': a:make_invocation['quickfix_list_id'],
+    \ 'id': a:work['quickfix_list_id'],
     \ 'items': v:true,
   \ })['items']
 
@@ -367,48 +367,55 @@ function s:parse_new_quickfix_entries_from_error_file(make_invocation, increment
   return parsed_quickfix_entries
 endfunction
 
-function s:update_quickfix_list(make_invocation, incremental_or_full)
-  let new_quickfix_entries=s:parse_new_quickfix_entries_from_error_file(a:make_invocation, a:incremental_or_full)
+function s:update_quickfix_list(work, incremental_or_full)
+  let new_quickfix_entries=s:parse_new_quickfix_entries_from_error_file(a:work, a:incremental_or_full)
   " TODO(strager): Append instead of replacing.
   call setqflist([], 'r', {
-    \ 'id': a:make_invocation['quickfix_list_id'],
+    \ 'id': a:work['quickfix_list_id'],
     \ 'items': new_quickfix_entries,
   \ })
 
   " TODO(strager): Trigger QuickFixCmdPost.
 
   " Automatically jump to the first error if desired.
-  if a:make_invocation['jump_to_first_error'] && !a:make_invocation['did_jump_to_first_error']
+  if a:work['jump_to_first_error'] && !a:work['did_jump_to_first_error']
     " See the ex_make C function in vim/src/quickfix.c.
     let cur_quickfix_list_id=getqflist({'id': 0})['id']
-    if cur_quickfix_list_id == a:make_invocation['quickfix_list_id']
+    if cur_quickfix_list_id == a:work['quickfix_list_id']
       " TODO(strager): Check new_quickfix_entries instead.
       let index=s:list_index_where(getqflist(), {entry -> entry['valid']})
       if index != -1
         execute 'cc '.(index + 1)
-        let a:make_invocation['did_jump_to_first_error']=v:true
+        let a:work['did_jump_to_first_error']=v:true
       endif
     endif
   endif
 endfunction
 
-function s:StragerMake(bang, make_args)
+function s:StragerMake(bang, mode, args)
   " TODO(strager): Support 'makeef.
   let error_file_path=tempname()
   " NOTE(strager): Despite what the documentation for :make says, this deletion
   " is unconditional.
   call delete(error_file_path)
 
-  " TODO(strager): Support :grep, etc.
-  let command=s:get_make_command(get(b:, 'makeprg', &makeprg), a:make_args)
-  let redirect=s:get_make_redirect(&shellpipe, &shellquote, error_file_path)
+  if a:mode ==# 'grep'
+    let prg=get(b:, 'grepprg', &grepprg)
+  elseif a:mode ==# 'make'
+    let prg=get(b:, 'makeprg', &makeprg)
+  else
+    echomsg 'Invalid mode '.string(a:mode)
+    return
+  endif
+  let command=s:get_work_command(prg, a:args)
+  let redirect=s:get_work_redirect(&shellpipe, &shellquote, error_file_path)
   " TODO(strager): Support 'shellquote.
 
   " TODO(strager): Trigger QuickFixCmdPre.
   " TODO(strager): Ensure encoding is correct.
   " TODO(strager): Support 'autowrite and 'autowriteall.
 
-  let make_invocation={
+  let work={
     \ 'did_jump_to_first_error': v:false,
     \ 'done': v:false,
     \ 'error_file_path': error_file_path,
@@ -423,10 +430,10 @@ function s:StragerMake(bang, make_args)
   " this.
   let window_view=winsaveview()
   let terminal_buffer_number=term_start(exec_command, {
-    \ 'callback': function('s:StragerMakeCallback', [make_invocation]),
+    \ 'callback': function('s:StragerMakeCallback', [work]),
     \ 'close_cb': function('s:StragerMakeCloseCallback'),
     \ 'err_msg': v:false,
-    \ 'exit_cb': function('s:StragerMakeExitCallback', [make_invocation]),
+    \ 'exit_cb': function('s:StragerMakeExitCallback', [work]),
     \ 'hidden': v:true,
     \ 'out_msg': v:false,
     \ 'stoponexit': 'term',
@@ -437,12 +444,19 @@ function s:StragerMake(bang, make_args)
     " TODO(strager): Handle errors.
     echomsg 'Error in term_start()'
   endif
-  let make_invocation['terminal_buffer_number']=terminal_buffer_number
+  let work['terminal_buffer_number']=terminal_buffer_number
 
   " TODO(strager): Trigger ShellCmdPost.
 
-  let error_format=get(b:, 'errorformat', &errorformat)
-  let make_invocation['error_format']=error_format
+  if a:mode ==# 'grep'
+    let error_format=get(b:, 'grepformat', &grepformat)
+  elseif a:mode ==# 'make'
+    let error_format=get(b:, 'errorformat', &errorformat)
+  else
+    echomsg 'Invalid mode '.string(a:mode)
+    return
+  endif
+  let work['error_format']=error_format
 
   " See the ex_make C function in vim/src/quickfix.c for ':'.
   let quickfix_title=':'.command
@@ -457,7 +471,7 @@ function s:StragerMake(bang, make_args)
   \ })
   " TODO(strager): Check for errors.
   let quickfix_list_info=getqflist({'id': 0, 'nr': 0})
-  let make_invocation['quickfix_list_id']=quickfix_list_info['id']
+  let work['quickfix_list_id']=quickfix_list_info['id']
 endfunction
 
 " BANG = -bang
@@ -466,7 +480,10 @@ endfunction
 " TRLBAR = (default; -bar overrides)
 " XFILE = ???
 " ADDR_LINES = (unused, I think)
-command -bang -complete=file -nargs=* StragerMake call s:StragerMake(<bang>0, <q-args>)
+command -bang -complete=file -nargs=* StragerGrep call s:StragerMake(<bang>0, 'grep', <q-args>)
+command -bang -complete=file -nargs=* StragerMake call s:StragerMake(<bang>0, 'make', <q-args>)
+
+set grepformat=%f:%l:%c:%m grepprg=ag\ --nocolor\ --nogroup\ --column
 
 " Must be last.  Forgot why.
 set exrc secure
