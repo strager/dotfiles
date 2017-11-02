@@ -113,3 +113,6 @@ ZSH_HIGHLIGHT_STYLES[precommand]="${_command_style}"
 ZSH_HIGHLIGHT_STYLES[reserved-word]='fg=093'
 ZSH_HIGHLIGHT_STYLES[single-hyphen-option]="${_argument_style}"
 source ~/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+
+# Configure other programs.
+export FZF_DEFAULT_OPTS='--no-progress --inline-info'
