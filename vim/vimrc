@@ -158,8 +158,6 @@ set autowrite
 set wig+=*/.git/*,*/.svn/*,*/_darcs/*
 " Build/package systems
 set wig+=*/node_modules/*,*/dist/*,*/build/*,*/.build/*,*/cabal-dev/*,*.pyc
-" Vim bullshit
-set wig+=*.swp,*.swa
 
 " Put swap files in ~/.vim/swap/.  Note the double /:
 "
