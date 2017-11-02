@@ -153,11 +153,8 @@ nmap <unique> te :tabe<SPACE>
 """ File management
 set autowrite 
 
-" wildignore ('wig is cooler to write)
-" Version control
-set wig+=*/.git/*,*/.svn/*,*/_darcs/*
-" Build/package systems
-set wig+=*/node_modules/*,*/dist/*,*/build/*,*/.build/*,*/cabal-dev/*,*.pyc
+" Don't hide any files from completion.
+set wildignore=
 
 " Put swap files in ~/.vim/swap/.  Note the double /:
 "
