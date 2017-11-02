@@ -21,7 +21,7 @@ au BufEnter *.hs compiler ghcx
 "let g:ackprg="ack-grep -H --nocolor --nogroup --column"
 "let g:ackprg="ack -H --nocolor --nogroup --column"
 let g:ackprg="ag --nocolor --nogroup --column"
-nmap <Leader>a :Ack<SPACE>
+nmap <unique> <Leader>a :Ack<SPACE>
 
 " Pathogen, activate!
 call pathogen#infect()
@@ -84,7 +84,7 @@ function! AlignLine(line, sep, maxpos, extra)
 endfunction
 
 " Make Y consistent with D (i.e. D : d$ :: Y : y$)
-nmap Y y$
+nmap <unique> Y y$
 
 """ Navigation
 set foldmethod=marker
@@ -96,59 +96,59 @@ endif
 set hlsearch
 set incsearch
 set smartcase ignorecase
-nmap <Leader>l :nohlsearch<CR>
+nmap <unique> <Leader>l :nohlsearch<CR>
 
 " Save searches
 set viminfo+=/200
 
 " Alt-j/k to navigate forward/backward in the tags stack
-map <M-J> <C-T>
-map <M-K> <C-]>
+map <unique> <M-J> <C-T>
+map <unique> <M-K> <C-]>
 
 " Use space to find space
 " (Note the space after f, F)
 " Kinda broken right now...
-nmap <Space> ef<Space>
+nmap <unique> <Space> ef<Space>
 
 " Use tab for %
-nnoremap <tab> %
-vnoremap <tab> %
+nnoremap <unique> <tab> %
+vnoremap <unique> <tab> %
 
 " Navigate jump list with \j, \k
-nnoremap <Leader>j <C-I>
-nnoremap <Leader>k <C-O>
+nnoremap <unique> <Leader>j <C-I>
+nnoremap <unique> <Leader>k <C-O>
 
 """ Window and tab management
 " Windows
-nmap th <C-W>h
-nmap tl <C-W>l
-nmap tj <C-W>j
-nmap tk <C-W>k
-nmap ts :split<SPACE>
-nmap tv :vsplit<SPACE>
-nmap tc <C-W>c
+nmap <unique> th <C-W>h
+nmap <unique> tl <C-W>l
+nmap <unique> tj <C-W>j
+nmap <unique> tk <C-W>k
+nmap <unique> ts :split<SPACE>
+nmap <unique> tv :vsplit<SPACE>
+nmap <unique> tc <C-W>c
 set splitbelow splitright
 
 " Tabs
-nmap Th :tabp<CR>
-nmap Tl :tabn<CR>
-nmap Te :tabe<SPACE>
-nmap Tn :tabe .<CR>
-nmap Tc :tabc<CR>
+nmap <unique> Th :tabp<CR>
+nmap <unique> Tl :tabn<CR>
+nmap <unique> Te :tabe<SPACE>
+nmap <unique> Tn :tabe .<CR>
+nmap <unique> Tc :tabc<CR>
 
-nmap TH :tabp<CR>
-nmap TL :tabn<CR>
-nmap TE :tabe<SPACE>
-nmap TN :tabe .<CR>
-nmap TC :tabc<CR>
+nmap <unique> TH :tabp<CR>
+nmap <unique> TL :tabn<CR>
+nmap <unique> TE :tabe<SPACE>
+nmap <unique> TN :tabe .<CR>
+nmap <unique> TC :tabc<CR>
 
-nmap tH :tabp<CR>
-nmap tL :tabn<CR>
-nmap tE :tabe<SPACE>
-nmap tN :tabe .<CR>
-nmap tC :tabc<CR>
+nmap <unique> tH :tabp<CR>
+nmap <unique> tL :tabn<CR>
+nmap <unique> tE :tabe<SPACE>
+nmap <unique> tN :tabe .<CR>
+nmap <unique> tC :tabc<CR>
 
-nmap te :tabe<SPACE>
+nmap <unique> te :tabe<SPACE>
 
 """ File management
 set autowrite 
@@ -170,8 +170,8 @@ set wig+=*.swp,*.swa
 set directory=~/.vim/swap//,.
 
 " fzf
-nmap ' :Buffers<CR>
-nmap <C-P> :Files<CR>
+nmap <unique> ' :Buffers<CR>
+nmap <unique> <C-P> :Files<CR>
 
 """ Display
 set nowrap
@@ -228,31 +228,31 @@ let c_no_if0_fold=1
 set concealcursor=nv
 
 """ Shortcuts
-map <F1> <ESC>:make<CR>
+map <unique> <F1> <ESC>:make<CR>
 set makeprg=make\ -j4\ -w
-map <F9> :!ctags -R --c++-kinds=+p --fields=+iaS --extra=+q .<CR>
-nmap <Leader>s vip:sort u<CR>
-vmap <Leader>s :sort u<CR>
-nmap <Leader>S vip:sort iu<CR>
-vmap <Leader>S :sort iu<CR>
-map <Leader>w :wa<CR>
+map <unique> <F9> :!ctags -R --c++-kinds=+p --fields=+iaS --extra=+q .<CR>
+nmap <unique> <Leader>s vip:sort u<CR>
+vmap <unique> <Leader>s :sort u<CR>
+nmap <unique> <Leader>S vip:sort iu<CR>
+vmap <unique> <Leader>S :sort iu<CR>
+map <unique> <Leader>w :wa<CR>
 
 " Git
-nmap gs :!git status -s -b .<CR>
-nmap gS :!git status -s -b<CR>
-nmap gc :!git commit -v<CR>
-nmap g. :!git add -p .<CR>
-nmap g; :!git add -i .<CR>
-nmap g? :!git diff .<CR>
-nmap g/ :!git diff --cached .<CR>
-nmap gv :!git pull --ff --commit<CR>
-nmap g^ :!git push<CR>
-nmap gP :!git checkout -p .<CR>
+nmap <unique> gs :!git status -s -b .<CR>
+nmap <unique> gS :!git status -s -b<CR>
+nmap <unique> gc :!git commit -v<CR>
+nmap <unique> g. :!git add -p .<CR>
+nmap <unique> g; :!git add -i .<CR>
+nmap <unique> g? :!git diff .<CR>
+nmap <unique> g/ :!git diff --cached .<CR>
+nmap <unique> gv :!git pull --ff --commit<CR>
+nmap <unique> g^ :!git push<CR>
+nmap <unique> gP :!git checkout -p .<CR>
 
 set shell=/bin/bash
 
 " Paste toggle
-nmap <Leader>p :set paste!<CR>
+nmap <unique> <Leader>p :set paste!<CR>
 
 " Must be last.  Forgot why.
 set exrc secure
