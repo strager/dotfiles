@@ -176,7 +176,7 @@ set shortmess=a     " Abbreviate status line
 set shortmess+=tToO " Other crap
 
 " filename [Help][-][RO]
-set statusline=%<%f\ %h%m%r
+set statusline=\ \ \ %<%f\ %h%m%r
 " Line, col
 set statusline+=%=%(%l,%c%V%)
 
