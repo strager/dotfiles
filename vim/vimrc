@@ -150,6 +150,10 @@ nmap <unique> te :tabe<SPACE>
 """ File management
 set autowrite 
 
+""" netrw
+let g:netrw_banner = 0
+let g:netrw_use_errorwindow = 0
+
 " Don't hide any files from completion.
 set wildignore=
 
