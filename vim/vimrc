@@ -210,6 +210,9 @@ colorscheme solarized
 " Make the vertical split column blend with the line number
 " column.
 highlight LineNr cterm=bold ctermbg=0 ctermfg=2
+if v:version >= 800
+  highlight! link CursorLineNr LineNr
+endif
 highlight VertSplit cterm=bold ctermbg=0 ctermfg=2
 set fillchars+=vert:\ 
 
