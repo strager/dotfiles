@@ -91,6 +91,7 @@ set foldmethod=marker
 if v:version >= 703
     set relativenumber
 endif
+set numberwidth=3
 
 " Sane searching
 set hlsearch
@@ -206,9 +207,25 @@ set background=dark
 let g:solarized_termtrans=1
 colorscheme solarized
 
-highlight StatusLine ctermfg=82
-highlight StatusLineNC ctermfg=81
-highlight VertSplit ctermfg=16
+" Make the vertical split column blend with the line number
+" column.
+highlight LineNr cterm=bold ctermbg=0 ctermfg=2
+highlight VertSplit cterm=bold ctermbg=0 ctermfg=2
+set fillchars+=vert:\ 
+
+" HACK(strager): If the following are all true, Vim will
+" force the 'fillchars stl item to '^':
+"
+" * The StatusLine and StatusLine highlight attributes are
+"   equivalent
+" * The stl and stlnc items are equal
+" * The window being drawn is the current window
+"
+" We don't want this, so choose slightly different colours
+" so we hopefully don't notice any difference.
+highlight StatusLine cterm=bold ctermbg=0 ctermfg=4
+highlight StatusLineNC cterm=bold ctermbg=0 ctermfg=2
+set fillchars=stl:\ ,stlnc:\ 
 
 let c_space_errors=1
 let c_no_comment_fold=1
