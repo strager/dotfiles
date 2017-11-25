@@ -166,7 +166,7 @@ set wildignore=
 set directory=~/.vim/swap//,.
 
 " fzf
-nmap <unique> ' :Buffers<CR>
+nmap <unique> <Leader>b :Buffers<CR>
 nmap <unique> <C-P> :Files<CR>
 
 """ Display
