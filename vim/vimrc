@@ -116,6 +116,9 @@ vnoremap <unique> <tab> %
 nnoremap <unique> <Leader>j <C-I>
 nnoremap <unique> <Leader>k <C-O>
 
+" Go-to-definition
+nmap <unique> <C-]> :call strager#tag#go()<CR>
+
 """ Window and tab management
 " Windows
 nmap <unique> th <C-W>h
