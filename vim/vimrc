@@ -53,8 +53,8 @@ set bs=indent,eol,start
 set completeopt=menu,preview
 set noesckeys
 
-" Synchronize default Vim register and system clipboard.
-set clipboard=unnamed
+" Don't synchronize Vim's unnamed register with system clipboard.
+set clipboard=
 
 """ Text alignment
 """ http://vim.wikia.com/wiki/Regex-based_text_alignment
