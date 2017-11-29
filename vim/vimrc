@@ -33,6 +33,7 @@ set nosmartindent
 set cin noai
 set tw=60 cc=60
 set nojoinspaces
+set formatoptions=cloqr
 
 " g:StragerGetCStyleComments returns a list of 'comments parts. Use this
 " function in ftplugin-s.
