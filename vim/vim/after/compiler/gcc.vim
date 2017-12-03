@@ -7,3 +7,9 @@ augroup strager_compiler_gcc
   au!
   au User lsp_setup call strager#lsp#register_clangd_server()
 augroup END
+
+" HACK(strager): Fix broken scan codes in Vim's gcc.vim's 'errorformat.
+" Replace: %D%*\a[%*\d]: Entering directory [`']%f
+"    with: %D%*\a[%*\d]: Entering directory %[`']%f
+" FIXME(strager): This should respect :CompilerSet but doesn't.
+let &errorformat = substitute(&errorformat, 'directory \[`''\]', 'directory %[`'']', 'g')
