@@ -131,25 +131,8 @@ nmap <unique> tc <C-W>c
 set splitbelow splitright
 
 " Tabs
-nmap <unique> Th :tabp<CR>
-nmap <unique> Tl :tabn<CR>
-nmap <unique> Te :tabe<SPACE>
-nmap <unique> Tn :tabe .<CR>
-nmap <unique> Tc :tabc<CR>
-
-nmap <unique> TH :tabp<CR>
-nmap <unique> TL :tabn<CR>
-nmap <unique> TE :tabe<SPACE>
-nmap <unique> TN :tabe .<CR>
-nmap <unique> TC :tabc<CR>
-
-nmap <unique> tH :tabp<CR>
-nmap <unique> tL :tabn<CR>
-nmap <unique> tE :tabe<SPACE>
-nmap <unique> tN :tabe .<CR>
-nmap <unique> tC :tabc<CR>
-
-nmap <unique> te :tabe<SPACE>
+" Use <Leader>c to pop the "tab stack".
+nmap <unique> <Leader>c :tabclose<CR>
 
 """ File management
 set autowrite 
