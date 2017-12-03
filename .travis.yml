@@ -1,0 +1,13 @@
+language: nix
+
+os:
+  - osx
+
+install:
+  - nix-env -i -A nixpkgs.clang_5 nixpkgs.ninja nixpkgs.vim
+
+before_script:
+  - ./install.sh "${HOME}"
+
+script:
+  - ./vim/test.sh
