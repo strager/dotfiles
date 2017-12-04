@@ -4,6 +4,6 @@ cc = cc
 cflags =
 
 rule c_compile
-  command = $cc $cflags -o $out -- $in
+  command = $cc $cflags -o $out $in
 
 build program: c_compile program.c
