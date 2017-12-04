@@ -27,10 +27,8 @@ endfunction
 
 function! Test_ninja_relative_compile_error_from_source_buffer()
   call s:set_up()
-  echomsg &efm
   set makeprg=ninja\ -C\ test_c_make_ninja_helper
   edit test_c_make_ninja_helper/program.c
-  echomsg &efm
   silent make
   call s:assert_cursor_should_have_jumped_to_error()
 endfunction
