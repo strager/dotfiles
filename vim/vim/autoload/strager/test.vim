@@ -51,5 +51,10 @@ function! strager#test#run_tests(test_function_names)
     endfor
     " Leave Vim alive so errors can be inspected by a human.
     " TODO(strager): Log to a file and :cquit!?
+    if &verbosefile !=# ''
+      " Presumably we are running in a fully scripted environment, so quit
+      " with a non-zero exit code to indicate failure.
+      cquit!
+    endif
   endif
 endfunction

@@ -27,11 +27,39 @@ run_vim_test() {
         return 1
     fi
 
+    local log_file_path="$(mktemp /tmp/vim-test-sh.XXXXXX)"
+    local script_args=(
+        # Fix some situations where the UI could hang waiting for user input.
+        -c 'set nomore'
+        -S "${test_script}"
+    )
     if ! "${need_vimrc}"; then
-        log_and_run vim -N -S "${test_script}" -u NONE
+        run_vim_with_log_file "${log_file_path}" -N -u NONE "${script_args[@]}"
     fi
-    log_and_run vim -S "${test_script}"
+    run_vim_with_log_file "${log_file_path}" "${script_args[@]}"
     return 0
+}
+
+run_vim_with_log_file() {
+    local log_file_path="${1}"
+    shift
+    local vim_args=("${@}")
+
+    # Clear the log file.
+    printf '' >"${log_file_path}"
+
+    # Log test output to a file. Also, tell the test framework to :cqall! on
+    # failure.
+    # TODO(strager): Escape the log file properly.
+    vim_args+=(--cmd "set verbosefile=${log_file_path}")
+
+    local vim_status=0
+    log_and_run vim "${vim_args[@]}" || vim_status="${?}"
+
+    cat "${log_file_path}" >&2
+    printf '\n' >&2
+
+    return "${vim_status}"
 }
 
 log_and_run() {
