@@ -27,6 +27,10 @@ function! strager#test#run_tests(test_function_names)
       call funcref(l:test_function_name)()
     catch
       call add(v:errors, v:exception)
+      let v:errors = v:errors + split(
+        \ strager#exception#format_throwpoint(v:throwpoint),
+        \ "\n",
+      \ )
     endtry
     if len(v:errors) == 0
       echomsg '[       OK ] '.l:test_function_name
