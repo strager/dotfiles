@@ -3,7 +3,7 @@
 defaults=/usr/bin/defaults
 if ! [ -e "${defaults}" ]; then
     echo "defaults not installed; ignoring" >&2
-    exit 0
+    return
 fi
 
 domain=com.googlecode.iterm2
