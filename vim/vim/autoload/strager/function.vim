@@ -8,7 +8,7 @@ function! strager#function#function_source_location(function)
     throw 'Expected function, but got '.string(a:function)
   endif
   let l:real_function_name = s:real_function_name(l:function_name)
-  if l:real_function_name !~# '^\(s:\|[A-Z]\|'."\x80\xfdR".'\)'
+  if l:real_function_name !~# '^\(s:\|[A-Z]\|'."\x80\xfdR".'\|.*#\)'
     " a:function refers to a built-in function.
     return {
       \ 'line': v:none,
@@ -18,9 +18,14 @@ function! strager#function#function_source_location(function)
     \ }
   endif
   let l:script_path = s:function_source_script_path(l:real_function_name)
-  let l:source_function_name = s:source_function_name(l:real_function_name)
+  let l:line = v:none
+  let l:source_function_name = v:none
+  if l:script_path !=# v:none
+    let l:source_function_name = s:source_function_name(l:real_function_name)
+    let l:line = s:function_source_line(l:source_function_name, l:script_path)
+  endif
   return {
-    \ 'line': s:function_source_line(l:source_function_name, l:script_path),
+    \ 'line': l:line,
     \ 'real_name': l:real_function_name,
     \ 'script_path': l:script_path,
     \ 'source_name': l:source_function_name,
@@ -28,10 +33,14 @@ function! strager#function#function_source_location(function)
 endfunction
 
 function! s:function_source_script_path(real_function_name)
-  " FIXME(strager): Is this the right way to escape the function name?
-  redir @">
-  exec 'verbose function '.fnameescape(a:real_function_name)
-  redir END
+  try
+    redir @">
+    " FIXME(strager): Is this the right way to escape the function name?
+    exec 'verbose function '.a:real_function_name
+    redir END
+  catch /E123:/
+    return v:none
+  endtry
   " Example output from :function <name>:
   "
   "    function AlignLine(line, sep, maxpos, extra)

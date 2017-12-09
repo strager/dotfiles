@@ -71,6 +71,46 @@ function! Test_function_source_location_of_built_in_function()
   call assert_equal(v:none, l:loc.source_name)
 endfunction
 
+function! Test_function_source_location_of_unloaded_autoload_function()
+  let l:loc = strager#function#function_source_location(
+    \ 'strager#test_function_helper_unloaded#func',
+  \ )
+  call assert_equal(v:none, l:loc.line)
+  call assert_equal(
+    \ 'strager#test_function_helper_unloaded#func',
+    \ l:loc.real_name,
+  \ )
+  call assert_equal(v:none, l:loc.script_path)
+  call assert_equal(v:none, l:loc.source_name)
+endfunction
+
+function! Test_function_source_location_of_loaded_autoload_function()
+  let l:local = {}
+  function l:local.check(function)
+    let l:loc = strager#function#function_source_location(a:function)
+    call assert_equal(2, l:loc.line)
+    call assert_equal('strager#test_function_helper#func', l:loc.real_name)
+    call assert_equal('strager#test_function_helper#func', l:loc.source_name)
+    call assert_equal(strager#path#join([
+      \ fnamemodify(s:script_path, ':h'),
+      \ 'test_function_helper.vim',
+    \ ]), l:loc.script_path)
+  endfunction
+
+  " Ensure the function is loaded.
+  call strager#test_function_helper#func()
+
+  " Autoload function by name string.
+  call l:local.check('strager#test_function_helper#func')
+  " Autoload function by funcref.
+  call l:local.check(funcref('strager#test_function_helper#func'))
+  " Autoload function by partial.
+  call l:local.check(funcref(
+    \ 'strager#test_function_helper#func',
+    \ ['args', 'go', 'here'],
+  \ ))
+endfunction
+
 " Test that s:function_with_common_prefix isn't confused for
 " s:function_with_common_prefix2.
 function! Test_function_source_location_of_functions_with_common_prefix()
