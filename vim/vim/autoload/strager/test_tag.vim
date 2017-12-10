@@ -145,8 +145,11 @@ function! s:set_up_serverless_lsp()
   " server. Override the existing LSP server configuration.
   " This has a similar effect to killing the LSP server, but
   " the LSP server is still running in the background.
+  " HACK(strager): vim-lsp is flaky and sometimes crashes on
+  " Linux if the server program exits. Use the 'cat' command
+  " which only exits after its standard input is closed.
   let l:Register = {server_name -> lsp#register_server({
-    \ 'cmd': {_ -> ['false']},
+    \ 'cmd': {_ -> ['sh', '-c', 'cat >/dev/null']},
     \ 'name': server_name,
     \ 'whitelist': ['c'],
   \ })}
