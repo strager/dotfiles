@@ -20,9 +20,9 @@ endfunction
 function! s:assert_buffer_contents_match_expected(expected_path)
   exec 'silent write !cmp -b -- - '.fnameescape(a:expected_path)
   if v:shell_error != 0
-    redir @">
-    exec 'silent write !diff -u -- - '.fnameescape(a:expected_path)
-    redir END
+    let l:diff_output = execute(
+      \ 'silent write !diff -u -- - '.fnameescape(a:expected_path),
+    \ )
     call assert_report(
       \ 'Expected the current buffer to have the same contents as the file '
         \ .a:expected_path)

@@ -34,10 +34,8 @@ endfunction
 
 function! s:function_source_script_path(real_function_name)
   try
-    redir @">
-    " FIXME(strager): Is this the right way to escape the function name?
-    exec 'verbose function '.a:real_function_name
-    redir END
+    "" FIXME(strager): Is this the right way to escape the function name?
+    let l:function_output = execute('verbose function '.a:real_function_name)
   catch /E123:/
     return v:none
   endtry
@@ -52,7 +50,7 @@ function! s:function_source_script_path(real_function_name)
   " 5    let spaces = repeat(' ', a:maxpos - strlen(m[1]) + a:extra)
   " 6    return m[1] . spaces . m[2]
   "    endfunction
-  let [_, l:last_set_line; _] = split(@", '\n')
+  let [_, l:last_set_line; _] = split(l:function_output, '\n')
   let l:match = matchlist(l:last_set_line, 'Last set from \(.\+\)$')
   if empty(l:match)
     throw 'Failed to parse file name for function: '.a:real_function_name

@@ -1,8 +1,5 @@
 function! strager#test#run_all_tests()
-  redir @">
-  function /^Test_/
-  redir END
-  let l:function_lines = split(@", '\n')
+  let l:function_lines = split(execute('function /^Test_/'), '\n')
   let l:function_names = map(
     \ l:function_lines,
     \ {_, s -> substitute(s, '^function \(.\{-}\)(.*$', '\1', '')})
