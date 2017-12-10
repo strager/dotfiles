@@ -35,7 +35,8 @@ function! s:go_lsp(errors)
     else
       call add(
         \ a:errors,
-        \ 'LSP server "'.l:server.'" does not have a definition provider')
+        \ 'LSP server "'.l:server.'" does not have a definition provider',
+      )
     endif
   endfor
   if empty(l:servers)
@@ -81,7 +82,7 @@ function! s:go_lsp(errors)
         return v:false
       endif
       let l:loc = l:locs[0]
-      call s:push_tag(l:loc['filename'], l:loc['lnum'], l:loc['col'])
+      call s:push_tag(l:loc.filename, l:loc.lnum, l:loc.col)
       return v:true
     endif
     sleep 1m
@@ -89,7 +90,8 @@ function! s:go_lsp(errors)
   " The timeout expired.
   call add(
     \ a:errors,
-    \ 'Timed out waiting for response from LSP server "'.l:server.'"')
+    \ 'Timed out waiting for response from LSP server "'.l:server.'"',
+  \ )
   return v:false
 endfunction
 

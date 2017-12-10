@@ -8,7 +8,8 @@ function! Test_python_insert_does_not_wrap_lines()
   silent! normal A + (a + b + c)
   call s:assert_buffer_contents_match_expected(
     \ s:script_dir_path
-      \ .'/test_format_expected_python_insert_does_not_wrap_lines.py')
+      \ .'/test_format_expected_python_insert_does_not_wrap_lines.py',
+  \ )
 endfunction
 
 function! s:set_up_python_helper_source()
@@ -25,9 +26,10 @@ function! s:assert_buffer_contents_match_expected(expected_path)
     \ )
     call assert_report(
       \ 'Expected the current buffer to have the same contents as the file '
-        \ .a:expected_path)
-    for diff_line in split(@", '\n')
-      call add(v:errors, 'diff: '.diff_line)
+        \ .a:expected_path,
+    \ )
+    for l:diff_line in split(@", '\n')
+      call add(v:errors, 'diff: '.l:diff_line)
     endfor
   endif
 endfunction

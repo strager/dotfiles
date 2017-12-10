@@ -141,13 +141,12 @@ endfunction
 
 function! s:set_up_serverless_lsp()
   call lsp#disable()
-  " HACK(strager): vim-lsp doesn't let us kill the LSP
-  " server. Override the existing LSP server configuration.
-  " This has a similar effect to killing the LSP server, but
-  " the LSP server is still running in the background.
-  " HACK(strager): vim-lsp is flaky and sometimes crashes on
-  " Linux if the server program exits. Use the 'cat' command
-  " which only exits after its standard input is closed.
+  " HACK(strager): vim-lsp doesn't let us kill the LSP server. Override the
+  " existing LSP server configuration. This has a similar effect to killing the
+  " LSP server, but the LSP server is still running in the background.
+  " HACK(strager): vim-lsp is flaky and sometimes crashes on Linux if the server
+  " program exits. Use the 'cat' command which only exits after its standard
+  " input is closed.
   let l:Register = {server_name -> lsp#register_server({
     \ 'cmd': {_ -> ['sh', '-c', 'cat >/dev/null']},
     \ 'name': server_name,
@@ -213,8 +212,8 @@ function! s:assert_function_scenario_cursor_should_have_jumped()
   call assert_equal(1, l:new_cursor_position[4]) " curswant
   " FIXME(strager): Should we check curswant?
   " TODO(strager): Check that :pop works.
-  " TODO(strager): Check that the current window did or
-  " didn't change (according to 'switchbuf perhaps?).
+  " TODO(strager): Check that the current window did or didn't change (according
+  " to 'switchbuf perhaps?).
 endfunction
 
 call strager#test#run_all_tests()

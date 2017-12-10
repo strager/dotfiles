@@ -2,7 +2,8 @@ function! strager#test#run_all_tests()
   let l:function_lines = split(execute('function /^Test_/'), '\n')
   let l:function_names = map(
     \ l:function_lines,
-    \ {_, s -> substitute(s, '^function \(.\{-}\)(.*$', '\1', '')})
+    \ {_, s -> substitute(s, '^function \(.\{-}\)(.*$', '\1', '')},
+  \ )
   if len(l:function_names) == 0
     echoerr 'No Test_ functions found'
     return
@@ -54,8 +55,8 @@ function! strager#test#run_tests(test_function_names)
     " Leave Vim alive so errors can be inspected by a human.
     " TODO(strager): Log to a file and :cquit!?
     if &verbosefile !=# ''
-      " Presumably we are running in a fully scripted environment, so quit
-      " with a non-zero exit code to indicate failure.
+      " Presumably we are running in a fully scripted environment, so quit with
+      " a non-zero exit code to indicate failure.
       cquit!
     endif
   endif
