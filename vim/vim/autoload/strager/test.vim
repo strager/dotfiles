@@ -10,6 +10,7 @@ function! strager#test#run_all_tests()
     echoerr 'No Test_ functions found'
     return
   endif
+  call sort(l:function_names)
   call strager#test#run_tests(l:function_names)
 endfunction
 
