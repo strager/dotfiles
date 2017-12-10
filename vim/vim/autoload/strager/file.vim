@@ -94,13 +94,26 @@ function! strager#file#paths_upward(path)
 endfunction
 
 function! strager#file#list_directory(path)
-  silent let l:names = systemlist('/bin/ls -Hafv -- '.shellescape(a:path))
-  if v:shell_error != 0
+  let l:glob = escape(a:path, ',\')
+  if fnamemodify(a:path, ':t') ==# ''
+    let l:prefix_to_strip = a:path
+  else
+    let l:prefix_to_strip = a:path.'/'
+  endif
+  let l:paths = globpath(l:glob, '*', v:true, v:true, v:true)
+  let l:paths += globpath(l:glob, '.*', v:true, v:true, v:true)
+  if empty(l:paths)
     throw 'Failed to list files in directory: '.a:path
   endif
-  if count(l:names, '.') != 1
-    throw 'Failed to list files in directory: '.a:path
-  endif
+  let l:names = []
+  for l:path in l:paths
+    if l:path[0:len(l:prefix_to_strip) - 1] !=# l:prefix_to_strip
+      " FIXME(strager): We should use a proper function to make the path
+      " relative instead of string juggling.
+      throw 'Unexpected result from glob('.string(l:glob).'): '.string(l:path)
+    endif
+    call add(l:names, l:path[len(l:prefix_to_strip):])
+  endfor
   return l:names
 endfunction
 

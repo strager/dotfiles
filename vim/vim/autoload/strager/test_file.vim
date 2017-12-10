@@ -230,4 +230,65 @@ function! Test_find_file_upward_with_glob()
   \ }], l:Find(l:root_path.'/src/test', 'Makefile'))
 endfunction
 
+function! Test_list_directory()
+  let l:List = {path -> sort(strager#file#list_directory(path))}
+
+  " Enumerate an empty directory.
+  let l:path = strager#file#make_directory_with_files([])
+  call assert_equal(['.', '..'], l:List(l:path))
+
+  " Enumerate a directory containing a regular file.
+  let l:path = strager#file#make_directory_with_files(['file'])
+  call assert_equal(['.', '..', 'file'], l:List(l:path))
+
+  " Enumerate a directory containing a directory.
+  let l:path = strager#file#make_directory_with_files(['dir/'])
+  call assert_equal(['.', '..', 'dir'], l:List(l:path))
+
+  " Enumerate a directory containing dotfiles.
+  let l:path = strager#file#make_directory_with_files(['.vimrc', '.vim/'])
+  call assert_equal(['.', '..', '.vim', '.vimrc'], l:List(l:path))
+
+  " Enumerate a directory named with special characters: comma, space, \.
+  let l:path = strager#file#make_directory_with_files(['stuff, things, and junk/closet.jpeg'])
+  call assert_equal(['.', '..', 'closet.jpeg'], l:List(l:path.'/stuff, things, and junk'))
+  let l:path = strager#file#make_directory_with_files(['trailing-slash\/file.txt'])
+  call assert_equal(['.', '..', 'file.txt'], l:List(l:path.'/trailing-slash\'))
+
+  " Enumerate a non-existing path.
+  let l:path = strager#file#make_directory_with_files([])
+  try
+    call l:List(l:path.'/dir-does-not-exist')
+    call assert_report(
+      \ 'Listing files of a non-existing path should have thrown an '.
+      \ 'exception, but didn''t',
+    \ )
+  catch
+    call assert_exception('Failed to list files in directory')
+  endtry
+
+  " Enumerate a regular file.
+  let l:path = strager#file#make_directory_with_files(['file.zip'])
+  try
+    call l:List(l:path.'/file.zip')
+    call assert_report(
+      \ 'Listing files of a regular file should have thrown an exception, but '.
+      \ 'didn''t',
+    \ )
+  catch
+    call assert_exception('Failed to list files in directory')
+  endtry
+
+  " Enumerate the filesystem root.
+  let l:names = strager#file#list_directory('/')
+  call assert_notequal(-1, index(l:names, '.'))
+  call assert_notequal(-1, index(l:names, '..'))
+  " Each file should exist.
+  for l:name in l:names
+    " TODO(strager): Escape wildcards.
+    let l:matches = glob('/'.l:name, v:true, v:true, v:true)
+    call assert_equal(['/'.l:name], l:matches)
+  endfor
+endfunction
+
 call strager#test#run_all_tests()
