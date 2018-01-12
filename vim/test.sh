@@ -4,6 +4,17 @@ set -e
 set -o pipefail
 set -u
 
+run_script_test() {
+    local test_script="${1:-}"
+    if [ "${test_script}" = '' ]; then
+        printf '%s: error: missing test script\n' "${0}" >&2
+        return 1
+    fi
+
+    log_and_run "${test_script}"
+    return 0
+}
+
 run_vim_test() {
     local need_vimrc=false
     local test_script=
@@ -79,6 +90,8 @@ log_and_run() {
     return 0
 }
 
+run_script_test vim/vim/autoload/strager/test_flow_jq.sh
+run_vim_test --need-vimrc vim/vim/autoload/strager/test_flow.vim
 run_vim_test --need-vimrc vim/vim/autoload/strager/test_tag.vim
 run_vim_test --need-vimrc vim/vim/test/test_c_make_ninja.vim
 run_vim_test --need-vimrc vim/vim/test/test_color_column.vim
@@ -88,4 +101,6 @@ run_vim_test vim/vim/autoload/strager/test_file.vim
 run_vim_test vim/vim/autoload/strager/test_function.vim
 run_vim_test vim/vim/autoload/strager/test_path.vim
 run_vim_test vim/vim/autoload/strager/test_project.vim
+run_vim_test vim/vim/autoload/strager/test_vim.vim
+run_vim_test vim/vim/test/test_js_make_flow.vim
 printf 'All tests passed!\n' >&2
