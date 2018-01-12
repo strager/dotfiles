@@ -1,0 +1,9 @@
+{
+  "name": "test_js_make_flow_helper",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "devDependencies": {
+    "flow-bin": "0.63.1"
+  }
+}
