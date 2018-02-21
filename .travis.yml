@@ -5,7 +5,7 @@ os:
   - osx
 
 install:
-  - nix-env -i -A nixpkgs.clang_5 nixpkgs.ninja nixpkgs.vim
+  - nix-env -i clang ninja vim
 
 before_script:
   - ./install.sh "${HOME}"
