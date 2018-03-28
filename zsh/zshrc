@@ -90,6 +90,12 @@ gr() {
 grc() {
     git rebase --continue "${@}"
 }
+gar() {
+    git add --all .
+}
+ga() {
+    git commit --amend --reuse-message=HEAD
+}
 
 # Input styling.
 ZSH_HIGHLIGHT_HIGHLIGHTERS=(main)
