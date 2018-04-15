@@ -6,6 +6,7 @@ os:
 
 install:
   - nix-env -i clang ninja vim
+  - nix-env -i jq
 
 before_script:
   - ./install.sh "${HOME}"
