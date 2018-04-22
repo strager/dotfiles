@@ -96,9 +96,13 @@ run_vim_test --need-vimrc vim/vim/autoload/strager/test_tag.vim
 run_vim_test --need-vimrc vim/vim/test/test_c_make_ninja.vim
 run_vim_test --need-vimrc vim/vim/test/test_color_column.vim
 run_vim_test --need-vimrc vim/vim/test/test_format.vim
+run_vim_test vim/vim/autoload/strager/test_buffer.vim
 run_vim_test vim/vim/autoload/strager/test_exception.vim
 run_vim_test vim/vim/autoload/strager/test_file.vim
 run_vim_test vim/vim/autoload/strager/test_function.vim
+run_vim_test vim/vim/autoload/strager/test_list.vim
+run_vim_test vim/vim/autoload/strager/test_messages.vim
+run_vim_test vim/vim/autoload/strager/test_move_file.vim
 run_vim_test vim/vim/autoload/strager/test_path.vim
 run_vim_test vim/vim/autoload/strager/test_project.vim
 run_vim_test vim/vim/autoload/strager/test_vim.vim

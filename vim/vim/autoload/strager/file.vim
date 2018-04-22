@@ -164,3 +164,55 @@ function! strager#file#find_file_upward_with_glob(path, glob)
   endfor
   return l:matches
 endfunction
+
+function strager#file#create_symbolic_link(target_path, symlink_path)
+  silent call system(printf(
+    \ 'ln -s -- %s %s',
+    \ shellescape(a:target_path),
+    \ shellescape(a:symlink_path),
+  \ ))
+  if v:shell_error != 0
+    throw 'Failed to create '.a:symlink_path
+  endif
+endfunction
+
+function strager#file#create_hard_link(old_path, new_path)
+  silent call system(printf(
+    \ 'ln -- %s %s',
+    \ shellescape(a:old_path),
+    \ shellescape(a:new_path),
+  \ ))
+  if v:shell_error != 0
+    throw 'Failed to create '.a:new_path
+  endif
+endfunction
+
+function strager#file#are_files_same_by_path(file_a_path, file_b_path)
+  let l:file_a_type = getftype(a:file_a_path)
+  if l:file_a_type ==# ''
+    return v:false
+  endif
+  let l:file_b_type = getftype(a:file_b_path)
+  if l:file_b_type ==# ''
+    return v:false
+  endif
+
+  let l:file_a_full_path = s:absolute_path_with_parent_resolved(a:file_a_path)
+  let l:file_b_full_path = s:absolute_path_with_parent_resolved(a:file_b_path)
+  if l:file_a_full_path ==# l:file_b_full_path
+    return v:true
+  endif
+  return v:false
+endfunction
+
+function s:absolute_path_with_parent_resolved(path)
+  let l:absolute_path = strager#path#join([getcwd(), a:path])
+  let l:parent_absolute_path = fnamemodify(a:path, ':p')
+  let l:parent_resolved_absolute_path = resolve(l:parent_absolute_path)
+  let l:name = fnamemodify(a:path, ':t')
+  if l:name ==# ''
+    " HACK(strager): Drop trailing slashes.
+    let l:name = fnamemodify(a:path, ':h:t')
+  endif
+  return strager#path#join([l:parent_resolved_absolute_path, l:name])
+endfunction

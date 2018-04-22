@@ -6,6 +6,8 @@ set nocompatible
 " so we can play with them ourselves.
 let g:vimball_home=$HOME."/.vim/bundle/out"
 
+call strager#move_file#register_command({'force': v:false})
+
 " Log Vim commands
 if has('cmdlog')
     set cmdlogdir=~/.vimlogs/
