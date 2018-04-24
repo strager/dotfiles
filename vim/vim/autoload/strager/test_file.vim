@@ -1,3 +1,16 @@
+function Test_test_dir_files_are_empty()
+  let l:dir = strager#file#make_directory_with_files(['file.txt'])
+  let l:file_lines = readfile(strager#path#join([l:dir, 'file.txt']), 'b')
+  call assert_equal([''], l:file_lines)
+endfunction
+
+function Test_test_dir_files_are_not_opened()
+  let l:all_buffers_before = getbufinfo()
+  let l:dir = strager#file#make_directory_with_files(['file.txt', 'dir/'])
+  let l:all_buffers_after = getbufinfo()
+  call assert_equal(l:all_buffers_before, l:all_buffers_after)
+endfunction
+
 function! Test_file_exists_case_sensitive()
   let l:Exists = {path -> strager#file#file_exists_case_sensitive(path)}
 
