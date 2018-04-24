@@ -20,12 +20,7 @@ function! strager#file#make_directory_with_files(paths)
     call mkdir(l:path, 'p')
   endfor
   for path in l:file_paths
-    new
-    try
-      exec 'write '.fnameescape(l:path)
-    finally
-      close!
-    endtry
+    call writefile([], l:path, 'b')
   endfor
   return l:root_path
 endfunction
