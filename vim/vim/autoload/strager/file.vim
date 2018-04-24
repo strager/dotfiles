@@ -1,9 +1,10 @@
-function! strager#file#make_directory_with_files(paths)
+function! strager#file#make_directory_with_files(entries)
   let l:temp_path = tempname()
   let l:root_path = l:temp_path.'/__test_directory__'
   let l:directory_paths = [l:temp_path, l:root_path]
-  let l:file_paths = []
-  for l:path in a:paths
+  let l:files = {}
+  for l:entry in a:entries
+    let [l:path, l:file_content] = s:decode_file_entry(l:entry)
     if fnamemodify(l:path, ':t') ==# ''
       " l:path has no file name component.
       call add(l:directory_paths, l:root_path.'/'.l:path)
@@ -12,17 +13,34 @@ function! strager#file#make_directory_with_files(paths)
       if l:path_dirs !=# '.'
         call add(l:directory_paths, l:root_path.'/'.l:path_dirs)
       endif
-      call add(l:file_paths, l:root_path.'/'.l:path)
+      let l:files[l:root_path.'/'.l:path] = l:file_content
     endif
   endfor
   call uniq(l:directory_paths)
   for path in l:directory_paths
     call mkdir(l:path, 'p')
   endfor
-  for path in l:file_paths
-    call writefile([], l:path, 'b')
+  for [l:path, l:content] in items(l:files)
+    call s:write_string_to_file(l:path, l:content)
   endfor
   return l:root_path
+endfunction
+
+function s:decode_file_entry(entry)
+  let l:entry_type = type(a:entry)
+  if l:entry_type ==# v:t_string
+    return [a:entry, '']
+  elseif l:entry_type ==# v:t_list
+    let [l:path, l:file_content] = a:entry
+    return [l:path, l:file_content]
+  else
+    throw 'Expected string or [string, string], but got: '.string(a:entry)
+  endif
+endfunction
+
+function s:write_string_to_file(path, content)
+  let l:lines = split(a:content, "\n", v:true)
+  call writefile(l:lines, a:path, 'b')
 endfunction
 
 function! strager#file#file_exists_case_sensitive(path)
