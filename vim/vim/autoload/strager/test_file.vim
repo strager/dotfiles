@@ -11,6 +11,23 @@ function Test_test_dir_files_are_not_opened()
   call assert_equal(l:all_buffers_before, l:all_buffers_after)
 endfunction
 
+function Test_test_dir_files_have_content()
+  let l:dir = strager#file#make_directory_with_files([
+    \ ['file1.txt', "hello world\n"],
+    \ ['file2.txt', "  x\ny  \r\nz"],
+    \ 'file3.txt',
+  \ ])
+
+  let l:file1_lines = readfile(strager#path#join([l:dir, 'file1.txt']), 'b')
+  call assert_equal(['hello world', ''], l:file1_lines)
+
+  let l:file2_lines = readfile(strager#path#join([l:dir, 'file2.txt']), 'b')
+  call assert_equal(['  x', "y  \r", 'z'], l:file2_lines)
+
+  let l:file3_lines = readfile(strager#path#join([l:dir, 'file3.txt']), 'b')
+  call assert_equal([''], l:file3_lines)
+endfunction
+
 function! Test_file_exists_case_sensitive()
   let l:Exists = {path -> strager#file#file_exists_case_sensitive(path)}
 
