@@ -168,6 +168,8 @@ set scrolloff=5
 set shortmess=a     " Abbreviate status line
 set shortmess+=tToO " Other crap
 
+let loaded_matchparen = v:true
+
 call strager#color_column#set_up_sync_colorcolumn_with_textwidth()
 
 " filename [Help][-][RO]
