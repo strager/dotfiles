@@ -160,7 +160,7 @@ endfunction
 function Test_move_to_empty_string_fails()
   call s:set_up_test_project()
   edit old.txt
-  call s:assert_throws(
+  call strager#assert#assert_throws(
     \ {-> s:move_current_buffer_file('')}, 
     \ 'E484:',
     \ "Moving should fail with error: E484: Can't open file <empty>",
@@ -170,7 +170,7 @@ endfunction
 function Test_move_to_missing_directory_fails()
   call s:set_up_test_project()
   edit old.txt
-  call s:assert_throws(
+  call strager#assert#assert_throws(
     \ {-> s:move_current_buffer_file('newdir/old.txt')}, 
     \ 'E212:',
     \ "Moving should fail with error: E212: Can't open file for writing",
@@ -181,7 +181,7 @@ endfunction
 function Test_move_to_unwritable_directory_fails()
   call s:set_up_test_project()
   edit old.txt
-  call s:assert_throws(
+  call strager#assert#assert_throws(
     \ {-> s:move_current_buffer_file('readonlydir/new.txt')}, 
     \ 'E212:',
     \ "Moving should fail with error: E212: Can't open file for writing",
@@ -214,7 +214,7 @@ endfunction
 function Test_move_over_existing_fails()
   call s:set_up_test_project()
   edit old.txt
-  call s:assert_throws(
+  call strager#assert#assert_throws(
     \ {-> s:move_current_buffer_file('README.md')}, 
     \ 'E13:',
     \ 'Moving should fail with error: E13: File exists',
@@ -225,7 +225,7 @@ endfunction
 function Test_move_new_over_existing_fails()
   call s:set_up_test_project()
   edit doesnotexist.txt
-  call s:assert_throws(
+  call strager#assert#assert_throws(
     \ {-> s:move_current_buffer_file('README.md')}, 
     \ 'E13:',
     \ 'Moving should fail with error: E13: File exists',
@@ -267,7 +267,7 @@ function Test_move_missing_file_fails()
   edit old.txt
   call delete('old.txt')
 
-  call s:assert_throws(
+  call strager#assert#assert_throws(
     \ {-> s:move_current_buffer_file('new.txt')}, 
     \ 'E484:',
     \ "Moving should fail with error: E484: Can't open file",
@@ -280,7 +280,7 @@ function Test_move_over_symlink_to_self_fails()
   call s:set_up_test_project()
   edit old.txt
 
-  call s:assert_throws(
+  call strager#assert#assert_throws(
     \ {-> s:move_current_buffer_file('oldsymlink.txt')}, 
     \ 'E13:',
     \ 'Moving should fail with error: E13: File exists',
@@ -301,7 +301,7 @@ function Test_move_symlink_over_target_fails()
   call s:set_up_test_project()
   edit oldsymlink.txt
 
-  call s:assert_throws(
+  call strager#assert#assert_throws(
     \ {-> s:move_current_buffer_file('old.txt')}, 
     \ 'E13:',
     \ 'Moving should fail with error: E13: File exists',
@@ -347,7 +347,7 @@ function Test_move_to_opened_new_file_fails()
   edit new.txt
   split old.txt
 
-  call s:assert_throws(
+  call strager#assert#assert_throws(
     \ {-> s:move_current_buffer_file('new.txt')}, 
     \ 'E139:',
     \ 'Moving should fail with error: E139: File is loaded in another buffer',
@@ -362,7 +362,7 @@ function Test_move_to_opened_file_fails()
   write
   split old.txt
 
-  call s:assert_throws(
+  call strager#assert#assert_throws(
     \ {-> s:move_current_buffer_file('new.txt')}, 
     \ 'E139:',
     \ 'Moving should fail with error: E139: File is loaded in another buffer',
@@ -377,7 +377,7 @@ function Test_move_to_opened_symlink_fails()
   write
   split README.md
 
-  call s:assert_throws(
+  call strager#assert#assert_throws(
     \ {-> s:move_current_buffer_file('oldsymlink.txt')}, 
     \ 'E139:',
     \ 'Moving should fail with error: E139: File is loaded in another buffer',
@@ -393,7 +393,7 @@ function Test_move_to_symlink_of_opened_file_fails()
   write
   split README.md
 
-  call s:assert_throws(
+  call strager#assert#assert_throws(
     \ {-> s:move_current_buffer_file('oldsymlink.txt')}, 
     \ 'E139:',
     \ 'Moving should fail with error: E139: File is loaded in another buffer',
@@ -409,7 +409,7 @@ function Test_move_to_opened_symlink_target_fails()
   write
   split README.md
 
-  call s:assert_throws(
+  call strager#assert#assert_throws(
     \ {-> s:move_current_buffer_file('old.txt')}, 
     \ 'E139:',
     \ 'Moving should fail with error: E139: File is loaded in another buffer',
@@ -425,7 +425,7 @@ function Test_move_to_opened_file_with_percent_name_fails()
   write
   split old.txt
 
-  call s:assert_throws(
+  call strager#assert#assert_throws(
     \ {-> s:move_current_buffer_file('%')}, 
     \ 'E139:',
     \ 'Moving should fail with error: E139: File is loaded in another buffer',
@@ -440,7 +440,7 @@ function Test_move_to_file_with_same_name_as_nofile_buffer_file()
   setlocal buftype=nofile
   split old.txt
 
-  call s:assert_throws(
+  call strager#assert#assert_throws(
     \ {-> s:move_current_buffer_file('new.txt')}, 
     \ 'E139:',
     \ 'Moving should fail with error: E139: File is loaded in another buffer',
@@ -533,7 +533,7 @@ function Test_move_directory_fails()
   call s:set_up_test_project()
   edit emptydir
 
-  call s:assert_throws(
+  call strager#assert#assert_throws(
     \ {-> s:move_current_buffer_file('newdir')}, 
     \ 'E502:',
     \ 'Moving should fail with error: E502: Current buffer is a directory',
@@ -546,7 +546,7 @@ function Test_move_to_directory_fails()
   call s:set_up_test_project()
   edit old.txt
 
-  call s:assert_throws(
+  call strager#assert#assert_throws(
     \ {-> s:move_current_buffer_file('emptydir')}, 
     \ 'E17:',
     \ 'Moving should fail with error: E17: File is a directory',
@@ -559,7 +559,7 @@ function Test_move_in_unnamed_buffer_fails()
   call s:set_up_test_project()
   new
 
-  call s:assert_throws(
+  call strager#assert#assert_throws(
     \ {-> s:move_current_buffer_file('new.txt')}, 
     \ 'E32:',
     \ 'Moving should fail with error: E32: No file name',
@@ -571,7 +571,7 @@ function Test_move_in_quickfix_buffer_fails()
   edit old.txt
   copen
 
-  call s:assert_throws(
+  call strager#assert#assert_throws(
     \ {-> s:move_current_buffer_file('new.txt')}, 
     \ 'E32:',
     \ 'Moving should fail with error: E32: No file name',
@@ -583,7 +583,7 @@ function Test_move_in_terminal_buffer_fails()
   edit old.txt
   terminal
 
-  call s:assert_throws(
+  call strager#assert#assert_throws(
     \ {-> s:move_current_buffer_file('new.txt')}, 
     \ 'E32:',
     \ 'Moving should fail with error: E32: No file name',
@@ -757,15 +757,6 @@ function s:assert_file_does_not_exist(path)
     \ strager#file#file_exists_case_sensitive(a:path),
     \ printf('File should not exist at %s', a:path),
   \ )
-endfunction
-
-function s:assert_throws(function, error, msg)
-  try
-    call a:function()
-    call assert_report(a:msg)
-  catch
-    call assert_exception(a:error, a:msg)
-  endtry
 endfunction
 
 function s:absolute_path(relative_path)
