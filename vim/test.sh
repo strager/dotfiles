@@ -100,6 +100,7 @@ run_vim_syntax_test vim/vim/syntax/test_javascript/boolean.js
 run_vim_syntax_test vim/vim/syntax/test_javascript/function.js
 run_vim_syntax_test vim/vim/syntax/test_javascript/number.js
 run_vim_syntax_test vim/vim/syntax/test_javascript/strings.js
+run_vim_syntax_test vim/vim/syntax/test_javascript/template.js
 run_vim_syntax_test vim/vim/syntax/test_javascript/var.js
 run_vim_test --need-vimrc vim/vim/autoload/strager/test_tag.vim
 run_vim_test --need-vimrc vim/vim/test/test_c_make_ninja.vim
