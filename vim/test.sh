@@ -4,6 +4,22 @@ set -e
 set -o pipefail
 set -u
 
+run_vim_syntax_test() {
+    local test_script="${1:-}"
+    if [ "${test_script}" = '' ]; then
+        printf '%s: error: missing test script\n' "${0}" >&2
+        return 1
+    fi
+
+    local log_file_path="$(mktemp /tmp/vim-test-sh.XXXXXX)"
+    local script_args=(
+        -c 'call strager#check_syntax#check_syntax_and_exit()'
+        "${test_script}"
+    )
+    run_vim_with_log_file "${log_file_path}" "${script_args[@]}"
+    return 0
+}
+
 run_vim_test() {
     local need_vimrc=false
     local test_script=
@@ -79,11 +95,15 @@ log_and_run() {
     return 0
 }
 
+run_vim_syntax_test vim/vim/syntax/test_javascript/boolean.js
+run_vim_syntax_test vim/vim/syntax/test_javascript/function.js
 run_vim_test --need-vimrc vim/vim/autoload/strager/test_tag.vim
 run_vim_test --need-vimrc vim/vim/test/test_c_make_ninja.vim
 run_vim_test --need-vimrc vim/vim/test/test_color_column.vim
 run_vim_test --need-vimrc vim/vim/test/test_format.vim
 run_vim_test vim/vim/autoload/strager/test_buffer.vim
+run_vim_test vim/vim/autoload/strager/test_check_syntax.vim
+run_vim_test vim/vim/autoload/strager/test_check_syntax_internal.vim
 run_vim_test vim/vim/autoload/strager/test_exception.vim
 run_vim_test vim/vim/autoload/strager/test_file.vim
 run_vim_test vim/vim/autoload/strager/test_function.vim
