@@ -17,6 +17,8 @@ syntax match javaScriptTemplateEscape /\\[^ux1-9]\|\\\n/
 syntax region javaScriptTemplateSubstitution matchgroup=javaScriptTemplateSubstitutionDelimiter start=/${/ end=/}/ contains=TOP contained
 syntax region javaScriptTemplate start=/`/ end=/`/ contains=javaScriptTemplateSubstitution,javaScriptTemplateEscape,javaScriptTemplateError
 
+syntax keyword javaScriptRepeat of
+
 syntax keyword javaScriptVar const let var
 
 highlight default link javaScriptImport Include
