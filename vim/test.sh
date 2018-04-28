@@ -13,6 +13,7 @@ run_vim_syntax_test() {
 
     local log_file_path="$(mktemp /tmp/vim-test-sh.XXXXXX)"
     local script_args=(
+        -R
         -c 'call strager#check_syntax#check_syntax_and_exit()'
         "${test_script}"
     )
