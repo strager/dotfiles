@@ -98,6 +98,7 @@ log_and_run() {
 
 run_vim_syntax_test vim/vim/syntax/test_javascript/boolean.js
 run_vim_syntax_test vim/vim/syntax/test_javascript/function.js
+run_vim_syntax_test vim/vim/syntax/test_javascript/module.js
 run_vim_syntax_test vim/vim/syntax/test_javascript/number.js
 run_vim_syntax_test vim/vim/syntax/test_javascript/string.js
 run_vim_syntax_test vim/vim/syntax/test_javascript/template.js
