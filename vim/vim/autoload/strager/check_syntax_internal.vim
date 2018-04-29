@@ -57,13 +57,18 @@ function s:parse_check_alias_syntax_item_name(syntax_item_name)
 endfunction
 
 function strager#check_syntax_internal#get_quickfix_item_for_issue(issue)
-  return {
-    \ 'col': a:issue.column,
-    \ 'lnum': a:issue.line,
+  let l:item = {
     \ 'text': a:issue.text,
     \ 'type': 'E',
     \ 'vcol': v:false,
   \ }
+  if has_key(a:issue, 'line')
+    let l:item.lnum = a:issue.line
+  endif
+  if has_key(a:issue, 'column')
+    let l:item.col = a:issue.column
+  endif
+  return l:item
 endfunction
 
 function strager#check_syntax_internal#syntax_item_from_current_window(line, column)

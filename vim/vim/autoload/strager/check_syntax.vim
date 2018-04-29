@@ -30,6 +30,9 @@ function s:get_syntax_issues_for_current_window()
   let l:checks = strager#check_syntax_internal#parse_syntax_checks(
     \ l:buffer_lines,
   \ )
+  if l:checks ==# []
+    call add(l:issues, {'text': 'Missing checks'})
+  endif
   let l:aliases = strager#check_syntax_internal#parse_syntax_aliases(
     \ l:buffer_lines,
     \ l:issues,

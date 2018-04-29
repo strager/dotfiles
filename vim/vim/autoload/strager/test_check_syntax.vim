@@ -1,3 +1,19 @@
+function Test_check_vim_syntax_with_no_checks_fails()
+  call s:set_up_vim_window_with_no_syntax_checks()
+  let l:buffer_number = bufnr('%')
+
+  call strager#check_syntax#check_syntax()
+  let l:quickfix_info = getqflist({'all': v:true})
+  let l:items = l:quickfix_info.items
+  call assert_equal(1, len(l:items))
+  call assert_equal('Missing checks', l:items[0].text)
+  call assert_equal(l:buffer_number, l:items[0].bufnr)
+endfunction
+
+function s:set_up_vim_window_with_no_syntax_checks()
+  new
+endfunction
+
 function Test_check_vim_syntax_with_no_errors_creates_empty_quickfix_list()
   call s:set_up_vim_window_with_no_syntax_check_errors()
   let l:quickfix_info_before = getqflist({'all': v:true})
@@ -56,6 +72,8 @@ function s:set_up_window_with_check_alias_issues()
   set paste
   silent! normal iCHECK-ALIAS:
   silent! normal o-- CHECK-ALIAS: asdfasdf
+  silent! normal o:CHECK-NEXT-LINE
+  silent! normal o
 endfunction
 
 function Test_check_vim_syntax_with_errors_creates_quickfix_list()

@@ -137,6 +137,17 @@ function Test_syntax_checks_of_one_suffix_line_with_characters()
   \ ], l:checks)
 endfunction
 
+function Test_buffer_issue_quickfix_item_location()
+  let l:item = s:get_quickfix_item_for_issue(
+    \ {'text': 'Missing checks'},
+  \ )
+  call assert_false(has_key(l:item, 'lnum'))
+  call assert_false(has_key(l:item, 'col'))
+  call assert_false(has_key(l:item, 'bufnr'))
+  call assert_false(has_key(l:item, 'filename'))
+  call assert_false(has_key(l:item, 'pattern'))
+endfunction
+
 function Test_syntax_issue_quickfix_item_location()
   let l:item = s:get_quickfix_item_for_issue(
     \ s:syntax_issue(5, 3, ''),
