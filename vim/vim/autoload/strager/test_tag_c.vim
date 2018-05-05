@@ -116,7 +116,7 @@ function! Test_go_no_definition_scenario_working_lsp_working_ctags()
 endfunction
 
 let s:script_path = expand('<sfile>:p')
-let s:c_helper_path = fnamemodify(s:script_path, ':h').'/test_tag_helper.c'
+let s:c_helper_path = fnamemodify(s:script_path, ':h').'/test_tag_c_helper.c'
 
 let s:old_cursor_position = v:none
 
@@ -192,7 +192,7 @@ function! s:set_up_missing_ctags()
 endfunction
 
 function! s:set_up_working_ctags()
-  let l:tags_path = fnamemodify(s:script_path, ':h').'/test_tag_helper.c.tags'
+  let l:tags_path = fnamemodify(s:script_path, ':h').'/test_tag_c_helper.c.tags'
   exec 'silent !ctags -f '.shellescape(l:tags_path)
     \ .' '.shellescape(s:c_helper_path)
   let &tags = fnameescape(l:tags_path)
