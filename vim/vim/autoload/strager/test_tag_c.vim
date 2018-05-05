@@ -9,17 +9,11 @@ function! Test_go_function_scenario_serverless_lsp_missing_ctags()
   call s:set_up_function_scenario()
   call s:set_up_serverless_lsp()
   call s:set_up_missing_ctags()
-  try
-    call strager#tag#go()
-    call assert_report('strager#tag#go() should have thrown an exception')
-  catch
-    call assert_exception('E433:')
-    call assert_match(
-      \ 'LSP server ".*\<clangd\>.*" is not initialized',
-      \ v:exception,
-    \ )
-    call assert_notmatch('No LSP servers found for filetype "c"', v:exception)
-  endtry
+  call s:go()
+  call s:assert_errors([
+    \ 'E433:',
+    \ 'LSP server ".*\<clangd\>.*" is not initialized',
+  \ ])
   call s:assert_cursor_should_not_have_jumped()
 endfunction
 
@@ -27,7 +21,8 @@ function! Test_go_function_scenario_working_lsp_missing_ctags()
   call s:set_up_function_scenario()
   call s:set_up_working_lsp()
   call s:set_up_missing_ctags()
-  call strager#tag#go()
+  call s:go()
+  call s:assert_no_errors()
   call s:assert_function_scenario_cursor_should_have_jumped()
 endfunction
 
@@ -35,7 +30,8 @@ function! Test_go_function_scenario_serverless_lsp_working_ctags()
   call s:set_up_function_scenario()
   call s:set_up_serverless_lsp()
   call s:set_up_working_ctags()
-  call strager#tag#go()
+  call s:go()
+  call s:assert_no_errors()
   call s:assert_function_scenario_cursor_should_have_jumped()
 endfunction
 
@@ -43,7 +39,8 @@ function! Test_go_function_scenario_working_lsp_working_ctags()
   call s:set_up_function_scenario()
   call s:set_up_working_lsp()
   call s:set_up_working_ctags()
-  call strager#tag#go()
+  call s:go()
+  call s:assert_no_errors()
   call s:assert_function_scenario_cursor_should_have_jumped()
 endfunction
 
@@ -51,16 +48,11 @@ function! Test_go_no_definition_scenario_serverless_lsp_missing_ctags()
   call s:set_up_no_definition_scenario()
   call s:set_up_serverless_lsp()
   call s:set_up_missing_ctags()
-  try
-    call strager#tag#go()
-    call assert_report('strager#tag#go() should have thrown an exception')
-  catch
-    call assert_exception('E433:')
-    call assert_match(
-      \ 'LSP server ".*\<clangd\>.*" is not initialized',
-      \ v:exception,
-    \ )
-  endtry
+  call s:go()
+  call s:assert_errors([
+    \ 'E433:',
+    \ 'LSP server ".*\<clangd\>.*" is not initialized',
+  \ ])
   call s:assert_cursor_should_not_have_jumped()
 endfunction
 
@@ -68,16 +60,11 @@ function! Test_go_no_definition_scenario_working_lsp_missing_ctags()
   call s:set_up_no_definition_scenario()
   call s:set_up_working_lsp()
   call s:set_up_missing_ctags()
-  try
-    call strager#tag#go()
-    call assert_report('strager#tag#go() should have thrown an exception')
-  catch
-    call assert_exception('E433:')
-    call assert_match(
-      \ 'LSP server ".*\<clangd\>.*" found no definitions',
-      \ v:exception,
-    \ )
-  endtry
+  call s:go()
+  call s:assert_errors([
+    \ 'E433:',
+    \ 'LSP server ".*\<clangd\>.*" found no definitions',
+  \ ])
   call s:assert_cursor_should_not_have_jumped()
 endfunction
 
@@ -85,16 +72,11 @@ function! Test_go_no_definition_scenario_serverless_lsp_working_ctags()
   call s:set_up_no_definition_scenario()
   call s:set_up_serverless_lsp()
   call s:set_up_working_ctags()
-  try
-    call strager#tag#go()
-    call assert_report('strager#tag#go() should have thrown an exception')
-  catch
-    call assert_exception('E426:')
-    call assert_match(
-      \ 'LSP server ".*\<clangd\>.*" is not initialized',
-      \ v:exception,
-    \ )
-  endtry
+  call s:go()
+  call s:assert_errors([
+    \ 'E426:',
+    \ 'LSP server ".*\<clangd\>.*" is not initialized',
+  \ ])
   call s:assert_cursor_should_not_have_jumped()
 endfunction
 
@@ -102,16 +84,11 @@ function! Test_go_no_definition_scenario_working_lsp_working_ctags()
   call s:set_up_no_definition_scenario()
   call s:set_up_working_lsp()
   call s:set_up_working_ctags()
-  try
-    call strager#tag#go()
-    call assert_report('strager#tag#go() should have thrown an exception')
-  catch
-    call assert_exception('E426:')
-    call assert_match(
-      \ 'LSP server ".*\<clangd\>.*" found no definitions',
-      \ v:exception,
-    \ )
-  endtry
+  call s:go()
+  call s:assert_errors([
+    \ 'E426:',
+    \ 'LSP server ".*\<clangd\>.*" found no definitions',
+  \ ])
   call s:assert_cursor_should_not_have_jumped()
 endfunction
 
@@ -154,7 +131,7 @@ function! s:set_up_serverless_lsp()
   \ })}
   let l:server_names = lsp#get_server_names()
   if empty(l:server_names)
-    call l:Register('clangd')
+    call l:Register('strager#lsp# clangd '.getcwd())
   else
     for l:server_name in l:server_names
       call l:Register(l:server_name)
@@ -196,6 +173,23 @@ function! s:set_up_working_ctags()
   exec 'silent !ctags -f '.shellescape(l:tags_path)
     \ .' '.shellescape(s:c_helper_path)
   let &tags = fnameescape(l:tags_path)
+endfunction
+
+let s:go_errors = v:none
+
+function s:go()
+  let s:go_errors = v:none
+  let l:messages_before = strager#messages#get_messages()
+  call strager#tag#go()
+  let s:go_errors = strager#messages#get_new_messages(l:messages_before)
+endfunction
+
+function s:assert_errors(error_patterns)
+  call strager#assert#assert_matches_unordered(a:error_patterns, s:go_errors)
+endfunction
+
+function s:assert_no_errors()
+  call assert_equal([], s:go_errors)
 endfunction
 
 function! s:assert_cursor_should_not_have_jumped()

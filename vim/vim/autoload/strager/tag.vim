@@ -1,30 +1,21 @@
 function! strager#tag#go()
   let l:errors = []
-  let l:ok = strager#tag#go_impl(l:errors)
-  if !l:ok
-    call strager#tag#report_errors(l:errors)
+  if s:go_lsp(l:errors)
+    return
   endif
-endfunction
-
-function! strager#tag#go_impl(out_errors)
-  if s:go_lsp(a:out_errors)
-    return v:true
+  if s:go_ctags(l:errors)
+    return
   endif
-  if s:go_ctags(a:out_errors)
-    return v:true
-  endif
-  return v:false
+  call strager#tag#report_errors(l:errors)
 endfunction
 
 function! strager#tag#report_errors(errors)
   if empty(a:errors)
     echoerr 'Unknown error'
   endif
-  if len(a:errors) == 1
-    throw a:errors[0]
-  else
-    throw 'Multiple errors:\n'.join(a:errors, '\n')
-  endif
+  for l:error in a:errors
+    echomsg l:error
+  endfor
 endfunction
 
 let s:lsp_timeout_seconds = 5
@@ -119,7 +110,7 @@ endfunction
 function! s:push_tag(path, line_number, column_number)
   " TODO(strager): Figure out how to push onto the tag stack.
   " TODO(strager): How do we handle 'switchbuf?
-  exec 'edit '.fnameescape(a:path)
+  silent exec 'edit '.fnameescape(a:path)
   " TODO(strager): Should we check for errors?
   call cursor(a:line_number, a:column_number)
 endfunction
