@@ -1,18 +1,29 @@
 function! strager#tag#go()
   let l:errors = []
-  if s:go_lsp(l:errors)
-    return
+  let l:ok = strager#tag#go_impl(l:errors)
+  if !l:ok
+    call strager#tag#report_errors(l:errors)
   endif
-  if s:go_ctags(l:errors)
-    return
+endfunction
+
+function! strager#tag#go_impl(out_errors)
+  if s:go_lsp(a:out_errors)
+    return v:true
   endif
-  if empty(l:errors)
+  if s:go_ctags(a:out_errors)
+    return v:true
+  endif
+  return v:false
+endfunction
+
+function! strager#tag#report_errors(errors)
+  if empty(a:errors)
     echoerr 'Unknown error'
   endif
-  if len(l:errors) == 1
-    throw l:errors[0]
+  if len(a:errors) == 1
+    throw a:errors[0]
   else
-    throw 'Multiple errors:\n'.join(l:errors, '\n')
+    throw 'Multiple errors:\n'.join(a:errors, '\n')
   endif
 endfunction
 
