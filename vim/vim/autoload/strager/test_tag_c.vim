@@ -1,7 +1,8 @@
 " Test name structure: prefix.'_'.scenario.'_'.lspstyle.'_'.ctagsstyle
 "
 " prefix = "Test_go"
-" scenario = "function_scenario" or "no_definition_scenario"
+" scenario = "function_scenario" or "no_definition_scenario" or
+"            "no_identifier_scenario"
 " lspstyle = "serverless_lsp" or "working_lsp"
 " ctagsstyle = "missing_ctags" or "working_ctags"
 
@@ -92,6 +93,30 @@ function! Test_go_no_definition_scenario_working_lsp_working_ctags()
   call s:assert_cursor_should_not_have_jumped()
 endfunction
 
+function! Test_go_no_identifier_scenario_working_lsp_missing_ctags()
+  call s:set_up_no_identifier_scenario()
+  call s:set_up_working_lsp()
+  call s:set_up_missing_ctags()
+  call s:go()
+  call s:assert_errors([
+    \ 'E349:',
+    \ 'LSP server ".*\<clangd\>.*" found no definitions',
+  \ ])
+  call s:assert_cursor_should_not_have_jumped()
+endfunction
+
+function! Test_go_no_identifier_scenario_serverless_lsp_working_ctags()
+  call s:set_up_no_identifier_scenario()
+  call s:set_up_serverless_lsp()
+  call s:set_up_working_ctags()
+  call s:go()
+  call s:assert_errors([
+    \ 'E349:',
+    \ 'LSP server ".*\<clangd\>.*" is not initialized',
+  \ ])
+  call s:assert_cursor_should_not_have_jumped()
+endfunction
+
 let s:script_path = expand('<sfile>:p')
 let s:c_helper_path = fnamemodify(s:script_path, ':h').'/test_tag_c_helper.c'
 
@@ -108,6 +133,13 @@ function! s:set_up_no_definition_scenario()
   call s:set_up_helper_source()
   " Move the cursor to the 'r' in 'return'.
   call cursor(8, 3)
+  let s:old_cursor_position = getcurpos()
+endfunction
+
+function! s:set_up_no_identifier_scenario()
+  call s:set_up_helper_source()
+  " Move the cursor to the '{'.
+  call cursor(7, 12)
   let s:old_cursor_position = getcurpos()
 endfunction
 

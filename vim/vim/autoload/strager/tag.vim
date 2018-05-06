@@ -101,7 +101,7 @@ function! s:go_ctags(errors)
   try
     exec 'normal! '."\<C-]>"
     return v:true
-  catch /^Vim(tag):\(E426\|E433\):/
+  catch /^Vim(tag):\(E426\|E433\):\|^Vim(normal):E349:/
     call add(a:errors, v:exception)
     return v:false
   endtry
