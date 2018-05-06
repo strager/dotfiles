@@ -15,3 +15,10 @@ function strager#assert#assert_throws(function, error, ...)
     endif
   endtry
 endfunction
+
+function strager#assert#take_assertion_failure_messages()
+  let l:errors = v:errors
+  let l:error_messages = map(copy(l:errors), {_, error -> matchlist(error, '^[^:]*: \(.*\)$')[1]})
+  let v:errors = []
+  return l:error_messages
+endfunction
