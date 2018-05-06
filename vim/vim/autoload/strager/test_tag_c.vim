@@ -62,10 +62,7 @@ function! Test_go_no_definition_scenario_working_lsp_missing_ctags()
   call s:set_up_working_lsp()
   call s:set_up_missing_ctags()
   call s:go()
-  call s:assert_errors([
-    \ 'E433:',
-    \ 'LSP server ".*\<clangd\>.*" found no definitions',
-  \ ])
+  call s:assert_errors(['LSP server ".*\<clangd\>.*" found no definitions'])
   call s:assert_cursor_should_not_have_jumped()
 endfunction
 
@@ -74,10 +71,7 @@ function! Test_go_no_definition_scenario_serverless_lsp_working_ctags()
   call s:set_up_serverless_lsp()
   call s:set_up_working_ctags()
   call s:go()
-  call s:assert_errors([
-    \ 'E426:',
-    \ 'LSP server ".*\<clangd\>.*" is not initialized',
-  \ ])
+  call s:assert_errors(['E426:'])
   call s:assert_cursor_should_not_have_jumped()
 endfunction
 
@@ -110,10 +104,7 @@ function! Test_go_no_identifier_scenario_serverless_lsp_working_ctags()
   call s:set_up_serverless_lsp()
   call s:set_up_working_ctags()
   call s:go()
-  call s:assert_errors([
-    \ 'E349:',
-    \ 'LSP server ".*\<clangd\>.*" is not initialized',
-  \ ])
+  call s:assert_errors(['E349:'])
   call s:assert_cursor_should_not_have_jumped()
 endfunction
 

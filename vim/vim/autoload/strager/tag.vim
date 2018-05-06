@@ -1,12 +1,18 @@
 function! strager#tag#go()
-  let l:errors = []
-  if s:go_lsp(l:errors)
+  let l:provider_errors = []
+  let l:user_errors = []
+  let l:error_reporter = s:make_error_reporter(l:provider_errors, l:user_errors)
+  if s:go_lsp(l:error_reporter)
     return
   endif
-  if s:go_ctags(l:errors)
+  if s:go_ctags(l:error_reporter)
     return
   endif
-  call strager#tag#report_errors(l:errors)
+  if len(l:user_errors) > 0
+    call strager#tag#report_errors(l:user_errors)
+  else
+    call strager#tag#report_errors(l:provider_errors)
+  endif
 endfunction
 
 function! strager#tag#report_errors(errors)
@@ -18,14 +24,36 @@ function! strager#tag#report_errors(errors)
   endfor
 endfunction
 
+function s:make_error_reporter(out_provider_errors, out_user_errors)
+  let l:reporter = {
+    \ 'provider_errors': a:out_provider_errors,
+    \ 'user_errors': a:out_user_errors,
+  \ }
+  function l:reporter.provider_not_available(error)
+    call add(self.provider_errors, a:error)
+  endfunction
+  function l:reporter.provider_error(error)
+    call add(self.provider_errors, a:error)
+  endfunction
+  function l:reporter.no_target(error)
+    call add(self.user_errors, a:error)
+  endfunction
+  function l:reporter.other_error(error)
+    call add(self.provider_errors, a:error)
+  endfunction
+  return l:reporter
+endfunction
+
 let s:lsp_timeout_seconds = 5
 
-function! s:go_lsp(errors)
+function! s:go_lsp(error_reporter)
   let l:start_reltime = reltime()
 
   let l:whitelisted_servers = lsp#get_whitelisted_servers()
   if empty(l:whitelisted_servers)
-    call add(a:errors, 'No LSP servers found for filetype "'.&filetype.'"')
+    call a:error_reporter.provider_not_available(
+      \ 'No LSP servers found for filetype "'.&filetype.'"',
+    \ )
     return v:false
   endif
   let l:servers = []
@@ -33,12 +61,13 @@ function! s:go_lsp(errors)
     if lsp#capabilities#has_definition_provider(l:server)
       call add(l:servers, l:server)
     elseif empty(lsp#get_server_capabilities(l:server))
-      call add(a:errors, 'LSP server "'.l:server.'" is not initialized')
+      call a:error_reporter.provider_not_available(
+        \ 'LSP server "'.l:server.'" is not initialized',
+      \ )
     else
-      call add(
-        \ a:errors,
+      call a:error_reporter.provider_not_available(
         \ 'LSP server "'.l:server.'" does not have a definition provider',
-      )
+      \ )
     endif
   endfor
   if empty(l:servers)
@@ -46,7 +75,9 @@ function! s:go_lsp(errors)
   endif
   if len(l:servers) > 1
     " TODO(strager): Support multiple servers.
-    call add(a:errors, 'Too many LSP servers: "'.join(l:servers, '", "').'"')
+    call a:error_reporter.other_error(
+      \ 'Too many LSP servers: "'.join(l:servers, '", "').'"',
+    \ )
     return v:false
   endif
   let l:server = l:servers[0]
@@ -71,7 +102,9 @@ function! s:go_lsp(errors)
     if l:got_notification
       if lsp#client#is_error(l:notification_data)
         " TODO(strager): Handle errors.
-        call add(a:errors, 'LSP server "'.l:server.'" reported an error')
+        call a:error_reporter.provider_error(
+          \ 'LSP server "'.l:server.'" reported an error',
+        \ )
         break
       endif
 
@@ -80,7 +113,9 @@ function! s:go_lsp(errors)
         " TODO(strager): Support more than one location.
       endif
       if len(l:locs) == 0
-        call add(a:errors, 'LSP server "'.l:server.'" found no definitions')
+        call a:error_reporter.no_target(
+          \ 'LSP server "'.l:server.'" found no definitions',
+        \ )
         return v:false
       endif
       let l:loc = l:locs[0]
@@ -90,19 +125,21 @@ function! s:go_lsp(errors)
     sleep 1m
   endwhile
   " The timeout expired.
-  call add(
-    \ a:errors,
+  call a:error_reporter.provider_error(
     \ 'Timed out waiting for response from LSP server "'.l:server.'"',
   \ )
   return v:false
 endfunction
 
-function! s:go_ctags(errors)
+function! s:go_ctags(error_reporter)
   try
     exec 'normal! '."\<C-]>"
     return v:true
-  catch /^Vim(tag):\(E426\|E433\):\|^Vim(normal):E349:/
-    call add(a:errors, v:exception)
+  catch /^Vim(tag):E433:/
+    call a:error_reporter.provider_not_available(v:exception)
+    return v:false
+  catch /^Vim(tag):E426:\|^Vim(normal):E349:/
+    call a:error_reporter.no_target(v:exception)
     return v:false
   endtry
 endfunction
