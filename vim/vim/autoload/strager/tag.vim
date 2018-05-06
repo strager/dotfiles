@@ -5,6 +5,9 @@ function! strager#tag#go()
   if s:go_lsp(l:error_reporter)
     return
   endif
+  if s:go_flow(l:error_reporter)
+    return
+  endif
   if s:go_ctags(l:error_reporter)
     return
   endif
@@ -107,6 +110,36 @@ function! s:go_lsp(error_reporter)
     \ 'Timed out waiting for response from LSP server "'.l:server.'"',
   \ )
   return v:false
+endfunction
+
+function s:go_flow(error_reporter)
+  let l:flow_bin_path = strager#path#join(['node_modules', '.bin', 'flow'])
+  if !strager#file#file_exists_case_sensitive(l:flow_bin_path)
+    return v:false
+  endif
+  " @nocommit what if there's no open file?
+  " @nocommit what if the buffer has changes?
+  " @nocommit what if flow-bin fails?
+  let [l:_bufnum, l:lnum, l:col, l:_off, l:_curswant] = getcurpos()
+  let l:output = system(printf(
+    \ '%s get-def --quiet %s %d %d',
+    \ shellescape(l:flow_bin_path),
+    \ bufname('%'),
+    \ l:lnum,
+    \ l:col,
+  \ ))
+  let l:match = matchlist(l:output, '^\(.*\):\(\d\+\):\(\d\+\),\(\d\+\):\(\d\+\)'."\0$")
+  if l:match ==# []
+    " @nocommit
+    throw '@nocommit'
+  endif
+  let [l:_, l:path, l:line, l:column, l:_end_line, l:_end_column; l:_] = l:match
+  if l:path ==# ''
+    call a:error_reporter.no_target('Flow found no definitions')
+    return
+  endif
+  call s:push_tag(l:path, l:line, l:column)
+  return v:true
 endfunction
 
 function! s:go_ctags(error_reporter)
