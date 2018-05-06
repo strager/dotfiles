@@ -19,29 +19,7 @@ function! strager#tag#report_errors(errors)
   if empty(a:errors)
     echoerr 'Unknown error'
   endif
-  for l:error in a:errors
-    echomsg l:error
-  endfor
-endfunction
-
-function s:make_error_reporter(out_provider_errors, out_user_errors)
-  let l:reporter = {
-    \ 'provider_errors': a:out_provider_errors,
-    \ 'user_errors': a:out_user_errors,
-  \ }
-  function l:reporter.provider_not_available(error)
-    call add(self.provider_errors, a:error)
-  endfunction
-  function l:reporter.provider_error(error)
-    call add(self.provider_errors, a:error)
-  endfunction
-  function l:reporter.no_target(error)
-    call add(self.user_errors, a:error)
-  endfunction
-  function l:reporter.other_error(error)
-    call add(self.provider_errors, a:error)
-  endfunction
-  return l:reporter
+  echomsg join(a:errors, '; ')
 endfunction
 
 let s:lsp_timeout_seconds = 5
@@ -150,4 +128,24 @@ function! s:push_tag(path, line_number, column_number)
   silent exec 'edit '.fnameescape(a:path)
   " TODO(strager): Should we check for errors?
   call cursor(a:line_number, a:column_number)
+endfunction
+
+function s:make_error_reporter(out_provider_errors, out_user_errors)
+  let l:reporter = {
+    \ 'provider_errors': a:out_provider_errors,
+    \ 'user_errors': a:out_user_errors,
+  \ }
+  function l:reporter.provider_not_available(error)
+    call add(self.provider_errors, a:error)
+  endfunction
+  function l:reporter.provider_error(error)
+    call add(self.provider_errors, a:error)
+  endfunction
+  function l:reporter.no_target(error)
+    call add(self.user_errors, a:error)
+  endfunction
+  function l:reporter.other_error(error)
+    call add(self.provider_errors, a:error)
+  endfunction
+  return l:reporter
 endfunction

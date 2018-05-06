@@ -208,7 +208,18 @@ function s:go()
 endfunction
 
 function s:assert_errors(error_patterns)
-  call strager#assert#assert_matches_unordered(a:error_patterns, s:go_errors)
+  if len(a:error_patterns) < 2
+    let l:patterns = a:error_patterns
+  elseif len(a:error_patterns) ==# 2
+    " @nocommit rename
+    let l:format = '\(\(%s\).*\(%s\)\)'
+    let l:patterns = [printf(
+      \ '%s\|%s',
+      \ printf(l:format, a:error_patterns[0], a:error_patterns[1]),
+      \ printf(l:format, a:error_patterns[1], a:error_patterns[0]),
+    \ )]
+  endif
+  call strager#assert#assert_matches_unordered(l:patterns, s:go_errors)
 endfunction
 
 function s:assert_no_errors()
