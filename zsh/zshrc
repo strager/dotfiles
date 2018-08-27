@@ -63,6 +63,9 @@ PROMPT="${PROMPT}%(0?;; %F{red}%?%f)"
 # Terminator.
 PROMPT="${PROMPT}> "
 
+# iTerm 2 integration.
+source ~/.zsh/../vendor/iterm2-website/source/shell_integration/zsh
+
 # Make ls print colours by default.
 ls() {
     /bin/ls -G "${@}"
