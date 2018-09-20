@@ -23,4 +23,6 @@ highlight VertSplit cterm=bold ctermbg=0 ctermfg=2
 highlight StatusLine cterm=bold ctermbg=0 ctermfg=4
 highlight StatusLineNC cterm=bold ctermbg=0 ctermfg=2
 
+highlight SpellBad cterm=bold,undercurl ctermfg=1
+
 let colors_name = 'strager'
