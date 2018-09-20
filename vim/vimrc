@@ -242,5 +242,11 @@ set shell=/bin/bash
 " Paste toggle
 nmap <unique> <Leader>p :set paste!<CR>
 
+""" Linting
+let g:ale_echo_cursor = v:false
+let g:ale_lint_delay = 0
+let g:ale_linters_explicit = v:true
+let g:ale_set_signs = v:false
+
 " Must be last.  Forgot why.
 set exrc secure
