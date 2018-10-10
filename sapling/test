@@ -3,6 +3,7 @@
 
 import contextlib
 import os.path
+import pathlib
 import re
 import shutil
 import subprocess
@@ -16,11 +17,11 @@ class TestCaseCleanupMixin(object):
         self.addCleanup(lambda: exit(None, None, None))
         return value
 
-class TestSLStragerLog(unittest.TestCase, TestCaseCleanupMixin):
+class TestSLStragerLogBase(unittest.TestCase, TestCaseCleanupMixin):
     __counter = 0
 
     def setUp(self):
-        super(TestSLStragerLog, self).setUp()
+        super().setUp()
         self.repo_path = self.enter_context(empty_sl_repo())
 
     def test_log_of_empty_repo_is_empty(self):
@@ -135,19 +136,20 @@ Differential Revision: https://phabricator.intern.facebook.com/D123456
         for message, column in column_by_commit.items():
             self.assertEqual(column, expected_column, "{message}'s message should be at the same column as commit A\n{log}\n{column_by_commit!r}".format(message=message, log=log, column_by_commit=column_by_commit))
 
-    def strager_log(self):
-        stdout = self.check_output(['sl', 'l'])
-        stdout = stdout.decode('utf-8')
-        return stdout
-
     def assert_strager_log_regexp(self, regexp_string):
         regexp = re.compile(regexp_string, re.MULTILINE | re.VERBOSE)
         log = self.strager_log()
-        self.assertRegex(log, regexp)
+        self.assertRegex(log, regexp, "\n\n\n" + log)
 
     def add_public_commit(self):
         self.commit('public commit')
-        self.check_call(['sl', 'phase', '--public', '.'])
+        self.check_call(['sl', 'debugremotebookmark', 'fake_remote_branch', '.'])
+        sl_config_path = pathlib.Path(self.repo_path) / ".sl" / "config"
+        sl_config_path.write_text(
+                sl_config_path.read_text() + '\n\n'
+                + '[remotenames]\n'
+                + 'publicheads=debugremote/fake_remote_branch'
+                + '\n')
 
     def commit(self, message):
         self.add_new_file()
@@ -177,6 +179,42 @@ Differential Revision: https://phabricator.intern.facebook.com/D123456
     def check_output(self, command):
         return subprocess.check_output(command, cwd=self.repo_path)
 
+class TestSLStragerFullLog(TestSLStragerLogBase):
+    def strager_log(self):
+        stdout = self.check_output(['sl', 'll'])
+        stdout = stdout.decode('utf-8')
+        return stdout
+
+    def test_independent_forks_from_public_are_visible(self):
+        self.add_public_commit()
+        self.commit('commit A')
+        self.goto('.~1')
+        self.commit('commit B')
+
+        self.assert_strager_log_regexp(r'''
+            ^ @[ ] .* $\n
+            ^ │[ ]o[ ] .* $\n
+            ^ ├─╯ $\n
+            ^ o[ ] .* $\n
+        ''')
+
+class TestSLStragerFocusedLog(TestSLStragerLogBase):
+    def strager_log(self):
+        stdout = self.check_output(['sl', 'l'])
+        stdout = stdout.decode('utf-8')
+        return stdout
+
+    def test_unrelated_forks_from_public_are_hidden(self):
+        self.add_public_commit()
+        self.commit('commit A')
+        self.goto('.~1')
+        self.commit('commit B')
+
+        self.assert_strager_log_regexp(r'''
+            ^ @[ ] .* $\n
+            ^ o[ ] .* $\n
+        ''')
+
 @contextlib.contextmanager
 def empty_sl_repo():
     with temporary_directory() as repo_dir_path:
@@ -190,6 +228,9 @@ def temporary_directory():
         yield path
     finally:
         shutil.rmtree(path)
+
+# Hide the base class from unittest's finder.
+del TestSLStragerLogBase
 
 if __name__ == '__main__':
     unittest.main()
