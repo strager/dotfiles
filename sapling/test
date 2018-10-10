@@ -1,4 +1,4 @@
-#!/usr/bin/env python2.7
+#!/usr/bin/env python3
 # coding=utf-8
 
 import contextlib
@@ -51,6 +51,7 @@ Differential Revision: https://phabricator.intern.facebook.com/D12345678
             ^ @ [ ]+ [0-9a-f]+ [ ]+ D12345678 [ ] my[ ]commit $
         ''')
 
+    @unittest.skip("feature relies on internal FB code")
     def test_short_phabricator_revisions_are_padded(self):
         self.commit(r'''my commit
 
@@ -124,23 +125,25 @@ Differential Revision: https://phabricator.intern.facebook.com/D123456
             regexp = re.compile(r'^(?P<before>.*){message}$'.format(message=re.escape(message)), re.MULTILINE)
             match = regexp.search(log)
             self.assertIsNotNone(match, '{message} should be in {log}'.format(log=repr(log), message=repr(message)))
-            return len(match.group('before').decode('utf-8'))
+            return len(match.group('before'))
 
         column_by_commit = {
             message: column_of_commit_message(message)
             for message in commit_messages
         }
         expected_column = column_by_commit['commit A']
-        for message, column in column_by_commit.iteritems():
+        for message, column in column_by_commit.items():
             self.assertEqual(column, expected_column, "{message}'s message should be at the same column as commit A\n{log}\n{column_by_commit!r}".format(message=message, log=log, column_by_commit=column_by_commit))
 
     def strager_log(self):
-        return self.check_output(['sl', 'l'])
+        stdout = self.check_output(['sl', 'l'])
+        stdout = stdout.decode('utf-8')
+        return stdout
 
     def assert_strager_log_regexp(self, regexp_string):
         regexp = re.compile(regexp_string, re.MULTILINE | re.VERBOSE)
         log = self.strager_log()
-        self.assertRegexpMatches(log, regexp)
+        self.assertRegex(log, regexp)
 
     def add_public_commit(self):
         self.commit('public commit')
@@ -165,6 +168,7 @@ Differential Revision: https://phabricator.intern.facebook.com/D123456
 
     def commit_hash(self, rev):
         stdout = self.check_output(['sl', 'log', '--template', '{node}', '--rev', rev])
+        stdout = stdout.decode('utf-8')
         return stdout.rstrip('\n')
 
     def check_call(self, command):
