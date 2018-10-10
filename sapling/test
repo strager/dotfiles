@@ -38,17 +38,26 @@ class TestSLStragerLog(unittest.TestCase, TestCaseCleanupMixin):
     def test_draft_commit_without_phabricator_revision_shows_dashes_between_hash_and_message(self):
         self.commit('my commit')
         self.assert_strager_log_regexp(r'''
-            ^ @ [ ]+ [0-9a-f]+ [ ]+ ──────── [ ] my[ ]commit $
+            ^ @ [ ]+ [0-9a-f]+ [ ]+ ───────── [ ] my[ ]commit $
         ''')
 
     @unittest.skip("feature relies on internal FB code")
     def test_draft_commit_with_phabricator_revision_shows_revision_between_hash_and_message(self):
         self.commit(r'''my commit
 
-Differential Revision: https://phabricator.intern.facebook.com/D1234567
+Differential Revision: https://phabricator.intern.facebook.com/D12345678
 ''')
         self.assert_strager_log_regexp(r'''
-            ^ @ [ ]+ [0-9a-f]+ [ ]+ D1234567 [ ] my[ ]commit $
+            ^ @ [ ]+ [0-9a-f]+ [ ]+ D12345678 [ ] my[ ]commit $
+        ''')
+
+    def test_short_phabricator_revisions_are_padded(self):
+        self.commit(r'''my commit
+
+Differential Revision: https://phabricator.intern.facebook.com/D123456
+''')
+        self.assert_strager_log_regexp(r'''
+            ^ @ [ ]+ [0-9a-f]+ [ ]+ D123456 [ ] [ ] [ ] my[ ]commit $
         ''')
 
     def test_commit_obsoleted_by_rebase_shows_successor_commit_hashes_after_message(self):
