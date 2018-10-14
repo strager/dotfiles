@@ -101,6 +101,10 @@ ga() {
     git commit --amend --reuse-message=HEAD
 }
 
+title() {
+    printf '\x1b]1;%s\x07' "${1}"
+}
+
 # Input styling.
 ZSH_HIGHLIGHT_HIGHLIGHTERS=(main)
 typeset -A ZSH_HIGHLIGHT_STYLES
