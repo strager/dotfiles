@@ -1,3 +1,5 @@
+syntax clear javaScriptEmbed
+
 syntax keyword javaScriptImport import nextgroup=javaScriptImportDefault,javaScriptImportNamed,javaScriptImportStar skipwhite
 syntax match javaScriptImportDefault /\K\k*/ contained nextgroup=javaScriptImportFrom,javaScriptImportDefaultComma skipwhite
 syntax match javaScriptImportDefaultComma /,/ contained nextgroup=javaScriptImportNamed,javaScriptImportStar skipwhite
