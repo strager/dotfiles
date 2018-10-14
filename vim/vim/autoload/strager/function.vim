@@ -60,14 +60,21 @@ function! strager#function#parse_ex_function_output(function_output)
   " 6    return m[1] . spaces . m[2]
   "    endfunction
   let [_, l:last_set_line; _] = split(a:function_output, '\n')
-  let l:match = matchlist(l:last_set_line, 'Last set from \(.\+\)$')
+  let l:match = matchlist(l:last_set_line, 'Last set from \(.\{-1,\}\)\%( line \(\d\+\)\)\?$')
   if empty(l:match)
     return {
+      \ 'line': v:none,
       \ 'script_path': v:none,
     \ }
   endif
-  let [_, l:script_path; _] = l:match
+  let [_, l:script_path, l:line_string; _] = l:match
+  if l:line_string ==# ''
+    let l:line = v:none
+  else
+    let l:line = str2nr(l:line_string)
+  endif
   return {
+    \ 'line': l:line,
     \ 'script_path': l:script_path,
   \ }
 endfunction
