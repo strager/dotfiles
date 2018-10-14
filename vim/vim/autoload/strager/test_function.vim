@@ -123,6 +123,61 @@ function! Test_function_source_location_of_functions_with_common_prefix()
   \ )
 endfunction
 
+function! Test_parse_ex_function_output()
+  " Sample output of ':verbose function NetrwStatusLine':
+  let l:ex_function_output = join([
+    \ '   function NetrwStatusLine()',
+    \ '        Last set from /nix/store/880405p4px2lgjnizg5pd68gwcdv2w0q-vim-8.0.1655/share/vim/vim80/plugin/netrwPlugin.vim',
+    \ '1  "  let g:stlmsg= "Xbufnr=".w:netrw_explore_bufnr." bufnr=".bufnr("%")." Xline#".w:netrw_explore_line." line#".line(".")',
+    \ '2    if !exists("w:netrw_explore_bufnr") || w:netrw_explore_bufnr != bufnr("%") || !exists("w:netrw_explore_line") || w:netrw_explore_line != line(".") || !exists("w:netrw_explore_list")',
+    \ '3     let &stl= s:netrw_explore_stl',
+    \ '4     if exists("w:netrw_explore_bufnr")|unlet w:netrw_explore_bufnr|endif',
+    \ '5     if exists("w:netrw_explore_line")|unlet w:netrw_explore_line|endif',
+    \ '6     return ""',
+    \ '7    else',
+    \ '8     return "Match ".w:netrw_explore_mtchcnt." of ".w:netrw_explore_listlen',
+    \ '9    endif',
+    \ '   endfunction',
+  \ ], "\n")
+  let l:function_info = strager#function#parse_ex_function_output(l:ex_function_output)
+  call assert_equal('/nix/store/880405p4px2lgjnizg5pd68gwcdv2w0q-vim-8.0.1655/share/vim/vim80/plugin/netrwPlugin.vim', l:function_info.script_path)
+endfunction
+
+function! Test_parse_ex_function_output_with_tilde_in_script_path()
+  " Sample output of ':verbose function fzf#shellescape':
+  let l:ex_function_output = join([
+    \ '   function fzf#shellescape(arg, ...)',
+    \ '        Last set from ~/Projects/dotfiles/vim/vim/bundle/fzf/plugin/fzf.vim',
+    \ '1    let shell = get(a:000, 0, &shell)',
+    \ "2    if shell =~# 'cmd.exe$'",
+    \ '3      return s:shellesc_cmd(a:arg)',
+    \ '4    endif',
+    \ "5    return s:fzf_call('shellescape', a:arg)",
+    \ '   endfunction',
+  \ ], "\n")
+  let l:function_info = strager#function#parse_ex_function_output(l:ex_function_output)
+  call assert_equal('~/Projects/dotfiles/vim/vim/bundle/fzf/plugin/fzf.vim', l:function_info.script_path)
+endfunction
+
+function! Test_parse_ex_function_output_with_missing_path()
+  " Sample output of ':function NetrwStatusLine':
+  let l:ex_function_output = join([
+    \ '   function NetrwStatusLine()',
+    \ '1  "  let g:stlmsg= "Xbufnr=".w:netrw_explore_bufnr." bufnr=".bufnr("%")." Xline#".w:netrw_explore_line." line#".line(".")',
+    \ '2    if !exists("w:netrw_explore_bufnr") || w:netrw_explore_bufnr != bufnr("%") || !exists("w:netrw_explore_line") || w:netrw_explore_line != line(".") || !exists("w:netrw_explore_list")',
+    \ '3     let &stl= s:netrw_explore_stl',
+    \ '4     if exists("w:netrw_explore_bufnr")|unlet w:netrw_explore_bufnr|endif',
+    \ '5     if exists("w:netrw_explore_line")|unlet w:netrw_explore_line|endif',
+    \ '6     return ""',
+    \ '7    else',
+    \ '8     return "Match ".w:netrw_explore_mtchcnt." of ".w:netrw_explore_listlen',
+    \ '9    endif',
+    \ '   endfunction',
+  \ ], "\n")
+  let l:function_info = strager#function#parse_ex_function_output(l:ex_function_output)
+  call assert_equal(v:none, l:function_info.script_path)
+endfunction
+
 " **MARKER s:script_function MARKER**
 function! s:script_function()
 endfunction

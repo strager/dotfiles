@@ -39,6 +39,15 @@ function! s:function_source_script_path(real_function_name)
   catch /E123:/
     return v:none
   endtry
+  let l:function_info = strager#function#parse_ex_function_output(l:function_output)
+  let l:script_path = l:function_info.script_path
+  if l:script_path ==# v:none
+    throw 'Failed to parse file name for function: '.a:real_function_name
+  endif
+  return expand(l:script_path, ':p')
+endfunction
+
+function! strager#function#parse_ex_function_output(function_output)
   " Example output from :function <name>:
   "
   "    function AlignLine(line, sep, maxpos, extra)
@@ -50,13 +59,17 @@ function! s:function_source_script_path(real_function_name)
   " 5    let spaces = repeat(' ', a:maxpos - strlen(m[1]) + a:extra)
   " 6    return m[1] . spaces . m[2]
   "    endfunction
-  let [_, l:last_set_line; _] = split(l:function_output, '\n')
+  let [_, l:last_set_line; _] = split(a:function_output, '\n')
   let l:match = matchlist(l:last_set_line, 'Last set from \(.\+\)$')
   if empty(l:match)
-    throw 'Failed to parse file name for function: '.a:real_function_name
+    return {
+      \ 'script_path': v:none,
+    \ }
   endif
-  let [_, l:path; _] = l:match
-  return expand(l:path, ':p')
+  let [_, l:script_path; _] = l:match
+  return {
+    \ 'script_path': l:script_path,
+  \ }
 endfunction
 
 function! s:function_source_line(source_function_name, function_script_path)
