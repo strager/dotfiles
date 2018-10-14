@@ -209,9 +209,9 @@ function! s:assert_function_scenario_cursor_should_have_jumped()
   let l:new_cursor_position = getcurpos()
   call assert_equal(s:old_cursor_position[0], l:new_cursor_position[0]) " bufnum
   call assert_equal(3, l:new_cursor_position[1]) " lnum
-  call assert_equal(1, l:new_cursor_position[2]) " col
+  call assert_true(count([1, 5], l:new_cursor_position[2])) " col
   call assert_equal(0, l:new_cursor_position[3]) " off
-  call assert_equal(1, l:new_cursor_position[4]) " curswant
+  call assert_true(count([1, 5], l:new_cursor_position[4])) " curswant
   " FIXME(strager): Should we check curswant?
   " TODO(strager): Check that :pop works.
   " TODO(strager): Check that the current window did or didn't change (according
