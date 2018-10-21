@@ -1,0 +1,13 @@
+/* Tabs are shown using the Tree Style Tab extension. Hide the built-in tab bar. */
+#TabsToolbar {
+    visibility: collapse !important;
+}
+#nav-bar {
+    /* Make room for macOS' window manager's traffic lights. */
+    padding-left: 73px;
+}
+
+/* Hide the "Tree Style Tab" header. */
+#sidebar-box[sidebarcommand="treestyletab_piro_sakura_ne_jp-sidebar-action"] > #sidebar-header {
+    display: none;
+}
