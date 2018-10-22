@@ -33,6 +33,7 @@ bindkey '\C-x\C-e' edit-command-line
 # Completion.
 autoload -Uz compinit
 compinit
+unsetopt auto_remove_slash
 
 # Environment.
 export EDITOR=vim
