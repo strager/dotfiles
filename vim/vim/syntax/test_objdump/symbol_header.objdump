@@ -1,0 +1,10 @@
+CHECK-ALIAS: a objdumpAddress
+CHECK-ALIAS: f objdumpSymbolDefinition
+
+aaaaaaaaaaaaaaaa  fffffffffffffffffffffff  :CHECK-NEXT-LINE
+00000001000017d0 <___clang_call_terminate>:
+
+aaaaaaaaaaaaaaaa  fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff  :CHECK-NEXT-LINE
+0000000100001970 <__ZNSt3__127__tree_balance_after_insertIPNS_16__tree_node_baseIPvEEEEvT_S5_>:
+aaaaaaaaaaaaaaaa  ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff  :CHECK-NEXT-LINE
+0000000100001970 <void std::__1::__tree_balance_after_insert<std::__1::__tree_node_base<void*>*>(std::__1::__tree_node_base<void*>*, std::__1::__tree_node_base<void*>*)>:

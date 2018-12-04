@@ -57,7 +57,7 @@ function strager#check_syntax#check_syntax_generic(options, out_issues)
   for l:check in l:checks
     for l:column_index in range(len(l:check.check_string))
       let l:check_char = l:check.check_string[l:column_index]
-      if l:check_char ==# ' '
+      if l:check_char ==# ' ' || l:check_char ==# "\t"
         continue
       endif
       let l:column_number = l:column_index + 1

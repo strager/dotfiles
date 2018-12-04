@@ -1,0 +1,67 @@
+CHECK-ALIAS: ! objdumpBadInstruction
+CHECK-ALIAS: # objdumpComment
+CHECK-ALIAS: ( objdumpDisassembledInstruction
+CHECK-ALIAS: ) objdumpDisassembledInstruction
+CHECK-ALIAS: * objdumpDisassembledInstruction
+CHECK-ALIAS: + objdumpHexOffset
+CHECK-ALIAS: , objdumpDisassembledInstruction
+CHECK-ALIAS: 0 objdumpDecimalInteger
+CHECK-ALIAS: < objdumpSymbolReferenceDelimiter
+CHECK-ALIAS: > objdumpSymbolReferenceDelimiter
+CHECK-ALIAS: L objdumpLabel
+CHECK-ALIAS: i objdumpInstruction
+CHECK-ALIAS: r objdumpRegister
+CHECK-ALIAS: s objdumpSymbolReference
+CHECK-ALIAS: x objdumpHexInteger
+
+Simple instructions:
+             	                     	iiii:CHECK-NEXT-LINE
+   10002625d:	48 98                	cltq   
+             	                     	iii:CHECK-NEXT-LINE
+   100001cf9:	0f 0b                	ud2    
+             	                     	iiii   rrrr:CHECK-NEXT-LINE
+   1000017d0:	50                   	push   %rax
+             	                     	iiii   rrr,rrr:CHECK-NEXT-LINE
+   10002628e:	66 90                	xchg   %ax,%ax
+             	                     	iiiii  *rrrr:CHECK-NEXT-LINE
+   1000262c3:	41 ff d5             	callq  *%r13
+             	                     	iiiiii rrrrr,rrrrr,rrrrr:CHECK-NEXT-LINE
+   100026314:	c5 fb 5e c2          	vdivsd %xmm2,%xmm0,%xmm0
+
+Registers:
+             	                     	       rrrr rrrr:CHECK-NEXT-LINE
+   100001898:	4c 89 ee             	mov    %r13,%rsi
+             	                     	       rrr     rrrr rrrr   :CHECK-NEXT-LINE
+   1000018b3:	66 2e 0f 1f 84 00 00 	nopw   %cs:0x0(%rax,%rax,1)
+
+Call instruction with complex label:
+             	                     	iiiii  LLLLLLLLL  ssssssssssssssssssssssssssssssss++++++ :CHECK-NEXT-LINE
+   1000017d1:	e8 d0 31 03 00       	callq  1000349a6 <_GLOBAL__sub_I_benchmark_main.cc+0x2a6>
+
+lea:
+             	                     	iiii   +++(rrrr,rrrr,0):CHECK-NEXT-LINE
+   1000017db:	0f 1f 44 00 00       	nopl   0x0(%rax,%rax,1)
+             	                     	            +++++      :CHECK-NEXT-LINE
+   100001840:	48 89 7d c0          	mov    %rdi,-0x40(%rbp)
+
+Number literal:
+             	                     	       xxxx     :CHECK-NEXT-LINE
+   100001823:	48 83 c2 01          	add    $0x1,%rdx
+
+Global variable reference comment:
+             	                     	                                 ##LLLLLLLLL <sssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss>:CHECK-NEXT-LINE
+   1000027ff:	83 05 5a d1 04 00 01 	addl   $0x1,0x4d15a(%rip)        # 10004f960 <cxxtrace::detail::thread_shared_benchmark_runner_base::exited_threads>
+
+Instruction prefix:
+             	                     	iiii ii                                    :CHECK-NEXT-LINE
+   10003917c:	f0 7c 00             	lock jl 10003917f <GCC_except_table9+0x2bf>
+             	                     	ii ii         :CHECK-NEXT-LINE
+   1000391be:	3e 0a f8             	ds or  %al,%bh
+             	                     	iiiiii iii          :CHECK-NEXT-LINE
+   100039268:	4a 13 e9             	rex.WX adc %rcx,%rbp
+             	                     	iiiii iiii     :CHECK-NEXT-LINE
+   10003930a:	f2 57                	repnz push %rdi
+
+Invalid instruction:
+             	                     	!!!!!:CHECK-NEXT-LINE
+   100026522:	ff                   	(bad)  

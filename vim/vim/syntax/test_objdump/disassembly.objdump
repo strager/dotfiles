@@ -1,0 +1,6 @@
+CHECK-ALIAS: a objdumpAddress
+
+   aaaaaaaaaa	                     	           :CHECK-NEXT-LINE
+   1000017e0:	55                   	push   %rbp
+   aaaaaaaaaa	                     	                :CHECK-NEXT-LINE
+   1000017e1:	48 89 e5             	mov    %rsp,%rbp

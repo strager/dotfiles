@@ -137,11 +137,23 @@ function Test_check_syntax_with_no_checks()
   call assert_equal([], l:issues)
 endfunction
 
-function Test_check_syntax_with_only_ignore_checks()
+function Test_check_syntax_with_only_space_ignore_checks()
   let l:issues = []
   call s:check_syntax_generic({
     \ 'aliases': {},
     \ 'checks': [{'line': 1, 'check_string': '   '}],
+    \ 'get_syntax_item': {line, column ->
+      \ [v:none, 'vimLineComment', 'vimCommand'][column - 1]
+    \ },
+  \ }, l:issues)
+  call assert_equal([], l:issues)
+endfunction
+
+function Test_check_syntax_with_tab_ignore_checks()
+  let l:issues = []
+  call s:check_syntax_generic({
+    \ 'aliases': {},
+    \ 'checks': [{'line': 1, 'check_string': "\t\t\t"}],
     \ 'get_syntax_item': {line, column ->
       \ [v:none, 'vimLineComment', 'vimCommand'][column - 1]
     \ },
