@@ -104,6 +104,7 @@ run_vim_syntax_test vim/vim/syntax/test_javascript/number.js
 run_vim_syntax_test vim/vim/syntax/test_javascript/string.js
 run_vim_syntax_test vim/vim/syntax/test_javascript/template.js
 run_vim_syntax_test vim/vim/syntax/test_javascript/var.js
+run_vim_syntax_test vim/vim/syntax/test_objdump/conceal.objdump
 run_vim_syntax_test vim/vim/syntax/test_objdump/disassembly.objdump
 run_vim_syntax_test vim/vim/syntax/test_objdump/symbol_header.objdump
 run_vim_syntax_test vim/vim/syntax/test_objdump/x86_64.objdump
@@ -114,6 +115,7 @@ run_vim_test --need-vimrc vim/vim/test/test_format.vim
 run_vim_test vim/vim/autoload/strager/test_buffer.vim
 run_vim_test vim/vim/autoload/strager/test_check_syntax.vim
 run_vim_test vim/vim/autoload/strager/test_check_syntax_internal.vim
+run_vim_test vim/vim/autoload/strager/test_cxx_symbol.vim
 run_vim_test vim/vim/autoload/strager/test_exception.vim
 run_vim_test vim/vim/autoload/strager/test_file.vim
 run_vim_test vim/vim/autoload/strager/test_function.vim

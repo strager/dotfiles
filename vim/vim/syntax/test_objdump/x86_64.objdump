@@ -9,6 +9,7 @@ CHECK-ALIAS: 0 objdumpDecimalInteger
 CHECK-ALIAS: < objdumpSymbolReferenceDelimiter
 CHECK-ALIAS: > objdumpSymbolReferenceDelimiter
 CHECK-ALIAS: L objdumpLabel
+CHECK-ALIAS: S objdumpSymbolReferenceConcealable
 CHECK-ALIAS: i objdumpInstruction
 CHECK-ALIAS: r objdumpRegister
 CHECK-ALIAS: s objdumpSymbolReference
@@ -49,7 +50,7 @@ Number literal:
    100001823:	48 83 c2 01          	add    $0x1,%rdx
 
 Global variable reference comment:
-             	                     	                                 ##LLLLLLLLL <sssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss>:CHECK-NEXT-LINE
+             	                     	                                 ##LLLLLLLLL <SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSssssssssssssssss>:CHECK-NEXT-LINE
    1000027ff:	83 05 5a d1 04 00 01 	addl   $0x1,0x4d15a(%rip)        # 10004f960 <cxxtrace::detail::thread_shared_benchmark_runner_base::exited_threads>
 
 Instruction prefix:

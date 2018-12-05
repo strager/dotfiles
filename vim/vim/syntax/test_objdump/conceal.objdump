@@ -1,0 +1,34 @@
+CHECK-ALIAS: + objdumpHexOffset
+CHECK-ALIAS: < objdumpSymbolReferenceDelimiter
+CHECK-ALIAS: > objdumpSymbolReferenceDelimiter
+CHECK-ALIAS: S objdumpSymbolReferenceConcealable
+CHECK-ALIAS: s objdumpSymbolReference
+
+Demangled C++ names:
+             	                     	                                             <SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSsssssssssss+++++>:CHECK-NEXT-LINE
+   10000286f:	80 3d 3a d1 04 00 00 	cmpb   $0x0,0x4d13a(%rip)        # 10004f9b0 <cxxtrace::detail::benchmark_runner<(anonymous namespace)::_cxxtrace_benchmark_class_concurrent_span_benchmark_enter_exit<cxxtrace::ring_queue_thread_local_storage<1024ul, (anonymous namespace)::ring_queue_thread_local_benchmark_storage_tag> >, void>::benchmark+0x18>
+             	                     	                 <SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSsssssssssssSSSSSSSSSSSSSs>:CHECK-NEXT-LINE
+   100003c22:	e8 59 08 00 00       	callq  100004480 <std::__1::vector<int, std::__1::allocator<int> >::__append(unsigned long)>
+             	                     	                 <SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSsssssssssSSSSSSSSSSSSSSSSSs>:CHECK-NEXT-LINE
+   100006c00:	e8 bb e4 ff ff       	callq  1000050c0 <(anonymous namespace)::span_benchmark<cxxtrace::unbounded_unsafe_storage>::set_up(benchmark::State&)>
+             	                     	                                             <SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSsssssssssssssss++++++>:CHECK-NEXT-LINE
+   100006e8a:	48 8d 3d e8 54 03 00 	lea    0x354e8(%rip),%rdi        # 10003c379 <benchmark::(anonymous namespace)::kSmallSIUnits+0x145>
+             	                     	                                             <sssssssssssSSSSSSSSsssssssssssssssssSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSs+++++>:CHECK-NEXT-LINE
+   10000addf:	48 8d 05 82 29 03 00 	lea    0x32982(%rip),%rax        # 10003d768 <vtable for std::__1::basic_ofstream<char, std::__1::char_traits<char> >+0x18>
+             	                     	                 <SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSsssssssssssssssssssssssSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSssSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSsssssss++++++>:CHECK-NEXT-LINE
+   10002109c:	0f 83 d7 03 00 00    	jae    100021479 <std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> > std::__1::regex_traits<char>::__lookup_collatename<std::__1::__wrap_iter<char const*> >(std::__1::__wrap_iter<char const*>, std::__1::__wrap_iter<char const*>, char) const+0x409>
+             	                     	                 <SSSSSSSSSSSSSssssssssssssssssssssssssssssssSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSssSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSs+++++>:CHECK-NEXT-LINE
+   10000197b:	74 59                	je     1000019d6 <void std::__1::__tree_balance_after_insert<std::__1::__tree_node_base<void*>*>(std::__1::__tree_node_base<void*>*, std::__1::__tree_node_base<void*>*)+0x66>
+
+TODO: Lambda types.
+TODO: Overloaded operators (e.g. operator<).
+TODO: Symbol definitions.
+
+TODO:
+
+   100001e01:	74 20                	je     100001e23 <cxxtrace::detail::destroy_object_on_thread_exit<cxxtrace::spsc_ring_queue_thread_local_storage<1024ul, (anonymous namespace)::spsc_ring_queue_thread_local_benchmark_storage_tag>::thread_data>(cxxtrace::spsc_ring_queue_thread_local_storage<1024ul, (anonymous namespace)::spsc_ring_queue_thread_local_benchmark_storage_tag>::thread_data*)::{lambda(void*)#1}::__invoke(void*)+0x53>
+   1000017fc:	74 1a                	je     100001818 <std::__1::__tree_node_base<void*>*& std::__1::__tree<std::__1::__value_type<std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> >, benchmark::Counter>, std::__1::__map_value_compare<std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> >, std::__1::__value_type<std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> >, benchmark::Counter>, std::__1::less<std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> > >, true>, std::__1::allocator<std::__1::__value_type<std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> >, benchmark::Counter> > >::__find_equal<std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> > >(std::__1::__tree_end_node<std::__1::__tree_node_base<void*>*>*&, std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> > const&)+0x38>
+   100002277:	48 8d 05 4a c9 03 00 	lea    0x3c94a(%rip),%rax        # 10003ebc8 <vtable for (anonymous namespace)::_cxxtrace_benchmark_class_concurrent_span_benchmark_enter_exit<cxxtrace::ring_queue_thread_local_storage<1024ul, (anonymous namespace)::ring_queue_thread_local_benchmark_storage_tag> >+0x10>
+   1000022c2:	75 2a                	jne    1000022ee <benchmark::internal::LambdaBenchmark<cxxtrace::detail::benchmark_register_template_instantiation<(anonymous namespace)::_cxxtrace_benchmark_class_concurrent_span_benchmark_enter_exit<cxxtrace::ring_queue_thread_local_storage<1024ul, (anonymous namespace)::ring_queue_thread_local_benchmark_storage_tag> > >(char const*, char const*, char const*)::{lambda(benchmark::State&)#1}>::Run(benchmark::State&)+0xce>
+   10000232d:	e8 5e 00 00 00       	callq  100002390 <cxxtrace::detail::span_guard<cxxtrace::ring_queue_thread_local_storage<1024ul, (anonymous namespace)::ring_queue_thread_local_benchmark_storage_tag> >::enter(cxxtrace::ring_queue_thread_local_storage<1024ul, (anonymous namespace)::ring_queue_thread_local_benchmark_storage_tag>&, char const*, char const*)>
+   100006faf:	48 8d 05 82 82 03 00 	lea    0x38282(%rip),%rax        # 10003f238 <vtable for (anonymous namespace)::_cxxtrace_benchmark_class_span_benchmark_enter_thrash_memory_exit<cxxtrace::unbounded_storage>+0x10>
