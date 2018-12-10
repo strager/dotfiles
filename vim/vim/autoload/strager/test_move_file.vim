@@ -493,6 +493,27 @@ function Test_move_with_unsaved_changes_then_write_saves_changes()
   \ )
 endfunction
 
+function Test_move_with_saved_changes_keeps_changes()
+  call s:set_up_test_project()
+  edit old.txt
+  silent! normal oGreetings.
+  write
+
+  call s:move_current_buffer_file('new.txt')
+  call assert_false(
+    \ getbufvar('%', '&modified'),
+    \ 'Buffer should still be marked as unmodified'
+  \ )
+  call assert_equal(
+    \ ['Hello, world!', 'Greetings.'],
+    \ strager#buffer#get_current_buffer_lines(),
+  \ )
+  call assert_equal(
+    \ ['Hello, world!', 'Greetings.', ''],
+    \ readfile('new.txt', 'b'),
+  \ )
+endfunction
+
 function Test_move_preserves_cursor_location()
   call s:set_up_test_project()
   edit old.txt

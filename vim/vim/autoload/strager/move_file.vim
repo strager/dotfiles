@@ -53,18 +53,28 @@ function strager#move_file#move_current_buffer_file(new_path)
   if l:old_permissions ==# ''
     throw "E484: Can't open file"
   endif
-  silent earlier 1f
+  let l:had_unsaved_changes = s:current_buffer_has_unsaved_changes()
+  if l:had_unsaved_changes
+    silent earlier 1f
+  endif
   try
     silent exec 'saveas '.fnameescape(a:new_path)
     bwipeout #
   finally
-    silent later 1f
+    if l:had_unsaved_changes
+      silent later 1f
+    endif
   endtry
   file
   " TODO(strager): Check for errors.
   call setfperm(a:new_path, l:old_permissions)
   " TODO(strager): Check for errors.
   call delete(l:old_path)
+endfunction
+
+function s:current_buffer_has_unsaved_changes()
+  " FIXME(strager): Reading 'modified is unreliable. Use undotree() instead.
+  return getbufvar('%', '&modified')
 endfunction
 
 function strager#move_file#register_command(options)
