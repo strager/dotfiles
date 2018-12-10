@@ -150,6 +150,22 @@ function! Test_parse_throwpoint_from_script_function_via_funcref()
   \ ), l:test_frame.line)
 endfunction
 
+function! Test_parse_throwpoint_from_script_body()
+  let l:test_script_path = strager#path#join([fnamemodify(s:script_path, ':h'), 'test_exception_helper.vim'])
+  let l:throwpoint = v:none
+  try
+    execute 'source '.fnameescape(l:test_script_path)
+  catch
+    let l:throwpoint = v:throwpoint
+  endtry
+  let l:frames = strager#exception#parse_throwpoint(l:throwpoint)
+  let [l:throw_frame; _] = l:frames
+
+  call assert_equal(v:none, l:throw_frame.function)
+  call assert_equal(l:test_script_path, l:throw_frame.script_path)
+  call assert_equal(1, l:throw_frame.line)
+endfunction
+
 function! Test_format_throwpoint()
   let l:throwpoint = v:none
   try

@@ -14,23 +14,32 @@ function! s:format_frame(frame)
 endfunction
 
 function! strager#exception#parse_throwpoint(throwpoint)
-  let l:match = matchlist(a:throwpoint, '^function \(.*\), line \([0-9]\+\)$')
+  let l:match = matchlist(
+    \ a:throwpoint,
+    \ '^\%(function \(.*\)\|\(.\+\)\), line \([0-9]\+\)$',
+  \ )
   if empty(l:match)
     throw 'Not a valid throwpoint: '.string(a:throwpoint)
   endif
-  let [_, l:frames_string, l:throwing_function_line; _] = l:match
-  let l:frame_strings = split(l:frames_string, '\.\.')
-  call reverse(l:frame_strings)
-  let [l:throwing_function_name; l:calling_frame_strings] = l:frame_strings
+  let [_, l:frames_string, l:script_path, l:throwing_function_line; _] = l:match
+  let l:throwing_function_line = str2nr(l:throwing_function_line)
+  if l:script_path ==# ''
+    let l:frame_strings = split(l:frames_string, '\.\.')
+    call reverse(l:frame_strings)
+    let [l:throwing_function_name; l:calling_frame_strings] = l:frame_strings
 
-  let l:frames = [s:frame(
-    \ l:throwing_function_name,
-    \ str2nr(l:throwing_function_line),
-  \ )]
-  for l:frame_string in l:calling_frame_strings
-    call add(l:frames, s:parse_calling_frame(l:frame_string))
-  endfor
-  return l:frames
+    let l:frames = [s:frame(l:throwing_function_name, l:throwing_function_line)]
+    for l:frame_string in l:calling_frame_strings
+      call add(l:frames, s:parse_calling_frame(l:frame_string))
+    endfor
+    return l:frames
+  else
+    return [{
+      \ 'function': v:none,
+      \ 'line': l:throwing_function_line,
+      \ 'script_path': l:script_path,
+    \ }]
+  endif
 endfunction
 
 " Example value of a:frame_string:
