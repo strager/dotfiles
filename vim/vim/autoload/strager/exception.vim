@@ -12,9 +12,11 @@ function! strager#exception#format_throwpoint(throwpoint)
 endfunction
 
 function! s:format_frame(frame)
-  return a:frame.script_path.':'
-    \ .a:frame.line.':'
-    \ .'('.a:frame.function.source_name.'):'
+  let l:output = a:frame.script_path.':'.a:frame.line.':'
+  if type(a:frame.function) !=# v:t_none
+    let l:output .= '('.a:frame.function.source_name.'):'
+  endif
+  return l:output
 endfunction
 
 function! strager#exception#parse_throwpoint(throwpoint)

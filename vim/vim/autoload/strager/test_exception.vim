@@ -194,6 +194,14 @@ function! Test_format_throwpoint()
   \ )
 endfunction
 
+function! Test_format_script_throwpoint()
+  let l:throwpoint = '/myscript.vim, line 42'
+  call assert_equal(
+    \ '/myscript.vim:42:',
+    \ strager#exception#format_throwpoint(l:throwpoint),
+  \ )
+endfunction
+
 function! s:call_throw_error_via_funcref()
   let l:Throw_error = funcref('s:throw_error')
   " **MARKER s:call_throw_error_via_funcref MARKER**
