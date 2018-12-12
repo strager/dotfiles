@@ -111,6 +111,7 @@ run_vim_syntax_test vim/vim/syntax/test_objdump/x86_64.objdump
 run_vim_test --need-vimrc vim/vim/autoload/strager/test_tag_c.vim
 run_vim_test --need-vimrc vim/vim/test/test_c_make_ninja.vim
 run_vim_test --need-vimrc vim/vim/test/test_color_column.vim
+run_vim_test --need-vimrc vim/vim/test/test_directory_browser.vim
 run_vim_test --need-vimrc vim/vim/test/test_format.vim
 run_vim_test --need-vimrc vim/vim/test/test_grep.vim
 run_vim_test vim/vim/autoload/strager/test_buffer.vim
@@ -119,11 +120,13 @@ run_vim_test vim/vim/autoload/strager/test_check_syntax_internal.vim
 run_vim_test vim/vim/autoload/strager/test_cxx_symbol.vim
 run_vim_test vim/vim/autoload/strager/test_exception.vim
 run_vim_test vim/vim/autoload/strager/test_file.vim
+run_vim_test vim/vim/autoload/strager/test_file_sort.vim
 run_vim_test vim/vim/autoload/strager/test_function.vim
 run_vim_test vim/vim/autoload/strager/test_list.vim
 run_vim_test vim/vim/autoload/strager/test_messages.vim
 run_vim_test vim/vim/autoload/strager/test_move_file.vim
 run_vim_test vim/vim/autoload/strager/test_path.vim
+run_vim_test vim/vim/autoload/strager/test_pattern.vim
 run_vim_test vim/vim/autoload/strager/test_project.vim
 run_vim_test vim/vim/autoload/strager/test_random_mt19937.vim
 printf 'All tests passed!\n' >&2

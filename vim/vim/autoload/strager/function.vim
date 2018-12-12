@@ -81,6 +81,7 @@ endfunction
 
 function! s:function_source_line(source_function_name, function_script_path)
   " FIXME(strager): Is this the correct way to escape?
+  " FIXME(strager): Use an escaping function from strager#pattern#.
   let l:pattern = '\mfunction!\? '.escape(a:source_function_name, '').'('
 
   let l:found_line_number = v:none

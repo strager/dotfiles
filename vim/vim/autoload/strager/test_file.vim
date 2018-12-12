@@ -433,6 +433,34 @@ function Test_hard_links_are_different()
   call assert_false(s:are_files_same_by_path(l:b_path, l:a_path))
 endfunction
 
+function Test_mkdirp_creates_single_empty_directory()
+  let l:temp_dir_path = strager#file#make_directory_with_files([])
+  let l:new_dir_path = strager#path#join([l:temp_dir_path, 'hello'])
+  call s:mkdirp(l:new_dir_path)
+  call assert_true(isdirectory(l:new_dir_path))
+  call assert_equal(['.', '..'], strager#file#list_directory(l:new_dir_path))
+endfunction
+
+function Test_mkdirp_creates_nested_directories()
+  let l:temp_dir_path = strager#file#make_directory_with_files([])
+  call s:mkdirp(strager#path#join([l:temp_dir_path, 'hello', 'world', 'leaf']))
+  call assert_true(isdirectory(strager#path#join([l:temp_dir_path, 'hello'])))
+  call assert_true(isdirectory(strager#path#join([l:temp_dir_path, 'hello', 'world'])))
+  call assert_true(isdirectory(strager#path#join([l:temp_dir_path, 'hello', 'world', 'leaf'])))
+endfunction
+
+function Test_mkdirp_succeeds_if_directory_exists()
+  let l:temp_dir_path = strager#file#make_directory_with_files(['hello/'])
+  let l:new_dir_path = strager#path#join([l:temp_dir_path, 'hello'])
+  call assert_true(isdirectory(l:new_dir_path))
+  call s:mkdirp(l:new_dir_path)
+  call assert_true(isdirectory(l:new_dir_path))
+endfunction
+
+function s:mkdirp(path)
+  call strager#file#mkdirp(a:path)
+endfunction
+
 function s:are_files_same_by_path(file_a_path, file_b_path)
   return strager#file#are_files_same_by_path(a:file_a_path, a:file_b_path)
 endfunction

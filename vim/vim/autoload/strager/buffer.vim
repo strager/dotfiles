@@ -28,3 +28,12 @@ endfunction
 function strager#buffer#get_current_buffer_lines()
   return getline('^', '$')
 endfunction
+
+function strager#buffer#get_buffer_lines(buffer_number)
+  return getbufline(a:buffer_number, '^', '$')
+endfunction
+
+function strager#buffer#set_current_buffer_lines(lines)
+  normal! ggdG
+  call setline(1, a:lines)
+endfunction

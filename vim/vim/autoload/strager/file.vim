@@ -18,7 +18,7 @@ function! strager#file#make_directory_with_files(entries)
   endfor
   call uniq(l:directory_paths)
   for path in l:directory_paths
-    call mkdir(l:path, 'p')
+    call strager#file#mkdirp(l:path)
   endfor
   for [l:path, l:content] in items(l:files)
     call s:write_string_to_file(l:path, l:content)
@@ -185,6 +185,10 @@ function strager#file#create_hard_link(old_path, new_path)
   if v:shell_error != 0
     throw 'Failed to create '.a:new_path
   endif
+endfunction
+
+function strager#file#mkdirp(path)
+  call mkdir(a:path, 'p')
 endfunction
 
 function strager#file#are_files_same_by_path(file_a_path, file_b_path)

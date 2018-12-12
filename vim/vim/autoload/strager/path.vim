@@ -6,6 +6,47 @@ function! strager#path#join(paths)
   return l:path
 endfunction
 
+function! strager#path#components(path)
+  let l:leading_slash_count = match(a:path, '[^/]')
+  if l:leading_slash_count == -1
+    let l:components = [a:path]
+  else
+    let l:components = split(a:path[l:leading_slash_count:], '/', v:true)
+    if l:leading_slash_count > 0
+      call insert(l:components, a:path[:l:leading_slash_count - 1], 0)
+    endif
+  endif
+  return l:components
+endfunction
+
+function! strager#path#make_relative(ancestor_path, descendant_path)
+  let l:ancestor_components = strager#path#components(a:ancestor_path)
+  let l:descendant_components = strager#path#components(a:descendant_path)
+  if l:ancestor_components[-1] ==# ''
+    " Ignore trailing / in ancestor path.
+    call remove(l:ancestor_components, -1)
+  endif
+
+  let l:prefix_length = len(l:ancestor_components)
+  if l:ancestor_components !=# l:descendant_components[:l:prefix_length - 1]
+    throw printf(
+      \ 'ES004: Path (%s) is not a descendant of %s',
+      \ a:descendant_path,
+      \ a:ancestor_path,
+    \ )
+  endif
+
+  let l:relative_path_components = l:descendant_components[l:prefix_length:]
+  if l:relative_path_components ==# [] || l:relative_path_components ==# ['']
+    return '.'
+  endif
+  let l:relative_path = strager#path#join(l:relative_path_components)
+  if l:relative_path_components[-1] ==# ''
+    let l:relative_path .= '/'
+  endif
+  return l:relative_path
+endfunction
+
 function! s:is_absolute(path)
   " HACK(strager): This is good enough for now...
   return a:path =~# '^/'

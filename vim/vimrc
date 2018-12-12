@@ -140,9 +140,13 @@ nmap <unique> <Leader>c :tabclose<CR>
 """ File management
 set autowrite 
 
-""" netrw
-let g:netrw_banner = 0
-let g:netrw_use_errorwindow = 0
+" Dirvish directory browser
+command! Explore echoerr 'Stop using :Ex. Use - instead!'
+let g:dirvish_relative_paths = 1
+let g:dirvish_mode = ':call strager#file_sort#sort_current_buffer()'
+let g:loaded_netrwPlugin = 1
+autocmd BufWritePost * call strager#directory_browser#refresh_open_browsers()
+call strager#directory_browser#register_commands()
 
 " Don't hide any files from completion.
 set wildignore=
