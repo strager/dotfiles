@@ -172,8 +172,7 @@ function Test_move_to_missing_directory_fails()
   edit old.txt
   call strager#assert#assert_throws(
     \ {-> s:move_current_buffer_file('newdir/old.txt')}, 
-    \ 'E212:',
-    \ "Moving should fail with error: E212: Can't open file for writing",
+    \ 'ES001: Directory does not exist (newdir)',
   \ )
   call s:assert_file_exists('old.txt')
 endfunction

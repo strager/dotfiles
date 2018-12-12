@@ -53,6 +53,19 @@ function strager#move_file#move_current_buffer_file(new_path)
   if l:old_permissions ==# ''
     throw "E484: Can't open file"
   endif
+  try
+    call s:save_current_buffer_saved_changes_as(a:new_path)
+  catch /E212:/
+    call s:throw_cannot_open_file_for_writing_error(a:new_path)
+  endtry
+  file
+  " TODO(strager): Check for errors.
+  call setfperm(a:new_path, l:old_permissions)
+  " TODO(strager): Check for errors.
+  call delete(l:old_path)
+endfunction
+
+function s:save_current_buffer_saved_changes_as(new_path)
   let l:had_unsaved_changes = s:current_buffer_has_unsaved_changes()
   if l:had_unsaved_changes
     silent earlier 1f
@@ -65,11 +78,18 @@ function strager#move_file#move_current_buffer_file(new_path)
       silent later 1f
     endif
   endtry
-  file
-  " TODO(strager): Check for errors.
-  call setfperm(a:new_path, l:old_permissions)
-  " TODO(strager): Check for errors.
-  call delete(l:old_path)
+endfunction
+
+function s:throw_cannot_open_file_for_writing_error(path)
+  for l:path in strager#file#paths_upward(a:path)
+    if l:path != a:path
+      let l:type = getftype(l:path)
+      if l:type == ''
+        throw 'ES001: Directory does not exist ('.l:path.')'
+      endif
+    endif
+  endfor
+  throw strager#exception#get_vim_error()
 endfunction
 
 function s:current_buffer_has_unsaved_changes()

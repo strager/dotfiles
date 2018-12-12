@@ -109,16 +109,14 @@ function! s:go_ctags(error_reporter)
     exec 'normal! '."\<C-]>"
     return v:true
   catch /^Vim(tag):E433:/
-    call a:error_reporter.provider_not_available(s:get_vim_error())
+    call a:error_reporter.provider_not_available(
+      \ strager#exception#get_vim_error(),
+    \ )
     return v:false
   catch /^Vim(tag):E426:/
-    call a:error_reporter.no_target(s:get_vim_error())
+    call a:error_reporter.no_target(strager#exception#get_vim_error())
     return v:false
   endtry
-endfunction
-
-function s:get_vim_error()
-  return matchstr(v:exception, 'E.*$')
 endfunction
 
 function! s:push_tag(path, line_number, column_number)

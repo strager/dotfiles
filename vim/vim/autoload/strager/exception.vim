@@ -1,6 +1,10 @@
 " Example value of v:throwpoint:
 " 'function strager#test#run_all_tests[12]..strager#test#run_tests[10]..Test_throwpoint_location, line 3'
 
+function strager#exception#get_vim_error()
+  return matchstr(v:exception, 'E.*$')
+endfunction
+
 function! strager#exception#format_throwpoint(throwpoint)
   let l:frames = strager#exception#parse_throwpoint(a:throwpoint)
   let l:lines = map(l:frames, {_, frame -> s:format_frame(frame)})
