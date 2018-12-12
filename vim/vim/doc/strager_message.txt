@@ -14,4 +14,22 @@ This file contains error codes used by strager's Vim plugins.
 							*ES001*
   Directory does not exist
 
+							*ES002*  >
+  mt19937 is not available in this version
+
+You are using mt19937, which requires the |+num64| feature. The |+num64|
+feature is not compiled, so mt19937 will not work.
+
+							*ES003*  >
+  Invalid seed type, expected list or number
+
+You are giving an unsupported object as a seed to
+|strager#random_mt19937#make_generator|, such as a |Dictionary|. Give an
+integer or a list of integers instead.
+
+							*ES901*  >
+  mt19937 state not initialized
+
+An internal, unrecoverable error occurred.
+
  vim:tw=78:ts=8:noet:ft=help:norl:
