@@ -5,7 +5,7 @@ os:
   - osx
 
 install:
-  - nix-env -i clang ninja vim
+  - nix-env -i clang ninja ripgrep vim
 
 before_script:
   - ./install.sh "${HOME}"

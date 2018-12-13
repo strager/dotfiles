@@ -19,12 +19,6 @@ end
 
 au BufEnter *.hs compiler ghcx
 
-" Ack.vim
-"let g:ackprg="ack-grep -H --nocolor --nogroup --column"
-"let g:ackprg="ack -H --nocolor --nogroup --column"
-let g:ackprg="ag --nocolor --nogroup --column"
-nmap <unique> <Leader>a :Ack<SPACE>
-
 " Pathogen, activate!
 call pathogen#infect()
 
@@ -104,6 +98,12 @@ nmap <unique> <Leader>l :nohlsearch<CR>
 
 " Save searches
 set viminfo+=/200
+
+" :grep
+set grepformat=%f:%l:%c:%m
+set grepformat+=%-GNo\ files\ were\ searched\\,\ which\ means\ ripgrep\ probably\ applied\ a\ filter\ you\ didn't\ expect.\ Try\ running\ again\ with\ --debug.
+set grepprg=rg\ --color\ never\ --column\ --line-number\ --no-heading\ $*
+nmap <unique> <Leader>a :silent grep<SPACE>
 
 " Use space to find space
 " (Note the space after f, F)

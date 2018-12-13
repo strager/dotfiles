@@ -112,6 +112,7 @@ run_vim_test --need-vimrc vim/vim/autoload/strager/test_tag_c.vim
 run_vim_test --need-vimrc vim/vim/test/test_c_make_ninja.vim
 run_vim_test --need-vimrc vim/vim/test/test_color_column.vim
 run_vim_test --need-vimrc vim/vim/test/test_format.vim
+run_vim_test --need-vimrc vim/vim/test/test_grep.vim
 run_vim_test vim/vim/autoload/strager/test_buffer.vim
 run_vim_test vim/vim/autoload/strager/test_check_syntax.vim
 run_vim_test vim/vim/autoload/strager/test_check_syntax_internal.vim
