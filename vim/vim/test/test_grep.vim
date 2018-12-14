@@ -1,6 +1,6 @@
 function! Test_grep_with_no_files_clears_quickfix_list()
   call s:set_up_project([])
-  silent grep hello
+  Grep hello
   let l:quickfix_items = getqflist({'all': v:true}).items
   call assert_equal([], l:quickfix_items)
 endfunction
@@ -10,7 +10,7 @@ function! Test_grep_finds_single_match()
     \ ['readme.txt', 'hello there!'],
     \ ['other.txt', 'no match here.'],
   \ ])
-  silent grep hello
+  Grep hello
   let l:quickfix_items = getqflist({'all': v:true}).items
   call assert_equal(1, len(l:quickfix_items))
   call assert_equal(bufnr('readme.txt'), l:quickfix_items[0].bufnr)
@@ -21,14 +21,14 @@ function! Test_grep_matches_with_location()
     \ ['readme.txt', "first line\nsecond line\nthird line\nand the final line\n"],
   \ ])
 
-  silent grep third
+  Grep third
   let l:quickfix_items = getqflist({'all': v:true}).items
   call assert_equal(1, len(l:quickfix_items))
   call assert_equal(bufnr('readme.txt'), l:quickfix_items[0].bufnr)
   call assert_equal(3, l:quickfix_items[0].lnum)
   call assert_equal(1, l:quickfix_items[0].col)
 
-  silent grep final
+  Grep final
   let l:quickfix_items = getqflist({'all': v:true}).items
   call assert_equal(1, len(l:quickfix_items))
   call assert_equal(bufnr('readme.txt'), l:quickfix_items[0].bufnr)
@@ -41,7 +41,7 @@ function! Test_grep_matches_multiple_files()
     \ ['dates.txt', "january third\njanuary thirty?\n"],
     \ ['readme.txt', "first line\nsecond line\nthird line\nfourth line\n"],
   \ ])
-  silent grep third
+  Grep third
   let l:readme_quickfix_items = s:get_quickfix_items_for_buffer_name('readme.txt')
   call assert_equal(1, len(l:readme_quickfix_items))
   let l:dates_quickfix_items = s:get_quickfix_items_for_buffer_name('dates.txt')
@@ -53,10 +53,16 @@ function! Test_grep_with_explicit_directory_finds_single_match_in_subdirectory()
     \ ['readme.txt', 'hello there!'],
     \ ['searcheddir/readme.txt', 'why, hello!'],
   \ ])
-  silent grep hello searcheddir
+  Grep hello searcheddir
   let l:quickfix_items = getqflist({'all': v:true}).items
   call assert_equal(1, len(l:quickfix_items))
   call assert_equal(bufnr('searcheddir/readme.txt'), l:quickfix_items[0].bufnr)
+endfunction
+
+function! Test_tab_in_grep_completes_explicit_directory()
+  call s:set_up_project(['somedir/'])
+  call feedkeys(":Grep pattern somed\<C-L>\<Esc>", 'tx')
+  call assert_equal('Grep pattern somedir/', histget('cmd', -1))
 endfunction
 
 function! s:set_up_project(files_to_create)
