@@ -12,3 +12,5 @@ before_script:
 
 script:
   - ./vim/test.sh
+  - make
+  - git diff --exit-code
