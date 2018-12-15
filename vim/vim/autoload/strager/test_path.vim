@@ -92,6 +92,80 @@ function! Test_path_relative_to_descendant_is_an_error()
   call s:assert_make_relative_throws('/path/to/file', '/path/to/')
 endfunction
 
+function! Test_paths_upward()
+  call assert_equal(['/'], strager#path#paths_upward('/'))
+  call assert_equal([
+    \ '/path/to/file',
+    \ '/path/to',
+    \ '/path',
+    \ '/',
+  \ ], strager#path#paths_upward('/path/to/file'))
+  call assert_equal([
+    \ '/path/to/../from/dir',
+    \ '/path/to/../from',
+    \ '/path/to/..',
+    \ '/path/to',
+    \ '/path',
+    \ '/',
+  \ ], strager#path#paths_upward('/path/to/../from/dir'))
+  call assert_equal([
+    \ '/path/to/dir/',
+    \ '/path/to/dir',
+    \ '/path/to',
+    \ '/path',
+    \ '/',
+  \ ], strager#path#paths_upward('/path/to/dir/'))
+  call assert_equal([
+    \ '/path/to/dir/.',
+    \ '/path/to/dir',
+    \ '/path/to',
+    \ '/path',
+    \ '/',
+  \ ], strager#path#paths_upward('/path/to/dir/.'))
+
+  call assert_equal(['path'], strager#path#paths_upward('path'))
+  call assert_equal([
+    \ 'path/to/file',
+    \ 'path/to',
+    \ 'path',
+  \ ], strager#path#paths_upward('path/to/file'))
+  call assert_equal([
+    \ 'path/to/../from/dir',
+    \ 'path/to/../from',
+    \ 'path/to/..',
+    \ 'path/to',
+    \ 'path',
+  \ ], strager#path#paths_upward('path/to/../from/dir'))
+  call assert_equal([
+    \ 'path/to/dir/',
+    \ 'path/to/dir',
+    \ 'path/to',
+    \ 'path',
+  \ ], strager#path#paths_upward('path/to/dir/'))
+  call assert_equal([
+    \ 'path/to/dir/.',
+    \ 'path/to/dir',
+    \ 'path/to',
+    \ 'path',
+  \ ], strager#path#paths_upward('path/to/dir/.'))
+
+  call assert_equal(['.'], strager#path#paths_upward('.'))
+  call assert_equal([
+    \ './path/to/file',
+    \ './path/to',
+    \ './path',
+    \ '.',
+  \ ], strager#path#paths_upward('./path/to/file'))
+
+  call assert_equal(['..'], strager#path#paths_upward('..'))
+  call assert_equal([
+    \ '../path/to/file',
+    \ '../path/to',
+    \ '../path',
+    \ '..',
+  \ ], strager#path#paths_upward('../path/to/file'))
+endfunction
+
 function! s:assert_make_relative_throws(ancestor_path, descendant_components)
   call strager#assert#assert_throws(
     \ {-> strager#path#make_relative(a:ancestor_path, a:descendant_components)},

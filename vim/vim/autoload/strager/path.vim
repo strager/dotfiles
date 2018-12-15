@@ -19,6 +19,32 @@ function! strager#path#components(path)
   return l:components
 endfunction
 
+function! strager#path#paths_upward(path)
+  let l:paths = []
+  let l:path = a:path
+  while v:true
+    call add(l:paths, l:path)
+    if l:path ==# fnamemodify(l:path, ':t')
+      " NOTE(strager): Vim's documentation states that fnamemodify('name', ':h')
+      " returns an empty string, but it actually returns '.'.
+      break
+    endif
+    let l:parent_path = fnamemodify(l:path, ':h')
+    if l:parent_path ==# l:path
+      if l:path !=# '/'
+        " FIXME(strager): Are there other cases where :h is a no-op?
+        throw 'Failed to get parent of path: '.l:path
+      endif
+      break
+    endif
+    if strlen(l:parent_path) >= strlen(l:path)
+      throw 'Failed to get parent of path: '.l:path
+    endif
+    let l:path = l:parent_path
+  endwhile
+  return l:paths
+endfunction
+
 function! strager#path#make_relative(ancestor_path, descendant_path)
   let l:ancestor_components = strager#path#components(a:ancestor_path)
   let l:descendant_components = strager#path#components(a:descendant_path)

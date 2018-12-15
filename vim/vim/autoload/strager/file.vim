@@ -52,7 +52,7 @@ function! strager#file#file_exists_case_sensitive(path)
       return v:false
     endif
   endif
-  for l:cur_path in strager#file#paths_upward(l:path)
+  for l:cur_path in strager#path#paths_upward(l:path)
     if !s:file_exists_single_case_sensitive(l:cur_path)
       return v:false
     endif
@@ -78,32 +78,6 @@ function! s:file_exists_single_case_sensitive(path)
       \ .shellescape(l:dir)
   endif
   return l:matches == 1
-endfunction
-
-function! strager#file#paths_upward(path)
-  let l:paths = []
-  let l:path = a:path
-  while v:true
-    call add(l:paths, l:path)
-    if l:path ==# fnamemodify(l:path, ':t')
-      " NOTE(strager): Vim's documentation states that fnamemodify('name', ':h')
-      " returns an empty string, but it actually returns '.'.
-      break
-    endif
-    let l:parent_path = fnamemodify(l:path, ':h')
-    if l:parent_path ==# l:path
-      if l:path !=# '/'
-        " FIXME(strager): Are there other cases where :h is a no-op?
-        throw 'Failed to get parent of path: '.l:path
-      endif
-      break
-    endif
-    if strlen(l:parent_path) >= strlen(l:path)
-      throw 'Failed to get parent of path: '.l:path
-    endif
-    let l:path = l:parent_path
-  endwhile
-  return l:paths
 endfunction
 
 function! strager#file#list_directory(path)
@@ -132,7 +106,7 @@ endfunction
 
 function! strager#file#find_file_upward_with_glob(path, glob)
   let l:matches = []
-  for l:cur_path in strager#file#paths_upward(a:path)
+  for l:cur_path in strager#path#paths_upward(a:path)
     " FIXME(strager): How can we escape l:cur_path for glob()?
     let l:cur_path_glob_prefix = l:cur_path.'/'
     let l:cur_glob = l:cur_path_glob_prefix.a:glob

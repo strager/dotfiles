@@ -81,7 +81,7 @@ function s:save_current_buffer_saved_changes_as(new_path)
 endfunction
 
 function s:throw_cannot_open_file_for_writing_error(path)
-  for l:path in strager#file#paths_upward(a:path)
+  for l:path in strager#path#paths_upward(a:path)
     if l:path != a:path
       let l:type = getftype(l:path)
       if l:type == ''
