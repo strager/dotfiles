@@ -37,3 +37,7 @@ function strager#buffer#set_current_buffer_lines(lines)
   normal! ggdG
   call setline(1, a:lines)
 endfunction
+
+function strager#buffer#is_quickfix_buffer(buffer_number)
+  return getbufvar(a:buffer_number, '&buftype') ==# 'quickfix'
+endfunction

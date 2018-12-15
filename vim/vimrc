@@ -100,7 +100,10 @@ nmap <unique> <Leader>l :nohlsearch<CR>
 set viminfo+=/200
 
 " :grep
-command -complete=dir -nargs=+ Grep silent grep <args> | redraw!
+command -complete=dir -nargs=+
+  \ Grep silent grep <args>
+  \ | redraw!
+  \ | call strager#window#open_quickfix_window()
 set grepformat=%f:%l:%c:%m
 set grepformat+=%-GNo\ files\ were\ searched\\,\ which\ means\ ripgrep\ probably\ applied\ a\ filter\ you\ didn't\ expect.\ Try\ running\ again\ with\ --debug.
 set grepprg=rg\ --color\ never\ --column\ --line-number\ --no-heading\ $*

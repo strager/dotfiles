@@ -65,6 +65,21 @@ function! Test_tab_in_grep_completes_explicit_directory()
   call assert_equal('Grep pattern somedir/', histget('cmd', -1))
 endfunction
 
+function! Test_grep_with_match_opens_quickfix_window()
+  call s:set_up_project([['readme.txt', 'hello world']])
+  call assert_false(strager#window#is_quickfix_window_open_in_current_tab())
+  Grep hello
+  call assert_true(strager#window#is_quickfix_window_open_in_current_tab())
+endfunction
+
+function! Test_grep_without_match_does_not_move_cursor()
+  call s:set_up_project([['readme.txt', 'hello world']])
+  edit readme.txt
+  let l:original_buffer_number = bufnr('%')
+  Grep nomatch
+  call assert_equal(l:original_buffer_number, bufnr('%'))
+endfunction
+
 function! s:set_up_project(files_to_create)
   let l:project_path = strager#file#make_directory_with_files(a:files_to_create)
   exec 'cd '.fnameescape(l:project_path)
