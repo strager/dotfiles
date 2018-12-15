@@ -121,7 +121,7 @@ ZSH_HIGHLIGHT_STYLES[alias]="${_command_style}"
 ZSH_HIGHLIGHT_STYLES[arg0]="${_command_style}"
 ZSH_HIGHLIGHT_STYLES[builtin]="${_command_style}"
 ZSH_HIGHLIGHT_STYLES[command]="${_command_style},underline"
-ZSH_HIGHLIGHT_STYLES[comment]='fg=red'
+ZSH_HIGHLIGHT_STYLES[comment]='fg=green,bold'
 ZSH_HIGHLIGHT_STYLES[default]="${_argument_style}"
 ZSH_HIGHLIGHT_STYLES[dollar-quoted-argument-unclosed]="${_error_style}"
 ZSH_HIGHLIGHT_STYLES[double-hypen-option]="${_argument_style}"
