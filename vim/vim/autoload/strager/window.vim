@@ -10,6 +10,6 @@ endfunction
 
 function! strager#window#open_quickfix_window()
   let l:window_id = win_getid()
-  copen
+  botright copen
   call win_gotoid(l:window_id)
 endfunction

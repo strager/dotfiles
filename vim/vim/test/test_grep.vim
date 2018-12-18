@@ -72,6 +72,56 @@ function! Test_grep_with_match_opens_quickfix_window()
   call assert_true(strager#window#is_quickfix_window_open_in_current_tab())
 endfunction
 
+function! Test_grep_opens_quickfix_window_at_bottom_of_tab()
+  call s:set_up_project([['readme.txt', 'hello world']])
+
+  " Create the following layout:
+  "
+  " +--------------+
+  " |    |    |    |
+  " |----|    |----|
+  " |    |    |    |
+  " +--------------+
+  vnew
+  vnew
+  wincmd t
+  split
+  wincmd t
+  2wincmd l
+  split
+  call s:assert_window_layout(
+    \ ['row', [
+      \ ['col', [
+        \ ['leaf'],
+        \ ['leaf'],
+      \ ]],
+      \ ['leaf'],
+      \ ['col', [
+        \ ['leaf'],
+        \ ['leaf'],
+      \ ]],
+    \ ]],
+  \ )
+
+  Grep hello
+  call s:assert_window_layout(
+    \ ['col', [
+      \ ['row', [
+        \ ['col', [
+          \ ['leaf'],
+          \ ['leaf'],
+        \ ]],
+        \ ['leaf'],
+        \ ['col', [
+          \ ['leaf'],
+          \ ['leaf'],
+        \ ]],
+      \ ]],
+      \ ['leaf'],
+    \ ]],
+  \ )
+endfunction
+
 function! Test_grep_without_match_does_not_move_cursor()
   call s:set_up_project([['readme.txt', 'hello world']])
   edit readme.txt
@@ -92,5 +142,25 @@ function! s:get_quickfix_items_for_buffer_name(buffer_name)
   call filter(l:quickfix_items, {_, item -> item.bufnr == l:buffer_number})
   return l:quickfix_items
 endfunction
+
+function! s:assert_window_layout(expected_layout)
+  let l:actual_layout = winlayout()
+  call s:strip_window_ids_from_window_layout(l:actual_layout)
+  call assert_equal(a:expected_layout, l:actual_layout)
+endfunction
+
+function! s:strip_window_ids_from_window_layout(layout)
+  let l:type = a:layout[0]
+  if l:type ==# 'row' || l:type ==# 'col'
+    let l:children = a:layout[1]
+    for l:child in l:children
+      call s:strip_window_ids_from_window_layout(l:child)
+    endfor
+  elseif l:type ==# 'leaf'
+    call remove(a:layout, 1)
+  else
+    throw printf('Unexpected window layout type: %s', l:type)
+  endif
+endfunction!
 
 call strager#test#run_all_tests()
