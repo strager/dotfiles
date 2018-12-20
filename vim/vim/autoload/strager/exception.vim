@@ -12,7 +12,15 @@ function! strager#exception#format_throwpoint(throwpoint)
 endfunction
 
 function! s:format_frame(frame)
-  let l:output = a:frame.script_path.':'.a:frame.line.':'
+  if a:frame.script_path ==# v:none
+    let l:output = printf(
+      \ ':%s[%s]:',
+      \ a:frame.autocommand.event,
+      \ a:frame.autocommand.name,
+    \ )
+  else
+    let l:output = a:frame.script_path.':'.a:frame.line.':'
+  endif
   if type(a:frame.function) !=# v:t_none
     let l:output .= '('.a:frame.function.source_name.'):'
   endif
@@ -25,7 +33,7 @@ function! strager#exception#parse_throwpoint(throwpoint)
     \ '^\%(function \(.*\)\|\(.\+\)\), line \([0-9]\+\)$',
   \ )
   if empty(l:match)
-    throw 'Not a valid throwpoint: '.string(a:throwpoint)
+    return s:parse_autocommand_throwpoint(a:throwpoint)
   endif
   let [_, l:frames_string, l:script_path, l:throwing_function_line; _] = l:match
   let l:throwing_function_line = str2nr(l:throwing_function_line)
@@ -41,11 +49,29 @@ function! strager#exception#parse_throwpoint(throwpoint)
     return l:frames
   else
     return [{
+      \ 'autocommand': v:none,
       \ 'function': v:none,
       \ 'line': l:throwing_function_line,
       \ 'script_path': l:script_path,
     \ }]
   endif
+endfunction
+
+function! s:parse_autocommand_throwpoint(throwpoint)
+  let l:match = matchlist(
+    \ a:throwpoint,
+    \ '^\([A-Za-z]\+\) Autocommands for "\(.*\)"$'
+  \ )
+  if empty(l:match)
+    throw 'Not a valid throwpoint: '.string(a:throwpoint)
+  endif
+  let [_, l:event, l:name; _] = l:match
+  return [{
+    \ 'autocommand': {'event': l:event, 'name': l:name},
+    \ 'function': v:none,
+    \ 'line': v:none,
+    \ 'script_path': v:none,
+  \ }]
 endfunction
 
 " Example value of a:frame_string:
@@ -62,6 +88,7 @@ endfunction
 function! s:frame(function_name, function_line)
   let l:loc = strager#function#function_source_location(a:function_name)
   return {
+    \ 'autocommand': v:none,
     \ 'function': l:loc,
     \ 'line': l:loc.line + a:function_line,
     \ 'script_path': l:loc.script_path,

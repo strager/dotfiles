@@ -20,6 +20,7 @@ function! Test_parse_throwpoint_from_user_function()
     \ s:test_marker_line_number('Test_parse_throwpoint_from_user_function'),
     \ l:throw_frame.line,
   \ )
+  call assert_equal(v:none, l:throw_frame.autocommand)
 endfunction
 
 function! Test_parse_throwpoint_from_built_in_function()
@@ -42,6 +43,7 @@ function! Test_parse_throwpoint_from_built_in_function()
     \ s:test_marker_line_number('Test_parse_throwpoint_from_built_in_function'),
     \ l:throw_frame.line,
   \ )
+  call assert_equal(v:none, l:throw_frame.autocommand)
 endfunction
 
 function! Test_parse_throwpoint_through_built_in_function()
@@ -164,6 +166,32 @@ function! Test_parse_throwpoint_from_script_body()
   call assert_equal(v:none, l:throw_frame.function)
   call assert_equal(l:test_script_path, l:throw_frame.script_path)
   call assert_equal(1, l:throw_frame.line)
+  call assert_equal(v:none, l:throw_frame.autocommand)
+endfunction
+
+function! Test_parse_throwpoint_from_autocmd()
+  augroup test_parse_throwpoint_from_autocmd_group
+    autocmd!
+    autocmd User test_parse_throwpoint_from_autocmd throw 'My error'
+  augroup END
+
+  let l:throwpoint = v:none
+  try
+    doautocmd User test_parse_throwpoint_from_autocmd
+  catch
+    let l:throwpoint = v:throwpoint
+  endtry
+  let l:frames = strager#exception#parse_throwpoint(l:throwpoint)
+  let [l:throw_frame; _] = l:frames
+
+  call assert_equal(v:none, l:throw_frame.function)
+  call assert_equal(v:none, l:throw_frame.script_path)
+  call assert_equal(v:none, l:throw_frame.line)
+  call assert_equal("User", l:throw_frame.autocommand.event)
+  call assert_equal(
+    \ "test_parse_throwpoint_from_autocmd",
+    \ l:throw_frame.autocommand.name,
+  \ )
 endfunction
 
 function! Test_format_throwpoint()
@@ -198,6 +226,14 @@ function! Test_format_script_throwpoint()
   let l:throwpoint = '/myscript.vim, line 42'
   call assert_equal(
     \ '/myscript.vim:42:',
+    \ strager#exception#format_throwpoint(l:throwpoint),
+  \ )
+endfunction
+
+function! Test_format_autocommand_throwpoint()
+  let l:throwpoint = 'User Autocommands for "foo"'
+  call assert_equal(
+    \ ':User[foo]:',
     \ strager#exception#format_throwpoint(l:throwpoint),
   \ )
 endfunction
