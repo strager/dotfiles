@@ -71,7 +71,17 @@ function s:save_current_buffer_saved_changes_as(new_path)
     silent earlier 1f
   endif
   try
-    silent exec 'saveas '.fnameescape(a:new_path)
+    " HACK(strager): :saveas is basically :file followed by :write. If :saveas'
+    " :write fails, the :file is not rolled back. Do :write followed by :file
+    " manually to work around the limitations of :saveas.
+    "
+    " HACK(strager): :file sets the not-edited flag, preventing a following
+    " :write from succeeding. The only way to remove this flag is to use
+    " :write!. Unfortunately, the :write! is redundant with the :write! we just
+    " did
+    silent exec 'write '.fnameescape(a:new_path)
+    silent exec 'file '.fnameescape(a:new_path)
+    silent write!
     bwipeout #
   finally
     if l:had_unsaved_changes

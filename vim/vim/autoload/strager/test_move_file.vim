@@ -175,6 +175,7 @@ function Test_move_to_missing_directory_fails()
     \ 'ES001: Directory does not exist (newdir)',
   \ )
   call s:assert_file_exists('old.txt')
+  call assert_equal('old.txt', bufname('%'))
 endfunction
 
 function Test_move_to_unwritable_directory_fails()
