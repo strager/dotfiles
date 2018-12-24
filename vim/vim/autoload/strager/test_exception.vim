@@ -48,11 +48,10 @@ endfunction
 
 function! Test_parse_throwpoint_through_built_in_function()
   let l:throwpoint = v:none
+  let l:function = [function('<SNR>'.s:sid().'_throw_error')]
   try
-    " **MARKER Test_parse_throwpoint_through_built_in_function callee MARKER**
-    let L:lambda = {_, _ -> reference_to_undefined_name}
     " **MARKER Test_parse_throwpoint_through_built_in_function caller MARKER**
-    call map([1], L:lambda)
+    call map([1], l:function[0])
   catch
     let l:throwpoint = v:throwpoint
   endtry
@@ -60,23 +59,22 @@ function! Test_parse_throwpoint_through_built_in_function()
   let [l:throw_frame, l:call_frame; _] = l:frames
 
   call assert_equal(
-    \ 'Test_parse_throwpoint_through_built_in_function',
+    \ "\x80\xfdR".s:sid().'_throw_error',
     \ l:throw_frame.function.real_name,
   \ )
   call assert_equal(s:script_path, l:throw_frame.script_path)
   call assert_equal(s:test_marker_line_number(
-    \ 'Test_parse_throwpoint_through_built_in_function callee',
+    \ 's:throw_error',
   \ ), l:throw_frame.line)
 
-  " map() does *not* introduce a frame.
-  call assert_notequal(
-      \ 'Test_parse_throwpoint_through_built_in_function',
-      \ l:call_frame.function.real_name)
-  if l:call_frame.script_path ==# s:script_path
-    call assert_notequal(s:test_marker_line_number(
-      \ 'Test_parse_throwpoint_through_built_in_function caller',
-    \ ), l:call_frame.line)
-  endif
+  call assert_equal(
+    \ 'Test_parse_throwpoint_through_built_in_function',
+    \ l:call_frame.function.real_name,
+    \ 'map() should not have its own frame',
+  \ )
+  call assert_equal(s:test_marker_line_number(
+    \ 'Test_parse_throwpoint_through_built_in_function caller',
+  \ ), l:call_frame.line)
 endfunction
 
 function! Test_parse_throwpoint_from_script_function()
@@ -244,7 +242,7 @@ function! s:call_throw_error_via_funcref()
   call l:Throw_error()
 endfunction
 
-function! s:throw_error()
+function! s:throw_error(...)
   " **MARKER s:throw_error MARKER**
   throw 'Some error'
 endfunction
