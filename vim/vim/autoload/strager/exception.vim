@@ -12,17 +12,23 @@ function! strager#exception#format_throwpoint(throwpoint)
 endfunction
 
 function! s:format_frame(frame)
-  if a:frame.script_path ==# v:none
+  if a:frame.script_path !=# v:none
+    let l:output = a:frame.script_path.':'.a:frame.line.':'
+  elseif type(a:frame.autocommand) !=# v:t_none
     let l:output = printf(
       \ ':%s[%s]:',
       \ a:frame.autocommand.event,
       \ a:frame.autocommand.name,
     \ )
   else
-    let l:output = a:frame.script_path.':'.a:frame.line.':'
+    let l:output = '::'
   endif
   if type(a:frame.function) !=# v:t_none
-    let l:output .= '('.a:frame.function.source_name.'):'
+    if strager#function#is_lambda_function_name(a:frame.function.real_name)
+      let l:output .= '(lambda):'
+    else
+      let l:output .= '('.a:frame.function.source_name.'):'
+    endif
   endif
   return l:output
 endfunction
@@ -87,10 +93,14 @@ endfunction
 
 function! s:frame(function_name, function_line)
   let l:loc = strager#function#function_source_location(a:function_name)
+  let l:line = v:none
+  if type(l:loc.line) !=# v:t_none
+    let l:line = l:loc.line + a:function_line
+  endif
   return {
     \ 'autocommand': v:none,
     \ 'function': l:loc,
-    \ 'line': l:loc.line + a:function_line,
+    \ 'line': l:line,
     \ 'script_path': l:loc.script_path,
   \ }
 endfunction

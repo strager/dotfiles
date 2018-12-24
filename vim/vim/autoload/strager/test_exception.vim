@@ -77,6 +77,59 @@ function! Test_parse_throwpoint_through_built_in_function()
   \ ), l:call_frame.line)
 endfunction
 
+function! Test_parse_throwpoint_from_live_lambda()
+  let l:throwpoint = v:none
+  " **MARKER Test_parse_throwpoint_from_lambda MARKER**"
+  let l:lambda = [{-> undefined_name}]
+  try
+    call l:lambda[0]()
+  catch
+    let l:throwpoint = v:throwpoint
+  endtry
+  let l:frames = strager#exception#parse_throwpoint(l:throwpoint)
+  let [l:throw_frame; _] = l:frames
+
+  call assert_equal(
+    \ v:none,
+    \ l:throw_frame.function.source_name,
+    \ 'Lambda frames should not have a name',
+  \ )
+  call assert_equal(s:script_path, l:throw_frame.script_path)
+  call assert_equal(s:test_marker_line_number(
+    \ 'Test_parse_throwpoint_from_lambda',
+  \ ), l:throw_frame.line)
+endfunction
+
+function! Test_parse_throwpoint_from_dead_lambda()
+  let l:throwpoint = v:none
+  let l:lambda = [{-> undefined_name}]
+  try
+    call l:lambda[0]()
+  catch
+    let l:throwpoint = v:throwpoint
+  endtry
+  let l:lambda[0] = v:none
+  " The lambda function should now be undefined.
+  let l:frames = strager#exception#parse_throwpoint(l:throwpoint)
+  let [l:throw_frame; _] = l:frames
+
+  call assert_equal(
+    \ v:none,
+    \ l:throw_frame.function.source_name,
+    \ 'Lambda frame should not have a name',
+  \ )
+  call assert_equal(
+    \ v:none,
+    \ l:throw_frame.script_path,
+    \ 'Lambda frame should not have a source location',
+  \ )
+  call assert_equal(
+    \ v:none,
+    \ l:throw_frame.line,
+    \ 'Lambda frame should not have a source location',
+  \ )
+endfunction
+
 function! Test_parse_throwpoint_from_script_function()
   let l:throwpoint = v:none
   try
@@ -232,6 +285,30 @@ function! Test_format_autocommand_throwpoint()
   let l:throwpoint = 'User Autocommands for "foo"'
   call assert_equal(
     \ ':User[foo]:',
+    \ strager#exception#format_throwpoint(l:throwpoint),
+  \ )
+endfunction
+
+function! Test_format_live_lamba_throwpoint()
+  " **MARKER Test_format_live_lamba_throwpoint MARKER**"
+  let l:lambda = [{-> 42}]
+  let l:throwpoint = printf('function %s, line 1', get(l:lambda[0], 'name'))
+  call assert_equal(
+    \ printf(
+      \ '%s:%d:(lambda):',
+      \ s:script_path,
+      \ s:test_marker_line_number('Test_format_live_lamba_throwpoint'),
+    \ ),
+    \ strager#exception#format_throwpoint(l:throwpoint),
+  \ )
+endfunction
+
+function! Test_format_dead_lamba_throwpoint()
+  let l:lambda = [{-> 42}]
+  let l:throwpoint = printf('function %s, line 1', get(l:lambda[0], 'name'))
+  let l:lambda[0] = v:none
+  call assert_equal(
+    \ '::(lambda):',
     \ strager#exception#format_throwpoint(l:throwpoint),
   \ )
 endfunction

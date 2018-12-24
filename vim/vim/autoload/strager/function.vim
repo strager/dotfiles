@@ -106,7 +106,7 @@ function! s:function_source_line(source_function_name, function_script_path)
 endfunction
 
 function! s:source_function_name(real_function_name)
-  if s:is_lambda_function_name(a:real_function_name)
+  if strager#function#is_lambda_function_name(a:real_function_name)
     return v:none
   endif
   " <SNR>123_ -> s:
@@ -124,6 +124,6 @@ function! s:real_function_name(function_name)
   return a:function_name
 endfunction
 
-function! s:is_lambda_function_name(function_name)
+function! strager#function#is_lambda_function_name(function_name)
   return a:function_name =~# '^<lambda>'
 endfunction
