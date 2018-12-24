@@ -49,7 +49,7 @@ command! GNUFormat :setlocal
 """ Text manipulation
 set bs=indent,eol,start
 set completeopt=menu,preview
-set noesckeys
+set esckeys
 
 " Don't synchronize Vim's unnamed register with system clipboard.
 set clipboard=

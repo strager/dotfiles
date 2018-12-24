@@ -108,12 +108,12 @@ endfunction
 
 function! Test_shift_d_key_prompts_deletion_of_file_under_cursor()
   call s:set_up_project(['file_a', 'file_b', 'file_c'])
-  let l:terminal = s:launch_vim_in_terminal()
-  call s:run_ex_command_in_vim_terminal(
+  let l:terminal = strager#subvim#launch_vim_in_terminal()
+  call strager#subvim#run_ex_command(
     \ l:terminal,
     \ printf('edit %s', fnameescape(getcwd())),
   \ )
-  call s:run_ex_command_in_vim_terminal(l:terminal, '3')
+  call strager#subvim#run_ex_command(l:terminal, '3')
 
   call term_sendkeys(l:terminal, 'D')
   call term_wait(l:terminal)
@@ -199,20 +199,6 @@ endfunction
 
 function! s:get_relative_path_of_current_buffer()
   return fnamemodify(bufname('%'), ':.')
-endfunction
-
-function s:launch_vim_in_terminal()
-  execute printf(
-    \ 'terminal ++noclose ++rows=10 ++cols=80 %s -n',
-    \ fnameescape(v:progpath),
-  \ )
-  return bufnr('%')
-endfunction
-
-function s:run_ex_command_in_vim_terminal(terminal, ex_command)
-  call term_sendkeys(a:terminal, ':'.a:ex_command."\<CR>")
-  sleep 100m
-  call term_wait(a:terminal)
 endfunction
 
 function s:scrape_command_line_row_text_from_vim_terminal(terminal)

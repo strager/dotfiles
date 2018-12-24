@@ -110,6 +110,7 @@ run_vim_syntax_test vim/vim/syntax/test_objdump/symbol_header.objdump
 run_vim_syntax_test vim/vim/syntax/test_objdump/x86_64.objdump
 run_vim_test --need-vimrc vim/vim/autoload/strager/test_tag_c.vim
 run_vim_test --need-vimrc vim/vim/test/test_c_make_ninja.vim
+run_vim_test --need-vimrc vim/vim/test/test_clipboard.vim
 run_vim_test --need-vimrc vim/vim/test/test_color_column.vim
 run_vim_test --need-vimrc vim/vim/test/test_directory_browser.vim
 run_vim_test --need-vimrc vim/vim/test/test_format.vim
