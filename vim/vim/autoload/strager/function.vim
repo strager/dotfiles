@@ -8,7 +8,7 @@ function! strager#function#function_source_location(function)
     throw 'Expected function, but got '.string(a:function)
   endif
   let l:real_function_name = s:real_function_name(l:function_name)
-  if l:real_function_name !~# '^\(s:\|[A-Z]\|'."\x80\xfdR".'\|.*#\)'
+  if l:real_function_name !~# '^\(s:\|[A-Z]\|'."\x80\xfdR".'\|.*#\|<lambda>\)'
     " a:function refers to a built-in function.
     return {
       \ 'line': v:none,
@@ -17,12 +17,17 @@ function! strager#function#function_source_location(function)
       \ 'source_name': v:none,
     \ }
   endif
-  let l:script_path = s:function_source_script_path(l:real_function_name)
+  let l:source_location = s:basic_function_source_location(l:real_function_name)
+  let l:script_path = v:none
   let l:line = v:none
   let l:source_function_name = v:none
-  if l:script_path !=# v:none
+  if type(l:source_location) !=# v:t_none
+    let l:script_path = l:source_location.script_path
+    let l:line = l:source_location.line
     let l:source_function_name = s:source_function_name(l:real_function_name)
-    let l:line = s:function_source_line(l:source_function_name, l:script_path)
+    if l:line ==# v:none
+      let l:line = s:function_source_line(l:source_function_name, l:script_path)
+    endif
   endif
   return {
     \ 'line': l:line,
@@ -32,10 +37,12 @@ function! strager#function#function_source_location(function)
   \ }
 endfunction
 
-function! s:function_source_script_path(real_function_name)
+function! s:basic_function_source_location(real_function_name)
   try
-    "" FIXME(strager): Is this the right way to escape the function name?
-    let l:function_output = execute('verbose function '.a:real_function_name)
+    let l:function_output = execute(printf(
+      \ 'verbose function {%s}',
+      \ string(a:real_function_name),
+    \ ))
   catch /E123:/
     return v:none
   endtry
@@ -44,7 +51,10 @@ function! s:function_source_script_path(real_function_name)
   if l:script_path ==# v:none
     throw 'Failed to parse file name for function: '.a:real_function_name
   endif
-  return expand(l:script_path, ':p')
+  return {
+    \ 'line': l:function_info.line,
+    \ 'script_path': expand(l:script_path, ':p'),
+  \ }
 endfunction
 
 function! strager#function#parse_ex_function_output(function_output)
@@ -96,6 +106,9 @@ function! s:function_source_line(source_function_name, function_script_path)
 endfunction
 
 function! s:source_function_name(real_function_name)
+  if s:is_lambda_function_name(a:real_function_name)
+    return v:none
+  endif
   " <SNR>123_ -> s:
   let l:match = matchlist(a:real_function_name, '^'."\x80\xfd".'R\d\+_\(.\+\)$')
   if !empty(l:match)
@@ -109,4 +122,8 @@ function! s:real_function_name(function_name)
     return "\x80\xfdR".a:function_name[5:]
   endif
   return a:function_name
+endfunction
+
+function! s:is_lambda_function_name(function_name)
+  return a:function_name =~# '^<lambda>'
 endfunction
