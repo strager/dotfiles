@@ -13,7 +13,7 @@ command! -bang Hello w
 command! -nargs=1 Hello w
 "        -kkkkk++        :CHECK-NEXT-LINE
 command! -nargs=+ Hello w
-"        -kkkkk++        :CHECK-NEXT-LINE
+"        -kkkkk+a        :CHECK-NEXT-LINE
 command! -nargs=? Hello w
 "        -kkkkk+a        :CHECK-NEXT-LINE
 command! -nargs=* Hello w

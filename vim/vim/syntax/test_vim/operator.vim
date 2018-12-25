@@ -29,11 +29,9 @@ if x <= y | if x <=# y | if x <=? y | endif | endif | endif
 if x =~ y | if x =~# y | if x =~? y | endif | endif | endif
 "    ++          +++          +++                          :CHECK-NEXT-LINE
 if x !~ y | if x !~# y | if x !~? y | endif | endif | endif
-" TODO(strager): Highlight is# as an operator:
-"    ++          +++          ___                          :CHECK-NEXT-LINE
+"    ++          +++          +++                          :CHECK-NEXT-LINE
 if x is y | if x is? y | if x is# y | endif | endif | endif
-" TODO(strager): Highlight isnot# as an operator:
-"    +++++          ++++++          ______                          :CHECK-NEXT-LINE
+"    +++++          ++++++          ++++++                          :CHECK-NEXT-LINE
 if x isnot y | if x isnot? y | if x isnot# y | endif | endif | endif
 
 " Logical operators:
@@ -59,8 +57,7 @@ if F(xisnot) | endif
 if a &&? b ||? c | endif
 "      _     _          :CHECK-NEXT-LINE
 if a &&# b ||# c | endif
-" TODO(strager): Don't highlight these non-operators:
-"     _           _                  :TODO-CHECK-NEXT-LINE
+"     _           _                  :CHECK-NEXT-LINE
 if a =? b | if a =# b | endif | endif
 
 " TODO(strager): Highlight more operators:
