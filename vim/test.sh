@@ -108,6 +108,16 @@ run_vim_syntax_test vim/vim/syntax/test_objdump/conceal.objdump
 run_vim_syntax_test vim/vim/syntax/test_objdump/disassembly.objdump
 run_vim_syntax_test vim/vim/syntax/test_objdump/symbol_header.objdump
 run_vim_syntax_test vim/vim/syntax/test_objdump/x86_64.objdump
+run_vim_syntax_test vim/vim/syntax/test_vim/bracket.vim
+run_vim_syntax_test vim/vim/syntax/test_vim/command.vim
+run_vim_syntax_test vim/vim/syntax/test_vim/misc.vim
+run_vim_syntax_test vim/vim/syntax/test_vim/number.vim
+run_vim_syntax_test vim/vim/syntax/test_vim/operator.vim
+run_vim_syntax_test vim/vim/syntax/test_vim/pattern.vim
+run_vim_syntax_test vim/vim/syntax/test_vim/statement.vim
+run_vim_syntax_test vim/vim/syntax/test_vim/string.vim
+run_vim_syntax_test vim/vim/syntax/test_vim/user_function.vim
+run_vim_syntax_test vim/vim/syntax/test_vim/variable.vim
 run_vim_test --need-vimrc vim/vim/autoload/strager/test_tag_c.vim
 run_vim_test --need-vimrc vim/vim/test/test_c_make_ninja.vim
 run_vim_test --need-vimrc vim/vim/test/test_clipboard.vim
