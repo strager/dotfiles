@@ -36,5 +36,6 @@
 	insteadOf = sib:
 [diff]
 	algorithm = patience
+	noprefix = 1
 [merge]
 	conflictstyle = diff3
