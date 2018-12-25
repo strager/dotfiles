@@ -4,7 +4,7 @@
 [core]
 	excludesfile = ~/.gitignore
 [push]
-	default = tracking
+	default = nothing
 [branch]
 	autosetupmerge = true
 	autosetuprebase = always
