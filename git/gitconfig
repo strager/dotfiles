@@ -1,7 +1,6 @@
 [user]
 	name = Matthew Glazar
 	email = strager.nds@gmail.com
-	signingkey = CFAD39FB
 [core]
 	excludesfile = ~/.gitignore
 [push]
@@ -12,7 +11,6 @@
 [alias]
 	co = checkout
 	l = log --color --graph --pretty=format:'%Cgreen%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
-	ll = log --color --no-merges --pretty=format:'%Cgreen%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
 
 [color]
 	ui = auto
@@ -30,10 +28,6 @@
 	changed = green
 	untracked = cyan
 
-[url "git@github.com:strager/"]
-	insteadOf = gh:
-[url "git@github.com:sibblingz/"]
-	insteadOf = sib:
 [diff]
 	algorithm = patience
 	noprefix = 1
