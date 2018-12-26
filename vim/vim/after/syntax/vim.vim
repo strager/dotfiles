@@ -1,8 +1,15 @@
+syntax clear vimFunc
+syntax clear vimNotFunc
 syntax clear vimOper
+syntax clear vimUserFunc
 
 " HACK(strager): Work around substitute function being highlighted as :s. (See
 " misc.vim.)
 syntax clear vimSubst
+
+syntax keyword vimNotFunc el[seif] if return while
+syntax match vimFunc /\%#=1\%([BbGgLlSsTtWw]:\)\?\I\i*\%(\.\I\i*\)*\ze\s*(/ contains=vimFuncName,vimUserFunc
+syntax match vimUserFunc /\%#=1[^( ]\+/ contained
 
 syntax match vimOper /&&\|||/ oneline
 syntax match vimOper /[=+-]/ oneline
