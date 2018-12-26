@@ -44,5 +44,5 @@ echomsg "\\%(a\\|b\\)\\{-}"
 call foo() "hello
 " TODO(strager): Highlight this as a comment.
 "                  ///:TODO-CHECK-NEXT-LINE
-"                  ???:CHECK-NEXT-LINE
+"                  sss:CHECK-NEXT-LINE
 let g:temp = v:true"b"

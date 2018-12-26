@@ -1,6 +1,8 @@
 syntax clear vimFunc
 syntax clear vimNotFunc
+syntax clear vimNotPatSep
 syntax clear vimOper
+syntax clear vimString
 syntax clear vimUserFunc
 
 " HACK(strager): Work around substitute function being highlighted as :s. (See
@@ -21,5 +23,19 @@ syntax match vimOper /\%#=1\%(=[=~]\|![=~]\|[<>]=\?\)[#?]\?/ contains=vimFunc,vi
 syntax match vimOper /\%#=1\<is\%(not\)\?\%(#\|?\|\>\)/ oneline
 syntax match vimOper /\%#=1\./ oneline
 
+syntax match vimNotPatSep /\\\\/ contained
+syntax match vimString /\%#=1'[^']*'/
+syntax match vimStringPatternEscape /\\%(/ contained
+syntax match vimStringPatternEscape /\\)/ contained
+syntax match vimStringPatternEscape /\\|/ contained
+syntax region vimString start=+/+ end=+/+ oneline
+syntax region vimString start=/\%#=1^\@<!"/ skip=/\\"/ matchgroup=vimStringEnd end=/"/ oneline contains=vimNotPatSep,vimStringPatternEscape
+
 " TODO(strager): Remove this rule when we define vimUserAttrb after vimOper.
 syntax match vimUserAttribHack /-/ contained containedin=vimUserCmd contains=vimUserAttrb nextgroup=vimUserAttrbCmplt oneline transparent
+
+" HACK(strager): Remove vimNotPatSep from vimSynRegPatGroup. (Why is it there in
+" the first place?)
+syntax cluster vimSynRegPatGroup contains=vimPatSep,vimSynPatRange,vimSynNotPatRange,vimSubstSubstr,vimPatRegion,vimPatSepErr,vimNotation
+
+highlight default link vimStringPatternEscape vimPatSep
