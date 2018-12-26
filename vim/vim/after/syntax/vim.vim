@@ -1,6 +1,7 @@
 syntax clear vimFunc
 syntax clear vimNotFunc
 syntax clear vimNotPatSep
+syntax clear vimNumber
 syntax clear vimOper
 syntax clear vimString
 syntax clear vimUserFunc
@@ -12,6 +13,9 @@ syntax clear vimSubst
 syntax keyword vimNotFunc el[seif] if return while
 syntax match vimFunc /\%#=1\%([BbGgLlSsTtWw]:\)\?\I\i*\%(\.\I\i*\)*\ze\s*(/ contains=vimFuncName,vimUserFunc
 syntax match vimUserFunc /\%#=1[^( ]\+/ contained
+
+syntax match vimNumber /\%#=1\<\d\+\%(\.\d\+\%(e\%([-+]\d\|\d\)\)\?\)\?/ oneline
+syntax match vimNumber /0[Xx]\x\+/ oneline
 
 syntax match vimOper /\%#=1&&\|||/ oneline
 syntax match vimOper /\%#=1[=+-]/ oneline
