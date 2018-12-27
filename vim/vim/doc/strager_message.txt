@@ -27,11 +27,6 @@ You are giving an unsupported object as a seed to
 |strager#random_mt19937#make_generator|, such as a |Dictionary|. Give an
 integer or a list of integers instead.
 
-
-You are giving an unsupported object as a seed to
-|strager#random_mt19937#make_generator|, such as a |Dictionary|. Give an
-integer or a list of integers instead.
-
 							*ES004* *ES901*  >
   mt19937 state not initialized
   Path is not a descendant
