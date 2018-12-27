@@ -43,5 +43,3 @@ syntax match vimUserAttribHack /-/ contained containedin=vimUserCmd contains=vim
 syntax cluster vimSynRegPatGroup contains=vimPatSep,vimSynPatRange,vimSynNotPatRange,vimSubstSubstr,vimPatRegion,vimPatSepErr,vimNotation
 
 highlight default link vimStringPatternEscape vimPatSep
-
-call strager#syntax#end_syntax()
