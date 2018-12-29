@@ -180,6 +180,12 @@ let loaded_matchparen = v:true
 
 call strager#color_column#set_up_sync_colorcolumn_with_textwidth()
 
+call strager#cursor_shape#set_cursor_shapes({
+  \ 'insert': 'vertical bar',
+  \ 'normal': 'block',
+  \ 'replace': 'underline',
+\ })
+
 " filename [Help][-][RO]
 set statusline=\ \ \ %<%f\ %h%m%r
 " Line, col

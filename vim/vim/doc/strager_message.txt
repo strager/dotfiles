@@ -39,4 +39,13 @@ An internal, unrecoverable error occurred.
 :scriptnames did not list the given path. Either the script hasn't been loaded
 yet, or the given path is malformed.
 
+							*ES006*  >
+  Unsupported cursor shape
+
+|strager#cursor_shape#set_cursor_shape| was called with an invalid cursor
+shape. The following cursor shapes are supported:
+	block
+	underline
+	vertical bar
+
  vim:tw=78:ts=8:noet:ft=help:norl:
