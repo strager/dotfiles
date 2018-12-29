@@ -49,7 +49,6 @@ command! GNUFormat :setlocal
 """ Text manipulation
 set bs=indent,eol,start
 set completeopt=menu,preview
-set esckeys
 
 " Don't synchronize Vim's unnamed register with system clipboard.
 set clipboard=
@@ -203,6 +202,12 @@ endif
 
 " Treat undercurl as underline.
 set t_Cs= t_Ce=
+
+" Handle <ESC> immediately in insert mode. Wait indefinitely for incomplete
+" mappings.
+set esckeys
+set notimeout ttimeout ttimeoutlen=0
+set showcmd
 
 """ Syntax hilighting
 syntax on
