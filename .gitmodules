@@ -28,3 +28,6 @@
 [submodule "vim/vim/bundle/vim-dirvish"]
 	path = vim/vim/bundle/vim-dirvish
 	url = https://github.com/justinmk/vim-dirvish.git
+[submodule "vim/vim/bundle/vim-nix"]
+	path = vim/vim/bundle/vim-nix
+	url = https://github.com/LnL7/vim-nix.git
