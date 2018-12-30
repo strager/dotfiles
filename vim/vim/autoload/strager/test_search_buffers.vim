@@ -1,0 +1,298 @@
+function! Test_buffer_list_contains_file_buffers()
+  %bwipeout!
+  edit one.txt
+  let l:one_buffer_number = bufnr('%')
+  split two.txt
+  let l:two_buffer_number = bufnr('%')
+  split three.txt
+  let l:three_buffer_number = bufnr('%')
+  new
+
+  let l:buffers = strager#search_buffers#get_searchable_buffers()
+  call s:assert_contains(
+    \ {'name': 'one.txt', 'number': l:one_buffer_number},
+    \ l:buffers,
+  \ )
+  call s:assert_contains(
+    \ {'name': 'two.txt', 'number': l:two_buffer_number},
+    \ l:buffers,
+  \ )
+  call s:assert_contains(
+    \ {'name': 'three.txt', 'number': l:three_buffer_number},
+    \ l:buffers,
+  \ )
+endfunction
+
+function! Test_buffer_list_contains_directory_buffers()
+  %bwipeout!
+  let l:test_directory = strager#file#make_directory_with_files([
+    \ 'dir_a/hello.txt',
+    \ 'dir_b/',
+  \ ])
+  execute printf('cd %s', fnameescape(l:test_directory))
+  edit dir_a
+  let l:dir_a_buffer_number = bufnr('%')
+  split dir_b
+  let l:dir_b_buffer_number = bufnr('%')
+  new
+
+  let l:buffers = strager#search_buffers#get_searchable_buffers()
+  call s:assert_contains(
+    \ {'name': 'dir_a/', 'number': l:dir_a_buffer_number},
+    \ l:buffers,
+  \ )
+  call s:assert_contains(
+    \ {'name': 'dir_b/', 'number': l:dir_b_buffer_number},
+    \ l:buffers,
+  \ )
+endfunction
+
+function! Test_buffer_list_does_not_contain_cwd_directory_buffer()
+  %bwipeout!
+  let l:test_directory = strager#file#make_directory_with_files([])
+  execute printf('cd %s', fnameescape(l:test_directory))
+  edit .
+  new
+
+  let l:buffers = strager#search_buffers#get_searchable_buffers()
+  call assert_equal([], l:buffers)
+endfunction
+
+function! Test_buffer_list_does_not_contain_current_buffer()
+  %bwipeout!
+  edit one.txt
+  split two.txt
+  let l:current_buffer_number = bufnr('%')
+
+  let l:buffers = strager#search_buffers#get_searchable_buffers()
+  for l:buffer in l:buffers
+    call assert_notequal(l:current_buffer_number, l:buffer.number)
+    call assert_notequal('two.txt', l:buffer.name)
+  endfor
+endfunction
+
+function! Test_buffer_list_does_not_contain_unnamed_buffers()
+  %bwipeout!
+  new
+  new
+
+  let l:buffers = strager#search_buffers#get_searchable_buffers()
+  call assert_equal([], l:buffers)
+endfunction
+
+function! Test_buffer_list_does_not_contain_help_buffers()
+  %bwipeout!
+  let l:blank_buffer_number = bufnr('%')
+  help windows.txt
+  execute printf('%dbwipeout!', l:blank_buffer_number)
+  tab help eval.txt
+
+  let l:buffers = strager#search_buffers#get_searchable_buffers()
+  call assert_equal([], l:buffers)
+endfunction
+
+function! Test_buffer_list_does_not_contain_quickfix_windows()
+  %bwipeout!
+  let l:blank_buffer_number = bufnr('%')
+  copen
+  let l:quickfix_buffer_number = bufnr('%')
+  execute printf('%dbwipeout!', l:blank_buffer_number)
+  new
+
+  let l:buffers = strager#search_buffers#get_searchable_buffers()
+  call assert_equal([], l:buffers)
+endfunction
+
+function! Test_buffer_list_does_not_contain_terminal_buffers()
+  %bwipeout!
+  let l:blank_buffer_number = bufnr('%')
+  term
+  let l:terminal_buffer_number = bufnr('%')
+  execute printf('%dbwipeout!', l:blank_buffer_number)
+  new
+
+  let l:buffers = strager#search_buffers#get_searchable_buffers()
+  call assert_equal([], l:buffers)
+endfunction
+
+function! Test_fzf_header_contains_name_of_current_buffer_file()
+  %bwipeout!
+  edit hello.txt
+
+  let l:run_options = s:fzf_run_options()
+  call assert_equal(['hello.txt'], strager#fzf#header_lines(l:run_options))
+endfunction
+
+function! Test_fzf_header_contains_name_of_current_directory_file()
+  %bwipeout!
+  let l:test_directory = strager#file#make_directory_with_files([
+    \ 'subdirectory/'
+  \ ])
+  execute printf('cd %s', fnameescape(l:test_directory))
+  edit subdirectory
+
+  let l:run_options = s:fzf_run_options()
+  call assert_equal(['subdirectory/'], strager#fzf#header_lines(l:run_options))
+endfunction
+
+function! Test_fzf_header_contains_noname_if_current_buffer_is_unnamed()
+  %bwipeout!
+  normal ihello
+
+  let l:run_options = s:fzf_run_options()
+  call assert_equal(['[No Name]'], strager#fzf#header_lines(l:run_options))
+endfunction
+
+function! Test_fzf_header_contains_help_name_if_current_buffer_is_help()
+  %bwipeout!
+  help undo.txt
+
+  let l:run_options = s:fzf_run_options()
+  call assert_equal(
+    \ ['undo.txt [Help]'],
+    \ strager#fzf#header_lines(l:run_options),
+  \ )
+endfunction
+
+function! Test_fzf_shows_newest_buffers_first()
+  %bwipeout!
+  edit a.txt
+  split b.txt
+  split c.txt
+  new
+
+  let l:run_options = s:fzf_run_options()
+  call assert_equal(
+    \ ['c.txt', 'b.txt', 'a.txt'],
+    \ strager#fzf#presented_lines(l:run_options),
+  \ )
+endfunction
+
+function! Test_fzf_shows_files_before_directories()
+  %bwipeout!
+  let l:test_directory = strager#file#make_directory_with_files([
+    \ 'dir_a/',
+    \ 'dir_b/',
+    \ 'file_a.txt',
+    \ 'file_b.txt',
+  \ ])
+  execute printf('cd %s', fnameescape(l:test_directory))
+  edit dir_a
+  split file_a.txt
+  split dir_b
+  split file_b.txt
+  new
+
+  let l:run_options = s:fzf_run_options()
+  call assert_equal(
+    \ ['file_b.txt', 'file_a.txt', 'dir_b/', 'dir_a/'],
+    \ strager#fzf#presented_lines(l:run_options),
+  \ )
+endfunction
+
+function! Test_cancelling_fzf_fzf_does_not_change_current_window()
+  %bwipeout!
+  edit a.txt
+  edit b.txt
+  let l:b_buffer_number = bufnr('%')
+  let l:window_id = win_getid()
+
+  let l:run_options = s:fzf_run_options()
+  call strager#fzf#call_sink(l:run_options, [])
+
+  let l:new_buffer_number = winbufnr(l:window_id)
+  call assert_equal(
+    \ l:b_buffer_number,
+    \ l:new_buffer_number,
+    \ 'Window should show the same buffer as before',
+  \ )
+endfunction
+
+function! Test_selecting_file_in_fzf_changes_current_window()
+  %bwipeout!
+  edit a.txt
+  let l:a_buffer_number = bufnr('%')
+  edit b.txt
+  edit c.txt
+  let l:c_buffer_number = bufnr('%')
+  let l:window_id = win_getid()
+
+  let l:run_options = s:fzf_run_options()
+  let l:input_line = strager#fzf#input_lines(l:run_options)[-1]
+  call strager#fzf#call_sink(l:run_options, [l:input_line])
+
+  let l:new_buffer_number = winbufnr(l:window_id)
+  call assert_notequal(
+    \ l:c_buffer_number,
+    \ l:new_buffer_number,
+    \ 'Window should show a different buffer',
+  \ )
+  call assert_equal(
+    \ l:a_buffer_number,
+    \ l:new_buffer_number,
+    \ 'Window should show a.txt',
+  \ )
+endfunction
+
+function! Test_selecting_directory_in_fzf_changes_current_window()
+  %bwipeout!
+  let l:test_directory = strager#file#make_directory_with_files(['dir/'])
+  execute printf('cd %s', fnameescape(l:test_directory))
+  edit dir
+  let l:dir_buffer_number = bufnr('%')
+  split file.txt
+  let l:file_buffer_number = bufnr('%')
+  let l:window_id = win_getid()
+
+  let l:run_options = s:fzf_run_options()
+  let l:input_line = strager#fzf#input_lines(l:run_options)[-1]
+  call strager#fzf#call_sink(l:run_options, [l:input_line])
+
+  let l:new_buffer_number = winbufnr(l:window_id)
+  call assert_notequal(
+    \ l:file_buffer_number,
+    \ l:new_buffer_number,
+    \ 'Window should show a different buffer',
+  \ )
+  call assert_equal(
+    \ l:dir_buffer_number,
+    \ l:new_buffer_number,
+    \ 'Window should show dir/',
+  \ )
+endfunction
+
+function! Test_selecting_unlisted_directory_in_fzf_reloads_directory()
+  %bwipeout!
+  let l:test_directory = strager#file#make_directory_with_files([
+    \ 'dir/file_a.txt',
+  \ ])
+  execute printf('cd %s', fnameescape(l:test_directory))
+  edit dir
+  edit file.txt
+
+  call writefile([], 'dir/file_b.txt')
+  let l:run_options = s:fzf_run_options()
+  let l:input_line = strager#fzf#input_lines(l:run_options)[-1]
+  call strager#fzf#call_sink(l:run_options, [l:input_line])
+
+  call assert_equal(
+    \ ['dir/file_a.txt', 'dir/file_b.txt'],
+    \ strager#buffer#get_current_buffer_lines(),
+  \ )
+endfunction
+
+function! s:fzf_run_options()
+  return strager#search_buffers#get_fzf_run_options_for_searching_buffers()
+endfunction
+
+function! s:assert_contains(needle, haystack)
+  if index(a:haystack, a:needle) == -1
+    call assert_report(printf(
+      \ '%s should be in %s',
+      \ string(a:needle),
+      \ string(a:haystack),
+    \ ))
+  endif
+endfunction
+
+call strager#test#run_all_tests()

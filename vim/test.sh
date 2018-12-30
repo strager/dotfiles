@@ -118,6 +118,7 @@ run_vim_syntax_test vim/vim/syntax/test_vim/statement.vim
 run_vim_syntax_test vim/vim/syntax/test_vim/string.vim
 run_vim_syntax_test vim/vim/syntax/test_vim/user_function.vim
 run_vim_syntax_test vim/vim/syntax/test_vim/variable.vim
+run_vim_test --need-vimrc vim/vim/autoload/strager/test_search_buffers.vim
 run_vim_test --need-vimrc vim/vim/autoload/strager/test_syntax.vim
 run_vim_test --need-vimrc vim/vim/autoload/strager/test_tag_c.vim
 run_vim_test --need-vimrc vim/vim/test/test_c_make_ninja.vim
@@ -136,6 +137,7 @@ run_vim_test vim/vim/autoload/strager/test_exception.vim
 run_vim_test vim/vim/autoload/strager/test_file.vim
 run_vim_test vim/vim/autoload/strager/test_file_sort.vim
 run_vim_test vim/vim/autoload/strager/test_function.vim
+run_vim_test vim/vim/autoload/strager/test_fzf.vim
 run_vim_test vim/vim/autoload/strager/test_help.vim
 run_vim_test vim/vim/autoload/strager/test_list.vim
 run_vim_test vim/vim/autoload/strager/test_messages.vim
