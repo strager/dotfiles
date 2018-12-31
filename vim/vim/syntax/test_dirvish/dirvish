@@ -1,0 +1,27 @@
+vim: conceallevel=0 filetype=dirvish
+
+CHECK-ALIAS: d dirvishDirectory
+CHECK-ALIAS: f dirvishFile
+CHECK-ALIAS: p dirvishParentDirectory
+
+Regular files:
+ffffffff:CHECK-NEXT-LINE
+file.txt
+        ffffffff:CHECK-NEXT-LINE
+path/to/file.txt
+
+Directories:
+dddddddddd:CHECK-NEXT-LINE
+directory/
+        dddddddddd:CHECK-NEXT-LINE
+path/to/directory/
+
+Leading path components:
+pppppppp        :CHECK-NEXT-LINE
+path/to/file.txt
+ppppppppp        :CHECK-NEXT-LINE
+/path/to/file.txt
+pppppppp          :CHECK-NEXT-LINE
+path/to/directory/
+ppppppppp          :CHECK-NEXT-LINE
+/path/to/directory/

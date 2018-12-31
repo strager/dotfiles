@@ -96,6 +96,7 @@ log_and_run() {
     return 0
 }
 
+run_vim_syntax_test vim/vim/syntax/test_dirvish/dirvish
 run_vim_syntax_test vim/vim/syntax/test_javascript/boolean.js
 run_vim_syntax_test vim/vim/syntax/test_javascript/control.js
 run_vim_syntax_test vim/vim/syntax/test_javascript/function.js
