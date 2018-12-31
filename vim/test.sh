@@ -118,6 +118,7 @@ run_vim_syntax_test vim/vim/syntax/test_vim/statement.vim
 run_vim_syntax_test vim/vim/syntax/test_vim/string.vim
 run_vim_syntax_test vim/vim/syntax/test_vim/user_function.vim
 run_vim_syntax_test vim/vim/syntax/test_vim/variable.vim
+run_vim_test --need-vimrc vim/vim/autoload/strager/test_syntax.vim
 run_vim_test --need-vimrc vim/vim/autoload/strager/test_tag_c.vim
 run_vim_test --need-vimrc vim/vim/test/test_c_make_ninja.vim
 run_vim_test --need-vimrc vim/vim/test/test_clipboard.vim
@@ -125,6 +126,8 @@ run_vim_test --need-vimrc vim/vim/test/test_color_column.vim
 run_vim_test --need-vimrc vim/vim/test/test_directory_browser.vim
 run_vim_test --need-vimrc vim/vim/test/test_format.vim
 run_vim_test --need-vimrc vim/vim/test/test_grep.vim
+run_vim_test vim/vim/autoload/strager/test_assert.vim
+run_vim_test vim/vim/autoload/strager/test_assert_throws.vim
 run_vim_test vim/vim/autoload/strager/test_buffer.vim
 run_vim_test vim/vim/autoload/strager/test_check_syntax.vim
 run_vim_test vim/vim/autoload/strager/test_check_syntax_internal.vim
@@ -133,6 +136,7 @@ run_vim_test vim/vim/autoload/strager/test_exception.vim
 run_vim_test vim/vim/autoload/strager/test_file.vim
 run_vim_test vim/vim/autoload/strager/test_file_sort.vim
 run_vim_test vim/vim/autoload/strager/test_function.vim
+run_vim_test vim/vim/autoload/strager/test_help.vim
 run_vim_test vim/vim/autoload/strager/test_list.vim
 run_vim_test vim/vim/autoload/strager/test_messages.vim
 run_vim_test vim/vim/autoload/strager/test_move_file.vim
@@ -140,4 +144,6 @@ run_vim_test vim/vim/autoload/strager/test_path.vim
 run_vim_test vim/vim/autoload/strager/test_pattern.vim
 run_vim_test vim/vim/autoload/strager/test_project.vim
 run_vim_test vim/vim/autoload/strager/test_random_mt19937.vim
+run_vim_test vim/vim/autoload/strager/test_script.vim
+run_vim_test vim/vim/autoload/strager/test_window.vim
 printf 'All tests passed!\n' >&2
