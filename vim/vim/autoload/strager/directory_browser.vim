@@ -1,5 +1,5 @@
 function! strager#directory_browser#refresh_open_browsers()
-  let l:old_buffer_number = bufnr('%')
+  let l:old_window_id = win_getid()
   try
     for l:buffer in getbufinfo({'bufloaded': v:true})
       let l:filetype = getbufvar(l:buffer.bufnr, '&filetype')
@@ -10,13 +10,21 @@ function! strager#directory_browser#refresh_open_browsers()
   finally
     " FIXME(strager): Does this change the scroll position or have other side
     " effects?
-    execute printf('buffer %d', l:old_buffer_number)
+    call win_gotoid(l:old_window_id)
   endtry
 endfunction
 
 function! s:refresh_open_browser(buffer_number)
-  execute printf('buffer %d', a:buffer_number)
-  Dirvish %
+  " TODO(strager): Only create a temporary tab once per call to
+  " strager#directory_browser#refresh_open_browsers.
+  tabnew
+  let l:temporary_tab_number = tabpagenr()
+  try
+    execute printf('buffer %d', a:buffer_number)
+    Dirvish %
+  finally
+    execute printf('tabclose %d', l:temporary_tab_number)
+  endtry
 endfunction
 
 function! strager#directory_browser#prompt_delete_file_under_cursor()
