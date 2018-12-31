@@ -158,5 +158,5 @@ if [[ "${STRAGER_INITIALIZE_POST_PROMPT:-1}" -eq 1 ]]; then
 fi
 
 # Configure other programs.
-export FZF_DEFAULT_COMMAND='rg --files --follow --hidden --no-ignore'
+export FZF_DEFAULT_COMMAND="$(cat ~/.config/fzf/FZF_DEFAULT_COMMAND)"
 export FZF_DEFAULT_OPTS='--no-progress --inline-info'

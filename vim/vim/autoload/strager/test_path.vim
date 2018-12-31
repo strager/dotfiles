@@ -173,4 +173,25 @@ function! s:assert_make_relative_throws(ancestor_path, descendant_components)
   \ )
 endfunction
 
+function! Test_base_name_of_single_component_is_identity()
+  call assert_equal('hello.txt', strager#path#base_name('hello.txt'))
+endfunction
+
+function! Test_base_name_of_single_component_with_trailing_slash_strips_slash()
+  call assert_equal('hello_dir', strager#path#base_name('hello_dir/'))
+  call assert_equal('hello_dir', strager#path#base_name('hello_dir///'))
+endfunction
+
+function! Test_base_name_of_relative_path_strips_parent_directories()
+  call assert_equal('file.txt', strager#path#base_name('path/to/file.txt'))
+  call assert_equal('file.txt', strager#path#base_name('/path/to/file.txt'))
+  call assert_equal('file.txt', strager#path#base_name('path/to///file.txt'))
+endfunction
+
+function! Test_base_name_of_relative_path_with_trailing_slash_strips_parent_directories_and_trailing_slash()
+  call assert_equal('directory', strager#path#base_name('path/to/directory/'))
+  call assert_equal('directory', strager#path#base_name('/path/to/directory/'))
+  call assert_equal('directory', strager#path#base_name('path/to///directory///'))
+endfunction
+
 call strager#test#run_all_tests()

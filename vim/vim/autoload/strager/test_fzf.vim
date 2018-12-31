@@ -201,4 +201,14 @@ function! Test_withnth0_is_invalid()
   call strager#assert#assert_throws({-> s:presented_lines('..0')}, 'ES011:')
 endfunction
 
+function! Test_default_prompt_is_an_arrow()
+  let l:options = {'options': []}
+  call assert_equal('> ', strager#fzf#prompt(l:options))
+endfunction
+
+function! Test_prompt_option_sets_prompt()
+  let l:options = {'options': ['--prompt=[hello]']}
+  call assert_equal('[hello]', strager#fzf#prompt(l:options))
+endfunction
+
 call strager#test#run_all_tests()

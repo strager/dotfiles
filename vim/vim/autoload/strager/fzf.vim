@@ -13,7 +13,50 @@ function! strager#fzf#header_lines(fzf_run_options)
 endfunction
 
 function! strager#fzf#input_lines(fzf_run_options)
-  return a:fzf_run_options.source
+  let l:source = get(a:fzf_run_options, 'source', v:none)
+  if type(l:source) ==# v:t_none
+    let l:source = s:default_command()
+  endif
+  if type(l:source) ==# v:t_string
+    let l:output = system(l:source)
+    if v:shell_error != 0
+      throw printf(
+        \ 'ES014: Command failed with exit code %d: %s',
+        \ v:shell_error,
+        \ l:source,
+      \ )
+    endif
+    return split(l:output, "\n")
+  endif
+  return l:source
+endfunction
+
+function! s:default_command()
+  let l:command = $FZF_DEFAULT_COMMAND
+  if l:command !=# ''
+    return l:command
+  endif
+
+  " NOTE(strager): This file is specific to my dotfiles setup. fzf would not
+  " read this file.
+  let l:command_file_path = fnamemodify(
+    \ '~/.config/fzf/FZF_DEFAULT_COMMAND',
+    \ ':p',
+  \ )
+  try
+    let l:command_file_lines = readfile(l:command_file_path)
+  catch /E484:/
+    " The file does not exist. Ignore this error and fall through.
+    let l:command_file_lines = []
+  endtry
+  if !empty(l:command_file_lines)
+    let l:command = l:command_file_lines[0]
+    if l:command !=# ''
+      return l:command
+    endif
+  endif
+
+  throw 'Expected FZF_DEFAULT_COMMAND to be set'
 endfunction
 
 function! strager#fzf#presented_lines(fzf_run_options)
@@ -23,6 +66,11 @@ function! strager#fzf#presented_lines(fzf_run_options)
   \ )[l:options.header_lines :]
   call s:transform_lines(l:lines, l:options.delimiter, l:options.with_nth)
   return l:lines
+endfunction
+
+function! strager#fzf#prompt(fzf_run_options)
+  let l:options = s:parse_command_line_options(a:fzf_run_options.options)
+  return l:options.prompt
 endfunction
 
 function! strager#fzf#call_sink(fzf_run_options, selected_lines)
@@ -74,6 +122,7 @@ function! s:parse_command_line_options(options)
     \ 'delimiter': v:none,
     \ 'header': v:none,
     \ 'header_lines': 0,
+    \ 'prompt': '> ',
     \ 'with_nth': [[v:none, v:none]],
   \ }
   for l:option in a:options
@@ -88,6 +137,10 @@ function! s:parse_command_line_options(options)
     let l:match = matchlist(l:option, '--header=\(.*\)')
     if l:match !=# []
       let [l:_, l:result.header; l:_] = l:match
+    endif
+    let l:match = matchlist(l:option, '--prompt=\(.*\)')
+    if l:match !=# []
+      let [l:_, l:result.prompt; l:_] = l:match
     endif
     let l:match = matchlist(l:option, '--with-nth=\(.*\)')
     if l:match !=# []

@@ -16,6 +16,16 @@ function strager#assert#assert_throws(function, error, ...)
   endtry
 endfunction
 
+function! strager#assert#assert_contains(needle, haystack)
+  if index(a:haystack, a:needle) == -1
+    call assert_report(printf(
+      \ '%s should be in %s',
+      \ string(a:needle),
+      \ string(a:haystack),
+    \ ))
+  endif
+endfunction
+
 function strager#assert#take_assertion_failure_messages()
   let l:errors = v:errors
   let l:error_messages = map(copy(l:errors), {_, error -> matchlist(error, '^[^:]*: \(.*\)$')[1]})

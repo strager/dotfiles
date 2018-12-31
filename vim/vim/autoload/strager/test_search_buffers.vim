@@ -9,15 +9,15 @@ function! Test_buffer_list_contains_file_buffers()
   new
 
   let l:buffers = strager#search_buffers#get_searchable_buffers()
-  call s:assert_contains(
+  call strager#assert#assert_contains(
     \ {'name': 'one.txt', 'number': l:one_buffer_number},
     \ l:buffers,
   \ )
-  call s:assert_contains(
+  call strager#assert#assert_contains(
     \ {'name': 'two.txt', 'number': l:two_buffer_number},
     \ l:buffers,
   \ )
-  call s:assert_contains(
+  call strager#assert#assert_contains(
     \ {'name': 'three.txt', 'number': l:three_buffer_number},
     \ l:buffers,
   \ )
@@ -37,11 +37,11 @@ function! Test_buffer_list_contains_directory_buffers()
   new
 
   let l:buffers = strager#search_buffers#get_searchable_buffers()
-  call s:assert_contains(
+  call strager#assert#assert_contains(
     \ {'name': 'dir_a/', 'number': l:dir_a_buffer_number},
     \ l:buffers,
   \ )
-  call s:assert_contains(
+  call strager#assert#assert_contains(
     \ {'name': 'dir_b/', 'number': l:dir_b_buffer_number},
     \ l:buffers,
   \ )
@@ -67,7 +67,7 @@ function! Test_buffer_list_contains_cousins_directory_buffers_of_cwd()
   new
 
   let l:buffers = strager#search_buffers#get_searchable_buffers()
-  call s:assert_contains(
+  call strager#assert#assert_contains(
     \ {
       \ 'name': l:uncle_directory_path,
       \ 'number': l:uncle_directory_buffer_number,
@@ -444,16 +444,6 @@ function! s:match_fzf_line(fzf_run_options, pattern)
     endif
   endif
   return l:lines[0]
-endfunction
-
-function! s:assert_contains(needle, haystack)
-  if index(a:haystack, a:needle) == -1
-    call assert_report(printf(
-      \ '%s should be in %s',
-      \ string(a:needle),
-      \ string(a:haystack),
-    \ ))
-  endif
 endfunction
 
 call strager#test#run_all_tests()

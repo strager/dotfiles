@@ -19,6 +19,14 @@ function! strager#path#components(path)
   return l:components
 endfunction
 
+function! strager#path#base_name(path)
+  let l:tail = fnamemodify(a:path, ':t')
+  if l:tail ==# ''
+    return fnamemodify(a:path, ':h:t')
+  endif
+  return l:tail
+endfunction
+
 function! strager#path#paths_upward(path)
   let l:paths = []
   let l:path = a:path
