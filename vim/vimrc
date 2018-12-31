@@ -20,8 +20,7 @@ end
 
 au BufEnter *.hs compiler ghcx
 
-" Pathogen, activate!
-call pathogen#infect()
+packloadall
 
 """ Whitespace, indention, etc.
 set sw=4 sts=4 et
