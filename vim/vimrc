@@ -163,7 +163,7 @@ set wildignore=
 set directory=~/.vim/swap//,.
 
 " fzf
-nmap <unique> <Leader>b :call strager#search_buffers#search_using_fzf()<CR>
+nmap <unique> <Leader>b :Buffers<CR>
 nmap <unique> <C-P> :Files<CR>
 
 """ Display

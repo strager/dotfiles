@@ -73,10 +73,6 @@ function! strager#path#make_relative(ancestor_path, descendant_path)
   return l:relative_path
 endfunction
 
-function! strager#path#is_relative(path)
-  return !s:is_absolute(a:path)
-endfunction
-
 function! s:is_absolute(path)
   " HACK(strager): This is good enough for now...
   return a:path =~# '^/'

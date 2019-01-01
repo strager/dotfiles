@@ -48,19 +48,4 @@ shape. The following cursor shapes are supported:
 	underline
 	vertical bar
 
-							*ES007* *ES008*
-							*ES009* *ES010*  >
-  Expected exactly zero or one lines
-  Field index expression not implemented
-  Missing sink*
-  Plain sink is not supported
-
-An internal, unrecoverable error occurred. These errors should only possibly
-appear during automated testing.
-
-							*ES011*  >
-  Invalid field index expression
-
-The argument to fzf's --nth or --with-nth option is invalid.
-
  vim:tw=78:ts=8:noet:ft=help:norl:
