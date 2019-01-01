@@ -38,6 +38,10 @@ function strager#buffer#set_current_buffer_lines(lines)
   call setline(1, a:lines)
 endfunction
 
+function strager#buffer#get_buffer_type(buffer_number)
+  return getbufvar(a:buffer_number, '&buftype')
+endfunction
+
 function strager#buffer#is_quickfix_buffer(buffer_number)
-  return getbufvar(a:buffer_number, '&buftype') ==# 'quickfix'
+  return strager#buffer#get_buffer_type(a:buffer_number) ==# 'quickfix'
 endfunction
