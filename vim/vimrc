@@ -10,7 +10,8 @@ au BufEnter *.hs compiler ghcx
 packloadall
 
 """ Whitespace, indention, etc.
-set sw=4 sts=4 et
+set sw=4 et
+set softtabstop=-1
 set ts=8
 set nosmartindent
 set cin noai
