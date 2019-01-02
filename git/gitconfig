@@ -10,19 +10,22 @@
 	autosetuprebase = always
 [alias]
 	co = checkout
-	l = log --color --graph --pretty=format:'%Cgreen%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
+	l = log --color --graph --pretty=format:'%Cgreen%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C("#849598")<%an>%Creset' --abbrev-commit
 
 [color]
 	ui = auto
 [color "branch"]
-	current = red bold
+	current = "#cb4b16"  # bright red
 	local = yellow
 	remote = green
 [color "diff"]
-	meta = yellow bold
-	frag = magenta bold
+	meta = "#657b83"  # bright yellow
+	frag = "#6c6ec6"  # bright magenta
 	old = red
 	new = green
+[color "interactive"]
+	help = "#cb4b16"  # bright red
+	prompt = "#849598"  # bright blue
 [color "status"]
 	added = yellow
 	changed = green
