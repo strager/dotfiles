@@ -1423,6 +1423,8 @@
 	<true/>
 	<key>UseLionStyleFullscreen</key>
 	<true/>
+	<key>UseMetal</key>
+	<false/>
 	<key>VerticalBarCursorWidth</key>
 	<real>2</real>
 	<key>WebKitDefaultFontSize</key>
