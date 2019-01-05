@@ -1,0 +1,11 @@
+strager_prompt_cwd() {
+    strager_prompt_shrink_path "$(print -P %~)"
+}
+
+# Replace /foo/bar/baz with /f/b/baz.
+strager_prompt_shrink_path() {
+    local path="${1}"
+    setopt local_options
+    setopt extended_glob
+    printf %s "${path//(#b)([^\/])[^\/]#\//${match[1]}/}"
+}

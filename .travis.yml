@@ -5,12 +5,13 @@ os:
   - osx
 
 install:
-  - nix-env -i clang ninja ripgrep vim
+  - nix-env -i clang ninja ripgrep vim zsh
 
 before_script:
   - ./install.sh "${HOME}"
 
 script:
+  - make check-zsh
   - ./vim/test.sh
   - make
   - git diff --exit-code

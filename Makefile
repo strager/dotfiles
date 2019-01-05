@@ -6,6 +6,13 @@ all: vim_doc_tags
 .PHONY: vim_doc_tags
 vim_doc_tags: $(vim_doc_directories:=/tags)
 
+.PHONY: check
+check: check-zsh
+
+.PHONY: check-zsh
+check-zsh:
+	zsh/test.zsh
+
 %/doc/tags: always_run
 	vim \
 		-c 'set verbosefile=/dev/stderr' \

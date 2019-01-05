@@ -1,3 +1,7 @@
+# TODO(strager): Move into ~/.zshenv.
+fpath=(~/.zsh/strager "${fpath[@]}")
+autoload -Uk strager_prompt_cwd
+
 # Saved history.
 HISTFILE=~/.zshhistory
 HISTSIZE=100000
@@ -51,15 +55,7 @@ fi
 setopt prompt_subst
 PROMPT=
 # Current directory.
-PROMPT="${PROMPT}%F{green}\$(prompt_cwd)%f"
-prompt_cwd() {
-    prompt_shrink_path "$(print -P %~)"
-}
-# Replace /foo/bar/baz with /f/b/baz.
-prompt_shrink_path() {
-    local path="${1}"
-    printf %s "${path//(#b)([^\/])[^\/]#\//${match[1]}/}"
-}
+PROMPT="${PROMPT}%F{green}\$(strager_prompt_cwd)%f"
 # Exit code of previous command.
 PROMPT="${PROMPT}%(0?;; %F{red}%?%f)"
 # Terminator.
