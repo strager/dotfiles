@@ -23,7 +23,7 @@ main() {
 
 run_and_exit_zsh_in_zpty() {
     local name="${1}"
-    zpty "${name}" zsh --login -i
+    zpty "${name}" STRAGER_INITIALIZE_POST_PROMPT=0 zsh --login -i
     zpty -w "${name}" exit
     zpty -r "${name}" >/dev/null
 }

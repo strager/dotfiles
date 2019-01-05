@@ -1,0 +1,10 @@
+strager_initialize_post_prompt() {
+    strager_initialize_history
+}
+
+strager_initialize_history() {
+    if [[ "${STRAGER_HISTFILE:+set}" = set ]]; then
+        fc -p "${STRAGER_HISTFILE}"
+        unset STRAGER_HISTFILE
+    fi
+}

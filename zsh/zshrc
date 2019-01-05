@@ -1,9 +1,13 @@
 # TODO(strager): Move into ~/.zshenv.
 fpath=(~/.zsh/strager "${fpath[@]}")
+autoload -Uk strager_initialize_post_prompt
 autoload -Uk strager_prompt_cwd
 
 # Saved history.
-HISTFILE=~/.zshhistory
+# N.B. Do not set HISTFILE here. HISTFILE is set by
+# strager_initialize_history.
+unset HISTFILE
+STRAGER_HISTFILE=~/.zshhistory
 HISTSIZE=100000
 SAVEHIST=100000
 setopt hist_find_no_dups
@@ -130,6 +134,17 @@ ZSH_HIGHLIGHT_STYLES[reserved-word]='fg=093'
 ZSH_HIGHLIGHT_STYLES[single-hyphen-option]="${_argument_style}"
 ZSH_HIGHLIGHT_STYLES[single-quoted-argument-unclosed]="${_error_style}"
 source ~/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+
+# N.B. Register zle-line-init after loading
+# zsh-syntax-highlighting to avoid zsh-syntax-highlighting's
+# wrappers.
+if [[ "${STRAGER_INITIALIZE_POST_PROMPT:-1}" -eq 1 ]]; then
+    strager_zle-line-init() {
+        strager_initialize_post_prompt
+        zle -D zle-line-init
+    }
+    zle -N zle-line-init strager_zle-line-init
+fi
 
 # Configure other programs.
 export FZF_DEFAULT_COMMAND='rg --files --follow --hidden --no-ignore'
