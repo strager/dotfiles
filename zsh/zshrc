@@ -133,7 +133,9 @@ ZSH_HIGHLIGHT_STYLES[precommand]="${_command_style}"
 ZSH_HIGHLIGHT_STYLES[reserved-word]='fg=093'
 ZSH_HIGHLIGHT_STYLES[single-hyphen-option]="${_argument_style}"
 ZSH_HIGHLIGHT_STYLES[single-quoted-argument-unclosed]="${_error_style}"
-source ~/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+# N.B. Do not source zsh-syntax-highlighting.zsh here. That
+# script is sourced by
+# strager_initialize_zsh_syntax_highlighting.
 
 # N.B. Register zle-line-init after loading
 # zsh-syntax-highlighting to avoid zsh-syntax-highlighting's
