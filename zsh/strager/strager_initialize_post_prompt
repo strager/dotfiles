@@ -1,5 +1,11 @@
 strager_initialize_post_prompt() {
+    strager_initialize_completion
     strager_initialize_history
+}
+
+strager_initialize_completion() {
+    autoload -Uz compinit
+    compinit
 }
 
 strager_initialize_history() {

@@ -39,8 +39,8 @@ zle -N edit-command-line
 bindkey '\C-x\C-e' edit-command-line
 
 # Completion.
-autoload -Uz compinit
-compinit
+# N.B. Do not call compinit here. compinit is called by
+# strager_initialize_completion.
 unsetopt auto_remove_slash
 
 # Environment.
