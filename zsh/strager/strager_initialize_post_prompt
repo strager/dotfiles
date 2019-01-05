@@ -1,6 +1,7 @@
 strager_initialize_post_prompt() {
     strager_initialize_completion
     strager_initialize_history
+    strager_initialize_nix
     strager_initialize_zsh_syntax_highlighting
 }
 
@@ -13,6 +14,12 @@ strager_initialize_history() {
     if [[ "${STRAGER_HISTFILE:+set}" = set ]]; then
         fc -p "${STRAGER_HISTFILE}"
         unset STRAGER_HISTFILE
+    fi
+}
+
+strager_initialize_nix() {
+    if [ -f /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh ]; then
+        source /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
     fi
 }
 
