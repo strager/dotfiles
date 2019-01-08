@@ -1,0 +1,11 @@
+strager_iterm_wrap_prompt() {
+    local prompt="${1}"
+    printf %s '%{'
+    strager_ftcs_sequence 'D;%?'
+    strager_ftcs_sequence A
+    strager_iterm_sequence 'CurrentDir=%0d'
+    printf %s '%}'
+    printf %s%s%s '%}' "${prompt}" '%{'
+    strager_ftcs_sequence B
+    printf %s '%}'
+}

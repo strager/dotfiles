@@ -1,0 +1,6 @@
+strager_iterm_sequence() {
+    local arguments=("${@}")
+    printf "\x1b]1337"
+    printf ';%s' "${arguments[@]}"
+    printf "\x07"
+}

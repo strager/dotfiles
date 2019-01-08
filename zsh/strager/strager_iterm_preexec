@@ -1,0 +1,3 @@
+strager_iterm_preexec() {
+    strager_ftcs_sequence C
+}

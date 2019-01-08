@@ -82,14 +82,11 @@ class ZSHITermPromptTestCase(unittest.TestCase):
         zsh.sendintr()
         exit_status = expect_ftcs_command_finished(zsh)
         self.assertEqual(exit_status, 130)
-        # TODO(strager): Ensure FTCS_COMMAND_EXECUTED does not preceed
-        # FTCS_COMMAND_FINISHED.
-        if False:
-            self.assertNotRegex(
-                zsh.before,
-                ftcs_command_executed_re,
-                "FTCS_COMMAND_EXECUTED should not preceed FTCS_COMMAND_FINISHED.",
-            )
+        self.assertNotRegex(
+            zsh.before,
+            ftcs_command_executed_re,
+            "FTCS_COMMAND_EXECUTED should not preceed FTCS_COMMAND_FINISHED.",
+        )
 
     def spawn_zsh(self, cwd: typing.Optional[pathlib.Path] = None) -> pexpect.spawn:
         log_file = io.BytesIO()

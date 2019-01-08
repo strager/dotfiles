@@ -19,9 +19,6 @@
 [submodule "vim/vim/bundle/vim-lsp"]
 	path = vim/vim/pack/external/start/vim-lsp
 	url = https://github.com/prabirshrestha/vim-lsp.git
-[submodule "vendor/iterm2-website"]
-	path = vendor/iterm2-website
-	url = https://github.com/gnachman/iterm2-website.git
 [submodule "vim/vim/bundle/ale"]
 	path = vim/vim/pack/external/start/ale
 	url = https://github.com/w0rp/ale.git

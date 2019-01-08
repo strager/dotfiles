@@ -1,0 +1,6 @@
+strager_ftcs_sequence() {
+    local arguments=("${@}")
+    printf "\x1b]133"
+    printf ';%s' "${arguments[@]}"
+    printf "\x07"
+}
