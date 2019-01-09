@@ -3,6 +3,12 @@ strager_initialize_post_prompt() {
     strager_initialize_history
     strager_initialize_nix
     strager_initialize_zsh_syntax_highlighting
+
+    # N.B. zsh-autosuggestions conflicts with
+    # zsh-syntax-highlighting. Initialize
+    # zsh-autosuggestions second to prevent
+    # zsh-syntax-highlighting from breaking it.
+    strager_initialize_zsh_autosuggestions
 }
 
 strager_initialize_completion() {
@@ -21,6 +27,11 @@ strager_initialize_nix() {
     if [ -f /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh ]; then
         source /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
     fi
+}
+
+strager_initialize_zsh_autosuggestions() {
+    source ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
+    _zsh_autosuggest_start
 }
 
 strager_initialize_zsh_syntax_highlighting() {

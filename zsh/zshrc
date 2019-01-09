@@ -140,6 +140,12 @@ ZSH_HIGHLIGHT_STYLES[single-quoted-argument-unclosed]="${_error_style}"
 # script is sourced by
 # strager_initialize_zsh_syntax_highlighting.
 
+# Automatic completion.
+ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=238'
+# N.B. Do not source zsh-autosuggestions.zsh here. That
+# script is sourced by
+# strager_initialize_zsh_autosuggestions.
+
 # N.B. Register zle-line-init after loading
 # zsh-syntax-highlighting to avoid zsh-syntax-highlighting's
 # wrappers.
