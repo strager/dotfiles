@@ -12,7 +12,11 @@ all: vim_doc_tags
 vim_doc_tags: $(vim_doc_directories:=/tags)
 
 .PHONY: check
-check: check-zsh
+check: check-vim check-zsh
+
+.PHONY: check-vim
+check-vim:
+	vim/test.sh
 
 .PHONY: check-zsh
 check-zsh: $(python_site_packages)/pexpect

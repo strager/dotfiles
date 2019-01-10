@@ -12,8 +12,7 @@ before_script:
   - ./install.sh "${HOME}"
 
 script:
-  - make check-zsh
-  - ./vim/test.sh
   - make
+  - make check
   - make format
   - git diff --exit-code
