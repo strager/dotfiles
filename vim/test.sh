@@ -65,13 +65,17 @@ run_vim_with_log_file() {
     # Clear the log file.
     printf '' >"${log_file_path}"
 
+    # HACK(strager): Prevent Vim from stalling because it's not attached to a
+    # terminal.
+    vim_args=(--not-a-term "${vim_args[@]}")
+
     # Log test output to a file. Also, tell the test framework to :cqall! on
     # failure.
     # TODO(strager): Escape the log file properly.
     vim_args+=(--cmd "set verbosefile=${log_file_path}")
 
     local vim_status=0
-    log_and_run vim "${vim_args[@]}" || vim_status="${?}"
+    silence_log_and_run vim "${vim_args[@]}" || vim_status="${?}"
 
     cat "${log_file_path}" >&2
     printf '\n' >&2
@@ -79,14 +83,19 @@ run_vim_with_log_file() {
     return "${vim_status}"
 }
 
-log_and_run() {
+silence_log_and_run() {
     local command=("${@}")
     (
         printf '$'
         printf ' %q' "${command[@]}"
         printf '\n'
     ) >&2
-    if "${command[@]}"; then
+    # HACK(strager): Use 'stall' to trick Vim into thinking an input device is
+    # attached. (If Vim thinks it can never receive more input, and Vim ever
+    # polls for input, Vim exits abruptly.)
+    # HACK(strager): Redirect stdout and stderr to avoid duplicate output (once
+    # from Vim's stderr and once from the log file).
+    if stall | "${command[@]}" >/dev/null 2>&1; then
         :
     else
         local status="${?}"
@@ -94,6 +103,10 @@ log_and_run() {
         return "${status}"
     fi
     return 0
+}
+
+stall() {
+    zsh -c 'zmodload zsh/zselect; zselect -r 1 -e 1'
 }
 
 run_vim_syntax_test vim/vim/syntax/test_dirvish/dirvish
