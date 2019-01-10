@@ -149,6 +149,5 @@ run_vim_test vim/vim/autoload/strager/test_path.vim
 run_vim_test vim/vim/autoload/strager/test_pattern.vim
 run_vim_test vim/vim/autoload/strager/test_project.vim
 run_vim_test vim/vim/autoload/strager/test_random_mt19937.vim
-run_vim_test vim/vim/autoload/strager/test_script.vim
 run_vim_test vim/vim/autoload/strager/test_window.vim
 printf 'All tests passed!\n' >&2
