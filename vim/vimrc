@@ -71,6 +71,7 @@ endfunction
 nmap <unique> Y y$
 
 """ Navigation
+set nofoldenable
 set foldmethod=marker
 if v:version >= 703
     set relativenumber
