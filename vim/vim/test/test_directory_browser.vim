@@ -17,6 +17,32 @@ function! Test_browser_lists_directories_with_trailing_slash()
   call assert_equal(['another_subdir/', 'subdir/'], l:names)
 endfunction
 
+function! Test_browser_lists_symlinks_to_files()
+  call s:set_up_project(['file'])
+  call strager#file#create_symbolic_link('file', 'symlink_to_file')
+  edit .
+  let l:names = strager#buffer#get_current_buffer_lines()
+  call sort(l:names)
+  call assert_equal(['file', 'symlink_to_file'], l:names)
+endfunction
+
+function! Test_browser_lists_symlinks_to_directories()
+  call s:set_up_project(['dir/'])
+  call strager#file#create_symbolic_link('dir', 'symlink_to_dir')
+  edit .
+  let l:names = strager#buffer#get_current_buffer_lines()
+  call sort(l:names)
+  call assert_equal(['dir/', 'symlink_to_dir/'], l:names)
+endfunction
+
+function! Test_browser_lists_broken_symlinks()
+  call s:set_up_project([])
+  call strager#file#create_symbolic_link('does_not_exist', 'symlink')
+  edit .
+  let l:names = strager#buffer#get_current_buffer_lines()
+  call assert_equal(['symlink'], l:names)
+endfunction
+
 function! Test_enter_opens_file_under_cursor()
   call s:set_up_project(['myfile.txt'])
   edit .
