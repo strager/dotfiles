@@ -201,6 +201,24 @@ function! Test_listing_directory_includes_subdirectories()
   call assert_equal(['.', '..', 'dir'], s:list(l:path))
 endfunction
 
+function! Test_listing_directory_includes_symlinks_to_directories()
+  let l:path = strager#file#make_directory_with_files(['dir'])
+  call strager#file#create_symbolic_link('dir', strager#path#join([l:path, 'symlink_to_dir']))
+  call assert_equal(['.', '..', 'dir', 'symlink_to_dir'], s:list(l:path))
+endfunction
+
+function! Test_listing_directory_includes_symlinks_to_regular_files()
+  let l:path = strager#file#make_directory_with_files(['file'])
+  call strager#file#create_symbolic_link('file', strager#path#join([l:path, 'symlink_to_file']))
+  call assert_equal(['.', '..', 'file', 'symlink_to_file'], s:list(l:path))
+endfunction
+
+function! Test_listing_directory_includes_symlinks_to_non_existing_paths()
+  let l:path = strager#file#make_directory_with_files([])
+  call strager#file#create_symbolic_link('does_not_exist', strager#path#join([l:path, 'broken_symlink']))
+  call assert_equal(['.', '..', 'broken_symlink'], s:list(l:path))
+endfunction
+
 function! Test_listing_directory_includes_dot_files()
   let l:path = strager#file#make_directory_with_files(['.vimrc', '.vim/'])
   call assert_equal(['.', '..', '.vim', '.vimrc'], s:list(l:path))
