@@ -69,6 +69,8 @@ function! s:file_exists_single_case_sensitive(path)
   endif
   try
     let l:names_in_dir = strager#file#list_directory(l:dir)
+  catch /^\%(ES001\|ES015\):/
+    return v:false
   catch /^Failed to list files in directory:/
     return v:false
   endtry
@@ -90,6 +92,13 @@ function! strager#file#list_directory(path)
   let l:paths = globpath(l:glob, '*', v:true, v:true, v:true)
   let l:paths += globpath(l:glob, '.*', v:true, v:true, v:true)
   if empty(l:paths)
+    let l:path_type = getftype(a:path)
+    if l:path_type ==# ''
+      throw printf('ES001: Directory does not exist: %s', a:path)
+    endif
+    if l:path_type ==# 'file'
+      throw printf('ES015: Cannot list files in non-directory: %s', a:path)
+    endif
     throw 'Failed to list files in directory: '.a:path
   endif
   let l:names = []

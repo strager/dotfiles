@@ -234,28 +234,18 @@ endfunction
 
 function! Test_listing_non_existing_path_fails()
   let l:path = strager#file#make_directory_with_files([])
-  try
-    call s:list(l:path.'/dir-does-not-exist')
-    call assert_report(
-      \ 'Listing files of a non-existing path should have thrown an '.
-      \ 'exception, but didn''t',
-    \ )
-  catch
-    call assert_exception('Failed to list files in directory')
-  endtry
+  call strager#assert#assert_throws(
+    \ {-> s:list(l:path.'/dir-does-not-exist')},
+    \ 'ES001:',
+  \ )
 endfunction
 
 function! Test_list_regular_file_as_directory_fails()
   let l:path = strager#file#make_directory_with_files(['file.zip'])
-  try
-    call s:list(l:path.'/file.zip')
-    call assert_report(
-      \ 'Listing files of a regular file should have thrown an exception, but '.
-      \ 'didn''t',
-    \ )
-  catch
-    call assert_exception('Failed to list files in directory')
-  endtry
+  call strager#assert#assert_throws(
+    \ {-> s:list(l:path.'/file.zip')},
+    \ 'ES015:',
+  \ )
 endfunction
 
 function! Test_listing_filesystem_root_includes_dot_and_dotdot()
