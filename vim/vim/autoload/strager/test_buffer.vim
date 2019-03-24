@@ -133,33 +133,37 @@ function! Test_buffer_number_by_file_name_does_not_glob() abort
   call assert_equal(-1, strager#buffer#buffer_number_by_name('fi*.txt'))
 endfunction
 
-function! Test_buffer_number_by_file_name_matches_with_glob() abort
-  %bwipeout!
-  let l:dir_path = strager#file#make_directory_with_files(['fi*.txt'])
-  exec 'cd '.fnameescape(l:dir_path)
-  edit fi\*.txt
-  let l:buffer_number = bufnr('%')
-  call assert_equal(
-    \ l:buffer_number,
-    \ strager#buffer#buffer_number_by_name('fi*.txt'),
-  \ )
-endfunction
+if !has('win32')
+  function! Test_buffer_number_by_file_name_matches_with_glob() abort
+    %bwipeout!
+    let l:dir_path = strager#file#make_directory_with_files(['fi*.txt'])
+    exec 'cd '.fnameescape(l:dir_path)
+    edit fi\*.txt
+    let l:buffer_number = bufnr('%')
+    call assert_equal(
+      \ l:buffer_number,
+      \ strager#buffer#buffer_number_by_name('fi*.txt'),
+    \ )
+  endfunction
+endif
 
-function! Test_buffer_number_by_file_name_matches_one_with_glob() abort
-  %bwipeout!
-  let l:dir_path = strager#file#make_directory_with_files([
-    \ 'fi*.txt',
-    \ 'file.txt',
-  \ ])
-  exec 'cd '.fnameescape(l:dir_path)
-  edit fi\*.txt
-  let l:buffer_number = bufnr('%')
-  split file.txt
-  call assert_equal(
-    \ l:buffer_number,
-    \ strager#buffer#buffer_number_by_name('fi*.txt'),
-  \ )
-endfunction
+if !has('win32')
+  function! Test_buffer_number_by_file_name_matches_one_with_glob() abort
+    %bwipeout!
+    let l:dir_path = strager#file#make_directory_with_files([
+      \ 'fi*.txt',
+      \ 'file.txt',
+    \ ])
+    exec 'cd '.fnameescape(l:dir_path)
+    edit fi\*.txt
+    let l:buffer_number = bufnr('%')
+    split file.txt
+    call assert_equal(
+      \ l:buffer_number,
+      \ strager#buffer#buffer_number_by_name('fi*.txt'),
+    \ )
+  endfunction
+endif
 
 function! Test_buffer_number_by_percent_file_name() abort
   %bwipeout!
@@ -185,7 +189,7 @@ function! Test_buffer_number_by_dollar_file_name() abort
   %bwipeout!
   let l:dir_path = strager#file#make_directory_with_files(['$', 'other.txt'])
   exec 'cd '.fnameescape(l:dir_path)
-  edit \$
+  exec 'edit '.fnameescape('$')
   let l:buffer_number = bufnr('%')
   split other.txt
   call assert_equal(l:buffer_number, strager#buffer#buffer_number_by_name('$'))
