@@ -5,6 +5,7 @@ autoload -Uk strager_initialize_post_prompt
 autoload -Uk strager_iterm_preexec
 autoload -Uk strager_iterm_sequence
 autoload -Uk strager_iterm_wrap_prompt
+autoload -Uk strager_move_backward_shortword
 autoload -Uk strager_prompt_cwd
 
 # Saved history.
@@ -29,6 +30,26 @@ bindkey -e
 # TODO(strager): select-word-style bash (except for ^W).
 
 bindkey "${terminfo[kdch1]}" delete-char
+
+zle -N strager_move_backward_shortword
+
+strager_backward_kill_blankword() {
+    local MARK="${CURSOR}"
+    local CURSOR="${CURSOR}"
+    zle vi-backward-blank-word
+    zle kill-region
+}
+zle -N strager_backward_kill_blankword
+bindkey '^W' strager_backward_kill_blankword
+
+strager_backward_kill_shortword() {
+    local MARK="${CURSOR}"
+    local CURSOR="${CURSOR}"
+    zle strager_move_backward_shortword
+    zle kill-region
+}
+zle -N strager_backward_kill_shortword
+bindkey '^[^?' strager_backward_kill_shortword
 
 autoload -U up-line-or-beginning-search
 zle -N up-line-or-beginning-search

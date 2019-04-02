@@ -1,0 +1,60 @@
+# Inputs:
+# * ${BUFFER}
+# * ${CURSOR}
+# Outputs:
+# * ${CURSOR}
+strager_move_backward_shortword() {
+    # NOTE(strager): Indexing can get confusing:
+    #
+    # * ${CURSOR} is a 0-based index into ${BUFFER}
+    # * The index ${i} in ${BUFFER[${i}]} is 1-based
+    # * The index ${i} in ${BUFFER:${i}:1} is 0-based
+    #
+    # Therefore:
+    #
+    # * ${BUFFER:${CURSOR} - 1:1} and ${BUFFER[${CURSOR}]} represent the
+    #   character immediately to the left of the cursor
+    # * ${BUFFER:${CURSOR}:1} and ${BUFFER[${CURSOR} + 1]} represent the
+    #   character at the cursor (for a block cursor)
+
+    if [[ "${#CURSOR}" -eq 0 ]]; then
+        return
+    fi
+
+    local word_ranges='A-Za-z0-9._+-'
+    _strager_move_backward_while_character ' '
+    case "${BUFFER:${CURSOR} - 1:1}" in
+        /)
+            _strager_move_backward_while_character /
+            _strager_move_backward_while_pattern "[${word_ranges}]"
+            ;;
+        [A-Za-z0-9._+-])
+            _strager_move_backward_while_pattern "[${word_ranges}]"
+            ;;
+        *)
+            _strager_move_backward_while_pattern "[^ /${word_ranges}]"
+            ;;
+    esac
+}
+
+_strager_move_backward_while_character() {
+    local skip_character="${1}"
+    while [[ "${CURSOR}" -gt 0 ]]; do
+        if [[ "${BUFFER:${CURSOR} - 1:1}" != "${skip_character}" ]]; then
+            break
+        fi
+        CURSOR=$((${CURSOR} - 1))
+    done
+}
+
+_strager_move_backward_while_pattern() {
+    local skip_pattern="${1}"
+    zmodload zsh/pcre
+    pcre_compile -s "${skip_pattern}"
+    while [[ "${CURSOR}" -gt 0 ]]; do
+        if ! pcre_match -- "${BUFFER:${CURSOR} - 1:1}"; then
+            break
+        fi
+        CURSOR=$((${CURSOR} - 1))
+    done
+}
