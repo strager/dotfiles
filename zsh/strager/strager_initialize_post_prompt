@@ -17,7 +17,7 @@ strager_initialize_completion() {
 }
 
 strager_initialize_history() {
-    if [[ "${STRAGER_HISTFILE:+set}" = set ]]; then
+    if [[ "${STRAGER_HISTFILE:+set}" = set && "${STRAGER_DISABLE_HISTFILE:-0}" -eq 0 ]]; then
         fc -p "${STRAGER_HISTFILE}"
         unset STRAGER_HISTFILE
     fi

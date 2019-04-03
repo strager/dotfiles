@@ -1,4 +1,5 @@
 import io
+import os
 import pathlib
 import pexpect
 import re
@@ -36,8 +37,10 @@ class SpawnZSHTestMixin:
 def spawn_zsh(
     log_file: typing.BinaryIO, cwd: typing.Optional[pathlib.Path] = None
 ) -> pexpect.spawn:
+    env = dict(os.environ)
+    env["STRAGER_DISABLE_HISTFILE"] = "1"
     zsh = pexpect.spawn(
-        zsh_executable(), args=["-i"], cwd=cwd, logfile=log_file, timeout=3
+        zsh_executable(), args=["-i"], cwd=cwd, env=env, logfile=log_file, timeout=3
     )
     zsh.logfile_send = None
     return zsh
