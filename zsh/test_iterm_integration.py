@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 
-import io
 import pathlib
 import pexpect
 import re
@@ -8,9 +7,10 @@ import sys
 import tempfile
 import typing
 import unittest
+from zsh import SpawnZSHTestMixin, string_ignoring_escape_sequences_re
 
 
-class ZSHITermPromptTestCase(unittest.TestCase):
+class ZSHITermPromptTestCase(unittest.TestCase, SpawnZSHTestMixin):
     def test_prompt_is_delimited(self) -> None:
         zsh = self.spawn_zsh()
         expect_ftcs_prompt(zsh)
@@ -88,52 +88,12 @@ class ZSHITermPromptTestCase(unittest.TestCase):
             "FTCS_COMMAND_EXECUTED should not preceed FTCS_COMMAND_FINISHED.",
         )
 
-    def spawn_zsh(self, cwd: typing.Optional[pathlib.Path] = None) -> pexpect.spawn:
-        log_file = io.BytesIO()
-        zsh = spawn_zsh(cwd=cwd, log_file=log_file)
-
-        def log_terminal_output_on_test_failure() -> None:
-            if self.current_test_failed:
-                print(f"zsh terminal output: {log_file.getvalue()!r}", file=sys.stderr)
-
-        self.addCleanup(lambda: log_terminal_output_on_test_failure())
-        self.addCleanup(lambda: zsh.close(force=True))
-        return zsh
-
-    @property
-    def current_test_failed(self) -> bool:
-        # HACK(strager): Use private APIs of unittest to determine if the test
-        # failed.
-        if self._outcome is None:
-            return False
-        if not self._outcome.success:
-            return True
-        for (test, exc_info) in self._outcome.errors:
-            if exc_info is not None:
-                return True
-        return False
-
 
 def send_and_expect_byte_by_byte(zsh: pexpect.spawn, input: bytes) -> bytes:
     for byte in input:
         current_input = bytes([byte])
         zsh.send(current_input)
         zsh.expect(string_ignoring_escape_sequences_re(current_input))
-
-
-def string_ignoring_escape_sequences_re(string: bytes) -> bytes:
-    """Return a regular expression pattern which matches the given string with
-    optionally interleaved terminal escape sequences.
-
-    Use this function to ignore color escape sequences used for syntax
-    highlighting, for example.
-    """
-    escape_sequence_re = b"(?:\x1b.+)?"
-    return (
-        escape_sequence_re
-        + escape_sequence_re.join(re.escape(bytes([b])) for b in string)
-        + escape_sequence_re
-    )
 
 
 def expect_ftcs_prompt(zsh: pexpect.spawn) -> None:
@@ -173,16 +133,6 @@ def expect_iterm_current_dir(zsh: pexpect.spawn) -> bytes:
     return zsh.match.group("iterm_current_dir_path")
 
 
-def spawn_zsh(
-    log_file: typing.BinaryIO, cwd: typing.Optional[pathlib.Path] = None
-) -> pexpect.spawn:
-    zsh = pexpect.spawn(
-        zsh_executable(), args=["-i"], cwd=cwd, logfile=log_file, timeout=3
-    )
-    zsh.logfile_send = None
-    return zsh
-
-
 """A regular expression matching components inside a FinalTerm escape sequence.
 """
 ftcs_extra_arguments_re = b"(?:;[^\x07]*)*"
@@ -191,10 +141,6 @@ ftcs_extra_arguments_re = b"(?:;[^\x07]*)*"
 escape sequence.
 """
 ftcs_command_executed_re = b"\x1b]133;C" + ftcs_extra_arguments_re + b"\x07"
-
-
-def zsh_executable() -> pathlib.Path:
-    return pathlib.Path("zsh")
 
 
 if __name__ == "__main__":
