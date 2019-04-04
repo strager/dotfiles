@@ -14,7 +14,7 @@ from zsh import (
 )
 
 
-class ZSHITermPromptTestCase(unittest.TestCase, SpawnZSHTestMixin):
+class ZSHITermPromptTestCase(SpawnZSHTestMixin, unittest.TestCase):
     def test_prompt_is_delimited(self) -> None:
         zsh = self.spawn_zsh()
         expect_ftcs_prompt(zsh)

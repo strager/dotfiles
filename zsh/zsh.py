@@ -1,4 +1,5 @@
 import io
+import multiprocessing.dummy
 import os
 import pathlib
 import pexpect
@@ -9,9 +10,16 @@ import unittest
 
 
 class SpawnZSHTestMixin:
+    _spawned_zshs: typing.List[pexpect.spawn]
+
+    def __init__(self, *args, **kwargs) -> None:
+        self._spawned_zshs = []
+        super().__init__(*args, **kwargs)
+
     def spawn_zsh(self, cwd: typing.Optional[pathlib.Path] = None) -> pexpect.spawn:
         log_file = io.BytesIO()
         zsh = spawn_zsh(cwd=cwd, log_file=log_file)
+        self._spawned_zshs.append(zsh)
 
         def log_terminal_output_on_test_failure() -> None:
             if self.current_test_failed:
@@ -22,8 +30,15 @@ class SpawnZSHTestMixin:
                 )
 
         self.addCleanup(lambda: log_terminal_output_on_test_failure())
-        self.addCleanup(lambda: zsh.close(force=True))
+        self.addCleanup(lambda: self._close_spawned_zshs())
         return zsh
+
+    def _close_spawned_zshs(self) -> None:
+        zshs_to_close = [zsh for zsh in self._spawned_zshs if not zsh.closed]
+        if not zshs_to_close:
+            return
+        with multiprocessing.dummy.Pool() as pool:
+            pool.map(lambda zsh: zsh.close(force=True), zshs_to_close)
 
     @property
     def current_test_failed(self) -> bool:
