@@ -8,10 +8,11 @@ import tempfile
 import tty
 import typing
 import unittest
-import zsh
+
+from zsh import SpawnZSHTestMixin, wait_for_zle_to_initialize
 
 
-class ZSHKeyBindingsTestCase(unittest.TestCase, zsh.SpawnZSHTestMixin):
+class ZSHKeyBindingsTestCase(SpawnZSHTestMixin, unittest.TestCase):
     def test_alt_backspace_deletes_entire_word_backward(self) -> None:
         test_cases = [
             (b"one two three", b"one two "),
@@ -68,10 +69,7 @@ class ZSHKeyBindingsTestCase(unittest.TestCase, zsh.SpawnZSHTestMixin):
         zsh = self.spawn_zsh()
         dump_input_buffer_on_ctrl_g(zsh)
 
-        # HACK(strager): Wait for zle to initialize.
-        zsh.sendcontrol("l")
-        zsh.expect_exact(clear_screen)
-
+        wait_for_zle_to_initialize(zsh)
         zsh.send(input)
         zsh.sendcontrol("g")
         return get_dumped_input_buffer(zsh)
@@ -92,5 +90,3 @@ def get_dumped_input_buffer(zsh: pexpect.spawn) -> None:
 
 alt_backspace = b"\x1b\x7f"
 ctrl_w = b"\x17"
-
-clear_screen = b"\x1b[2J"

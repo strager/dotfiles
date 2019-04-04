@@ -7,7 +7,11 @@ import sys
 import tempfile
 import typing
 import unittest
-from zsh import SpawnZSHTestMixin, string_ignoring_escape_sequences_re
+from zsh import (
+    SpawnZSHTestMixin,
+    string_ignoring_escape_sequences_re,
+    wait_for_zle_to_initialize,
+)
 
 
 class ZSHITermPromptTestCase(unittest.TestCase, SpawnZSHTestMixin):
@@ -78,6 +82,7 @@ class ZSHITermPromptTestCase(unittest.TestCase, SpawnZSHTestMixin):
 
     def test_ctrl_c_reports_command_finished_sequence(self) -> None:
         zsh = self.spawn_zsh()
+        wait_for_zle_to_initialize(zsh)
         send_and_expect_byte_by_byte(zsh, b"echo hello")
         zsh.sendintr()
         exit_status = expect_ftcs_command_finished(zsh)

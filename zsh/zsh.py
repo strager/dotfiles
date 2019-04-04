@@ -47,12 +47,19 @@ def spawn_zsh(
     zsh = pexpect.spawn(
         zsh_executable(), args=["-i"], cwd=cwd, env=env, logfile=log_file, timeout=3
     )
+    zsh.delaybeforesend = None
     zsh.logfile_send = None
     return zsh
 
 
 def zsh_executable() -> pathlib.Path:
     return pathlib.Path("zsh")
+
+
+def wait_for_zle_to_initialize(zsh: pexpect.spawn) -> None:
+    clear_screen = b"\x1b[2J"
+    zsh.sendcontrol("l")
+    zsh.expect_exact(clear_screen)
 
 
 def string_ignoring_escape_sequences_re(string: bytes) -> bytes:
