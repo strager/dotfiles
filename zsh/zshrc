@@ -1,5 +1,8 @@
 # TODO(strager): Move into ~/.zshenv.
 fpath=(~/.zsh/strager "${fpath[@]}")
+autoload -Uk strager_define_auto_scm_aliases
+autoload -Uk strager_define_git_scm_aliases
+autoload -Uk strager_define_hg_scm_aliases
 autoload -Uk strager_ftcs_sequence
 autoload -Uk strager_initialize_post_prompt
 autoload -Uk strager_iterm_preexec
@@ -7,6 +10,8 @@ autoload -Uk strager_iterm_sequence
 autoload -Uk strager_iterm_wrap_prompt
 autoload -Uk strager_move_backward_shortword
 autoload -Uk strager_prompt_cwd
+autoload -Uk strager_scm_in_git
+autoload -Uk strager_scm_in_hg
 autoload -Uk strager_set_block_cursor
 autoload -Uk strager_set_vertical_bar_cursor
 autoload -Uk strager_update_cursor_during_edit
@@ -108,34 +113,9 @@ ls() {
     /bin/ls -G "${@}"
 }
 
-# Git aliases.
-gs() {
-    git status -s -b "${@}"
-}
-gc() {
-    git commit -v "${@}"
-}
-g.() {
-    git add -p "${@}"
-}
-gd() {
-    git diff "${@}"
-}
-gp() {
-    git checkout -p "${@}"
-}
-gr() {
-    git rebase "${@}"
-}
-grc() {
-    git rebase --continue "${@}"
-}
-gar() {
-    git add --all .
-}
-ga() {
-    git commit --amend --reuse-message=HEAD
-}
+# Git and Hg aliases.
+chpwd_functions=("${chpwd_functions[@]}" strager_define_auto_scm_aliases)
+strager_define_auto_scm_aliases
 
 title() {
     printf '\x1b]1;%s\x07' "${1}"

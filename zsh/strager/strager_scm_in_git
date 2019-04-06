@@ -1,0 +1,3 @@
+strager_scm_in_git() {
+    git rev-parse 2>/dev/null
+}

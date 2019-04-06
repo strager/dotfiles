@@ -1,0 +1,31 @@
+strager_define_hg_scm_aliases() {
+    gs() {
+        hg status "${@}"
+    }
+    gc() {
+        hg commit "${@}"
+    }
+    g.() {
+        printf 'g.: fatal: not yet implemented for Hg\n' >&2
+        return 1
+    }
+    gd() {
+        hg diff "${@}"
+    }
+    gp() {
+        printf 'gp: fatal: not yet implemented for Hg\n' >&2
+        return 1
+    }
+    gr() {
+        hg rebase "${@}"
+    }
+    grc() {
+        hg rebase --continue "${@}"
+    }
+    gar() {
+        hg addremove "${@}"
+    }
+    ga() {
+        hg amend "${@}"
+    }
+}

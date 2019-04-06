@@ -7,4 +7,5 @@ setopt unset
 here="$(cd "$(dirname "${0}")" && pwd)"
 "${here}/test_movement.zsh"
 "${here}/test_prompt.zsh"
+"${here}/test_scm_aliases.zsh"
 "${PYTHON:-python3}" -m unittest discover --pattern '*.py' --start-directory "${here}" --verbose

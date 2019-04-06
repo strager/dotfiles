@@ -1,0 +1,33 @@
+strager_define_auto_scm_aliases() {
+    local commands=(
+        g.
+        ga
+        gar
+        gc
+        gd
+        gp
+        gr
+        grc
+        gs
+    )
+    for command in "${commands[@]}"; do
+        eval "${command}() {
+            strager_auto_scm \"${command}\" \"\${@}\"
+        }"
+    done
+}
+
+strager_auto_scm() {
+    local command="${1}"
+    unfunction "${command}"
+    if strager_scm_in_git; then
+        strager_define_git_scm_aliases
+    elif strager_scm_in_hg; then
+        strager_define_hg_scm_aliases
+    else
+        printf '%s: fatal: could not determine SCM\n' "${command}" >&2
+        strager_define_auto_scm_aliases
+        return 1
+    fi
+    "${@}"
+}

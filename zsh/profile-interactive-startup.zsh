@@ -4,13 +4,10 @@ setopt err_exit
 setopt pipe_fail
 setopt unset
 
-if ! [[ -o interactive ]]; then
-    args=("${SHELL}" -i "${ZSH_SCRIPT}" "${@}")
-    printf 'note: re-executing:'
-    printf ' %q' "${args[@]}"
-    printf '\n'
-    exec "${args[@]}"
-fi
+here="$(cd "$(dirname "${0}")" && pwd)"
+. "${here}/testlib.zsh"
+
+force_zsh_interactive
 
 zmodload zsh/zpty
 
