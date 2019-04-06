@@ -50,9 +50,9 @@ class ZSHITermPromptTestCase(SpawnZSHTestMixin, unittest.TestCase):
         expect_ftcs_command_executed(zsh)
         expect_ftcs_command_finished(zsh)
         command_output = zsh.before
-        self.assertRegex(
+        self.assertIn(
+            b"hello world\r\n",
             command_output,
-            b"^hello world\r\n",
             "Command escape sequences should wrap the command's output",
         )
 

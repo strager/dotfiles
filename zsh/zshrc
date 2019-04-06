@@ -7,6 +7,9 @@ autoload -Uk strager_iterm_sequence
 autoload -Uk strager_iterm_wrap_prompt
 autoload -Uk strager_move_backward_shortword
 autoload -Uk strager_prompt_cwd
+autoload -Uk strager_set_block_cursor
+autoload -Uk strager_set_vertical_bar_cursor
+autoload -Uk strager_update_cursor_during_edit
 
 # Saved history.
 # N.B. Do not set HISTFILE here. HISTFILE is set by
@@ -91,6 +94,14 @@ PROMPT="${PROMPT}> "
 # iTerm 2 integration.
 PROMPT="$(strager_iterm_wrap_prompt "${PROMPT}")"
 preexec_functions=(strager_iterm_preexec "${preexec_functions[@]}")
+
+# Cursor style.
+PROMPT="${PROMPT}%{\$(strager_update_cursor_during_edit)%}"
+preexec_functions=("${preexec_functions[@]}" strager_set_block_cursor)
+zle-keymap-select() {
+    strager_update_cursor_during_edit
+}
+zle -N zle-keymap-select
 
 # Make ls print colours by default.
 ls() {

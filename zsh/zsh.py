@@ -1,3 +1,4 @@
+import enum
 import io
 import multiprocessing.dummy
 import os
@@ -45,12 +46,40 @@ class ZSH:
         return self._process.closed
 
     @property
+    def current_iterm_cursor_shape(self) -> typing.Optional["ITermCursorShape"]:
+        return latest_iterm_cursor_shape(self.output)
+
+    @property
     def match(self) -> typing.Optional["re.Match[bytes]"]:
         return self._process.match
 
     @property
     def output(self) -> bytes:
         return self._log_file.getvalue()
+
+
+class ITermCursorShape(enum.Enum):
+    BLOCK = "BLOCK"
+    UNDERLINE = "UNDERLINE"
+    VERTICAL_BAR = "VERTICAL_BAR"
+
+
+def latest_iterm_cursor_shape(
+    terminal_output: bytes
+) -> typing.Optional[ITermCursorShape]:
+    cursor_shape_codes: typing.List[bytes] = re.findall(
+        b"\x1b]1337;CursorShape=(?P<shape>.*?)\x07", terminal_output, re.DOTALL
+    )
+    cursor_shape: typing.Optional[ITermCursorShape] = None
+    for cursor_shape_code in cursor_shape_codes:
+        cur_cursor_shape = {
+            b"0": ITermCursorShape.BLOCK,
+            b"1": ITermCursorShape.VERTICAL_BAR,
+            b"2": ITermCursorShape.UNDERLINE,
+        }.get(cursor_shape_code, None)
+        if cur_cursor_shape is not None:
+            cursor_shape = cur_cursor_shape
+    return cursor_shape
 
 
 class SpawnZSHTestMixin:
@@ -212,3 +241,54 @@ class PrettyTerminalOutputTestCase(unittest.TestCase):
         self.assertEqual(pretty_terminal_output(b"\x90"), r'b"\x90"')
         self.assertEqual(pretty_terminal_output(b"\x9c"), r'b"\x9c"')
         self.assertEqual(pretty_terminal_output(b"\xff"), r'b"\xff"')
+
+
+class ItermCursorShapeTestCase(unittest.TestCase):
+    def test_cursor_shape_is_undefined_with_no_terminal_output(self) -> None:
+        terminal_output = b""
+        self.assertIsNone(latest_iterm_cursor_shape(terminal_output))
+
+    def test_cursor_shape_is_block_after_block_code(self) -> None:
+        terminal_output = b"\x1b]1337;CursorShape=0\x07"
+        self.assertEqual(
+            latest_iterm_cursor_shape(terminal_output), ITermCursorShape.BLOCK
+        )
+
+    def test_cursor_shape_is_underline_after_underline_code(self) -> None:
+        terminal_output = b"\x1b]1337;CursorShape=2\x07"
+        self.assertEqual(
+            latest_iterm_cursor_shape(terminal_output), ITermCursorShape.UNDERLINE
+        )
+
+    def test_cursor_shape_is_vertical_bar_after_vertical_bar_code(self) -> None:
+        terminal_output = b"\x1b]1337;CursorShape=1\x07"
+        self.assertEqual(
+            latest_iterm_cursor_shape(terminal_output), ITermCursorShape.VERTICAL_BAR
+        )
+
+    def test_text_before_cursor_shape_code_is_ignored(self) -> None:
+        terminal_output = b"[prompt] \x1b]1337;CursorShape=1\x07"
+        self.assertEqual(
+            latest_iterm_cursor_shape(terminal_output), ITermCursorShape.VERTICAL_BAR
+        )
+
+    def test_text_after_cursor_shape_code_is_ignored(self) -> None:
+        terminal_output = b"\x1b]1337;CursorShape=1\x07some text here"
+        self.assertEqual(
+            latest_iterm_cursor_shape(terminal_output), ITermCursorShape.VERTICAL_BAR
+        )
+
+    def test_newer_cursor_shape_codes_override_older_codes(self) -> None:
+        terminal_output = (
+            b"\x1b]1337;CursorShape=1\x07some text here\x1b]1337;CursorShape=2\x07"
+        )
+        self.assertEqual(
+            latest_iterm_cursor_shape(terminal_output), ITermCursorShape.UNDERLINE
+        )
+
+        terminal_output = (
+            b"\x1b]1337;CursorShape=2\x07some text here\x1b]1337;CursorShape=1\x07"
+        )
+        self.assertEqual(
+            latest_iterm_cursor_shape(terminal_output), ITermCursorShape.VERTICAL_BAR
+        )

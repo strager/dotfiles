@@ -1,0 +1,6 @@
+strager_update_cursor_during_edit() {
+    case "${KEYMAP}" in
+        vicmd) strager_set_block_cursor ;;
+        *) strager_set_vertical_bar_cursor ;;
+    esac
+}

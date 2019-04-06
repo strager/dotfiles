@@ -1,0 +1,3 @@
+strager_set_block_cursor() {
+    strager_iterm_sequence CursorShape=0
+}
