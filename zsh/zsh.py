@@ -10,10 +10,12 @@ import unittest
 
 
 class ZSH:
+    _log_file: io.BytesIO
     _process: pexpect.spawn
 
-    def __init__(self, process: pexpect.spawn) -> None:
+    def __init__(self, log_file: io.BytesIO, process: pexpect.spawn) -> None:
         super().__init__()
+        self._log_file = log_file
         self._process = process
 
     def close_synchronously(self) -> None:
@@ -46,6 +48,10 @@ class ZSH:
     def match(self) -> typing.Optional["re.Match[bytes]"]:
         return self._process.match
 
+    @property
+    def output(self) -> bytes:
+        return self._log_file.getvalue()
+
 
 class SpawnZSHTestMixin:
     _spawned_zshs: typing.List[ZSH]
@@ -55,15 +61,13 @@ class SpawnZSHTestMixin:
         super().__init__(*args, **kwargs)
 
     def spawn_zsh(self, cwd: typing.Optional[pathlib.Path] = None) -> ZSH:
-        log_file = io.BytesIO()
-        zsh = spawn_zsh(cwd=cwd, log_file=log_file)
+        zsh = spawn_zsh(cwd=cwd)
         self._spawned_zshs.append(zsh)
 
         def log_terminal_output_on_test_failure() -> None:
             if self.current_test_failed:
-                output = log_file.getvalue()
                 print(
-                    f"zsh terminal output:\n{pretty_terminal_output(output)}",
+                    f"zsh terminal output:\n{pretty_terminal_output(zsh.output)}",
                     file=sys.stderr,
                 )
 
@@ -92,9 +96,8 @@ class SpawnZSHTestMixin:
         return False
 
 
-def spawn_zsh(
-    log_file: typing.BinaryIO, cwd: typing.Optional[pathlib.Path] = None
-) -> ZSH:
+def spawn_zsh(cwd: typing.Optional[pathlib.Path] = None) -> ZSH:
+    log_file = io.BytesIO()
     env = dict(os.environ)
     env["STRAGER_DISABLE_HISTFILE"] = "1"
     zsh_process = pexpect.spawn(
@@ -102,7 +105,7 @@ def spawn_zsh(
     )
     zsh_process.delaybeforesend = None
     zsh_process.logfile_send = None
-    return ZSH(process=zsh_process)
+    return ZSH(log_file=log_file, process=zsh_process)
 
 
 def zsh_executable() -> pathlib.Path:
