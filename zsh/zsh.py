@@ -9,14 +9,52 @@ import typing
 import unittest
 
 
+class ZSH:
+    _process: pexpect.spawn
+
+    def __init__(self, process: pexpect.spawn) -> None:
+        super().__init__()
+        self._process = process
+
+    def close_synchronously(self) -> None:
+        self._process.close(force=True)
+
+    def expect(self, pattern: bytes) -> None:
+        self._process.expect(pattern)
+
+    def expect_exact(self, data: bytes) -> None:
+        self._process.expect_exact(data)
+
+    def send(self, data: bytes) -> None:
+        self._process.send(data)
+
+    def sendintr(self) -> None:
+        self._process.sendintr()
+
+    def sendcontrol(self, code: str) -> None:
+        self._process.sendcontrol(code)
+
+    @property
+    def before(self) -> bytes:
+        return self._process.before
+
+    @property
+    def closed(self) -> bool:
+        return self._process.closed
+
+    @property
+    def match(self) -> typing.Optional["re.Match[bytes]"]:
+        return self._process.match
+
+
 class SpawnZSHTestMixin:
-    _spawned_zshs: typing.List[pexpect.spawn]
+    _spawned_zshs: typing.List[ZSH]
 
     def __init__(self, *args, **kwargs) -> None:
         self._spawned_zshs = []
         super().__init__(*args, **kwargs)
 
-    def spawn_zsh(self, cwd: typing.Optional[pathlib.Path] = None) -> pexpect.spawn:
+    def spawn_zsh(self, cwd: typing.Optional[pathlib.Path] = None) -> ZSH:
         log_file = io.BytesIO()
         zsh = spawn_zsh(cwd=cwd, log_file=log_file)
         self._spawned_zshs.append(zsh)
@@ -38,7 +76,7 @@ class SpawnZSHTestMixin:
         if not zshs_to_close:
             return
         with multiprocessing.dummy.Pool() as pool:
-            pool.map(lambda zsh: zsh.close(force=True), zshs_to_close)
+            pool.map(lambda zsh: zsh.close_synchronously(), zshs_to_close)
 
     @property
     def current_test_failed(self) -> bool:
@@ -56,22 +94,22 @@ class SpawnZSHTestMixin:
 
 def spawn_zsh(
     log_file: typing.BinaryIO, cwd: typing.Optional[pathlib.Path] = None
-) -> pexpect.spawn:
+) -> ZSH:
     env = dict(os.environ)
     env["STRAGER_DISABLE_HISTFILE"] = "1"
-    zsh = pexpect.spawn(
+    zsh_process = pexpect.spawn(
         zsh_executable(), args=["-i"], cwd=cwd, env=env, logfile=log_file, timeout=3
     )
-    zsh.delaybeforesend = None
-    zsh.logfile_send = None
-    return zsh
+    zsh_process.delaybeforesend = None
+    zsh_process.logfile_send = None
+    return ZSH(process=zsh_process)
 
 
 def zsh_executable() -> pathlib.Path:
     return pathlib.Path("zsh")
 
 
-def wait_for_zle_to_initialize(zsh: pexpect.spawn) -> None:
+def wait_for_zle_to_initialize(zsh: ZSH) -> None:
     clear_screen = b"\x1b[2J"
     zsh.sendcontrol("l")
     zsh.expect_exact(clear_screen)
