@@ -14,6 +14,7 @@ autoload -Uk strager_move_backward_shortword
 autoload -Uk strager_prompt_cwd
 autoload -Uk strager_scm_in_git
 autoload -Uk strager_scm_in_hg
+autoload -Uk strager_search_history
 autoload -Uk strager_set_block_cursor
 autoload -Uk strager_set_vertical_bar_cursor
 autoload -Uk strager_update_cursor_during_edit
@@ -78,6 +79,9 @@ bindkey '^I' menu-expand-or-complete
 bindkey -M menuselect '^?' send-break
 bindkey -M menuselect '^H' send-break
 bindkey -M menuselect '^[[Z' reverse-menu-complete
+
+zle -N strager_search_history
+bindkey '^R' strager_search_history
 
 # Completion.
 # N.B. Do not call compinit here. compinit is called by

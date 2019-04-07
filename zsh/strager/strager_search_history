@@ -1,0 +1,15 @@
+strager_search_history() {
+    local selection_fields=($( \
+        fc -l -r 1 \
+        | fzf \
+            ${=FZF_DEFAULT_OPTS} \
+            --delimiter='  ' \
+            "--query=${BUFFER}" \
+            --tiebreak=index \
+            --with-nth=2..
+    ))
+    if [ "${#selection_fields[@]:-}" -ne 0 ]; then
+        local history_index="${selection_fields[1]}"
+        zle vi-fetch-history -n "${history_index}"
+    fi
+}
