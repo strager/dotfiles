@@ -110,6 +110,9 @@ zle -N zle-keymap-select
 
 # Make ls print colours by default.
 ls() {
+    # FIXME(strager): -G behaves differently for different ls implementations.
+    # We should use common options or choose options depending on the
+    # implementation.
     /bin/ls -G "${@}"
 }
 
