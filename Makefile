@@ -6,10 +6,19 @@ PYTHON := $(python_env_dir)/bin/python3
 vim_doc_directories := $(shell find vim -name doc -type d)
 
 .PHONY: all
-all: vim_doc_tags
+all: zsh_generated_sources vim_doc_tags
 
 .PHONY: vim_doc_tags
 vim_doc_tags: $(vim_doc_directories:=/tags)
+
+.PHONY: zsh_generated_sources
+zsh_generated_sources: zsh/strager/strager_initialize_ls_colors zsh/strager/strager_initialize_menuselect
+
+zsh/strager/strager_initialize_ls_colors: zsh/generate-strager-initialize-ls-colors.zsh
+	$(<)
+
+zsh/strager/strager_initialize_menuselect: zsh/generate-strager-initialize-menuselect.zsh
+	$(<)
 
 .PHONY: check
 check: check-vim check-zsh
