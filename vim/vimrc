@@ -82,7 +82,7 @@ set numberwidth=3
 set hlsearch
 set incsearch
 set smartcase ignorecase
-nmap <unique> <Leader>l :nohlsearch<CR>
+nmap <silent> <unique> <Leader>l :nohlsearch<CR>
 
 " Save searches
 set viminfo+=/200
