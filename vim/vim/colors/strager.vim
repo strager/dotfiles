@@ -25,4 +25,7 @@ highlight StatusLineNC cterm=NONE ctermbg=Black ctermfg=Green
 
 highlight SpellBad cterm=undercurl ctermfg=Red
 
+" Deemphasize tab indicators ('list).
+highlight SpecialKey cterm=NONE ctermfg=0 ctermbg=NONE
+
 let colors_name = 'strager'

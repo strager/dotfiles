@@ -1,3 +1,5 @@
+scriptencoding utf-8
+
 """ General
 set nocompatible
 
@@ -159,7 +161,10 @@ nmap <unique> <C-P> :call strager#search_files#search_using_fzf()<CR>
 set nowrap
 set ruler
 set laststatus=2
+set list
+set listchars=
 set listchars+=precedes:<,extends:>
+set listchars+=tab:⇥\ 
 set sidescroll=5
 set scrolloff=5
 set shortmess=a     " Abbreviate status line
