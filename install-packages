@@ -1,0 +1,90 @@
+#!/usr/bin/env bash
+
+set -e
+set -o pipefail
+set -u
+
+os="$(uname)"
+
+expected_nix_files=(
+    bin/black
+    bin/clang-format
+    bin/flake8
+    bin/fzf
+    bin/git
+    bin/gpg
+    bin/htop
+    bin/jq
+    bin/python3
+    bin/rg
+    bin/tmux
+    bin/vim
+    bin/wget
+    bin/zsh
+    share/zsh/site-functions/_caffeinate
+)
+case "${os}" in
+    Darwin)
+        expected_nix_files+=(
+            bin/duplicity
+        )
+        if [ "${TRAVIS:-}" != true ]; then
+            expected_nix_files+=(
+                Applications/iTerm.app/Contents/MacOS/iTerm2
+            )
+        fi
+        ;;
+esac
+
+nix_package_attrs=(
+    nixpkgs.clang-tools
+    nixpkgs.fzf
+    nixpkgs.gitAndTools.gitFull
+    nixpkgs.gnupg
+    nixpkgs.htop
+    nixpkgs.jq
+    nixpkgs.python3
+    nixpkgs.python3Packages.black
+    nixpkgs.python3Packages.flake8
+    nixpkgs.ripgrep
+    nixpkgs.tmux
+    nixpkgs.vim
+    nixpkgs.wget
+    nixpkgs.zsh
+    nixpkgs.zsh-completions
+)
+case "${os}" in
+    Darwin)
+        nix_package_attrs+=(
+            nixpkgs.duplicity
+        )
+        if [ "${TRAVIS:-}" != true ]; then
+            expected_nix_files+=(
+                nixpkgs.iterm2
+            )
+        fi
+        ;;
+esac
+
+main() {
+    install_packages
+    verify_installed_packages
+}
+
+install_packages() {
+    nix-env -iA -- "${nix_package_attrs[@]}"
+}
+
+verify_installed_packages() {
+    local exit_code=0
+    for expected_file in "${expected_nix_files[@]}"; do
+        local expected_file_path="${HOME}/.nix-profile/${expected_file}"
+        if ! [ -f "${expected_file_path}" ]; then
+            printf 'error: file %s not found (searched %s)\n' "${expected_file}" "${expected_file_path}"
+            exit_code=1
+        fi
+    done
+    return "${exit_code}"
+}
+
+main

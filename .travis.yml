@@ -5,7 +5,8 @@ os:
   - osx
 
 install:
-  - nix-env -i mercurial ninja python3 ripgrep vim zsh
+  - ./install-packages
+  - nix-env -i mercurial ninja
 
 before_script:
   - rm -f ~/.zshrc
