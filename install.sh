@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
 set -e -E
 
@@ -12,9 +12,27 @@ OUT="$1"
 
 cd "$HERE"
 
+projects=(
+  bash
+  firefox
+  fish
+  fzf
+  git
+  gnome-terminal
+  iterm
+  login
+  nix
+  nixpkgs
+  ssh
+  tmux
+  vim
+  xmonad
+  zsh
+)
+
 echo "Symlinking files..."
 S="$HERE/symlink.sh"
-for project in bash firefox fish fzf git gnome-terminal iterm login nix nixpkgs ssh tmux vim xmonad zsh; do
+for project in "${projects[@]}"; do
     echo "($project)"
     HEREP="$HERE/$project"
     . "$HEREP/install.sh"
