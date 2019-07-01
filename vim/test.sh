@@ -13,6 +13,10 @@ run_vim_syntax_test() {
 
     local log_file_path="$(mktemp /tmp/vim-test-sh.XXXXXX)"
     local script_args=(
+        # Respect mode lines in syntax test files.
+        -c 'set modeline'
+        -c edit
+
         -R
         -c 'call strager#check_syntax#check_syntax_and_exit()'
         "${test_script}"
@@ -138,6 +142,7 @@ run_vim_syntax_test vim/vim/syntax/test_vim/variable.vim
 run_vim_test --need-vimrc vim/vim/autoload/strager/test_directory_browser.vim
 run_vim_test --need-vimrc vim/vim/autoload/strager/test_search_buffers.vim
 run_vim_test --need-vimrc vim/vim/autoload/strager/test_syntax.vim
+run_vim_test --need-vimrc vim/vim/test/test_CVE-2019-12735.vim
 run_vim_test --need-vimrc vim/vim/test/test_c_make_ninja.vim
 run_vim_test --need-vimrc vim/vim/test/test_clipboard.vim
 run_vim_test --need-vimrc vim/vim/test/test_color_column.vim

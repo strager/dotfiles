@@ -3,6 +3,9 @@ scriptencoding utf-8
 """ General
 set nocompatible
 
+" Work around CVE-2019-12735.
+set nomodeline
+
 """ Plugins
 call strager#help#register_command({'force': v:false})
 call strager#move_file#register_command({'force': v:false})
