@@ -27,6 +27,11 @@ strager_initialize_nix() {
     if [ -f /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh ]; then
         source /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
     fi
+    # Make <nixpkgs> resolve to ~/.nix-defexpr/nixpkgs so
+    # the following commands build the same thing:
+    # $ nix-build --attr FOO '<nixpkgs>'
+    # $ nix-env --install --attr FOO
+    NIX_PATH="${HOME}/.nix-defexpr:${NIX_PATH}"
 }
 
 strager_initialize_zsh_autosuggestions() {
