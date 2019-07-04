@@ -1,5 +1,11 @@
 {
   packageOverrides = pkgs: {
+    duplicity = pkgs.duplicity.overrideAttrs (attrs: {
+      patches = (attrs.patches or []) ++ [
+        ./duplicity-performance.patch
+      ];
+    });
+
     fzf = pkgs.fzf.overrideAttrs (attrs: {
       patchPhase = ''
         ${attrs.patchPhase}
