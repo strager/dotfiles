@@ -1,0 +1,36 @@
+strager_define_bzr_scm_aliases() {
+    gs() {
+        bzr status
+    }
+    gc() {
+        printf 'gc: fatal: not yet implemented for Bazaar\n' >&2
+        return 1
+    }
+    g.() {
+        printf 'g.: fatal: not yet implemented for Bazaar\n' >&2
+        return 1
+    }
+    gd() {
+        bzr diff "${@}"
+    }
+    gp() {
+        printf 'gp: fatal: not yet implemented for Bazaar\n' >&2
+        return 1
+    }
+    gr() {
+        printf 'gr: fatal: not yet implemented for Bazaar\n' >&2
+        return 1
+    }
+    grc() {
+        printf 'grc: fatal: not yet implemented for Bazaar\n' >&2
+        return 1
+    }
+    gar() {
+        printf 'gar: fatal: not yet implemented for Bazaar\n' >&2
+        return 1
+    }
+    ga() {
+        printf 'ga: fatal: not yet implemented for Bazaar\n' >&2
+        return 1
+    }
+}

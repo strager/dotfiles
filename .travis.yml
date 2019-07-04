@@ -6,7 +6,7 @@ os:
 
 install:
   - ./install-packages
-  - nix-env -i mercurial ninja
+  - nix-env -i bazaar mercurial ninja
 
 before_script:
   - rm -f ~/.zshrc

@@ -20,6 +20,17 @@ test_scm_aliases_fail_if_not_in_checkout() {
     assert [ "$(cat test_stderr)" = 'gs: fatal: could not determine SCM' ]
 }
 
+test_scm_status_returns_status_in_bzr_checkout() {
+    set_up
+    bzr init
+    touch somefile
+    local exit_code=0
+    gs >.bzr/test_output 2>&1 || exit_code="${?}"
+    cat .bzr/test_output
+    assert [ "${exit_code}" -eq 0 ]
+    assert [ "$(cat .bzr/test_output)" = $'unknown:\n  somefile' ]
+}
+
 test_scm_status_returns_status_in_git_checkout() {
     set_up
     git init
