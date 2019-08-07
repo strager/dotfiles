@@ -1,10 +1,17 @@
 #!/bin/sh
 
-gterm_out="$OUT/.gconf/apps/gnome-terminal"
-outfile="$gterm_out/profiles/strager/%gconf.xml"
-
-if [ ! -e "$outfile" ]; then
-    echo "Be sure to add the 'strager' profile to $gterm_out/global/%gconf.xml" >&2
+dconf=/usr/bin/dconf
+if ! [ -e "${dconf}" ]; then
+    echo "dconf not installed; ignoring" >&2
+    return
 fi
 
-"$S" "$HEREP/%gconf.xml" "$outfile"
+dconf_dir=/org/gnome/terminal/
+
+backup_path=$(mktemp /tmp/gnome-terminal_config_backup.XXXXXXXX)
+"${dconf}" dump "${dconf_dir}" >"${backup_path}"
+echo "note: restore old settings with:"
+echo "      ${dconf} load ${dconf_dir} <${backup_path}"
+
+"${dconf}" load "${dconf_dir}" <"${HEREP}/gnome-terminal.ini"
+echo "note: gnome-terminal config is not automatically updated"
