@@ -4,15 +4,13 @@ os:
   - linux
   - osx
 
-install:
-  - ./install-packages
-  - nix-env -i bazaar mercurial ninja
-
-before_script:
+script:
   - rm -f ~/.zshrc
   - ./install.sh "${HOME}"
 
-script:
+  - ./install-packages
+  - nix-env -i bazaar mercurial ninja
+
   - make
   - make check
   - make format
