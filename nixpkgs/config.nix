@@ -1,4 +1,6 @@
 {
+  android_sdk.accept_license = true;
+
   packageOverrides = pkgs: {
     duplicity = pkgs.duplicity.overrideAttrs (attrs: {
       patches = (attrs.patches or []) ++ [
