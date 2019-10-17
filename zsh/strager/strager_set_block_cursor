@@ -1,3 +1,4 @@
 strager_set_block_cursor() {
     strager_iterm_sequence CursorShape=0
+    strager_linux_softcursor_sequence 6 0 0
 }

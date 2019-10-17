@@ -11,6 +11,7 @@ autoload -Uk strager_initialize_post_prompt
 autoload -Uk strager_iterm_preexec
 autoload -Uk strager_iterm_sequence
 autoload -Uk strager_iterm_wrap_prompt
+autoload -Uk strager_linux_softcursor_sequence
 autoload -Uk strager_move_backward_shortword
 autoload -Uk strager_prompt_cwd
 autoload -Uk strager_scm_in_bzr

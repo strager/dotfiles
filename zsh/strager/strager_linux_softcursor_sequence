@@ -1,0 +1,6 @@
+strager_linux_softcursor_sequence() {
+    local arguments=("${@}")
+    printf "\x1b[?"
+    printf '%s;' "${arguments[@]}"
+    printf 'c'
+}

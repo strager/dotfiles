@@ -15,9 +15,16 @@ function! strager#cursor_shape#set_cursor_shapes(shapes_by_mode)
 endfunction
 
 function! s:update_cursor_shapes_now()
-  let &t_EI = s:iterm_cursor_shape_code(s:normal_cursor_shape)
-  let &t_SI = s:iterm_cursor_shape_code(s:insert_cursor_shape)
-  let &t_SR = s:iterm_cursor_shape_code(s:replace_cursor_shape)
+  let &t_EI = s:cursor_shape_code(s:normal_cursor_shape)
+  let &t_SI = s:cursor_shape_code(s:insert_cursor_shape)
+  let &t_SR = s:cursor_shape_code(s:replace_cursor_shape)
+  let &t_ve = ''
+  let &t_vi = ''
+  let &t_vs = ''
+endfunction
+
+function! s:cursor_shape_code(shape)
+  return s:iterm_cursor_shape_code(a:shape).s:linux_cursor_shape_code(a:shape)
 endfunction
 
 function! s:iterm_cursor_shape_code(shape)
@@ -34,6 +41,25 @@ function! s:iterm_cursor_shape_id(shape)
     return 1
   elseif a:shape ==# 'underline'
     return 2
+  else
+    throw printf('ES006: Unsupported cursor shape: %s', a:shape)
+  endif
+endfunction
+
+function! s:linux_cursor_shape_code(shape)
+  return printf(
+    \ "\<Esc>[?%d;0;0;c",
+    \ s:linux_cursor_shape_id(a:shape),
+  \ )
+endfunction
+
+function! s:linux_cursor_shape_id(shape)
+  if a:shape ==# 'block'
+    return 6
+  elseif a:shape ==# 'vertical bar'
+    return 3
+  elseif a:shape ==# 'underline'
+    return 1
   else
     throw printf('ES006: Unsupported cursor shape: %s', a:shape)
   endif
