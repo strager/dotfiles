@@ -5,6 +5,7 @@ setopt pipe_fail
 setopt unset
 
 here="$(cd "$(dirname "${0}")" && pwd)"
+"${here}/test_deduplicate_history_lines.zsh"
 "${here}/test_movement.zsh"
 "${here}/test_prompt.zsh"
 "${here}/test_scm_aliases.zsh"

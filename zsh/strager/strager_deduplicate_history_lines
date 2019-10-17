@@ -1,0 +1,20 @@
+strager_deduplicate_history_lines() {
+    perl -e '
+        use 5.010;
+        use autodie;
+        use strict;
+        use warnings;
+
+        my %seen_commands;
+        while (<>) {
+            if (/^\s*\d+[ *](.*)\n?$/) {
+                if (!$seen_commands{$1}) {
+                    print $_;
+                    $seen_commands{$1} = 1;
+                }
+            } elsif (!/^\n?$/) {
+                say STDERR "warning: failed to parse history line: $_";
+            }
+        }
+    '
+}

@@ -1,6 +1,7 @@
 strager_search_history() {
     local selection_fields=($( \
         fc -l -r 1 \
+        | strager_deduplicate_history_lines \
         | fzf \
             ${=FZF_DEFAULT_OPTS} \
             --delimiter='  ' \
