@@ -193,6 +193,9 @@ set statusline=\ \ \ %<%f\ %h%m%r
 " Line, col
 set statusline+=%=%(%l,%c%V%)
 
+""" Spelling
+set spellcapcheck=
+
 """ Command line
 set wildmenu
 set wildmode=longest,full

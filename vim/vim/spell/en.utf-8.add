@@ -1,0 +1,96 @@
+# General programming terms.
+deserialization
+deserialize
+deserializers
+goto
+misassembled
+mutex
+namespaced
+pessimisation
+preemptable
+preemptions
+restartable
+rng
+serializer
+serializers
+www
+
+# People.
+compudj
+strager
+
+# Projects and products.
+ADL
+BSON
+CBOR
+CDSCHECKER/=
+CDSChecker/=
+CMake
+CTest/=
+CXXTRACE/=
+Coverity
+EfficiOS/=
+FILECHECK/=
+FileCheck/=
+GitHub/=
+Homebrew
+IWYU/=
+JSON
+MessagePack
+NuGet
+STL
+cdschecker/=
+cxxtrace/=
+efficios/=
+github/=
+librseq/=
+linux
+pthread/=
+relacy
+rseq/=
+vcpkg
+
+# Linux restartable sequence terms.
+abort_ip
+post_commit_ip
+start_ip
+
+# C++ terms.
+cpp
+enum
+hpp
+impl
+longjmp
+noreturn
+ostream/=
+pragma
+std/=
+
+# x86 assembly terms.
+callq
+eax
+eflags
+incq
+int3
+iretq
+jmp
+jz
+movq
+nop
+popq
+pushq
+rax
+rbp
+rbx
+ret
+retq
+rsi
+rsp
+subq
+syscall
+
+# ELF assembly terms.
+globl
+progbits
+
+# Uncategorized terms.

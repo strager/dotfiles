@@ -13,3 +13,4 @@ nnoremap <buffer><nowait><silent><unique> D
   \ :call strager#directory_browser#prompt_delete_file_under_cursor()<CR>
 
 set readonly
+setlocal nospell
