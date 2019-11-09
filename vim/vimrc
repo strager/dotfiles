@@ -193,6 +193,11 @@ set statusline=\ \ \ %<%f\ %h%m%r
 " Line, col
 set statusline+=%=%(%l,%c%V%)
 
+" Terminal window title
+set title
+set titlestring=%t
+set titleold=
+
 """ Spelling
 set spellcapcheck=
 
