@@ -1,0 +1,25 @@
+ls() {
+    local ls_exe="$(whence -p ls)"
+    if [ -z "${ls_exe}" ]; then
+        unfunction ls
+        return
+    fi
+    local ls_options=()
+    case "$("${ls_exe}" --version 2>&1)" in
+        *'GNU coreutils'*)
+            # ls is from GNU coreutils.
+            ls_options+=(--color --literal)
+            ;;
+
+        *'illegal option -- -'*)
+            # ls is from macOS/BSD.
+            ls_options+=(-G)
+            ;;
+    esac
+    eval "$(
+        printf 'ls() {\n%q ' "${ls_exe}"
+        printf ' %q' "${ls_options[@]}"
+        printf ' "${@}"\n}'
+    )"
+    ls "${@}"
+}

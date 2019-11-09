@@ -5,4 +5,5 @@
 # pollution of the *colors* function.
 strager_initialize_ls_colors() {
     zstyle ":completion:*:default" list-colors no=00 bd=33 cd=33 di=34 ex=31 ln=35 pi=33 so=32
+    export LS_COLORS=no=00:bd=33:cd=33:di=34:ex=31:ln=35:pi=33:so=32:
 }

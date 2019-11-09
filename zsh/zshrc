@@ -1,5 +1,6 @@
 # TODO(strager): Move into ~/.zshenv.
 fpath=(~/.zsh/strager "${fpath[@]}")
+autoload -Uk ls
 autoload -Uk strager_define_auto_scm_aliases
 autoload -Uk strager_define_bzr_scm_aliases
 autoload -Uk strager_define_git_scm_aliases
@@ -124,14 +125,7 @@ zle-keymap-select() {
 }
 zle -N zle-keymap-select
 
-# Make ls print colours by default.
 strager_initialize_ls_colors
-ls() {
-    # FIXME(strager): -G behaves differently for different ls implementations.
-    # We should use common options or choose options depending on the
-    # implementation.
-    /bin/ls -G "${@}"
-}
 
 # Git and Hg aliases.
 chpwd_functions=("${chpwd_functions[@]}" strager_define_auto_scm_aliases)

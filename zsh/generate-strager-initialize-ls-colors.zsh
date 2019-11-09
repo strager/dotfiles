@@ -34,6 +34,9 @@ generate_strager_initialize_ls_colors() {
     printf '    zstyle ":completion:*:default" list-colors'
     printf ' %q' "${ls_colors[@]}"
     printf '\n'
+    printf '    export LS_COLORS='
+    printf '%q:' "${ls_colors[@]}"
+    printf '\n'
     printf '}\n'
 }
 
