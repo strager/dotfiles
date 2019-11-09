@@ -141,6 +141,10 @@ title() {
     printf '\x1b]1;%s\x07' "${1}"
 }
 
+vobjdump() {
+    objdump "${@}" | view -c 'set filetype=objdump' -
+}
+
 # Input styling.
 ZSH_HIGHLIGHT_HIGHLIGHTERS=(main)
 typeset -A ZSH_HIGHLIGHT_STYLES
