@@ -206,8 +206,8 @@ set wildmenu
 set wildmode=longest,full
 
 " Save history
-set history=200
-set viminfo+=:200
+set history=10000
+set viminfo+=:10000
 
 """ Terminal
 " Treat undercurl as underline.
