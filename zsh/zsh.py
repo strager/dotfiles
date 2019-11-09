@@ -65,7 +65,7 @@ class ITermCursorShape(enum.Enum):
 
 
 def latest_iterm_cursor_shape(
-    terminal_output: bytes
+    terminal_output: bytes,
 ) -> typing.Optional[ITermCursorShape]:
     cursor_shape_codes: typing.List[bytes] = re.findall(
         b"\x1b]1337;CursorShape=(?P<shape>.*?)\x07", terminal_output, re.DOTALL

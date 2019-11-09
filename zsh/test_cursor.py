@@ -47,7 +47,7 @@ class ZSHCursorTestCase(SpawnZSHTestMixin, unittest.TestCase):
         self.assertEqual(zsh.current_iterm_cursor_shape, ITermCursorShape.BLOCK)
 
     def test_cursor_is_vertical_bar_in_vi_insert_mode_coming_from_command_mode(
-        self
+        self,
     ) -> None:
         zsh = self.spawn_zsh()
         wait_for_zle_to_initialize(zsh)
