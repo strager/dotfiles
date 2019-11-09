@@ -1,8 +1,12 @@
 # General programming terms.
+Bluetooth
 deserialization
 deserialize
 deserializers
+dotfiles
+ethernet
 goto
+laggy
 misassembled
 mutex
 namespaced
@@ -13,6 +17,8 @@ restartable
 rng
 serializer
 serializers
+sudo
+vimrc
 www
 
 # People.
@@ -22,6 +28,7 @@ strager
 # Projects and products.
 ADL
 BSON
+Bugzilla
 CBOR
 CDSCHECKER/=
 CDSChecker/=
@@ -32,23 +39,31 @@ Coverity
 EfficiOS/=
 FILECHECK/=
 FileCheck/=
+GCC
 GitHub/=
 Homebrew
 IWYU/=
 JSON
 MessagePack
+NixOS
 NuGet
+Resilio Sync
 STL
 cdschecker/=
 cxxtrace/=
+dmesg
 efficios/=
+gcc
 github/=
 librseq/=
 linux
+macOS
+nixpkgs
 pthread/=
 relacy
 rseq/=
 vcpkg
+zsh
 
 # Linux restartable sequence terms.
 abort_ip
@@ -92,5 +107,8 @@ syscall
 # ELF assembly terms.
 globl
 progbits
+
+# Vim terms.
+quickfix
 
 # Uncategorized terms.
