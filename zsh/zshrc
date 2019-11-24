@@ -132,7 +132,8 @@ chpwd_functions=("${chpwd_functions[@]}" strager_define_auto_scm_aliases)
 strager_define_auto_scm_aliases
 
 title() {
-    printf '\x1b]1;%s\x07' "${1}"
+    printf '\x1b]1;%s\x07' "${1}" # iTerm
+    printf '\x1b]2;%s\x07' "${1}" # gnome-terminal
 }
 
 vobjdump() {
