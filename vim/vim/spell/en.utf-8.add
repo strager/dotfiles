@@ -1,11 +1,17 @@
 # General programming terms.
 Bluetooth
+LTO
+const
+constexpr
 deserialization
 deserialize
 deserializers
+devirtualization
 dotfiles
+endif
 ethernet
 goto
+hackily
 laggy
 misassembled
 mutex
@@ -13,11 +19,14 @@ namespaced
 pessimisation
 preemptable
 preemptions
+refactorings
 restartable
 rng
 serializer
 serializers
 sudo
+typedef
+typename
 vimrc
 www
 
@@ -35,6 +44,7 @@ CDSChecker/=
 CMake
 CTest/=
 CXXTRACE/=
+CoreFoundation
 Coverity
 EfficiOS/=
 FILECHECK/=
@@ -44,11 +54,13 @@ GitHub/=
 Homebrew
 IWYU/=
 JSON
+LLVM
 MessagePack
 NixOS
 NuGet
 Resilio Sync
 STL
+TAPI
 cdschecker/=
 cxxtrace/=
 dmesg
@@ -56,12 +68,14 @@ efficios/=
 gcc
 github/=
 librseq/=
+libstdc++
 linux
 macOS
 nixpkgs
 pthread/=
 relacy
 rseq/=
+tvOS
 vcpkg
 zsh
 
@@ -71,10 +85,15 @@ post_commit_ip
 start_ip
 
 # C++ terms.
+ASAN
+CFLAGS
+CXXFLAGS
 cpp
 enum
 hpp
 impl
+ld
+ld64
 longjmp
 noreturn
 ostream/=
