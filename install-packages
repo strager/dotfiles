@@ -59,7 +59,7 @@ case "${os}" in
             nixpkgs.duplicity
         )
         if [ "${TRAVIS:-}" != true ]; then
-            expected_nix_files+=(
+            nix_package_attrs+=(
                 nixpkgs.iterm2
             )
         fi
