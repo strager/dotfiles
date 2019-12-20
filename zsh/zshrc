@@ -190,4 +190,4 @@ fi
 
 # Configure other programs.
 export FZF_DEFAULT_COMMAND="$(cat ~/.config/fzf/FZF_DEFAULT_COMMAND)"
-export FZF_DEFAULT_OPTS='--no-progress --inline-info'
+export FZF_DEFAULT_OPTS='--info=hidden'
