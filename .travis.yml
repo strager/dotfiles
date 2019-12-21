@@ -5,6 +5,8 @@ os:
   - osx
 
 script:
+  - set -e
+
   - rm -f ~/.zshrc
   - ./install.sh "${HOME}"
 
