@@ -28,13 +28,13 @@ function! s:set_up_vim_window_with_no_syntax_check_errors() abort
   set filetype=vim
   syntax on
   set paste
-  silent! normal i" CHECK-ALIAS: " <none>
-  silent! normal o" CHECK-ALIAS: c vimCommand
-  silent! normal o" CHECK-ALIAS: f vimUserFunc
-  silent! normal o" CHECK-ALIAS: ( vimParenSep
-  silent! normal o" CHECK-ALIAS: ) vimParenSep
-  silent! normal o" cccc fff():CHECK-NEXT-LINE
-  silent! normal o  call foo()
+  silent! normal! i" CHECK-ALIAS: " <none>
+  silent! normal! o" CHECK-ALIAS: c vimCommand
+  silent! normal! o" CHECK-ALIAS: f vimUserFunc
+  silent! normal! o" CHECK-ALIAS: ( vimParenSep
+  silent! normal! o" CHECK-ALIAS: ) vimParenSep
+  silent! normal! o" cccc fff():CHECK-NEXT-LINE
+  silent! normal! o  call foo()
 endfunction
 
 function! Test_check_syntax_with_check_alias_issues() abort
@@ -70,10 +70,10 @@ function! s:set_up_window_with_check_alias_issues() abort
   new
   syntax on
   set paste
-  silent! normal iCHECK-ALIAS:
-  silent! normal o-- CHECK-ALIAS: asdfasdf
-  silent! normal o:CHECK-NEXT-LINE
-  silent! normal o
+  silent! normal! iCHECK-ALIAS:
+  silent! normal! o-- CHECK-ALIAS: asdfasdf
+  silent! normal! o:CHECK-NEXT-LINE
+  silent! normal! o
 endfunction
 
 function! Test_check_vim_syntax_with_errors_creates_quickfix_list() abort
@@ -118,13 +118,13 @@ function! s:set_up_vim_window_with_syntax_check_errors() abort
   set filetype=vim
   syntax on
   set paste
-  silent! normal i" CHECK-ALIAS: " <none>
-  silent! normal o" CHECK-ALIAS: c vimCommand
-  silent! normal o" CHECK-ALIAS: f vimUserFunc
-  silent! normal o" CHECK-ALIAS: ( vimParenSep
-  silent! normal o" CHECK-ALIAS: ) vimParenSep
-  silent! normal o" fccc cff():CHECK-NEXT-LINE
-  silent! normal o  call foo()
+  silent! normal! i" CHECK-ALIAS: " <none>
+  silent! normal! o" CHECK-ALIAS: c vimCommand
+  silent! normal! o" CHECK-ALIAS: f vimUserFunc
+  silent! normal! o" CHECK-ALIAS: ( vimParenSep
+  silent! normal! o" CHECK-ALIAS: ) vimParenSep
+  silent! normal! o" fccc cff():CHECK-NEXT-LINE
+  silent! normal! o  call foo()
 endfunction
 
 function! Test_check_syntax_with_no_checks() abort

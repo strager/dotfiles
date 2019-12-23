@@ -91,7 +91,7 @@ endfunction
 function! Test_help_fails_with_open_modified_unsaveable_buffer() abort
   %bwipeout!
 
-  normal ichanges
+  normal! ichanges
   set nohidden
   let l:old_layout = strager#layout#get_layout_of_windows_and_tabs()
   let l:old_buffer_number = bufnr('%')

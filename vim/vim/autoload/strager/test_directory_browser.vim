@@ -7,8 +7,8 @@ function! Test_refreshing_open_browser_does_not_affect_undo_tree_of_current_buff
   execute printf('cd %s', fnameescape(l:test_directory))
   edit dir_a
   split file_b.txt
-  normal ihello
-  normal oworld
+  normal! ihello
+  normal! oworld
   " HACK(strager): Forced undotree().synced to true.
   let &undolevels = &undolevels
   let l:original_undo_tree = undotree()

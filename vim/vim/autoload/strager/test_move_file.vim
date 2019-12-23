@@ -193,7 +193,7 @@ endfunction
 function! Test_move_to_unwritable_directory_keeps_unsaved_changes_unsaved() abort
   call s:set_up_test_project()
   edit old.txt
-  silent! normal oGreetings.
+  silent! normal! oGreetings.
 
   try
     call s:move_current_buffer_file('readonlydir/new.txt')
@@ -313,7 +313,7 @@ endfunction
 function! Test_move_new_file_does_not_write() abort
   call s:set_up_test_project()
   edit from.txt
-  silent! normal itext goes here
+  silent! normal! itext goes here
 
   call s:move_current_buffer_file('to.txt')
   call s:assert_file_does_not_exist('from.txt')
@@ -323,7 +323,7 @@ endfunction
 function! Test_move_new_file_changes_current_buffer() abort
   call s:set_up_test_project()
   edit from.txt
-  silent! normal itext goes here
+  silent! normal! itext goes here
 
   call s:move_current_buffer_file('to.txt')
   call assert_equal('to.txt', bufname('%'))
@@ -332,7 +332,7 @@ endfunction
 function! Test_move_new_file_then_write_saves_changes() abort
   call s:set_up_test_project()
   edit from.txt
-  silent! normal itext goes here
+  silent! normal! itext goes here
 
   call s:move_current_buffer_file('to.txt')
   write
@@ -470,7 +470,7 @@ endfunction
 function! Test_move_keeps_unsaved_changes_unsaved() abort
   call s:set_up_test_project()
   edit old.txt
-  silent! normal oGreetings.
+  silent! normal! oGreetings.
 
   call s:move_current_buffer_file('new.txt')
   call assert_true(
@@ -483,7 +483,7 @@ endfunction
 function! Test_move_with_unsaved_changes_then_write_saves_changes() abort
   call s:set_up_test_project()
   edit old.txt
-  silent! normal oGreetings.
+  silent! normal! oGreetings.
 
   call s:move_current_buffer_file('new.txt')
   write
@@ -496,7 +496,7 @@ endfunction
 function! Test_move_with_saved_changes_keeps_changes() abort
   call s:set_up_test_project()
   edit old.txt
-  silent! normal oGreetings.
+  silent! normal! oGreetings.
   write
 
   call s:move_current_buffer_file('new.txt')
@@ -519,7 +519,7 @@ function! Test_move_preserves_cursor_location() abort
   edit old.txt
 
   " Move the cursor to the 'w' in 'world'.
-  silent! normal W
+  silent! normal! W
   let [l:_bufnum, l:old_lnum, l:old_col, l:_off, l:_curswant] = getcurpos()
   call assert_equal(
     \ {'column': 8, 'line': 1},
@@ -715,7 +715,7 @@ function! Test_move_with_unsaved_changes_shows_new_file_info_in_status_line_noru
   for [l:shortmess, l:expected_message] in items(l:shortmess_to_message)
     call s:set_up_test_project()
     edit old.txt
-    silent! normal oGreetings.
+    silent! normal! oGreetings.
     1
     set noruler
     let &shortmess = l:shortmess

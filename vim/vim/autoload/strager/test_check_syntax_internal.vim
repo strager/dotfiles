@@ -175,7 +175,7 @@ endfunction
 
 function! Test_syntax_item_from_current_window_without_syntax() abort
   new
-  silent! normal ihello world
+  silent! normal! ihello world
   call assert_equal(v:none, s:syntax_item_from_current_window(1, 1))
 endfunction
 
@@ -184,9 +184,9 @@ function! Test_syntax_item_from_current_window_with_vim_syntax() abort
   set filetype=vim
   syntax on
   set paste
-  silent! normal i" This is a comment.
-  silent! normal o
-  silent! normal oset nocompatible " This is a comment.
+  silent! normal! i" This is a comment.
+  silent! normal! o
+  silent! normal! oset nocompatible " This is a comment.
   call assert_equal('vimLineComment', s:syntax_item_from_current_window(1, 1))
   call assert_equal('vimCommand', s:syntax_item_from_current_window(3, 1))
   call assert_equal('vimOption', s:syntax_item_from_current_window(3, 5))

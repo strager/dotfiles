@@ -5,7 +5,7 @@ function! Test_python_insert_does_not_wrap_lines() abort
   call s:set_up_python_helper_source()
   " Append to the long line.
   call cursor(11, 1)
-  silent! normal A + (a + b + c)
+  silent! normal! A + (a + b + c)
   call s:assert_buffer_contents_match_expected(
     \ s:script_dir_path
       \ .'/test_format_expected_python_insert_does_not_wrap_lines.py',

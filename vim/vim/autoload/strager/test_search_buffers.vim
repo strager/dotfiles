@@ -186,7 +186,7 @@ endfunction
 
 function! Test_fzf_header_contains_noname_if_current_buffer_is_unnamed() abort
   %bwipeout!
-  normal ihello
+  normal! ihello
 
   let l:run_options = s:fzf_run_options()
   call assert_equal(['[No Name]'], strager#fzf#header_lines(l:run_options))
