@@ -5,6 +5,8 @@
 " Version: Vim v8.1.0712
 " URL: https://github.com/vim/vim/blob/ba7e1865b3e01b9e502d335345d713743797a339/runtime/syntax/synload.vim
 " License: Vim license. See below.
+"
+" vint: -ProhibitEqualTildeOperator -ProhibitNoAbortFunction -ProhibitUnnecessaryDoubleQuote
 
 " === begin of license ===
 "

@@ -2,7 +2,7 @@ function! strager#list#new_messages(before, after) abort
   for l:i in range(len(a:before))
     let l:comparison_length = min([len(a:before) - l:i, len(a:after)])
     if s:sublists_are_equal(a:before, l:i, a:after, 0, l:comparison_length)
-      return a:after[len(a:before) - l:i:]
+      return a:after[len(a:before) - l:i :]
     endif
   endfor
   return a:after

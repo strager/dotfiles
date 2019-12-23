@@ -1,3 +1,5 @@
+" vint: -ProhibitAutocmdWithNoGroup
+
 let s:synload_path = strager#path#join([$VIMRUNTIME, 'syntax', 'synload.vim'])
 execute printf('source %s', fnameescape(s:synload_path))
 

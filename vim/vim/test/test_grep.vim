@@ -161,6 +161,6 @@ function! s:strip_window_ids_from_window_layout(layout) abort
   else
     throw printf('Unexpected window layout type: %s', l:type)
   endif
-endfunction!
+endfunction
 
 call strager#test#run_all_tests()

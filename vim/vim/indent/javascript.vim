@@ -1,3 +1,5 @@
+" vint: -ProhibitEqualTildeOperator -ProhibitUnnecessaryDoubleQuote
+
 " Vim indent file
 " Language: JavaScript
 " Author:   Robert Kieffer

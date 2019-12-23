@@ -1,3 +1,5 @@
+" vint: -ProhibitUnnecessaryDoubleQuote
+
 " TODO(strager): D key should delete directories.
 " TODO(strager): R key should move files and directories.
 

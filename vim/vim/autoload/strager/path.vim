@@ -11,7 +11,7 @@ function! strager#path#components(path) abort
   if l:leading_slash_count == -1
     let l:components = [a:path]
   else
-    let l:components = split(a:path[l:leading_slash_count:], '/', v:true)
+    let l:components = split(a:path[l:leading_slash_count :], '/', v:true)
     if l:leading_slash_count > 0
       call insert(l:components, a:path[:l:leading_slash_count - 1], 0)
     endif
@@ -70,7 +70,7 @@ function! strager#path#make_relative(ancestor_path, descendant_path) abort
     \ )
   endif
 
-  let l:relative_path_components = l:descendant_components[l:prefix_length:]
+  let l:relative_path_components = l:descendant_components[l:prefix_length :]
   if l:relative_path_components ==# [] || l:relative_path_components ==# ['']
     return '.'
   endif

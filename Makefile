@@ -21,7 +21,7 @@ zsh/strager/strager_initialize_menuselect: zsh/generate-strager-initialize-menus
 	$(<)
 
 .PHONY: check
-check: check-duplicity check-vim check-zsh
+check: check-duplicity check-vim check-vim-lint check-zsh
 
 .PHONY: check-duplicity
 check-duplicity:
@@ -31,6 +31,10 @@ check-duplicity:
 .PHONY: check-vim
 check-vim:
 	vim/test.sh
+
+.PHONY: check-vim-lint
+check-vim-lint: $(python_env_dir)/bin/vint
+	VINT="$$(realpath "$(python_env_dir)/bin/vint")" vim/lint.sh
 
 .PHONY: check-zsh
 check-zsh: $(python_site_packages)/pexpect
@@ -53,6 +57,9 @@ $(PYTHON):
 
 $(python_env_dir)/bin/black: $(PYTHON)
 	$(PYTHON) -m pip install black
+
+$(python_env_dir)/bin/vint: $(PYTHON)
+	$(PYTHON) -m pip install vim-vint
 
 $(python_site_packages)/pexpect: $(PYTHON)
 	$(PYTHON) -m pip install pexpect
