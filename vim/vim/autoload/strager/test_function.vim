@@ -3,7 +3,7 @@ let s:script_path = expand('<sfile>:p')
 " **MARKER Test_function_source_location_of_user_function MARKER**
 function! Test_function_source_location_of_user_function() abort
   let l:local = {}
-  function l:local.check(function)
+  function l:local.check(function) abort
     let l:loc = strager#function#function_source_location(a:function)
     call assert_equal(s:test_marker_line_number(
       \ 'Test_function_source_location_of_user_function',
@@ -32,7 +32,7 @@ endfunction
 
 function! Test_function_source_location_of_script_function() abort
   let l:local = {}
-  function l:local.check(function)
+  function l:local.check(function) abort
     let l:loc = strager#function#function_source_location(a:function)
     call assert_equal(
       \ s:test_marker_line_number('s:script_function'),
@@ -122,7 +122,7 @@ endfunction
 
 function! Test_function_source_location_of_loaded_autoload_function() abort
   let l:local = {}
-  function l:local.check(function)
+  function l:local.check(function) abort
     let l:loc = strager#function#function_source_location(a:function)
     call assert_equal(2, l:loc.line)
     call assert_equal('strager#test_function_helper#func', l:loc.real_name)

@@ -134,7 +134,7 @@ function! Test_presented_lines_includes_first_field_through_third_field_with_wit
 endfunction
 
 function! Test_fields_are_omitted_if_withnth_index_is_out_of_range() abort
-  function! s:presented_lines(with_nth)
+  function! s:presented_lines(with_nth) abort
     let l:options = {
       \ 'options': ['--delimiter= ', printf('--with-nth=%s', a:with_nth)],
       \ 'source': ['one two three four five'],
@@ -148,7 +148,7 @@ function! Test_fields_are_omitted_if_withnth_index_is_out_of_range() abort
 endfunction
 
 function! Test_fields_are_split_with_delimiter_string() abort
-  function! s:presented_lines(with_nth)
+  function! s:presented_lines(with_nth) abort
     let l:options = {
       \ 'options': ['--delimiter=,\', printf('--with-nth=%s', a:with_nth)],
       \ 'source': ['a,\b,\c'],
@@ -161,7 +161,7 @@ function! Test_fields_are_split_with_delimiter_string() abort
 endfunction
 
 function! Test_empty_delimiter_makes_one_field_per_character() abort
-  function! s:presented_lines(with_nth)
+  function! s:presented_lines(with_nth) abort
     let l:options = {
       \ 'options': ['--delimiter=', printf('--with-nth=%s', a:with_nth)],
       \ 'source': ['abc'],
@@ -174,7 +174,7 @@ function! Test_empty_delimiter_makes_one_field_per_character() abort
 endfunction
 
 function! Test_consecutive_delimiters_separate_empty_fields() abort
-  function! s:presented_lines(source_line, with_nth)
+  function! s:presented_lines(source_line, with_nth) abort
     let l:options = {
       \ 'options': ['--delimiter= ', printf('--with-nth=%s', a:with_nth)],
       \ 'source': [a:source_line],
@@ -188,7 +188,7 @@ function! Test_consecutive_delimiters_separate_empty_fields() abort
 endfunction
 
 function! Test_withnth0_is_invalid() abort
-  function! s:presented_lines(with_nth)
+  function! s:presented_lines(with_nth) abort
     let l:options = {
       \ 'options': ['--delimiter= ', printf('--with-nth=%s', a:with_nth)],
       \ 'source': ['line'],

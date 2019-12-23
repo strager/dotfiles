@@ -57,7 +57,7 @@ function! s:go_lsp(error_reporter) abort
 
   let l:notification_data = v:none
   let l:got_notification = v:false
-  function! On_notification(data) closure
+  function! On_notification(data) abort closure
     let l:notification_data = a:data
     let l:got_notification = v:true
   endfunction
@@ -132,20 +132,20 @@ function s:new_error_reporter() abort
     \ 'provider_internal_errors': [],
     \ 'user_errors': [],
   \ }
-  function l:reporter.get_top_errors()
+  function! l:reporter.get_top_errors() abort
     if self.user_errors !=# []
       return self.user_errors
     else
       return self.provider_internal_errors
     endif
   endfunction
-  function l:reporter.provider_not_available(error)
+  function! l:reporter.provider_not_available(error) abort
     call add(self.provider_internal_errors, a:error)
   endfunction
-  function l:reporter.provider_internal_error(error)
+  function! l:reporter.provider_internal_error(error) abort
     call add(self.provider_internal_errors, a:error)
   endfunction
-  function l:reporter.no_target(error)
+  function! l:reporter.no_target(error) abort
     call add(self.user_errors, a:error)
   endfunction
   return l:reporter
