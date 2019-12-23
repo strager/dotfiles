@@ -238,9 +238,9 @@ function! Test_parse_throwpoint_from_autocmd() abort
   call assert_equal(v:none, l:throw_frame.function)
   call assert_equal(v:none, l:throw_frame.script_path)
   call assert_equal(v:none, l:throw_frame.line)
-  call assert_equal("User", l:throw_frame.autocommand.event)
+  call assert_equal('User', l:throw_frame.autocommand.event)
   call assert_equal(
-    \ "test_parse_throwpoint_from_autocmd",
+    \ 'test_parse_throwpoint_from_autocmd',
     \ l:throw_frame.autocommand.name,
   \ )
 endfunction
