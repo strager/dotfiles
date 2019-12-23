@@ -1,4 +1,4 @@
-function Test_check_vim_syntax_with_no_checks_fails() abort
+function! Test_check_vim_syntax_with_no_checks_fails() abort
   call s:set_up_vim_window_with_no_syntax_checks()
   let l:buffer_number = bufnr('%')
 
@@ -10,11 +10,11 @@ function Test_check_vim_syntax_with_no_checks_fails() abort
   call assert_equal(l:buffer_number, l:items[0].bufnr)
 endfunction
 
-function s:set_up_vim_window_with_no_syntax_checks() abort
+function! s:set_up_vim_window_with_no_syntax_checks() abort
   new
 endfunction
 
-function Test_check_vim_syntax_with_no_errors_creates_empty_quickfix_list() abort
+function! Test_check_vim_syntax_with_no_errors_creates_empty_quickfix_list() abort
   call s:set_up_vim_window_with_no_syntax_check_errors()
   let l:quickfix_info_before = getqflist({'all': v:true})
   call strager#check_syntax#check_syntax()
@@ -23,7 +23,7 @@ function Test_check_vim_syntax_with_no_errors_creates_empty_quickfix_list() abor
   call assert_notequal(l:quickfix_info_before.id, l:quickfix_info_after.id)
 endfunction
 
-function s:set_up_vim_window_with_no_syntax_check_errors() abort
+function! s:set_up_vim_window_with_no_syntax_check_errors() abort
   new
   set filetype=vim
   syntax on
@@ -37,7 +37,7 @@ function s:set_up_vim_window_with_no_syntax_check_errors() abort
   silent! normal o  call foo()
 endfunction
 
-function Test_check_syntax_with_check_alias_issues() abort
+function! Test_check_syntax_with_check_alias_issues() abort
   call s:set_up_window_with_check_alias_issues()
   let l:buffer_number = bufnr('%')
 
@@ -66,7 +66,7 @@ function Test_check_syntax_with_check_alias_issues() abort
   endfor
 endfunction
 
-function s:set_up_window_with_check_alias_issues() abort
+function! s:set_up_window_with_check_alias_issues() abort
   new
   syntax on
   set paste
@@ -76,7 +76,7 @@ function s:set_up_window_with_check_alias_issues() abort
   silent! normal o
 endfunction
 
-function Test_check_vim_syntax_with_errors_creates_quickfix_list() abort
+function! Test_check_vim_syntax_with_errors_creates_quickfix_list() abort
   call s:set_up_vim_window_with_syntax_check_errors()
   let l:buffer_number = bufnr('%')
 
@@ -105,7 +105,7 @@ function Test_check_vim_syntax_with_errors_creates_quickfix_list() abort
   endfor
 endfunction
 
-function Test_check_vim_syntax_with_errors_moves_cursor_to_first_issue() abort
+function! Test_check_vim_syntax_with_errors_moves_cursor_to_first_issue() abort
   call s:set_up_vim_window_with_syntax_check_errors()
   1
   call strager#check_syntax#check_syntax()
@@ -113,7 +113,7 @@ function Test_check_vim_syntax_with_errors_moves_cursor_to_first_issue() abort
   call assert_equal({'line': 7, 'column': 3}, {'line': l:lnum, 'column': l:col})
 endfunction
 
-function s:set_up_vim_window_with_syntax_check_errors() abort
+function! s:set_up_vim_window_with_syntax_check_errors() abort
   new
   set filetype=vim
   syntax on
@@ -127,7 +127,7 @@ function s:set_up_vim_window_with_syntax_check_errors() abort
   silent! normal o  call foo()
 endfunction
 
-function Test_check_syntax_with_no_checks() abort
+function! Test_check_syntax_with_no_checks() abort
   let l:issues = []
   call s:check_syntax_generic({
     \ 'aliases': {},
@@ -137,7 +137,7 @@ function Test_check_syntax_with_no_checks() abort
   call assert_equal([], l:issues)
 endfunction
 
-function Test_check_syntax_with_only_space_ignore_checks() abort
+function! Test_check_syntax_with_only_space_ignore_checks() abort
   let l:issues = []
   call s:check_syntax_generic({
     \ 'aliases': {},
@@ -149,7 +149,7 @@ function Test_check_syntax_with_only_space_ignore_checks() abort
   call assert_equal([], l:issues)
 endfunction
 
-function Test_check_syntax_with_tab_ignore_checks() abort
+function! Test_check_syntax_with_tab_ignore_checks() abort
   let l:issues = []
   call s:check_syntax_generic({
     \ 'aliases': {},
@@ -161,7 +161,7 @@ function Test_check_syntax_with_tab_ignore_checks() abort
   call assert_equal([], l:issues)
 endfunction
 
-function Test_check_syntax_with_only_aliased_ignore_checks() abort
+function! Test_check_syntax_with_only_aliased_ignore_checks() abort
   let l:issues = []
   call s:check_syntax_generic({
     \ 'aliases': {'_': v:none},
@@ -173,7 +173,7 @@ function Test_check_syntax_with_only_aliased_ignore_checks() abort
   call assert_equal([], l:issues)
 endfunction
 
-function Test_check_syntax_with_undefined_aliases() abort
+function! Test_check_syntax_with_undefined_aliases() abort
   let l:issues = []
   call s:check_syntax_generic({
     \ 'aliases': {},
@@ -186,7 +186,7 @@ function Test_check_syntax_with_undefined_aliases() abort
   \ ], l:issues)
 endfunction
 
-function Test_check_syntax_with_failing_positive_check() abort
+function! Test_check_syntax_with_failing_positive_check() abort
   let l:issues = []
   call s:check_syntax_generic({
     \ 'aliases': {'c': ['vimLineComment']},
@@ -198,7 +198,7 @@ function Test_check_syntax_with_failing_positive_check() abort
   \ ], l:issues)
 endfunction
 
-function Test_check_syntax_with_passing_positive_check() abort
+function! Test_check_syntax_with_passing_positive_check() abort
   let l:issues = []
   call s:check_syntax_generic({
     \ 'aliases': {'c': ['vimLineComment']},
@@ -208,7 +208,7 @@ function Test_check_syntax_with_passing_positive_check() abort
   call assert_equal([], l:issues)
 endfunction
 
-function Test_check_syntax_with_failing_negative_check() abort
+function! Test_check_syntax_with_failing_negative_check() abort
   let l:issues = []
   call s:check_syntax_generic({
     \ 'aliases': {'_': [v:none]},
@@ -220,7 +220,7 @@ function Test_check_syntax_with_failing_negative_check() abort
   \ ], l:issues)
 endfunction
 
-function Test_check_syntax_with_passing_negative_check() abort
+function! Test_check_syntax_with_passing_negative_check() abort
   let l:issues = []
   call s:check_syntax_generic({
     \ 'aliases': {'_': [v:none]},
@@ -230,7 +230,7 @@ function Test_check_syntax_with_passing_negative_check() abort
   call assert_equal([], l:issues)
 endfunction
 
-function Test_check_syntax_with_many_passing_negative_checks() abort
+function! Test_check_syntax_with_many_passing_negative_checks() abort
   let l:issues = []
   call s:check_syntax_generic({
     \ 'aliases': {'_': [v:none]},
@@ -240,7 +240,7 @@ function Test_check_syntax_with_many_passing_negative_checks() abort
   call assert_equal([], l:issues)
 endfunction
 
-function Test_check_syntax_with_failing_adjacent_positive_checks() abort
+function! Test_check_syntax_with_failing_adjacent_positive_checks() abort
   let l:issues = []
   call s:check_syntax_generic({
     \ 'aliases': {'c': ['vimLineComment']},
@@ -255,7 +255,7 @@ function Test_check_syntax_with_failing_adjacent_positive_checks() abort
   \ ], l:issues)
 endfunction
 
-function Test_no_syntax_mismatches_for_ignored_lines() abort
+function! Test_no_syntax_mismatches_for_ignored_lines() abort
   let l:issues = []
   call s:check_syntax_generic({
     \ 'aliases': {'c': ['vimCommand']},
@@ -269,7 +269,7 @@ function Test_no_syntax_mismatches_for_ignored_lines() abort
   call assert_equal([], l:issues)
 endfunction
 
-function Test_syntax_mismatches_on_third_line() abort
+function! Test_syntax_mismatches_on_third_line() abort
   let l:issues = []
   call s:check_syntax_generic({
     \ 'aliases': {'c': ['vimCommand'], '/': ['vimLineComment']},
@@ -285,7 +285,7 @@ function Test_syntax_mismatches_on_third_line() abort
   \ ], l:issues)
 endfunction
 
-function Test_alias_with_alternatives_matches_all_alternatives() abort
+function! Test_alias_with_alternatives_matches_all_alternatives() abort
   let l:issues = []
   call s:check_syntax_generic({
     \ 'aliases': {'c': ['vimComment', 'vimLineComment']},
@@ -297,7 +297,7 @@ function Test_alias_with_alternatives_matches_all_alternatives() abort
   call assert_equal([], l:issues)
 endfunction
 
-function Test_alias_with_alternatives_fails_match() abort
+function! Test_alias_with_alternatives_fails_match() abort
   let l:issues = []
   call s:check_syntax_generic({
     \ 'aliases': {'c': ['vimComment', 'vimLineComment']},
@@ -320,11 +320,11 @@ function Test_alias_with_alternatives_fails_match() abort
   \ ], l:issues)
 endfunction
 
-function s:check_syntax_generic(options, out_issues) abort
+function! s:check_syntax_generic(options, out_issues) abort
   return strager#check_syntax#check_syntax_generic(a:options, a:out_issues)
 endfunction
 
-function s:syntax_issue(line, column, text) abort
+function! s:syntax_issue(line, column, text) abort
   return {'line': a:line, 'column': a:column, 'text': a:text}
 endfunction
 

@@ -168,7 +168,7 @@ endfunction
 
 let s:go_error = v:none
 
-function s:go() abort
+function! s:go() abort
   let s:go_error = v:none
   try
     call strager#tag#go()
@@ -177,7 +177,7 @@ function s:go() abort
   endtry
 endfunction
 
-function s:assert_error(error_pattern) abort
+function! s:assert_error(error_pattern) abort
   if s:go_error ==# v:none
     call assert_report('strager#tag#go() should have thrown an exception')
     return
@@ -185,7 +185,7 @@ function s:assert_error(error_pattern) abort
   call assert_match(a:error_pattern, s:go_error)
 endfunction
 
-function s:assert_not_error(error_pattern) abort
+function! s:assert_not_error(error_pattern) abort
   if s:go_error ==# v:none
     call assert_report('strager#tag#go() should have thrown an exception')
     return
@@ -193,7 +193,7 @@ function s:assert_not_error(error_pattern) abort
   call assert_notmatch(a:error_pattern, s:go_error)
 endfunction
 
-function s:assert_no_errors() abort
+function! s:assert_no_errors() abort
   if s:go_error !=# v:none
     call assert_report('strager#tag#go() reported an error: '.s:go_error)
     return

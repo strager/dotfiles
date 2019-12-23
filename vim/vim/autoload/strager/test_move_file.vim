@@ -47,14 +47,14 @@
 "   * Weird destination file names like % and *
 "   * Weird source file names like % and *
 
-function Test_move_command_without_argument_fails() abort
+function! Test_move_command_without_argument_fails() abort
   call strager#move_file#register_command({'force': v:true})
   call s:set_up_test_project()
   edit old.txt
   call assert_fails('Move', 'E471:')
 endfunction
 
-function Test_move_command_completes_relative_directory_names() abort
+function! Test_move_command_completes_relative_directory_names() abort
   call strager#move_file#register_command({'force': v:true})
   call s:set_up_test_project()
   edit old.txt
@@ -62,7 +62,7 @@ function Test_move_command_completes_relative_directory_names() abort
   call assert_equal('Move dir/', histget('cmd', -1))
 endfunction
 
-function Test_move_command_completes_relative_file_names() abort
+function! Test_move_command_completes_relative_file_names() abort
   call strager#move_file#register_command({'force': v:true})
   call s:set_up_test_project()
   edit old.txt
@@ -70,7 +70,7 @@ function Test_move_command_completes_relative_file_names() abort
   call assert_equal('Move README.md', histget('cmd', -1))
 endfunction
 
-function Test_move_command_expands_current_path_with_c_r_percent() abort
+function! Test_move_command_expands_current_path_with_c_r_percent() abort
   call strager#move_file#register_command({'force': v:true})
   call s:set_up_test_project()
   edit old.txt
@@ -78,7 +78,7 @@ function Test_move_command_expands_current_path_with_c_r_percent() abort
   call assert_equal('Move old.txt', histget('cmd', -1))
 endfunction
 
-function Test_move_command_expands_env_vars() abort
+function! Test_move_command_expands_env_vars() abort
   call strager#move_file#register_command({'force': v:true})
   call s:set_up_test_project()
   edit old.txt
@@ -91,7 +91,7 @@ function Test_move_command_expands_env_vars() abort
   \ )
 endfunction
 
-function Test_move_command_changes_current_buffer() abort
+function! Test_move_command_changes_current_buffer() abort
   call strager#move_file#register_command({'force': v:true})
   call s:set_up_test_project()
   edit old.txt
@@ -99,7 +99,7 @@ function Test_move_command_changes_current_buffer() abort
   call assert_equal('new.txt', bufname('%'))
 endfunction
 
-function Test_move_absolute_creates_new_file() abort
+function! Test_move_absolute_creates_new_file() abort
   call s:set_up_test_project()
   edit old.txt
   call s:move_current_buffer_file(s:absolute_path('new.txt'))
@@ -107,21 +107,21 @@ function Test_move_absolute_creates_new_file() abort
   call assert_equal(['Hello, world!', ''], readfile('new.txt', 'b'))
 endfunction
 
-function Test_move_absolute_deletes_old_file() abort
+function! Test_move_absolute_deletes_old_file() abort
   call s:set_up_test_project()
   edit old.txt
   call s:move_current_buffer_file(s:absolute_path('new.txt'))
   call s:assert_file_does_not_exist('old.txt')
 endfunction
 
-function Test_move_absolute_changes_current_buffer() abort
+function! Test_move_absolute_changes_current_buffer() abort
   call s:set_up_test_project()
   edit old.txt
   call s:move_current_buffer_file(s:absolute_path('new.txt'))
   call assert_equal(s:absolute_path('new.txt'), bufname('%'))
 endfunction
 
-function Test_move_relative_creates_new_file() abort
+function! Test_move_relative_creates_new_file() abort
   call s:set_up_test_project()
   edit old.txt
   call s:move_current_buffer_file('new.txt')
@@ -129,35 +129,35 @@ function Test_move_relative_creates_new_file() abort
   call assert_equal(['Hello, world!', ''], readfile('new.txt', 'b'))
 endfunction
 
-function Test_move_relative_deletes_old_file() abort
+function! Test_move_relative_deletes_old_file() abort
   call s:set_up_test_project()
   edit old.txt
   call s:move_current_buffer_file('new.txt')
   call s:assert_file_does_not_exist('old.txt')
 endfunction
 
-function Test_move_relative_changes_current_buffer() abort
+function! Test_move_relative_changes_current_buffer() abort
   call s:set_up_test_project()
   edit old.txt
   call s:move_current_buffer_file('new.txt')
   call assert_equal('new.txt', bufname('%'))
 endfunction
 
-function Test_move_unloads_old_file() abort
+function! Test_move_unloads_old_file() abort
   call s:set_up_test_project()
   edit old.txt
   call s:move_current_buffer_file('new.txt')
   call assert_equal(-1, bufnr('old.txt'))
 endfunction
 
-function Test_move_then_move_back_restores_files() abort
+function! Test_move_then_move_back_restores_files() abort
   call s:set_up_test_project()
   edit old.txt
   call s:move_current_buffer_file('new.txt')
   call s:move_current_buffer_file('old.txt')
 endfunction
 
-function Test_move_to_empty_string_fails() abort
+function! Test_move_to_empty_string_fails() abort
   call s:set_up_test_project()
   edit old.txt
   call strager#assert#assert_throws(
@@ -167,7 +167,7 @@ function Test_move_to_empty_string_fails() abort
   \ )
 endfunction
 
-function Test_move_to_missing_directory_fails() abort
+function! Test_move_to_missing_directory_fails() abort
   call s:set_up_test_project()
   edit old.txt
   call strager#assert#assert_throws(
@@ -178,7 +178,7 @@ function Test_move_to_missing_directory_fails() abort
   call assert_equal('old.txt', bufname('%'))
 endfunction
 
-function Test_move_to_unwritable_directory_fails() abort
+function! Test_move_to_unwritable_directory_fails() abort
   call s:set_up_test_project()
   edit old.txt
   call strager#assert#assert_throws(
@@ -190,7 +190,7 @@ function Test_move_to_unwritable_directory_fails() abort
   call s:assert_file_does_not_exist('readonlydir/new.txt')
 endfunction
 
-function Test_move_to_unwritable_directory_keeps_unsaved_changes_unsaved() abort
+function! Test_move_to_unwritable_directory_keeps_unsaved_changes_unsaved() abort
   call s:set_up_test_project()
   edit old.txt
   silent! normal oGreetings.
@@ -211,7 +211,7 @@ function Test_move_to_unwritable_directory_keeps_unsaved_changes_unsaved() abort
   \ )
 endfunction
 
-function Test_move_over_existing_fails() abort
+function! Test_move_over_existing_fails() abort
   call s:set_up_test_project()
   edit old.txt
   call strager#assert#assert_throws(
@@ -222,7 +222,7 @@ function Test_move_over_existing_fails() abort
   call s:assert_file_exists('old.txt')
 endfunction
 
-function Test_move_new_over_existing_fails() abort
+function! Test_move_new_over_existing_fails() abort
   call s:set_up_test_project()
   edit doesnotexist.txt
   call strager#assert#assert_throws(
@@ -234,35 +234,35 @@ function Test_move_new_over_existing_fails() abort
   call s:assert_file_does_not_exist('doesnotexist.txt')
 endfunction
 
-function Test_move_relative_over_self_relative_does_not_delete_file() abort
+function! Test_move_relative_over_self_relative_does_not_delete_file() abort
   call s:set_up_test_project()
   edit old.txt
   call s:move_current_buffer_file('old.txt')
   call s:assert_file_exists('old.txt')
 endfunction
 
-function Test_move_relative_over_self_absolute_does_not_delete_file() abort
+function! Test_move_relative_over_self_absolute_does_not_delete_file() abort
   call s:set_up_test_project()
   edit old.txt
   call s:move_current_buffer_file(s:absolute_path('old.txt'))
   call s:assert_file_exists('old.txt')
 endfunction
 
-function Test_move_absolute_over_self_absolute_does_not_delete_file() abort
+function! Test_move_absolute_over_self_absolute_does_not_delete_file() abort
   call s:set_up_test_project()
   exec 'edit '.fnameescape('old.txt')
   call s:move_current_buffer_file(s:absolute_path('old.txt'))
   call s:assert_file_exists('old.txt')
 endfunction
 
-function Test_move_absolute_over_self_relative_does_not_delete_file() abort
+function! Test_move_absolute_over_self_relative_does_not_delete_file() abort
   call s:set_up_test_project()
   exec 'edit '.fnameescape('old.txt')
   call s:move_current_buffer_file('old.txt')
   call s:assert_file_exists('old.txt')
 endfunction
 
-function Test_move_missing_file_fails() abort
+function! Test_move_missing_file_fails() abort
   call s:set_up_test_project()
   edit old.txt
   call delete('old.txt')
@@ -276,7 +276,7 @@ function Test_move_missing_file_fails() abort
   call s:assert_file_does_not_exist('new.txt')
 endfunction
 
-function Test_move_over_symlink_to_self_fails() abort
+function! Test_move_over_symlink_to_self_fails() abort
   call s:set_up_test_project()
   edit old.txt
 
@@ -289,7 +289,7 @@ function Test_move_over_symlink_to_self_fails() abort
   call s:assert_file_exists('oldsymlink.txt')
 endfunction
 
-function Test_move_symlink_over_self_does_not_delete() abort
+function! Test_move_symlink_over_self_does_not_delete() abort
   call s:set_up_test_project()
   edit oldsymlink.txt
   call s:move_current_buffer_file('oldsymlink.txt')
@@ -297,7 +297,7 @@ function Test_move_symlink_over_self_does_not_delete() abort
   call s:assert_file_exists('oldsymlink.txt')
 endfunction
 
-function Test_move_symlink_over_target_fails() abort
+function! Test_move_symlink_over_target_fails() abort
   call s:set_up_test_project()
   edit oldsymlink.txt
 
@@ -310,7 +310,7 @@ function Test_move_symlink_over_target_fails() abort
   call s:assert_file_exists('oldsymlink.txt')
 endfunction
 
-function Test_move_new_file_does_not_write() abort
+function! Test_move_new_file_does_not_write() abort
   call s:set_up_test_project()
   edit from.txt
   silent! normal itext goes here
@@ -320,7 +320,7 @@ function Test_move_new_file_does_not_write() abort
   call s:assert_file_does_not_exist('to.txt')
 endfunction
 
-function Test_move_new_file_changes_current_buffer() abort
+function! Test_move_new_file_changes_current_buffer() abort
   call s:set_up_test_project()
   edit from.txt
   silent! normal itext goes here
@@ -329,7 +329,7 @@ function Test_move_new_file_changes_current_buffer() abort
   call assert_equal('to.txt', bufname('%'))
 endfunction
 
-function Test_move_new_file_then_write_saves_changes() abort
+function! Test_move_new_file_then_write_saves_changes() abort
   call s:set_up_test_project()
   edit from.txt
   silent! normal itext goes here
@@ -342,7 +342,7 @@ function Test_move_new_file_then_write_saves_changes() abort
   \ )
 endfunction
 
-function Test_move_to_opened_new_file_fails() abort
+function! Test_move_to_opened_new_file_fails() abort
   call s:set_up_test_project()
   edit new.txt
   split old.txt
@@ -356,7 +356,7 @@ function Test_move_to_opened_new_file_fails() abort
   call s:assert_file_does_not_exist('new.txt')
 endfunction
 
-function Test_move_to_opened_file_fails() abort
+function! Test_move_to_opened_file_fails() abort
   call s:set_up_test_project()
   edit new.txt
   write
@@ -371,7 +371,7 @@ function Test_move_to_opened_file_fails() abort
   call s:assert_file_exists('new.txt')
 endfunction
 
-function Test_move_to_opened_symlink_fails() abort
+function! Test_move_to_opened_symlink_fails() abort
   call s:set_up_test_project()
   edit oldsymlink.txt
   write
@@ -387,7 +387,7 @@ function Test_move_to_opened_symlink_fails() abort
   call s:assert_file_exists('README.md')
 endfunction
 
-function Test_move_to_symlink_of_opened_file_fails() abort
+function! Test_move_to_symlink_of_opened_file_fails() abort
   call s:set_up_test_project()
   edit old.txt
   write
@@ -403,7 +403,7 @@ function Test_move_to_symlink_of_opened_file_fails() abort
   call s:assert_file_exists('README.md')
 endfunction
 
-function Test_move_to_opened_symlink_target_fails() abort
+function! Test_move_to_opened_symlink_target_fails() abort
   call s:set_up_test_project()
   edit oldsymlink.txt
   write
@@ -419,7 +419,7 @@ function Test_move_to_opened_symlink_target_fails() abort
   call s:assert_file_exists('README.md')
 endfunction
 
-function Test_move_to_opened_file_with_percent_name_fails() abort
+function! Test_move_to_opened_file_with_percent_name_fails() abort
   call s:set_up_test_project()
   edit \%
   write
@@ -434,7 +434,7 @@ function Test_move_to_opened_file_with_percent_name_fails() abort
   call s:assert_file_exists('%')
 endfunction
 
-function Test_move_to_file_with_same_name_as_nofile_buffer_file() abort
+function! Test_move_to_file_with_same_name_as_nofile_buffer_file() abort
   call s:set_up_test_project()
   edit new.txt
   setlocal buftype=nofile
@@ -449,7 +449,7 @@ function Test_move_to_file_with_same_name_as_nofile_buffer_file() abort
   call s:assert_file_does_not_exist('new.txt')
 endfunction
 
-function Test_move_updates_other_windows() abort
+function! Test_move_updates_other_windows() abort
   call s:set_up_test_project()
   edit old.txt
   exec 'vsplit '.fnameescape(s:absolute_path('old.txt'))
@@ -467,7 +467,7 @@ function Test_move_updates_other_windows() abort
   call assert_equal(3, len(l:new_window_ids))
 endfunction
 
-function Test_move_keeps_unsaved_changes_unsaved() abort
+function! Test_move_keeps_unsaved_changes_unsaved() abort
   call s:set_up_test_project()
   edit old.txt
   silent! normal oGreetings.
@@ -480,7 +480,7 @@ function Test_move_keeps_unsaved_changes_unsaved() abort
   call assert_equal(['Hello, world!', ''], readfile('new.txt', 'b'))
 endfunction
 
-function Test_move_with_unsaved_changes_then_write_saves_changes() abort
+function! Test_move_with_unsaved_changes_then_write_saves_changes() abort
   call s:set_up_test_project()
   edit old.txt
   silent! normal oGreetings.
@@ -493,7 +493,7 @@ function Test_move_with_unsaved_changes_then_write_saves_changes() abort
   \ )
 endfunction
 
-function Test_move_with_saved_changes_keeps_changes() abort
+function! Test_move_with_saved_changes_keeps_changes() abort
   call s:set_up_test_project()
   edit old.txt
   silent! normal oGreetings.
@@ -514,7 +514,7 @@ function Test_move_with_saved_changes_keeps_changes() abort
   \ )
 endfunction
 
-function Test_move_preserves_cursor_location() abort
+function! Test_move_preserves_cursor_location() abort
   call s:set_up_test_project()
   edit old.txt
 
@@ -535,7 +535,7 @@ function Test_move_preserves_cursor_location() abort
   \ )
 endfunction
 
-function Test_move_preserves_file_permissions() abort
+function! Test_move_preserves_file_permissions() abort
   for l:permissions in ['rw-------', 'rw-r--r--', 'rw-rw-rw-', 'rwxr-xr-x']
     call s:set_up_test_project()
     let l:ok = setfperm('old.txt', l:permissions)
@@ -550,7 +550,7 @@ function Test_move_preserves_file_permissions() abort
   endfor
 endfunction
 
-function Test_move_directory_fails() abort
+function! Test_move_directory_fails() abort
   call s:set_up_test_project()
   edit emptydir
 
@@ -563,7 +563,7 @@ function Test_move_directory_fails() abort
   call s:assert_file_exists('emptydir')
 endfunction
 
-function Test_move_to_directory_fails() abort
+function! Test_move_to_directory_fails() abort
   call s:set_up_test_project()
   edit old.txt
 
@@ -576,7 +576,7 @@ function Test_move_to_directory_fails() abort
   call s:assert_directory_exists('emptydir')
 endfunction
 
-function Test_move_in_unnamed_buffer_fails() abort
+function! Test_move_in_unnamed_buffer_fails() abort
   call s:set_up_test_project()
   new
 
@@ -587,7 +587,7 @@ function Test_move_in_unnamed_buffer_fails() abort
   \ )
 endfunction
 
-function Test_move_in_quickfix_buffer_fails() abort
+function! Test_move_in_quickfix_buffer_fails() abort
   call s:set_up_test_project()
   edit old.txt
   copen
@@ -599,7 +599,7 @@ function Test_move_in_quickfix_buffer_fails() abort
   \ )
 endfunction
 
-function Test_move_in_terminal_buffer_fails() abort
+function! Test_move_in_terminal_buffer_fails() abort
   call s:set_up_test_project()
   edit old.txt
   terminal
@@ -611,7 +611,7 @@ function Test_move_in_terminal_buffer_fails() abort
   \ )
 endfunction
 
-function Test_move_to_file_with_star_with_related_buffers_open() abort
+function! Test_move_to_file_with_star_with_related_buffers_open() abort
   " Make sure the new path isn't treated as a wild card matching open buffers.
   call s:set_up_test_project()
   edit README.md
@@ -622,7 +622,7 @@ function Test_move_to_file_with_star_with_related_buffers_open() abort
   call s:assert_file_exists('README.md')
 endfunction
 
-function Test_move_to_file_with_base_name_open() abort
+function! Test_move_to_file_with_base_name_open() abort
   " Make sure the new path isn't treated as a substring matching open buffers.
   call s:set_up_test_project()
   edit dir/new_file
@@ -633,7 +633,7 @@ function Test_move_to_file_with_base_name_open() abort
   call s:assert_file_exists('dir/new_file')
 endfunction
 
-function Test_move_to_prefix_of_open_file() abort
+function! Test_move_to_prefix_of_open_file() abort
   " Make sure the new path isn't treated as a substring matching open buffers.
   call s:set_up_test_project()
   edit README.md
@@ -644,7 +644,7 @@ function Test_move_to_prefix_of_open_file() abort
   call s:assert_file_exists('README.md')
 endfunction
 
-function Test_move_to_file_containing_nomagic_pattern() abort
+function! Test_move_to_file_containing_nomagic_pattern() abort
   " Make sure the new path isn't treated as a nomagic pattern matching open
   " buffers.
   call s:set_up_test_project()
@@ -656,7 +656,7 @@ function Test_move_to_file_containing_nomagic_pattern() abort
   call s:assert_file_exists('REA\.ME.md')
 endfunction
 
-function Test_move_to_backslash_with_dollar_file_open() abort
+function! Test_move_to_backslash_with_dollar_file_open() abort
   call s:set_up_test_project()
   edit $
   split old.txt
@@ -666,7 +666,7 @@ function Test_move_to_backslash_with_dollar_file_open() abort
   call s:assert_file_exists('\')
 endfunction
 
-function Test_move_updates_quickfix_list() abort
+function! Test_move_updates_quickfix_list() abort
   call s:set_up_test_project()
   edit README.md
 
@@ -678,7 +678,7 @@ function Test_move_updates_quickfix_list() abort
   call s:assert_cursor_on_line(5)
 endfunction
 
-function Test_move_shows_new_file_info_in_status_line() abort
+function! Test_move_shows_new_file_info_in_status_line() abort
   call s:set_up_test_project()
   edit old.txt
   set ruler
@@ -692,7 +692,7 @@ function Test_move_shows_new_file_info_in_status_line() abort
   \ )
 endfunction
 
-function Test_move_shows_new_file_info_in_status_line_noruler() abort
+function! Test_move_shows_new_file_info_in_status_line_noruler() abort
   call s:set_up_test_project()
   edit old.txt
   set noruler
@@ -706,7 +706,7 @@ function Test_move_shows_new_file_info_in_status_line_noruler() abort
   \ )
 endfunction
 
-function Test_move_with_unsaved_changes_shows_new_file_info_in_status_line_noruler() abort
+function! Test_move_with_unsaved_changes_shows_new_file_info_in_status_line_noruler() abort
   let l:shortmess_to_message = {
     \ '': '"new.txt" [Modified] line 1 of 2 --50%-- col 1',
     \ 'filnxtToO': '"new.txt" [Modified] line 1 of 2 --50%-- col 1',
@@ -730,16 +730,16 @@ function Test_move_with_unsaved_changes_shows_new_file_info_in_status_line_norul
   endfor
 endfunction
 
-function s:assert_cursor_on_line(expected_line_number) abort
+function! s:assert_cursor_on_line(expected_line_number) abort
   let [l:_bufnum, l:lnum, l:_col, l:_off, l:_curswant] = getcurpos()
   call assert_equal(a:expected_line_number, l:lnum)
 endfunction
 
-function s:move_current_buffer_file(new_path) abort
+function! s:move_current_buffer_file(new_path) abort
   call strager#move_file#move_current_buffer_file(a:new_path)
 endfunction
 
-function s:set_up_test_project() abort
+function! s:set_up_test_project() abort
   call s:clean_up()
   let l:test_project_path = strager#file#make_directory_with_files([
     \ ['README.md', "===== README =====\n\nWelcome to the readme.\n\nThis readme is comprehensive.\n"],
@@ -753,18 +753,18 @@ function s:set_up_test_project() abort
   call strager#file#create_symbolic_link('old.txt', 'oldsymlink.txt')
 endfunction
 
-function s:clean_up() abort
+function! s:clean_up() abort
   %bwipeout!
 endfunction
 
-function s:assert_file_exists(path) abort
+function! s:assert_file_exists(path) abort
   call assert_true(
     \ strager#file#file_exists_case_sensitive(a:path),
     \ printf('File should exist at %s', a:path),
   \ )
 endfunction
 
-function s:assert_directory_exists(path) abort
+function! s:assert_directory_exists(path) abort
   call s:assert_file_exists(a:path)
   call assert_equal(
     \ 'dir',
@@ -773,14 +773,14 @@ function s:assert_directory_exists(path) abort
   \ )
 endfunction
 
-function s:assert_file_does_not_exist(path) abort
+function! s:assert_file_does_not_exist(path) abort
   call assert_false(
     \ strager#file#file_exists_case_sensitive(a:path),
     \ printf('File should not exist at %s', a:path),
   \ )
 endfunction
 
-function s:absolute_path(relative_path) abort
+function! s:absolute_path(relative_path) abort
   return strager#path#join([getcwd(), a:relative_path])
 endfunction
 

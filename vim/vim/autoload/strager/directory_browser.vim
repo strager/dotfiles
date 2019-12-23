@@ -42,7 +42,7 @@ function! strager#directory_browser#prompt_delete_file(path) abort
   endif
 endfunction
 
-function strager#directory_browser#register_commands() abort
+function! strager#directory_browser#register_commands() abort
   command -complete=dir -nargs=1 BrowserMkdir
     \ call <SID>browser_mkdir_command(<q-args>)
 endfunction

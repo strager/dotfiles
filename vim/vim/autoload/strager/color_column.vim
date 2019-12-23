@@ -1,4 +1,4 @@
-function strager#color_column#set_up_sync_colorcolumn_with_textwidth() abort
+function! strager#color_column#set_up_sync_colorcolumn_with_textwidth() abort
   autocmd OptionSet textwidth call <SID>on_set_textwidth({
     \ 'new_textwidth': v:option_new,
     \ 'option_type': v:option_type,

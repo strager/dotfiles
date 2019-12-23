@@ -1,10 +1,10 @@
-function Test_messages_includes_echomsg() abort
+function! Test_messages_includes_echomsg() abort
   echomsg 'Test_messages_includes_echomsg message'
   let l:messages = strager#messages#get_messages()
   call assert_equal('Test_messages_includes_echomsg message', l:messages[-1])
 endfunction
 
-function Test_messages_are_limited() abort
+function! Test_messages_are_limited() abort
   let l:messages_limit = strager#messages#get_messages_limit()
 
   let l:expected_messages = []
@@ -27,14 +27,14 @@ function Test_messages_are_limited() abort
   call assert_equal(l:expected_messages, l:messages)
 endfunction
 
-function Test_no_messages_after_clear() abort
+function! Test_no_messages_after_clear() abort
   echomsg 'Test_no_messages_after_clear message'
   messages clear
   let l:messages = strager#messages#get_messages()
   call assert_equal([], l:messages)
 endfunction
 
-function Test_new_messages_includes_echomsg() abort
+function! Test_new_messages_includes_echomsg() abort
   let l:messages = strager#messages#get_messages()
   echomsg 'Test_new_messages_includes_echomsg message'
   let l:new_messages = strager#messages#get_new_messages(l:messages)
@@ -44,7 +44,7 @@ function Test_new_messages_includes_echomsg() abort
   \ )
 endfunction
 
-function Test_new_messages_includes_echomsg_after_clear() abort
+function! Test_new_messages_includes_echomsg_after_clear() abort
   let l:messages = strager#messages#get_messages()
   echomsg 'Test_new_messages_includes_echomsg_after_clear message 1'
   echomsg 'Test_new_messages_includes_echomsg_after_clear message 2'
@@ -58,7 +58,7 @@ function Test_new_messages_includes_echomsg_after_clear() abort
   \ )
 endfunction
 
-function Test_new_messages_includes_echomsg_if_full() abort
+function! Test_new_messages_includes_echomsg_if_full() abort
   call s:fill_message_list()
   let l:messages = strager#messages#get_messages()
   echomsg 'Test_new_messages_includes_echomsg_if_full message'
@@ -69,7 +69,7 @@ function Test_new_messages_includes_echomsg_if_full() abort
   \ )
 endfunction
 
-function s:fill_message_list() abort
+function! s:fill_message_list() abort
   for l:_ in range(strager#messages#get_messages_limit())
     echomsg 'fill_message_list filler'
   endfor

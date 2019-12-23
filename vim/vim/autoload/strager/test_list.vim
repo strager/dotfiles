@@ -1,15 +1,15 @@
-function Test_new_messages_of_empty_lists() abort
+function! Test_new_messages_of_empty_lists() abort
   call assert_equal([], strager#list#new_messages([], []))
 endfunction
 
-function Test_new_messages_with_equal_lists() abort
+function! Test_new_messages_with_equal_lists() abort
   call assert_equal([], strager#list#new_messages(
     \ ['hello', 'world'],
     \ ['hello', 'world'],
   \ ))
 endfunction
 
-function Test_new_messages_after_append() abort
+function! Test_new_messages_after_append() abort
   call assert_equal(['list item'], strager#list#new_messages([], ['list item']))
   call assert_equal(['world'], strager#list#new_messages(
     \ ['hello'],
@@ -21,11 +21,11 @@ function Test_new_messages_after_append() abort
   \ ))
 endfunction
 
-function Test_new_messages_after_clear() abort
+function! Test_new_messages_after_clear() abort
   call assert_equal([], strager#list#new_messages(['old', 'messages'], []))
 endfunction
 
-function Test_new_messages_after_clear_then_append() abort
+function! Test_new_messages_after_clear_then_append() abort
   call assert_equal(['new'], strager#list#new_messages(['old'], ['new']))
   call assert_equal(['new'], strager#list#new_messages(
     \ ['old', 'messages'],
@@ -41,7 +41,7 @@ function Test_new_messages_after_clear_then_append() abort
   \ ))
 endfunction
 
-function Test_new_messages_after_pop_then_append() abort
+function! Test_new_messages_after_pop_then_append() abort
   call assert_equal(['b'], strager#list#new_messages(['a'], ['b']))
   call assert_equal(['c'], strager#list#new_messages(['a', 'b'], ['b', 'c']))
   call assert_equal(['e'], strager#list#new_messages(
@@ -58,7 +58,7 @@ function Test_new_messages_after_pop_then_append() abort
   \ ))
 endfunction
 
-function Test_new_messages_after_2_pops_then_appends() abort
+function! Test_new_messages_after_2_pops_then_appends() abort
   call assert_equal(['c', 'd'], strager#list#new_messages(
     \ ['a', 'b'],
     \ ['c', 'd'],
@@ -73,7 +73,7 @@ function Test_new_messages_after_2_pops_then_appends() abort
   \ ))
 endfunction
 
-function Test_new_messages_after_3_pops_then_appends() abort
+function! Test_new_messages_after_3_pops_then_appends() abort
   call assert_equal(['f', 'g', 'h'], strager#list#new_messages(
     \ ['a', 'b', 'c', 'd', 'e'],
     \ ['d', 'e', 'f', 'g', 'h'],

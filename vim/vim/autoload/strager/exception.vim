@@ -1,7 +1,7 @@
 " Example value of v:throwpoint:
 " 'function strager#test#run_all_tests[12]..strager#test#run_tests[10]..Test_throwpoint_location, line 3'
 
-function strager#exception#get_vim_error() abort
+function! strager#exception#get_vim_error() abort
   return matchstr(v:exception, 'E.*$')
 endfunction
 

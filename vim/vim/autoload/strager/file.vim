@@ -26,7 +26,7 @@ function! strager#file#make_directory_with_files(entries) abort
   return l:root_path
 endfunction
 
-function s:decode_file_entry(entry) abort
+function! s:decode_file_entry(entry) abort
   let l:entry_type = type(a:entry)
   if l:entry_type ==# v:t_string
     return [a:entry, '']
@@ -38,7 +38,7 @@ function s:decode_file_entry(entry) abort
   endif
 endfunction
 
-function s:write_string_to_file(path, content) abort
+function! s:write_string_to_file(path, content) abort
   let l:lines = split(a:content, "\n", v:true)
   call writefile(l:lines, a:path, 'b')
 endfunction
@@ -148,7 +148,7 @@ function! strager#file#find_file_upward_with_glob(path, glob) abort
   return l:matches
 endfunction
 
-function strager#file#create_symbolic_link(target_path, symlink_path) abort
+function! strager#file#create_symbolic_link(target_path, symlink_path) abort
   silent call system(printf(
     \ 'ln -s -- %s %s',
     \ shellescape(a:target_path),
@@ -159,7 +159,7 @@ function strager#file#create_symbolic_link(target_path, symlink_path) abort
   endif
 endfunction
 
-function strager#file#create_hard_link(old_path, new_path) abort
+function! strager#file#create_hard_link(old_path, new_path) abort
   silent call system(printf(
     \ 'ln -- %s %s',
     \ shellescape(a:old_path),
@@ -170,11 +170,11 @@ function strager#file#create_hard_link(old_path, new_path) abort
   endif
 endfunction
 
-function strager#file#mkdirp(path) abort
+function! strager#file#mkdirp(path) abort
   call mkdir(a:path, 'p')
 endfunction
 
-function strager#file#are_files_same_by_path(file_a_path, file_b_path) abort
+function! strager#file#are_files_same_by_path(file_a_path, file_b_path) abort
   let l:file_a_type = getftype(a:file_a_path)
   if l:file_a_type ==# ''
     return v:false
@@ -192,7 +192,7 @@ function strager#file#are_files_same_by_path(file_a_path, file_b_path) abort
   return v:false
 endfunction
 
-function s:absolute_path_with_parent_resolved(path) abort
+function! s:absolute_path_with_parent_resolved(path) abort
   let l:absolute_path = strager#path#join([getcwd(), a:path])
   let l:parent_absolute_path = fnamemodify(a:path, ':p')
   let l:parent_resolved_absolute_path = resolve(l:parent_absolute_path)

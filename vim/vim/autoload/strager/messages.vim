@@ -1,4 +1,4 @@
-function strager#messages#get_messages() abort
+function! strager#messages#get_messages() abort
   let l:messages_string = execute('messages')
   let l:message_lines = split(l:messages_string, "\n")
 
@@ -10,11 +10,11 @@ function strager#messages#get_messages() abort
   return l:message_lines
 endfunction
 
-function strager#messages#get_new_messages(old_messages) abort
+function! strager#messages#get_new_messages(old_messages) abort
   let l:all_messages = strager#messages#get_messages()
   return strager#list#new_messages(a:old_messages, l:all_messages)
 endfunction
 
-function strager#messages#get_messages_limit() abort
+function! strager#messages#get_messages_limit() abort
   return 201
 endfunction

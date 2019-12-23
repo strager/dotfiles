@@ -127,7 +127,7 @@ function! s:push_tag(path, line_number, column_number) abort
   call cursor(a:line_number, a:column_number)
 endfunction
 
-function s:new_error_reporter() abort
+function! s:new_error_reporter() abort
   let l:reporter = {
     \ 'provider_internal_errors': [],
     \ 'user_errors': [],

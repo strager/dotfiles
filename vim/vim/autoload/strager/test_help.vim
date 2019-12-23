@@ -113,7 +113,7 @@ function! Test_help_fails_with_open_modified_unsaveable_buffer() abort
   \ )
 endfunction
 
-function Test_help_command_without_argument_fails() abort
+function! Test_help_command_without_argument_fails() abort
   call strager#help#register_command({'force': v:true})
   call assert_fails('Help', 'E471:')
 endfunction
@@ -141,7 +141,7 @@ function! Test_help_for_unknown_tag_fails() abort
   \ )
 endfunction
 
-function Test_help_command_completes_tags() abort
+function! Test_help_command_completes_tags() abort
   call strager#help#register_command({'force': v:true})
   call feedkeys(":Help keypad-divi\<C-L>\<Esc>", 'tx')
   call assert_equal('Help keypad-divide', histget('cmd', -1))
