@@ -1,4 +1,4 @@
-function! strager#help#open_help_tag(tag)
+function! strager#help#open_help_tag(tag) abort
   let l:window_id = win_getid()
   execute printf('tab help %s', a:tag)
   let l:help_tab_number = tabpagenr()

@@ -118,6 +118,29 @@ function Test_help_command_without_argument_fails()
   call assert_fails('Help', 'E471:')
 endfunction
 
+function! Test_help_for_unknown_tag_fails()
+  %bwipeout!
+
+  let l:old_layout = strager#layout#get_layout_of_windows_and_tabs()
+  let l:old_buffer_number = bufnr('%')
+
+  call strager#assert#assert_throws(
+    \ {-> strager#help#open_help_tag('this_help_tag_does_not_exist')},
+    \ 'E149:',
+  \ )
+
+  call assert_equal(
+    \ l:old_layout,
+    \ strager#layout#get_layout_of_windows_and_tabs(),
+    \ 'Layout should be the same after trying to open help',
+  \ )
+  call assert_equal(
+    \ l:old_buffer_number,
+    \ bufnr('%'),
+    \ 'Current buffer should not change',
+  \ )
+endfunction
+
 function Test_help_command_completes_tags()
   call strager#help#register_command({'force': v:true})
   call feedkeys(":Help keypad-divi\<C-L>\<Esc>", 'tx')
