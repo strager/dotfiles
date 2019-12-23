@@ -1,7 +1,7 @@
 let s:script_path = expand('<sfile>:p')
 let s:script_dir_path = fnamemodify(s:script_path, ':h')
 
-function! Test_python_insert_does_not_wrap_lines()
+function! Test_python_insert_does_not_wrap_lines() abort
   call s:set_up_python_helper_source()
   " Append to the long line.
   call cursor(11, 1)
@@ -12,13 +12,13 @@ function! Test_python_insert_does_not_wrap_lines()
   \ )
 endfunction
 
-function! s:set_up_python_helper_source()
+function! s:set_up_python_helper_source() abort
   new
   exec 'edit '.fnameescape(s:script_dir_path.'/test_format_helper.py')
   setlocal readonly
 endfunction
 
-function! s:assert_buffer_contents_match_expected(expected_path)
+function! s:assert_buffer_contents_match_expected(expected_path) abort
   exec 'silent write !cmp -b -- - '.fnameescape(a:expected_path)
   if v:shell_error != 0
     let l:diff_output = execute(

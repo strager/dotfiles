@@ -1,4 +1,4 @@
-function! Test_syntax_loaded_by_edit_uses_fast_regexp_engine()
+function! Test_syntax_loaded_by_edit_uses_fast_regexp_engine() abort
   let l:expected_regexpengine = 1
   let g:strager_test_syntax_regexpengine = v:none
 

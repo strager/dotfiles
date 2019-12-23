@@ -1,11 +1,11 @@
-function! strager#search_buffers#search_using_fzf()
+function! strager#search_buffers#search_using_fzf() abort
   let l:fzf_run_options =
     \ strager#search_buffers#get_fzf_run_options_for_searching_buffers()
   let l:fzf_run_options = fzf#wrap(l:fzf_run_options)
   call fzf#run(l:fzf_run_options)
 endfunction
 
-function! strager#search_buffers#get_fzf_run_options_for_searching_buffers()
+function! strager#search_buffers#get_fzf_run_options_for_searching_buffers() abort
   let l:current_buffer_name = bufname('%')
   let l:current_buffer_type = strager#buffer#get_buffer_type('%')
   if l:current_buffer_type ==# 'help'
@@ -28,7 +28,7 @@ function! strager#search_buffers#get_fzf_run_options_for_searching_buffers()
   \ }
 endfunction
 
-function! strager#search_buffers#get_searchable_buffers()
+function! strager#search_buffers#get_searchable_buffers() abort
   let l:directory_buffers = []
   let l:file_buffers = []
   let l:current_buffer_number = bufnr('%')
@@ -45,7 +45,7 @@ function! strager#search_buffers#get_searchable_buffers()
   return extend(l:file_buffers, l:directory_buffers)
 endfunction
 
-function! s:maybe_add_buffer(buffer_number, out_file_buffers, out_directory_buffers)
+function! s:maybe_add_buffer(buffer_number, out_file_buffers, out_directory_buffers) abort
   if !bufexists(a:buffer_number)
     return
   endif
@@ -72,7 +72,7 @@ function! s:maybe_add_buffer(buffer_number, out_file_buffers, out_directory_buff
   call add(l:out_buffers, {'name': l:name, 'number': a:buffer_number})
 endfunction
 
-function! s:pretty_buffer_name(buffer_name)
+function! s:pretty_buffer_name(buffer_name) abort
   if s:is_directory_buffer(a:buffer_name)
     return s:relative_path(a:buffer_name)
   else
@@ -80,7 +80,7 @@ function! s:pretty_buffer_name(buffer_name)
   endif
 endfunction
 
-function! s:fzf_sink(lines)
+function! s:fzf_sink(lines) abort
   if len(a:lines) > 1
     throw 'ES010: Expected exactly zero or one lines'
   endif
@@ -102,11 +102,11 @@ function! s:fzf_sink(lines)
   endif
 endfunction
 
-function! s:is_directory_buffer(buffer_name)
+function! s:is_directory_buffer(buffer_name) abort
   return a:buffer_name =~# '/$'
 endfunction
 
-function! s:relative_path(path)
+function! s:relative_path(path) abort
   if strager#path#is_relative(a:path)
     return a:path
   endif

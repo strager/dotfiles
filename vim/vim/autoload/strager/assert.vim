@@ -1,4 +1,4 @@
-function strager#assert#assert_throws(function, error, ...)
+function strager#assert#assert_throws(function, error, ...) abort
   let l:msg = get(a:000, 0, v:none)
   try
     call a:function()
@@ -16,7 +16,7 @@ function strager#assert#assert_throws(function, error, ...)
   endtry
 endfunction
 
-function! strager#assert#assert_contains(needle, haystack)
+function! strager#assert#assert_contains(needle, haystack) abort
   if index(a:haystack, a:needle) == -1
     call assert_report(printf(
       \ '%s should be in %s',
@@ -26,7 +26,7 @@ function! strager#assert#assert_contains(needle, haystack)
   endif
 endfunction
 
-function strager#assert#take_assertion_failure_messages()
+function strager#assert#take_assertion_failure_messages() abort
   let l:errors = v:errors
   let l:error_messages = map(copy(l:errors), {_, error -> matchlist(error, '^[^:]*: \(.*\)$')[1]})
   let v:errors = []

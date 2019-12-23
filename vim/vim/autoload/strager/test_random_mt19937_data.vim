@@ -1,4 +1,4 @@
-function! strager#test_random_mt19937_data#genrand_int32_reference_samples()
+function! strager#test_random_mt19937_data#genrand_int32_reference_samples() abort
   return s:genrand_int32_reference_samples
 endfunction
 

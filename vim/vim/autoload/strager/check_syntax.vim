@@ -1,4 +1,4 @@
-function strager#check_syntax#check_syntax_and_exit()
+function strager#check_syntax#check_syntax_and_exit() abort
   let l:issues = s:get_syntax_issues_for_current_window()
   if l:issues ==# []
     qall!
@@ -7,7 +7,7 @@ function strager#check_syntax#check_syntax_and_exit()
   endif
 endfunction
 
-function strager#check_syntax#check_syntax()
+function strager#check_syntax#check_syntax() abort
   let l:issues = s:get_syntax_issues_for_current_window()
   let l:buffer_number = bufnr('%')
   let l:quickfix_entries = []
@@ -24,7 +24,7 @@ function strager#check_syntax#check_syntax()
   endif
 endfunction
 
-function s:get_syntax_issues_for_current_window()
+function s:get_syntax_issues_for_current_window() abort
   let l:issues = []
   let l:buffer_lines = strager#buffer#get_current_buffer_lines()
   let l:checks = strager#check_syntax_internal#parse_syntax_checks(
@@ -50,7 +50,7 @@ function s:get_syntax_issues_for_current_window()
   return l:issues
 endfunction
 
-function strager#check_syntax#check_syntax_generic(options, out_issues)
+function strager#check_syntax#check_syntax_generic(options, out_issues) abort
   let l:aliases = a:options.aliases
   let l:checks = a:options.checks
   let l:Get_syntax_item = a:options.get_syntax_item
@@ -93,14 +93,14 @@ function strager#check_syntax#check_syntax_generic(options, out_issues)
   endfor
 endfunction
 
-function s:format_syntax_items(syntax_item_names)
+function s:format_syntax_items(syntax_item_names) abort
   let l:names = map(copy(a:syntax_item_names), {_, name ->
     \ s:format_syntax_item(name)
   \ })
   return join(l:names, ' or ')
 endfunction
 
-function s:format_syntax_item(syntax_item_name)
+function s:format_syntax_item(syntax_item_name) abort
   if a:syntax_item_name ==# v:none
     return '<none>'
   else

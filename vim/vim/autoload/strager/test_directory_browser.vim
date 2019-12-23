@@ -1,4 +1,4 @@
-function! Test_refreshing_open_browser_does_not_affect_undo_tree_of_current_buffer()
+function! Test_refreshing_open_browser_does_not_affect_undo_tree_of_current_buffer() abort
   call s:set_up()
   let l:test_directory = strager#file#make_directory_with_files([
     \ 'dir_a/hello.txt',
@@ -17,7 +17,7 @@ function! Test_refreshing_open_browser_does_not_affect_undo_tree_of_current_buff
   call assert_equal(l:original_undo_tree, undotree())
 endfunction
 
-function! Test_refreshing_open_browser_does_not_change_layout()
+function! Test_refreshing_open_browser_does_not_change_layout() abort
   call s:set_up()
   let l:test_directory = strager#file#make_directory_with_files([
     \ 'dir_a/file_a.txt',
@@ -38,7 +38,7 @@ function! Test_refreshing_open_browser_does_not_change_layout()
   \ )
 endfunction
 
-function! Test_refreshing_hidden_browser_updates_content_when_unhidden()
+function! Test_refreshing_hidden_browser_updates_content_when_unhidden() abort
   call s:set_up()
   set hidden
   let l:test_directory = strager#file#make_directory_with_files([
@@ -60,7 +60,7 @@ function! Test_refreshing_hidden_browser_updates_content_when_unhidden()
   \ )
 endfunction
 
-function! s:set_up()
+function! s:set_up() abort
   set nohidden
   %bwipeout!
 endfunction

@@ -2,7 +2,7 @@
 " CHECK-ALIAS: f vimFuncName
 " CHECK-ALIAS: ( vimOperParen
 
-function s:func()
+function s:func() abort
   "             ffffffffff  :CHECK-NEXT-LINE
   let escaped = substitute()
   "                          (    :CHECK-NEXT-LINE

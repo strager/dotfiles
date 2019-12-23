@@ -1,4 +1,4 @@
-function! Test_file_list_contains_child_and_grandchild_files_of_cwd()
+function! Test_file_list_contains_child_and_grandchild_files_of_cwd() abort
   let l:test_directory = strager#file#make_directory_with_files([
     \ 'file.txt',
     \ 'subdirectory/other.txt',
@@ -12,7 +12,7 @@ function! Test_file_list_contains_child_and_grandchild_files_of_cwd()
   call assert_equal(2, len(l:lines))
 endfunction
 
-function! Test_prompt_is_shortened_cwd()
+function! Test_prompt_is_shortened_cwd() abort
   let l:test_directory = strager#file#make_directory_with_files([])
   execute printf('cd %s', fnameescape(l:test_directory))
 
@@ -31,28 +31,28 @@ function! Test_prompt_is_shortened_cwd()
   \ )
 endfunction
 
-function! Test_prompt_is_slash_if_cwd_is_exactly_root()
+function! Test_prompt_is_slash_if_cwd_is_exactly_root() abort
   cd /
   let l:run_options = s:fzf_run_options()
   let l:prompt = strager#fzf#prompt(l:run_options)
   call assert_equal('/', l:prompt, 'Prompt must be /')
 endfunction
 
-function! Test_prompt_is_tilde_slash_if_cwd_is_exactly_home_directory()
+function! Test_prompt_is_tilde_slash_if_cwd_is_exactly_home_directory() abort
   cd ~
   let l:run_options = s:fzf_run_options()
   let l:prompt = strager#fzf#prompt(l:run_options)
   call assert_equal('~/', l:prompt, 'Prompt must shorten home directory')
 endfunction
 
-function! Test_prompt_starts_with_tilde_if_cwd_is_in_home_directory()
+function! Test_prompt_starts_with_tilde_if_cwd_is_in_home_directory() abort
   cd ~/.vim/autoload/strager/
   let l:run_options = s:fzf_run_options()
   let l:prompt = strager#fzf#prompt(l:run_options)
   call assert_match('^\~/', l:prompt, 'Prompt must shorten home directory')
 endfunction
 
-function! Test_selecting_file_opens_file_in_current_window()
+function! Test_selecting_file_opens_file_in_current_window() abort
   let l:test_directory = strager#file#make_directory_with_files([
     \ ['hello.txt', 'file content here'],
     \ ['world.txt', 'file content here'],
@@ -72,7 +72,7 @@ function! Test_selecting_file_opens_file_in_current_window()
   \ )
 endfunction
 
-function! Test_shortened_absolute_path()
+function! Test_shortened_absolute_path() abort
   call assert_true(
     \ s:is_shortened_absolute_path('/a/b/c/'),
     \ 'Path relative to root is absolute',
@@ -128,13 +128,13 @@ function! Test_shortened_absolute_path()
   \ )
 endfunction
 
-function! s:is_shortened_absolute_path(path)
+function! s:is_shortened_absolute_path(path) abort
   return match(a:path, s:shortened_absolute_path_pattern) != -1
 endfunction
 
 let s:shortened_absolute_path_pattern = '^\~\?/\%([^/]/\)*[^/]\+/\?$'
 
-function! s:fzf_run_options()
+function! s:fzf_run_options() abort
   return strager#search_files#get_fzf_run_options_for_searching_files()
 endfunction
 

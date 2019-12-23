@@ -1,4 +1,4 @@
-function! strager#path#join(paths)
+function! strager#path#join(paths) abort
   let [l:path; l:extra_paths] = a:paths
   for l:extra_path in l:extra_paths
     let l:path = s:join2(l:path, l:extra_path)
@@ -6,7 +6,7 @@ function! strager#path#join(paths)
   return l:path
 endfunction
 
-function! strager#path#components(path)
+function! strager#path#components(path) abort
   let l:leading_slash_count = match(a:path, '[^/]')
   if l:leading_slash_count == -1
     let l:components = [a:path]
@@ -19,7 +19,7 @@ function! strager#path#components(path)
   return l:components
 endfunction
 
-function! strager#path#base_name(path)
+function! strager#path#base_name(path) abort
   let l:tail = fnamemodify(a:path, ':t')
   if l:tail ==# ''
     return fnamemodify(a:path, ':h:t')
@@ -27,7 +27,7 @@ function! strager#path#base_name(path)
   return l:tail
 endfunction
 
-function! strager#path#paths_upward(path)
+function! strager#path#paths_upward(path) abort
   let l:paths = []
   let l:path = a:path
   while v:true
@@ -53,7 +53,7 @@ function! strager#path#paths_upward(path)
   return l:paths
 endfunction
 
-function! strager#path#make_relative(ancestor_path, descendant_path)
+function! strager#path#make_relative(ancestor_path, descendant_path) abort
   let l:ancestor_components = strager#path#components(a:ancestor_path)
   let l:descendant_components = strager#path#components(a:descendant_path)
   if l:ancestor_components[-1] ==# ''
@@ -81,16 +81,16 @@ function! strager#path#make_relative(ancestor_path, descendant_path)
   return l:relative_path
 endfunction
 
-function! strager#path#is_relative(path)
+function! strager#path#is_relative(path) abort
   return !s:is_absolute(a:path)
 endfunction
 
-function! s:is_absolute(path)
+function! s:is_absolute(path) abort
   " HACK(strager): This is good enough for now...
   return a:path =~# '^/'
 endfunction
 
-function! s:join2(left, right)
+function! s:join2(left, right) abort
   if a:left ==# ''
     return a:right
   endif

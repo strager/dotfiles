@@ -1,27 +1,27 @@
-function! Test_single_item_sorts_to_itself()
+function! Test_single_item_sorts_to_itself() abort
   call assert_equal(['hello'], s:sort(['hello']))
   call assert_equal(['hello/'], s:sort(['hello/']))
 endfunction
 
-function! Test_ordered_files_preserve_order()
+function! Test_ordered_files_preserve_order() abort
   call assert_equal(['a', 'b'], s:sort(['a', 'b']))
 endfunction
 
-function! Test_ordered_directories_preserve_order()
+function! Test_ordered_directories_preserve_order() abort
   call assert_equal(['a/', 'b/'], s:sort(['a/', 'b/']))
 endfunction
 
-function! Test_unordered_files_are_sorted()
+function! Test_unordered_files_are_sorted() abort
   call assert_equal(['a', 'b'], s:sort(['b', 'a']))
 endfunction
 
-function! Test_directories_appear_before_regular_files()
+function! Test_directories_appear_before_regular_files() abort
   call assert_equal(['x_dir/', 'y_file'], s:sort(['x_dir/', 'y_file']))
   call assert_equal(['y_dir/', 'x_file'], s:sort(['x_file', 'y_dir/']))
   call assert_equal(['y_dir/', 'x_file'], s:sort(['y_dir/', 'x_file']))
 endfunction
 
-function! Test_fuzz_directories_appear_before_regular_files()
+function! Test_fuzz_directories_appear_before_regular_files() abort
   let l:rng = strager#random_mt19937#make_generator(5489)
   let l:iteration = 0
   while l:iteration < 100
@@ -59,7 +59,7 @@ endfunction
 
 let s:some_legal_file_name_characters = split('abcdefABCDEF.-()', '\zs')
 
-function! s:random_file_names(rng)
+function! s:random_file_names(rng) abort
   let l:length = strager#random_mt19937#next_integer(a:rng, 1, 5)
   let l:names = []
   while len(l:names) < l:length
@@ -71,7 +71,7 @@ function! s:random_file_names(rng)
   return l:names
 endfunction
 
-function! s:random_file_name(rng)
+function! s:random_file_name(rng) abort
   let l:length = strager#random_mt19937#next_integer(a:rng, 1, 7)
   let l:name = ''
   while l:name ==# '' || l:name ==# '.' || l:name ==# '..'
@@ -87,13 +87,13 @@ function! s:random_file_name(rng)
   return l:name
 endfunction
 
-function! Test_dot_files_appear_before_regular_files()
+function! Test_dot_files_appear_before_regular_files() abort
   call assert_equal(['.x_file', 'y_file'], s:sort(['.x_file', 'y_file']))
   call assert_equal(['.y_file', 'x_file'], s:sort(['x_file', '.y_file']))
   call assert_equal(['.y_file', 'x_file'], s:sort(['.y_file', 'x_file']))
 endfunction
 
-function! s:sort(lines)
+function! s:sort(lines) abort
   call strager#buffer#set_current_buffer_lines(a:lines)
   call strager#file_sort#sort_current_buffer()
   return strager#buffer#get_current_buffer_lines()

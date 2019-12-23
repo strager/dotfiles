@@ -1,4 +1,4 @@
-function! strager#file#make_directory_with_files(entries)
+function! strager#file#make_directory_with_files(entries) abort
   let l:temp_path = tempname()
   let l:root_path = l:temp_path.'/__test_directory__'
   let l:directory_paths = [l:temp_path, l:root_path]
@@ -26,7 +26,7 @@ function! strager#file#make_directory_with_files(entries)
   return l:root_path
 endfunction
 
-function s:decode_file_entry(entry)
+function s:decode_file_entry(entry) abort
   let l:entry_type = type(a:entry)
   if l:entry_type ==# v:t_string
     return [a:entry, '']
@@ -38,12 +38,12 @@ function s:decode_file_entry(entry)
   endif
 endfunction
 
-function s:write_string_to_file(path, content)
+function s:write_string_to_file(path, content) abort
   let l:lines = split(a:content, "\n", v:true)
   call writefile(l:lines, a:path, 'b')
 endfunction
 
-function! strager#file#file_exists_case_sensitive(path)
+function! strager#file#file_exists_case_sensitive(path) abort
   let l:path = a:path
   " Strip trailing '/'.
   if fnamemodify(l:path, ':t') ==# ''
@@ -60,7 +60,7 @@ function! strager#file#file_exists_case_sensitive(path)
   return v:true
 endfunction
 
-function! s:file_exists_single_case_sensitive(path)
+function! s:file_exists_single_case_sensitive(path) abort
   let l:name = fnamemodify(a:path, ':t')
   let l:dir = fnamemodify(a:path, ':h')
   if l:dir ==# a:path
@@ -82,7 +82,7 @@ function! s:file_exists_single_case_sensitive(path)
   return l:matches == 1
 endfunction
 
-function! strager#file#list_directory(path)
+function! strager#file#list_directory(path) abort
   let l:glob = escape(a:path, ',\')
   if fnamemodify(a:path, ':t') ==# ''
     let l:prefix_to_strip = a:path
@@ -113,7 +113,7 @@ function! strager#file#list_directory(path)
   return l:names
 endfunction
 
-function! strager#file#find_file_upward_with_glob(path, glob)
+function! strager#file#find_file_upward_with_glob(path, glob) abort
   let l:matches = []
   for l:cur_path in strager#path#paths_upward(a:path)
     " FIXME(strager): How can we escape l:cur_path for glob()?
@@ -148,7 +148,7 @@ function! strager#file#find_file_upward_with_glob(path, glob)
   return l:matches
 endfunction
 
-function strager#file#create_symbolic_link(target_path, symlink_path)
+function strager#file#create_symbolic_link(target_path, symlink_path) abort
   silent call system(printf(
     \ 'ln -s -- %s %s',
     \ shellescape(a:target_path),
@@ -159,7 +159,7 @@ function strager#file#create_symbolic_link(target_path, symlink_path)
   endif
 endfunction
 
-function strager#file#create_hard_link(old_path, new_path)
+function strager#file#create_hard_link(old_path, new_path) abort
   silent call system(printf(
     \ 'ln -- %s %s',
     \ shellescape(a:old_path),
@@ -170,11 +170,11 @@ function strager#file#create_hard_link(old_path, new_path)
   endif
 endfunction
 
-function strager#file#mkdirp(path)
+function strager#file#mkdirp(path) abort
   call mkdir(a:path, 'p')
 endfunction
 
-function strager#file#are_files_same_by_path(file_a_path, file_b_path)
+function strager#file#are_files_same_by_path(file_a_path, file_b_path) abort
   let l:file_a_type = getftype(a:file_a_path)
   if l:file_a_type ==# ''
     return v:false
@@ -192,7 +192,7 @@ function strager#file#are_files_same_by_path(file_a_path, file_b_path)
   return v:false
 endfunction
 
-function s:absolute_path_with_parent_resolved(path)
+function s:absolute_path_with_parent_resolved(path) abort
   let l:absolute_path = strager#path#join([getcwd(), a:path])
   let l:parent_absolute_path = fnamemodify(a:path, ':p')
   let l:parent_resolved_absolute_path = resolve(l:parent_absolute_path)

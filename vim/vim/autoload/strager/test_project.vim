@@ -1,4 +1,4 @@
-function! Test_find_c_project()
+function! Test_find_c_project() abort
   let l:root_path = strager#file#make_directory_with_files([])
   call assert_equal({
     \ 'build_path': l:root_path,

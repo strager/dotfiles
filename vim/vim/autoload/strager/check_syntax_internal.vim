@@ -1,4 +1,4 @@
-function strager#check_syntax_internal#parse_syntax_checks(lines)
+function strager#check_syntax_internal#parse_syntax_checks(lines) abort
   let l:checks = []
   for l:line_index in range(len(a:lines))
     let l:line = a:lines[l:line_index]
@@ -15,7 +15,7 @@ function strager#check_syntax_internal#parse_syntax_checks(lines)
   return l:checks
 endfunction
 
-function strager#check_syntax_internal#parse_syntax_aliases(lines, out_issues)
+function strager#check_syntax_internal#parse_syntax_aliases(lines, out_issues) abort
   let l:aliases = {}
   for l:line_index in range(len(a:lines))
     let l:line = a:lines[l:line_index]
@@ -48,7 +48,7 @@ function strager#check_syntax_internal#parse_syntax_aliases(lines, out_issues)
   return l:aliases
 endfunction
 
-function s:parse_check_alias_syntax_item_name(syntax_item_name)
+function s:parse_check_alias_syntax_item_name(syntax_item_name) abort
   if a:syntax_item_name ==# '<none>'
     return v:none
   else
@@ -56,7 +56,7 @@ function s:parse_check_alias_syntax_item_name(syntax_item_name)
   endif
 endfunction
 
-function strager#check_syntax_internal#get_quickfix_item_for_issue(issue)
+function strager#check_syntax_internal#get_quickfix_item_for_issue(issue) abort
   let l:item = {
     \ 'text': a:issue.text,
     \ 'type': 'E',
@@ -71,7 +71,7 @@ function strager#check_syntax_internal#get_quickfix_item_for_issue(issue)
   return l:item
 endfunction
 
-function strager#check_syntax_internal#syntax_item_from_current_window(line, column)
+function strager#check_syntax_internal#syntax_item_from_current_window(line, column) abort
   let l:syntax_item_ids = synstack(a:line, a:column)
   if l:syntax_item_ids ==# []
     return v:none

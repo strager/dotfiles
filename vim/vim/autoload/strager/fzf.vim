@@ -1,4 +1,4 @@
-function! strager#fzf#header_lines(fzf_run_options)
+function! strager#fzf#header_lines(fzf_run_options) abort
   let l:options = s:parse_command_line_options(a:fzf_run_options.options)
   let l:header_lines = []
   if l:options.header !=# v:none
@@ -12,7 +12,7 @@ function! strager#fzf#header_lines(fzf_run_options)
   return l:header_lines
 endfunction
 
-function! strager#fzf#input_lines(fzf_run_options)
+function! strager#fzf#input_lines(fzf_run_options) abort
   let l:source = get(a:fzf_run_options, 'source', v:none)
   if type(l:source) ==# v:t_none
     let l:source = s:default_command()
@@ -31,7 +31,7 @@ function! strager#fzf#input_lines(fzf_run_options)
   return l:source
 endfunction
 
-function! s:default_command()
+function! s:default_command() abort
   let l:command = $FZF_DEFAULT_COMMAND
   if l:command !=# ''
     return l:command
@@ -59,7 +59,7 @@ function! s:default_command()
   throw 'Expected FZF_DEFAULT_COMMAND to be set'
 endfunction
 
-function! strager#fzf#presented_lines(fzf_run_options)
+function! strager#fzf#presented_lines(fzf_run_options) abort
   let l:options = s:parse_command_line_options(a:fzf_run_options.options)
   let l:lines = strager#fzf#input_lines(
     \ a:fzf_run_options
@@ -68,12 +68,12 @@ function! strager#fzf#presented_lines(fzf_run_options)
   return l:lines
 endfunction
 
-function! strager#fzf#prompt(fzf_run_options)
+function! strager#fzf#prompt(fzf_run_options) abort
   let l:options = s:parse_command_line_options(a:fzf_run_options.options)
   return l:options.prompt
 endfunction
 
-function! strager#fzf#call_sink(fzf_run_options, selected_lines)
+function! strager#fzf#call_sink(fzf_run_options, selected_lines) abort
   let l:sink = get(a:fzf_run_options, 'sink', v:none)
   if type(l:sink) !=# v:t_none
     throw 'ES007: Plain sink is not supported'
@@ -86,7 +86,7 @@ function! strager#fzf#call_sink(fzf_run_options, selected_lines)
   call l:Sink_star(a:selected_lines)
 endfunction
 
-function! s:transform_lines(lines, field_delimiter, field_index_expressions)
+function! s:transform_lines(lines, field_delimiter, field_index_expressions) abort
   call map(a:lines, {_, line -> s:transform_line(
     \ line,
     \ a:field_delimiter,
@@ -94,7 +94,7 @@ function! s:transform_lines(lines, field_delimiter, field_index_expressions)
   \ )})
 endfunction
 
-function! s:transform_line(line, field_delimiter, field_index_expressions)
+function! s:transform_line(line, field_delimiter, field_index_expressions) abort
   if type(a:field_delimiter) ==# v:t_none
     throw 'ES012: Default field delimiter is not supported'
   endif
@@ -117,7 +117,7 @@ function! s:transform_line(line, field_delimiter, field_index_expressions)
   return join(l:output_pieces, '')
 endfunction
 
-function! s:parse_command_line_options(options)
+function! s:parse_command_line_options(options) abort
   let l:result = {
     \ 'delimiter': v:none,
     \ 'header': v:none,
@@ -153,7 +153,7 @@ function! s:parse_command_line_options(options)
   return l:result
 endfunction
 
-function! s:parse_command_line_field_index_expressions(expressions)
+function! s:parse_command_line_field_index_expressions(expressions) abort
   let l:range = s:parse_command_line_field_index_expression_raw(a:expressions)
   if (type(l:range[0]) !=# v:t_none && l:range[0] == 0)
     \ || (type(l:range[1]) !=# v:t_none && l:range[1] == 0)
@@ -162,7 +162,7 @@ function! s:parse_command_line_field_index_expressions(expressions)
   return [l:range]
 endfunction
 
-function! s:parse_command_line_field_index_expression_raw(expression)
+function! s:parse_command_line_field_index_expression_raw(expression) abort
   let l:match = matchstr(a:expression, '^\d\+$')
   if l:match !=# ''
     let l:field_index = str2nr(l:match)

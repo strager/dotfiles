@@ -1,4 +1,4 @@
-function! strager#cxx_symbol#get_conceal_pattern()
+function! strager#cxx_symbol#get_conceal_pattern() abort
   let l:name_prefix = ''
     \ .s:nested_name()
     \ .s:any_of([
@@ -24,7 +24,7 @@ endfunction
 " * std::thread
 " * std::atomic<char>
 " * std::vector<int>::const_iterator
-function! s:nested_name()
+function! s:nested_name() abort
   return s:unqualified_name().'\%(::'.s:unqualified_name().'\)*'
 endfunction
 
@@ -42,7 +42,7 @@ endfunction
 " * vector<int>
 " * pair<int, std::basic_string<char, std::char_traits<char>, std::allocator<char> > >
 " * sort<int*>
-function! s:unqualified_name()
+function! s:unqualified_name() abort
   return s:any_of([
     \ '([^()]*)',
     \ '[^()<> ]\+\%(<'.s:template_parameters().'>\)\?',
@@ -50,17 +50,17 @@ function! s:unqualified_name()
 endfunction
 
 " Any number of function parameters, excluding surrounding parentheses
-function! s:function_parameters()
+function! s:function_parameters() abort
   return '[^()]\+'
 endfunction
 
 " Any number of template parameters, excluding surrounding angle brackets.
-function! s:template_parameters()
+function! s:template_parameters() abort
   let s:max_nesting = 3
   return s:nested_surrounded('<', '[^<>]', '>', s:max_nesting)
 endfunction
 
-function! s:nested_surrounded(before, leaf, after, depth)
+function! s:nested_surrounded(before, leaf, after, depth) abort
   let l:pattern = a:leaf
   for l:_ in range(a:depth)
     let l:pattern = s:any_of([a:leaf, a:before.l:pattern.a:after]).'\+'
@@ -68,6 +68,6 @@ function! s:nested_surrounded(before, leaf, after, depth)
   return l:pattern
 endfunction
 
-function! s:any_of(patterns)
+function! s:any_of(patterns) abort
   return '\%('.join(a:patterns, '\|').'\)'
 endfunction

@@ -1,4 +1,4 @@
-function! strager#test#run_all_tests()
+function! strager#test#run_all_tests() abort
   let l:function_lines = split(execute('function /^Test_/'), '\n')
   let l:function_names = map(
     \ l:function_lines,
@@ -12,7 +12,7 @@ function! strager#test#run_all_tests()
   call strager#test#run_tests(l:function_names)
 endfunction
 
-function! strager#test#run_tests(test_function_names)
+function! strager#test#run_tests(test_function_names) abort
   let l:failed_test_function_names = []
   " NOTE(strager): Emulate the output of Google Test's console reporter. This
   " lets us clearly see which test have which errors, for example.

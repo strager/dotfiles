@@ -1,25 +1,25 @@
-function! Test_vnm_escaping_empty_string_is_identity()
+function! Test_vnm_escaping_empty_string_is_identity() abort
   call assert_equal('', strager#pattern#escape_vnm(''))
 endfunction
 
-function! Test_vnm_escaping_alphabet_is_identity()
+function! Test_vnm_escaping_alphabet_is_identity() abort
   call assert_equal('hello', strager#pattern#escape_vnm('hello'))
   call assert_equal('WORLD', strager#pattern#escape_vnm('WORLD'))
 endfunction
 
-function! Test_vnm_escaping_common_special_characters_is_identity()
+function! Test_vnm_escaping_common_special_characters_is_identity() abort
   call assert_equal('bra|nch', strager#pattern#escape_vnm('bra|nch'))
   call assert_equal('(group)', strager#pattern#escape_vnm('(group)'))
   call assert_equal('re+pe*at{42}', strager#pattern#escape_vnm('re+pe*at{42}'))
 endfunction
 
-function! Test_vnm_escaping_string_with_backslashes_escapes_backslash()
+function! Test_vnm_escaping_string_with_backslashes_escapes_backslash() abort
   call assert_equal('one\\two', strager#pattern#escape_vnm('one\two'))
   call assert_equal('one\\\\two', strager#pattern#escape_vnm('one\\two'))
   call assert_equal('\\.\\*\\(\\)', strager#pattern#escape_vnm('\.\*\(\)'))
 endfunction
 
-function! Test_pattern_from_string_matches_simple_input()
+function! Test_pattern_from_string_matches_simple_input() abort
   call assert_equal(0, match('hello', strager#pattern#from_string('hello')))
   call assert_equal(0, match(
     \ 'hello world',
@@ -28,11 +28,11 @@ function! Test_pattern_from_string_matches_simple_input()
   call assert_equal(4, match('why hello', strager#pattern#from_string('hello')))
 endfunction
 
-function! Test_pattern_from_string_matches_case_sensitive()
+function! Test_pattern_from_string_matches_case_sensitive() abort
   call assert_equal(-1, match('hello', strager#pattern#from_string('HELLO')))
 endfunction
 
-function! Test_fuzz_match_pattern_from_string_equals_stridx()
+function! Test_fuzz_match_pattern_from_string_equals_stridx() abort
   let l:rng = strager#random_mt19937#make_generator(5489)
   let l:iteration = 0
   while l:iteration < 500
@@ -59,7 +59,7 @@ function! Test_fuzz_match_pattern_from_string_equals_stridx()
   endwhile
 endfunction
 
-function! s:random_string(rng, min_length, max_length)
+function! s:random_string(rng, min_length, max_length) abort
   let l:length = strager#random_mt19937#next_integer(
       \ a:rng,
       \ a:min_length,

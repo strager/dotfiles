@@ -1,4 +1,4 @@
-function strager#lsp#register_clangd_server()
+function strager#lsp#register_clangd_server() abort
   let l:project_info = strager#project#find_c_project({
     \ 'buffer_path': expand('%'),
     \ 'cwd': getcwd(),

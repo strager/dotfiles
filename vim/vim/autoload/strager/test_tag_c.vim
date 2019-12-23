@@ -5,7 +5,7 @@
 " lspstyle = "serverless_lsp" or "working_lsp"
 " ctagsstyle = "missing_ctags" or "working_ctags"
 
-function! Test_go_function_scenario_serverless_lsp_missing_ctags()
+function! Test_go_function_scenario_serverless_lsp_missing_ctags() abort
   call s:set_up_function_scenario()
   call s:set_up_serverless_lsp()
   call s:set_up_missing_ctags()
@@ -16,7 +16,7 @@ function! Test_go_function_scenario_serverless_lsp_missing_ctags()
   call s:assert_cursor_should_not_have_jumped()
 endfunction
 
-function! Test_go_function_scenario_working_lsp_missing_ctags()
+function! Test_go_function_scenario_working_lsp_missing_ctags() abort
   call s:set_up_function_scenario()
   call s:set_up_working_lsp()
   call s:set_up_missing_ctags()
@@ -25,7 +25,7 @@ function! Test_go_function_scenario_working_lsp_missing_ctags()
   call s:assert_function_scenario_cursor_should_have_jumped()
 endfunction
 
-function! Test_go_function_scenario_serverless_lsp_working_ctags()
+function! Test_go_function_scenario_serverless_lsp_working_ctags() abort
   call s:set_up_function_scenario()
   call s:set_up_serverless_lsp()
   call s:set_up_working_ctags()
@@ -34,7 +34,7 @@ function! Test_go_function_scenario_serverless_lsp_working_ctags()
   call s:assert_function_scenario_cursor_should_have_jumped()
 endfunction
 
-function! Test_go_function_scenario_working_lsp_working_ctags()
+function! Test_go_function_scenario_working_lsp_working_ctags() abort
   call s:set_up_function_scenario()
   call s:set_up_working_lsp()
   call s:set_up_working_ctags()
@@ -43,7 +43,7 @@ function! Test_go_function_scenario_working_lsp_working_ctags()
   call s:assert_function_scenario_cursor_should_have_jumped()
 endfunction
 
-function! Test_go_no_definition_scenario_serverless_lsp_missing_ctags()
+function! Test_go_no_definition_scenario_serverless_lsp_missing_ctags() abort
   call s:set_up_no_definition_scenario()
   call s:set_up_serverless_lsp()
   call s:set_up_missing_ctags()
@@ -53,7 +53,7 @@ function! Test_go_no_definition_scenario_serverless_lsp_missing_ctags()
   call s:assert_cursor_should_not_have_jumped()
 endfunction
 
-function! Test_go_no_definition_scenario_working_lsp_missing_ctags()
+function! Test_go_no_definition_scenario_working_lsp_missing_ctags() abort
   call s:set_up_no_definition_scenario()
   call s:set_up_working_lsp()
   call s:set_up_missing_ctags()
@@ -63,7 +63,7 @@ function! Test_go_no_definition_scenario_working_lsp_missing_ctags()
   call s:assert_cursor_should_not_have_jumped()
 endfunction
 
-function! Test_go_no_definition_scenario_serverless_lsp_working_ctags()
+function! Test_go_no_definition_scenario_serverless_lsp_working_ctags() abort
   call s:set_up_no_definition_scenario()
   call s:set_up_serverless_lsp()
   call s:set_up_working_ctags()
@@ -73,7 +73,7 @@ function! Test_go_no_definition_scenario_serverless_lsp_working_ctags()
   call s:assert_cursor_should_not_have_jumped()
 endfunction
 
-function! Test_go_no_definition_scenario_working_lsp_working_ctags()
+function! Test_go_no_definition_scenario_working_lsp_working_ctags() abort
   call s:set_up_no_definition_scenario()
   call s:set_up_working_lsp()
   call s:set_up_working_ctags()
@@ -88,26 +88,26 @@ let s:c_helper_path = fnamemodify(s:script_path, ':h').'/test_tag_c_helper.c'
 
 let s:old_cursor_position = v:none
 
-function! s:set_up_function_scenario()
+function! s:set_up_function_scenario() abort
   call s:set_up_helper_source()
   " Move the cursor to the 'c' in 'increment(1)'.
   call cursor(8, 12)
   let s:old_cursor_position = getcurpos()
 endfunction
 
-function! s:set_up_no_definition_scenario()
+function! s:set_up_no_definition_scenario() abort
   call s:set_up_helper_source()
   " Move the cursor to the 'r' in 'return'.
   call cursor(8, 3)
   let s:old_cursor_position = getcurpos()
 endfunction
 
-function! s:set_up_helper_source()
+function! s:set_up_helper_source() abort
   new
   exec 'edit '.fnameescape(s:c_helper_path)
 endfunction
 
-function! s:set_up_serverless_lsp()
+function! s:set_up_serverless_lsp() abort
   call lsp#disable()
   " HACK(strager): vim-lsp doesn't let us kill the LSP server. Override the
   " existing LSP server configuration. This has a similar effect to killing the
@@ -130,7 +130,7 @@ function! s:set_up_serverless_lsp()
   endif
 endfunction
 
-function! s:set_up_working_lsp()
+function! s:set_up_working_lsp() abort
   call lsp#disable()
   " HACK(strager): vim-lsp doesn't always trigger lsp_setup. Make sure clangd is
   " configured by our vimrc. For some reason, this needs to be done with vim-lsp
@@ -140,7 +140,7 @@ function! s:set_up_working_lsp()
   call s:wait_for_lsp()
 endfunction
 
-function! s:wait_for_lsp()
+function! s:wait_for_lsp() abort
   let l:timeout_seconds = 5
   let l:start_reltime = reltime()
   while reltimefloat(reltime(l:start_reltime)) < l:timeout_seconds
@@ -155,11 +155,11 @@ function! s:wait_for_lsp()
   throw 'Initializing vim-lsp timed out'
 endfunction
 
-function! s:set_up_missing_ctags()
+function! s:set_up_missing_ctags() abort
   let &tags = ''
 endfunction
 
-function! s:set_up_working_ctags()
+function! s:set_up_working_ctags() abort
   let l:tags_path = fnamemodify(s:script_path, ':h').'/test_tag_c_helper.c.tags'
   exec 'silent !ctags -f '.shellescape(l:tags_path)
     \ .' '.shellescape(s:c_helper_path)
@@ -168,7 +168,7 @@ endfunction
 
 let s:go_error = v:none
 
-function s:go()
+function s:go() abort
   let s:go_error = v:none
   try
     call strager#tag#go()
@@ -177,7 +177,7 @@ function s:go()
   endtry
 endfunction
 
-function s:assert_error(error_pattern)
+function s:assert_error(error_pattern) abort
   if s:go_error ==# v:none
     call assert_report('strager#tag#go() should have thrown an exception')
     return
@@ -185,7 +185,7 @@ function s:assert_error(error_pattern)
   call assert_match(a:error_pattern, s:go_error)
 endfunction
 
-function s:assert_not_error(error_pattern)
+function s:assert_not_error(error_pattern) abort
   if s:go_error ==# v:none
     call assert_report('strager#tag#go() should have thrown an exception')
     return
@@ -193,19 +193,19 @@ function s:assert_not_error(error_pattern)
   call assert_notmatch(a:error_pattern, s:go_error)
 endfunction
 
-function s:assert_no_errors()
+function s:assert_no_errors() abort
   if s:go_error !=# v:none
     call assert_report('strager#tag#go() reported an error: '.s:go_error)
     return
   endif
 endfunction
 
-function! s:assert_cursor_should_not_have_jumped()
+function! s:assert_cursor_should_not_have_jumped() abort
   let l:new_cursor_position = getcurpos()
   call assert_equal(s:old_cursor_position, l:new_cursor_position)
 endfunction
 
-function! s:assert_function_scenario_cursor_should_have_jumped()
+function! s:assert_function_scenario_cursor_should_have_jumped() abort
   let l:new_cursor_position = getcurpos()
   call assert_equal(s:old_cursor_position[0], l:new_cursor_position[0]) " bufnum
   call assert_equal(3, l:new_cursor_position[1]) " lnum

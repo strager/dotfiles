@@ -1,4 +1,4 @@
-function! strager#window#is_quickfix_window_open_in_current_tab()
+function! strager#window#is_quickfix_window_open_in_current_tab() abort
   for l:window_number in range(1, winnr('$'))
     let l:buffer_number = winbufnr(l:window_number)
     if strager#buffer#is_quickfix_buffer(l:buffer_number)
@@ -8,7 +8,7 @@ function! strager#window#is_quickfix_window_open_in_current_tab()
   return v:false
 endfunction
 
-function! strager#window#open_quickfix_window()
+function! strager#window#open_quickfix_window() abort
   let l:window_id = win_getid()
   botright copen
   call win_gotoid(l:window_id)

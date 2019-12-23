@@ -1,4 +1,4 @@
-function! strager#project#find_c_project(options)
+function! strager#project#find_c_project(options) abort
   let l:buffer_path = strager#path#join([a:options.cwd, a:options.buffer_path])
 
   let l:found_files_infos = strager#file#find_file_upward_with_glob(

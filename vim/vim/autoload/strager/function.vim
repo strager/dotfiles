@@ -1,4 +1,4 @@
-function! strager#function#function_source_location(function)
+function! strager#function#function_source_location(function) abort
   let l:function_var_type = type(a:function)
   if l:function_var_type ==# v:t_string
     let l:function_name = a:function
@@ -37,7 +37,7 @@ function! strager#function#function_source_location(function)
   \ }
 endfunction
 
-function! s:basic_function_source_location(real_function_name)
+function! s:basic_function_source_location(real_function_name) abort
   try
     let l:function_output = execute(printf(
       \ 'verbose function {%s}',
@@ -57,7 +57,7 @@ function! s:basic_function_source_location(real_function_name)
   \ }
 endfunction
 
-function! strager#function#parse_ex_function_output(function_output)
+function! strager#function#parse_ex_function_output(function_output) abort
   " Example output from :function <name>:
   "
   "    function AlignLine(line, sep, maxpos, extra)
@@ -89,7 +89,7 @@ function! strager#function#parse_ex_function_output(function_output)
   \ }
 endfunction
 
-function! s:function_source_line(source_function_name, function_script_path)
+function! s:function_source_line(source_function_name, function_script_path) abort
   " FIXME(strager): Is this the correct way to escape?
   " FIXME(strager): Use an escaping function from strager#pattern#.
   let l:pattern = '\mfunction!\? '.escape(a:source_function_name, '').'('
@@ -105,7 +105,7 @@ function! s:function_source_line(source_function_name, function_script_path)
   return l:found_line_number
 endfunction
 
-function! s:source_function_name(real_function_name)
+function! s:source_function_name(real_function_name) abort
   if strager#function#is_lambda_function_name(a:real_function_name)
     return v:none
   endif
@@ -117,13 +117,13 @@ function! s:source_function_name(real_function_name)
   return a:real_function_name
 endfunction
 
-function! s:real_function_name(function_name)
+function! s:real_function_name(function_name) abort
   if a:function_name[:4] ==# '<SNR>'
     return "\x80\xfdR".a:function_name[5:]
   endif
   return a:function_name
 endfunction
 
-function! strager#function#is_lambda_function_name(function_name)
+function! strager#function#is_lambda_function_name(function_name) abort
   return a:function_name =~# '^<lambda>'
 endfunction

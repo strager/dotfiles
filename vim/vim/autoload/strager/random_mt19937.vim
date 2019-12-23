@@ -1,4 +1,4 @@
-function! strager#random_mt19937#make_generator(seed)
+function! strager#random_mt19937#make_generator(seed) abort
   if !has('num64')
     throw 'ES002: mt19937 is not available in this version'
   endif
@@ -17,18 +17,18 @@ function! strager#random_mt19937#make_generator(seed)
   return l:rng
 endfunction
 
-function! strager#random_mt19937#next_int32(rng)
+function! strager#random_mt19937#next_int32(rng) abort
   return s:genrand_int32(a:rng)
 endfunction
 
-function! strager#random_mt19937#next_integer(rng, minimum, maximum_plus_one)
+function! strager#random_mt19937#next_integer(rng, minimum, maximum_plus_one) abort
   " FIXME(strager): This algorithm produces integers with an uneven
   " distribution.
   let l:width = a:maximum_plus_one - a:minimum
   return (strager#random_mt19937#next_int32(a:rng) % l:width) + a:minimum
 endfunction
 
-function! strager#random_mt19937#next_item_in_list(rng, items)
+function! strager#random_mt19937#next_item_in_list(rng, items) abort
   let l:index = strager#random_mt19937#next_integer(a:rng, 0, len(a:items))
   return a:items[l:index]
 endfunction
@@ -86,7 +86,7 @@ let s:upper_mask = 0x80000000
 let s:lower_mask = 0x7fffffff
 let s:mag01 = [0, s:matrix_a]
 
-function! s:init_genrand(rng, s)
+function! s:init_genrand(rng, s) abort
   let l:mt = a:rng._mt
   let l:mt[0] = and(a:s, 0xffffffff)
   let l:mti = 1
@@ -100,7 +100,7 @@ function! s:init_genrand(rng, s)
   let a:rng._mti = l:mti
 endfunction
 
-function! s:init_by_array(rng, init_key)
+function! s:init_by_array(rng, init_key) abort
   let l:key_length = len(a:init_key)
   call s:init_genrand(a:rng, 19650218)
   let l:mt = a:rng._mt
@@ -143,7 +143,7 @@ function! s:init_by_array(rng, init_key)
   let l:mt[0] = 0x80000000
 endfunction
 
-function! s:genrand_int32(rng)
+function! s:genrand_int32(rng) abort
   let l:mt = a:rng._mt
   let l:mti = a:rng._mti
   if l:mti >= s:n

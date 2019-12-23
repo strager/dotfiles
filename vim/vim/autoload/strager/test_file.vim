@@ -1,17 +1,17 @@
-function Test_test_dir_files_are_empty()
+function Test_test_dir_files_are_empty() abort
   let l:dir = strager#file#make_directory_with_files(['file.txt'])
   let l:file_lines = readfile(strager#path#join([l:dir, 'file.txt']), 'b')
   call assert_equal([''], l:file_lines)
 endfunction
 
-function Test_test_dir_files_are_not_opened()
+function Test_test_dir_files_are_not_opened() abort
   let l:all_buffers_before = getbufinfo()
   let l:dir = strager#file#make_directory_with_files(['file.txt', 'dir/'])
   let l:all_buffers_after = getbufinfo()
   call assert_equal(l:all_buffers_before, l:all_buffers_after)
 endfunction
 
-function Test_test_dir_files_have_content()
+function Test_test_dir_files_have_content() abort
   let l:dir = strager#file#make_directory_with_files([
     \ ['file1.txt', "hello world\n"],
     \ ['file2.txt', "  x\ny  \r\nz"],
@@ -28,7 +28,7 @@ function Test_test_dir_files_have_content()
   call assert_equal([''], l:file3_lines)
 endfunction
 
-function! Test_file_exists_case_sensitive()
+function! Test_file_exists_case_sensitive() abort
   let l:Exists = {path -> strager#file#file_exists_case_sensitive(path)}
 
   call assert_true(l:Exists('/'))
@@ -78,7 +78,7 @@ function! Test_file_exists_case_sensitive()
   call assert_true(l:Exists(l:dir.'/SubDirectory/file.c'))
 endfunction
 
-function! Test_find_file_upward_with_glob()
+function! Test_find_file_upward_with_glob() abort
   let l:Find = {path, glob ->
     \ strager#file#find_file_upward_with_glob(path, glob)}
 
@@ -186,45 +186,45 @@ function! Test_find_file_upward_with_glob()
   \ }], l:Find(l:root_path.'/src/test', 'Makefile'))
 endfunction
 
-function! Test_list_empty_directory()
+function! Test_list_empty_directory() abort
   let l:path = strager#file#make_directory_with_files([])
   call assert_equal(['.', '..'], s:list(l:path))
 endfunction
 
-function! Test_listing_directory_includes_regular_files()
+function! Test_listing_directory_includes_regular_files() abort
   let l:path = strager#file#make_directory_with_files(['file'])
   call assert_equal(['.', '..', 'file'], s:list(l:path))
 endfunction
 
-function! Test_listing_directory_includes_subdirectories()
+function! Test_listing_directory_includes_subdirectories() abort
   let l:path = strager#file#make_directory_with_files(['dir/'])
   call assert_equal(['.', '..', 'dir'], s:list(l:path))
 endfunction
 
-function! Test_listing_directory_includes_symlinks_to_directories()
+function! Test_listing_directory_includes_symlinks_to_directories() abort
   let l:path = strager#file#make_directory_with_files(['dir'])
   call strager#file#create_symbolic_link('dir', strager#path#join([l:path, 'symlink_to_dir']))
   call assert_equal(['.', '..', 'dir', 'symlink_to_dir'], s:list(l:path))
 endfunction
 
-function! Test_listing_directory_includes_symlinks_to_regular_files()
+function! Test_listing_directory_includes_symlinks_to_regular_files() abort
   let l:path = strager#file#make_directory_with_files(['file'])
   call strager#file#create_symbolic_link('file', strager#path#join([l:path, 'symlink_to_file']))
   call assert_equal(['.', '..', 'file', 'symlink_to_file'], s:list(l:path))
 endfunction
 
-function! Test_listing_directory_includes_symlinks_to_non_existing_paths()
+function! Test_listing_directory_includes_symlinks_to_non_existing_paths() abort
   let l:path = strager#file#make_directory_with_files([])
   call strager#file#create_symbolic_link('does_not_exist', strager#path#join([l:path, 'broken_symlink']))
   call assert_equal(['.', '..', 'broken_symlink'], s:list(l:path))
 endfunction
 
-function! Test_listing_directory_includes_dot_files()
+function! Test_listing_directory_includes_dot_files() abort
   let l:path = strager#file#make_directory_with_files(['.vimrc', '.vim/'])
   call assert_equal(['.', '..', '.vim', '.vimrc'], s:list(l:path))
 endfunction
 
-function! Test_listing_directory_with_name_containing_special_characters_lists_files()
+function! Test_listing_directory_with_name_containing_special_characters_lists_files() abort
   " Check special characters: comma, space, \.
   let l:path = strager#file#make_directory_with_files(['stuff, things, and junk/closet.jpeg'])
   call assert_equal(['.', '..', 'closet.jpeg'], s:list(l:path.'/stuff, things, and junk'))
@@ -232,7 +232,7 @@ function! Test_listing_directory_with_name_containing_special_characters_lists_f
   call assert_equal(['.', '..', 'file.txt'], s:list(l:path.'/trailing-slash\'))
 endfunction
 
-function! Test_listing_non_existing_path_fails()
+function! Test_listing_non_existing_path_fails() abort
   let l:path = strager#file#make_directory_with_files([])
   call strager#assert#assert_throws(
     \ {-> s:list(l:path.'/dir-does-not-exist')},
@@ -240,7 +240,7 @@ function! Test_listing_non_existing_path_fails()
   \ )
 endfunction
 
-function! Test_list_regular_file_as_directory_fails()
+function! Test_list_regular_file_as_directory_fails() abort
   let l:path = strager#file#make_directory_with_files(['file.zip'])
   call strager#assert#assert_throws(
     \ {-> s:list(l:path.'/file.zip')},
@@ -248,13 +248,13 @@ function! Test_list_regular_file_as_directory_fails()
   \ )
 endfunction
 
-function! Test_listing_filesystem_root_includes_dot_and_dotdot()
+function! Test_listing_filesystem_root_includes_dot_and_dotdot() abort
   let l:names = strager#file#list_directory('/')
   call assert_notequal(-1, index(l:names, '.'))
   call assert_notequal(-1, index(l:names, '..'))
 endfunction
 
-function! Test_listing_filesystem_root_includes_existing_files()
+function! Test_listing_filesystem_root_includes_existing_files() abort
   let l:names = strager#file#list_directory('/')
   for l:name in l:names
     " TODO(strager): Escape wildcards.
@@ -263,17 +263,17 @@ function! Test_listing_filesystem_root_includes_existing_files()
   endfor
 endfunction
 
-function! s:list(path)
+function! s:list(path) abort
   return sort(strager#file#list_directory(a:path))
 endfunction
 
-function Test_regular_files_are_same_with_same_absolute_path()
+function Test_regular_files_are_same_with_same_absolute_path() abort
   let l:dir_path = strager#file#make_directory_with_files(['file.txt'])
   let l:file_path = strager#path#join([l:dir_path, 'file.txt'])
   call assert_true(s:are_files_same_by_path(l:file_path, l:file_path))
 endfunction
 
-function Test_regular_files_are_same_with_relative_path()
+function Test_regular_files_are_same_with_relative_path() abort
   let l:dir_path = strager#file#make_directory_with_files(['file.txt'])
   exec 'cd '.fnameescape(l:dir_path)
   call assert_true(s:are_files_same_by_path('file.txt', 'file.txt'))
@@ -282,7 +282,7 @@ function Test_regular_files_are_same_with_relative_path()
   call assert_true(s:are_files_same_by_path('./file.txt', './file.txt'))
 endfunction
 
-function Test_regular_files_are_same_with_mixed_absolute_relative_path()
+function Test_regular_files_are_same_with_mixed_absolute_relative_path() abort
   let l:dir_path = strager#file#make_directory_with_files(['file.txt'])
   let l:file_path = strager#path#join([l:dir_path, 'file.txt'])
   exec 'cd '.fnameescape(l:dir_path)
@@ -290,7 +290,7 @@ function Test_regular_files_are_same_with_mixed_absolute_relative_path()
   call assert_true(s:are_files_same_by_path(l:file_path, 'file.txt'))
 endfunction
 
-function Test_regular_files_in_directory_symlinks_are_same()
+function Test_regular_files_in_directory_symlinks_are_same() abort
   let l:dir_path = strager#file#make_directory_with_files(['dir_a/file.txt'])
   let l:dir_a_file_path = strager#path#join([l:dir_path, 'dir_a', 'file.txt'])
   let l:dir_b_path = strager#path#join([l:dir_path, 'dir_b'])
@@ -306,7 +306,7 @@ function Test_regular_files_in_directory_symlinks_are_same()
   \ ))
 endfunction
 
-function Test_regular_files_are_different()
+function Test_regular_files_are_different() abort
   let l:dir_path = strager#file#make_directory_with_files(['a.txt', 'b.txt'])
   let l:a_path = strager#path#join([l:dir_path, 'a.txt'])
   let l:b_path = strager#path#join([l:dir_path, 'b.txt'])
@@ -314,12 +314,12 @@ function Test_regular_files_are_different()
   call assert_false(s:are_files_same_by_path(l:b_path, l:a_path))
 endfunction
 
-function Test_directories_are_same_with_same_absolute_path()
+function Test_directories_are_same_with_same_absolute_path() abort
   let l:dir_path = strager#file#make_directory_with_files([])
   call assert_true(s:are_files_same_by_path(l:dir_path, l:dir_path))
 endfunction
 
-function Test_directories_are_same_with_absolute_path_and_trailing_slashes()
+function Test_directories_are_same_with_absolute_path_and_trailing_slashes() abort
   let l:dir_path = strager#file#make_directory_with_files([])
   call assert_true(s:are_files_same_by_path(l:dir_path, l:dir_path.'/'))
   call assert_true(s:are_files_same_by_path(l:dir_path.'/', l:dir_path))
@@ -327,7 +327,7 @@ function Test_directories_are_same_with_absolute_path_and_trailing_slashes()
   call assert_true(s:are_files_same_by_path(l:dir_path, l:dir_path.'////'))
 endfunction
 
-function Test_files_are_not_same_if_either_path_is_missing()
+function Test_files_are_not_same_if_either_path_is_missing() abort
   let l:dir_path = strager#file#make_directory_with_files(['file.txt'])
   let l:file_path = strager#path#join([l:dir_path, 'file.txt'])
   call assert_false(s:are_files_same_by_path(l:file_path, l:file_path.'xxx'))
@@ -338,21 +338,21 @@ function Test_files_are_not_same_if_either_path_is_missing()
   \ ))
 endfunction
 
-function Test_broken_symlinks_are_same()
+function Test_broken_symlinks_are_same() abort
   let l:dir_path = strager#file#make_directory_with_files([])
   let l:symlink_path = strager#path#join([l:dir_path, 'symlink.txt'])
   call strager#file#create_symbolic_link('file.txt', l:symlink_path)
   call assert_true(s:are_files_same_by_path(l:symlink_path, l:symlink_path))
 endfunction
 
-function Test_symlinks_are_same()
+function Test_symlinks_are_same() abort
   let l:dir_path = strager#file#make_directory_with_files(['file.txt'])
   let l:symlink_path = strager#path#join([l:dir_path, 'symlink.txt'])
   call strager#file#create_symbolic_link('file.txt', l:symlink_path)
   call assert_true(s:are_files_same_by_path(l:symlink_path, l:symlink_path))
 endfunction
 
-function Test_broken_symlink_and_target_are_different()
+function Test_broken_symlink_and_target_are_different() abort
   let l:dir_path = strager#file#make_directory_with_files([])
   let l:target_path = strager#path#join([l:dir_path, 'target.txt'])
   let l:symlink_path = strager#path#join([l:dir_path, 'symlink.txt'])
@@ -361,7 +361,7 @@ function Test_broken_symlink_and_target_are_different()
   call assert_false(s:are_files_same_by_path(l:target_path, l:symlink_path))
 endfunction
 
-function Test_symlink_and_relative_target_are_different()
+function Test_symlink_and_relative_target_are_different() abort
   let l:dir_path = strager#file#make_directory_with_files(['target.txt'])
   let l:target_path = strager#path#join([l:dir_path, 'target.txt'])
   let l:symlink_path = strager#path#join([l:dir_path, 'symlink.txt'])
@@ -370,7 +370,7 @@ function Test_symlink_and_relative_target_are_different()
   call assert_false(s:are_files_same_by_path(l:target_path, l:symlink_path))
 endfunction
 
-function Test_hard_links_are_different()
+function Test_hard_links_are_different() abort
   let l:dir_path = strager#file#make_directory_with_files(['a.txt'])
   let l:a_path = strager#path#join([l:dir_path, 'a.txt'])
   let l:b_path = strager#path#join([l:dir_path, 'b.txt'])
@@ -379,7 +379,7 @@ function Test_hard_links_are_different()
   call assert_false(s:are_files_same_by_path(l:b_path, l:a_path))
 endfunction
 
-function Test_mkdirp_creates_single_empty_directory()
+function Test_mkdirp_creates_single_empty_directory() abort
   let l:temp_dir_path = strager#file#make_directory_with_files([])
   let l:new_dir_path = strager#path#join([l:temp_dir_path, 'hello'])
   call s:mkdirp(l:new_dir_path)
@@ -387,7 +387,7 @@ function Test_mkdirp_creates_single_empty_directory()
   call assert_equal(['.', '..'], strager#file#list_directory(l:new_dir_path))
 endfunction
 
-function Test_mkdirp_creates_nested_directories()
+function Test_mkdirp_creates_nested_directories() abort
   let l:temp_dir_path = strager#file#make_directory_with_files([])
   call s:mkdirp(strager#path#join([l:temp_dir_path, 'hello', 'world', 'leaf']))
   call assert_true(isdirectory(strager#path#join([l:temp_dir_path, 'hello'])))
@@ -395,7 +395,7 @@ function Test_mkdirp_creates_nested_directories()
   call assert_true(isdirectory(strager#path#join([l:temp_dir_path, 'hello', 'world', 'leaf'])))
 endfunction
 
-function Test_mkdirp_succeeds_if_directory_exists()
+function Test_mkdirp_succeeds_if_directory_exists() abort
   let l:temp_dir_path = strager#file#make_directory_with_files(['hello/'])
   let l:new_dir_path = strager#path#join([l:temp_dir_path, 'hello'])
   call assert_true(isdirectory(l:new_dir_path))
@@ -403,11 +403,11 @@ function Test_mkdirp_succeeds_if_directory_exists()
   call assert_true(isdirectory(l:new_dir_path))
 endfunction
 
-function s:mkdirp(path)
+function s:mkdirp(path) abort
   call strager#file#mkdirp(a:path)
 endfunction
 
-function s:are_files_same_by_path(file_a_path, file_b_path)
+function s:are_files_same_by_path(file_a_path, file_b_path) abort
   return strager#file#are_files_same_by_path(a:file_a_path, a:file_b_path)
 endfunction
 

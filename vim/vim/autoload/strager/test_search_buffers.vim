@@ -1,4 +1,4 @@
-function! Test_buffer_list_contains_file_buffers()
+function! Test_buffer_list_contains_file_buffers() abort
   %bwipeout!
   edit one.txt
   let l:one_buffer_number = bufnr('%')
@@ -23,7 +23,7 @@ function! Test_buffer_list_contains_file_buffers()
   \ )
 endfunction
 
-function! Test_buffer_list_contains_directory_buffers()
+function! Test_buffer_list_contains_directory_buffers() abort
   %bwipeout!
   let l:test_directory = strager#file#make_directory_with_files([
     \ 'dir_a/hello.txt',
@@ -47,7 +47,7 @@ function! Test_buffer_list_contains_directory_buffers()
   \ )
 endfunction
 
-function! Test_buffer_list_contains_cousins_directory_buffers_of_cwd()
+function! Test_buffer_list_contains_cousins_directory_buffers_of_cwd() abort
   %bwipeout!
   let l:test_directory = strager#file#make_directory_with_files([
     \ 'cwd_directory/hello.txt',
@@ -76,7 +76,7 @@ function! Test_buffer_list_contains_cousins_directory_buffers_of_cwd()
   \ )
 endfunction
 
-function! Test_buffer_list_does_not_contain_cwd_directory_buffer()
+function! Test_buffer_list_does_not_contain_cwd_directory_buffer() abort
   %bwipeout!
   let l:test_directory = strager#file#make_directory_with_files([])
   execute printf('cd %s', fnameescape(l:test_directory))
@@ -87,7 +87,7 @@ function! Test_buffer_list_does_not_contain_cwd_directory_buffer()
   call assert_equal([], l:buffers)
 endfunction
 
-function! Test_buffer_list_does_not_contain_current_buffer()
+function! Test_buffer_list_does_not_contain_current_buffer() abort
   %bwipeout!
   edit one.txt
   split two.txt
@@ -100,7 +100,7 @@ function! Test_buffer_list_does_not_contain_current_buffer()
   endfor
 endfunction
 
-function! Test_buffer_list_does_not_contain_unnamed_buffers()
+function! Test_buffer_list_does_not_contain_unnamed_buffers() abort
   %bwipeout!
   new
   new
@@ -109,7 +109,7 @@ function! Test_buffer_list_does_not_contain_unnamed_buffers()
   call assert_equal([], l:buffers)
 endfunction
 
-function! Test_buffer_list_does_not_contain_help_buffers()
+function! Test_buffer_list_does_not_contain_help_buffers() abort
   %bwipeout!
   let l:blank_buffer_number = bufnr('%')
   help windows.txt
@@ -120,7 +120,7 @@ function! Test_buffer_list_does_not_contain_help_buffers()
   call assert_equal([], l:buffers)
 endfunction
 
-function! Test_buffer_list_does_not_contain_quickfix_windows()
+function! Test_buffer_list_does_not_contain_quickfix_windows() abort
   %bwipeout!
   let l:blank_buffer_number = bufnr('%')
   copen
@@ -132,7 +132,7 @@ function! Test_buffer_list_does_not_contain_quickfix_windows()
   call assert_equal([], l:buffers)
 endfunction
 
-function! Test_buffer_list_does_not_contain_terminal_buffers()
+function! Test_buffer_list_does_not_contain_terminal_buffers() abort
   %bwipeout!
   let l:blank_buffer_number = bufnr('%')
   term
@@ -144,7 +144,7 @@ function! Test_buffer_list_does_not_contain_terminal_buffers()
   call assert_equal([], l:buffers)
 endfunction
 
-function! Test_buffer_list_does_not_contain_unlisted_file_buffers()
+function! Test_buffer_list_does_not_contain_unlisted_file_buffers() abort
   %bwipeout!
   edit unlisted.txt
   let l:unlisted_buffer_number = bufnr('%')
@@ -164,7 +164,7 @@ function! Test_buffer_list_does_not_contain_unlisted_file_buffers()
   call assert_equal([], l:buffers)
 endfunction
 
-function! Test_fzf_header_contains_name_of_current_buffer_file()
+function! Test_fzf_header_contains_name_of_current_buffer_file() abort
   %bwipeout!
   edit hello.txt
 
@@ -172,7 +172,7 @@ function! Test_fzf_header_contains_name_of_current_buffer_file()
   call assert_equal(['hello.txt'], strager#fzf#header_lines(l:run_options))
 endfunction
 
-function! Test_fzf_header_contains_name_of_current_directory_file()
+function! Test_fzf_header_contains_name_of_current_directory_file() abort
   %bwipeout!
   let l:test_directory = strager#file#make_directory_with_files([
     \ 'subdirectory/'
@@ -184,7 +184,7 @@ function! Test_fzf_header_contains_name_of_current_directory_file()
   call assert_equal(['subdirectory/'], strager#fzf#header_lines(l:run_options))
 endfunction
 
-function! Test_fzf_header_contains_noname_if_current_buffer_is_unnamed()
+function! Test_fzf_header_contains_noname_if_current_buffer_is_unnamed() abort
   %bwipeout!
   normal ihello
 
@@ -192,7 +192,7 @@ function! Test_fzf_header_contains_noname_if_current_buffer_is_unnamed()
   call assert_equal(['[No Name]'], strager#fzf#header_lines(l:run_options))
 endfunction
 
-function! Test_fzf_header_contains_help_name_if_current_buffer_is_help()
+function! Test_fzf_header_contains_help_name_if_current_buffer_is_help() abort
   %bwipeout!
   help undo.txt
 
@@ -203,7 +203,7 @@ function! Test_fzf_header_contains_help_name_if_current_buffer_is_help()
   \ )
 endfunction
 
-function! Test_fzf_shows_newest_buffers_first()
+function! Test_fzf_shows_newest_buffers_first() abort
   %bwipeout!
   edit a.txt
   split b.txt
@@ -217,7 +217,7 @@ function! Test_fzf_shows_newest_buffers_first()
   \ )
 endfunction
 
-function! Test_fzf_shows_files_before_directories()
+function! Test_fzf_shows_files_before_directories() abort
   %bwipeout!
   let l:test_directory = strager#file#make_directory_with_files([
     \ 'dir_a/',
@@ -239,7 +239,7 @@ function! Test_fzf_shows_files_before_directories()
   \ )
 endfunction
 
-function! Test_fzf_shows_buffer_names_with_spaces()
+function! Test_fzf_shows_buffer_names_with_spaces() abort
   %bwipeout!
   edit hello world  .txt
   new
@@ -251,7 +251,7 @@ function! Test_fzf_shows_buffer_names_with_spaces()
   \ )
 endfunction
 
-function! Test_cancelling_fzf_does_not_change_current_window()
+function! Test_cancelling_fzf_does_not_change_current_window() abort
   %bwipeout!
   edit a.txt
   edit b.txt
@@ -268,7 +268,7 @@ function! Test_cancelling_fzf_does_not_change_current_window()
   \ )
 endfunction
 
-function! Test_selecting_file_in_fzf_changes_current_window()
+function! Test_selecting_file_in_fzf_changes_current_window() abort
   %bwipeout!
   edit a.txt
   let l:a_buffer_number = bufnr('%')
@@ -294,7 +294,7 @@ function! Test_selecting_file_in_fzf_changes_current_window()
   \ )
 endfunction
 
-function! Test_selecting_directory_in_fzf_changes_current_window()
+function! Test_selecting_directory_in_fzf_changes_current_window() abort
   %bwipeout!
   let l:test_directory = strager#file#make_directory_with_files(['dir/'])
   execute printf('cd %s', fnameescape(l:test_directory))
@@ -321,7 +321,7 @@ function! Test_selecting_directory_in_fzf_changes_current_window()
   \ )
 endfunction
 
-function! Test_selecting_buffer_with_possibly_ambiguous_name_opens_exact_match()
+function! Test_selecting_buffer_with_possibly_ambiguous_name_opens_exact_match() abort
   %bwipeout!
   let l:test_directory = strager#file#make_directory_with_files([
     \ 'file',
@@ -361,7 +361,7 @@ function! Test_selecting_buffer_with_possibly_ambiguous_name_opens_exact_match()
   \ )
 endfunction
 
-function! Test_selecting_directory_buffer_if_children_are_also_available_opens_directory()
+function! Test_selecting_directory_buffer_if_children_are_also_available_opens_directory() abort
   %bwipeout!
   let l:test_directory = strager#file#make_directory_with_files([
     \ 'subdirectory/file_a.txt',
@@ -400,7 +400,7 @@ function! Test_selecting_directory_buffer_if_children_are_also_available_opens_d
   \ )
 endfunction
 
-function! Test_selecting_unlisted_directory_in_fzf_reloads_directory()
+function! Test_selecting_unlisted_directory_in_fzf_reloads_directory() abort
   %bwipeout!
   let l:test_directory = strager#file#make_directory_with_files([
     \ 'dir/file_a.txt',
@@ -420,11 +420,11 @@ function! Test_selecting_unlisted_directory_in_fzf_reloads_directory()
   \ )
 endfunction
 
-function! s:fzf_run_options()
+function! s:fzf_run_options() abort
   return strager#search_buffers#get_fzf_run_options_for_searching_buffers()
 endfunction
 
-function! s:match_fzf_lines(fzf_run_options, pattern)
+function! s:match_fzf_lines(fzf_run_options, pattern) abort
   let l:presented_lines = strager#fzf#presented_lines(a:fzf_run_options)
   let l:input_lines = strager#fzf#input_lines(a:fzf_run_options)
   call filter(
@@ -434,7 +434,7 @@ function! s:match_fzf_lines(fzf_run_options, pattern)
   return l:input_lines
 endfunction
 
-function! s:match_fzf_line(fzf_run_options, pattern)
+function! s:match_fzf_line(fzf_run_options, pattern) abort
   let l:lines = s:match_fzf_lines(a:fzf_run_options, a:pattern)
   if len(l:lines) != 1
     if l:lines ==# []

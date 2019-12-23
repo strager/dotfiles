@@ -1,31 +1,31 @@
-function! Test_conceal_symbols_not_needing_conceal()
+function! Test_conceal_symbols_not_needing_conceal() abort
   call assert_equal([], s:conceal('my_variable'))
   call assert_equal([], s:conceal('my_function()'))
   call assert_equal([], s:conceal('my_function_template<>()'))
 endfunction
 
-function! Test_conceal_drops_function_parameter_types()
+function! Test_conceal_drops_function_parameter_types() abort
   call assert_equal(['int'], s:conceal('my_function(int)'))
   call assert_equal(['int, char'], s:conceal('my_function(int, char)'))
 endfunction
 
-function! Test_conceal_drops_function_parameters_with_namespaced_types()
+function! Test_conceal_drops_function_parameters_with_namespaced_types() abort
   call assert_equal(
     \ ['std::__exception_ptr::exception_ptr'],
     \ s:conceal('rethrow_exception(std::__exception_ptr::exception_ptr)'),
   \ )
 endfunction
 
-function! Test_conceal_drops_function_return_type()
+function! Test_conceal_drops_function_return_type() abort
   call assert_equal(['void '], s:conceal('void function_template<>()'))
 endfunction
 
-function! Test_conceal_drops_namespaces()
+function! Test_conceal_drops_namespaces() abort
   call assert_equal(['std'], s:conceal('std::terminate'))
   call assert_equal(['std::filesystem'], s:conceal('std::filesystem::is_fifo'))
 endfunction
 
-function! Test_conceal_drops_anonymous_namespaces()
+function! Test_conceal_drops_anonymous_namespaces() abort
   call assert_equal(
     \ ['(anonymous namespace)'],
     \ s:conceal('(anonymous namespace)::g_singleton'),
@@ -36,14 +36,14 @@ function! Test_conceal_drops_anonymous_namespaces()
   \ )
 endfunction
 
-function! Test_conceal_drops_function_return_type_and_namespace()
+function! Test_conceal_drops_function_return_type_and_namespace() abort
   call assert_equal(
     \ ['void ns::detail'],
     \ s:conceal('void ns::detail::function_template<>()'),
   \ )
 endfunction
 
-function! Test_conceal_drops_function_template_arguments()
+function! Test_conceal_drops_function_template_arguments() abort
   call assert_equal(['int'], s:conceal('my_function_template<int>()'))
   call assert_equal(
     \ ['int, my_struct_template<unsigned long> '],
@@ -51,7 +51,7 @@ function! Test_conceal_drops_function_template_arguments()
   \ )
 endfunction
 
-function! Test_conceal_drops_function_template_parameters_with_namespaced_types()
+function! Test_conceal_drops_function_template_parameters_with_namespaced_types() abort
   call assert_equal(
     \ ['std::type_info'],
     \ s:conceal('my_function_template<std::type_info>()'),
@@ -70,7 +70,7 @@ function! Test_conceal_drops_function_template_parameters_with_namespaced_types(
   \ )
 endfunction
 
-function! Test_conceal_drops_function_template_class_template_return_type()
+function! Test_conceal_drops_function_template_class_template_return_type() abort
   call assert_equal(
     \ ['pair<int, char> ', 'int, char'],
     \ s:conceal('pair<int, char> make_pair<int, char>()'),
@@ -89,7 +89,7 @@ function! Test_conceal_drops_function_template_class_template_return_type()
   \ )
 endfunction
 
-function! Test_conceal_drops_class_template_parameters()
+function! Test_conceal_drops_class_template_parameters() abort
   call assert_equal(['int'], s:conceal('my_class_template<int>'))
   call assert_equal(
     \ ['std::pair<char, int> '],
@@ -97,7 +97,7 @@ function! Test_conceal_drops_class_template_parameters()
   \ )
 endfunction
 
-function! Test_conceal_with_extraneous_trailing_gt_drops_class_template_parameters()
+function! Test_conceal_with_extraneous_trailing_gt_drops_class_template_parameters() abort
   call assert_equal(['int'], s:conceal('my_class_template<int>'))
   call assert_equal(
     \ ['std::pair<char, int> '],
@@ -105,7 +105,7 @@ function! Test_conceal_with_extraneous_trailing_gt_drops_class_template_paramete
   \ )
 endfunction
 
-function! Test_conceal_drops_class_with_template_parameters()
+function! Test_conceal_drops_class_with_template_parameters() abort
   call assert_equal(
     \ ['my_class_template<int>'],
     \ s:conceal('my_class_template<int>::f()'),
@@ -117,7 +117,7 @@ function! Test_conceal_drops_class_with_template_parameters()
   call assert_equal(['a<b<c<d> > >'], s:conceal('a<b<c<d> > >::f()'))
 endfunction
 
-function! Test_conceal_preserves_vtable_prefix()
+function! Test_conceal_preserves_vtable_prefix() abort
   call assert_equal([], s:conceal('vtable for ConsoleReporter'))
   call assert_equal(
     \ ['benchmark'],
@@ -129,7 +129,7 @@ function! Test_conceal_preserves_vtable_prefix()
   \ )
 endfunction
 
-function! s:conceal(demangled_symbol)
+function! s:conceal(demangled_symbol) abort
   let l:pattern = strager#cxx_symbol#get_conceal_pattern()
   let l:matches = []
   let l:cur_index = 0

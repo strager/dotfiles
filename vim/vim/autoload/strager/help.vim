@@ -18,7 +18,7 @@ function! strager#help#open_help_tag(tag) abort
   endtry
 endfunction
 
-function! strager#help#register_command(options)
+function! strager#help#register_command(options) abort
   let l:bang = ''
   if a:options['force']
     let l:bang = '!'

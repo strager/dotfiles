@@ -7,7 +7,7 @@
 " * https://www.vim.org/scripts/script.php?script_id=1928 :Rename
 " * https://www.vim.org/scripts/script.php?script_id=2724 :Rename
 
-function strager#move_file#move_current_buffer_file(new_path)
+function strager#move_file#move_current_buffer_file(new_path) abort
   if a:new_path ==# ''
     throw "E484: Can't open file <empty>"
   endif
@@ -65,7 +65,7 @@ function strager#move_file#move_current_buffer_file(new_path)
   call delete(l:old_path)
 endfunction
 
-function s:save_current_buffer_saved_changes_as(new_path)
+function s:save_current_buffer_saved_changes_as(new_path) abort
   let l:had_unsaved_changes = s:current_buffer_has_unsaved_changes()
   if l:had_unsaved_changes
     silent earlier 1f
@@ -90,7 +90,7 @@ function s:save_current_buffer_saved_changes_as(new_path)
   endtry
 endfunction
 
-function s:throw_cannot_open_file_for_writing_error(path)
+function s:throw_cannot_open_file_for_writing_error(path) abort
   for l:path in strager#path#paths_upward(a:path)
     if l:path != a:path
       let l:type = getftype(l:path)
@@ -102,12 +102,12 @@ function s:throw_cannot_open_file_for_writing_error(path)
   throw strager#exception#get_vim_error()
 endfunction
 
-function s:current_buffer_has_unsaved_changes()
+function s:current_buffer_has_unsaved_changes() abort
   " FIXME(strager): Reading 'modified is unreliable. Use undotree() instead.
   return getbufvar('%', '&modified')
 endfunction
 
-function strager#move_file#register_command(options)
+function strager#move_file#register_command(options) abort
   let l:bang = ''
   if a:options['force']
     let l:bang = '!'

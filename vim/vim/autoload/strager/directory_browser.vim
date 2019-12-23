@@ -1,4 +1,4 @@
-function! strager#directory_browser#refresh_open_browsers()
+function! strager#directory_browser#refresh_open_browsers() abort
   let l:old_window_id = win_getid()
   try
     for l:buffer in getbufinfo({'bufloaded': v:true})
@@ -14,7 +14,7 @@ function! strager#directory_browser#refresh_open_browsers()
   endtry
 endfunction
 
-function! s:refresh_open_browser(buffer_number)
+function! s:refresh_open_browser(buffer_number) abort
   " TODO(strager): Only create a temporary tab once per call to
   " strager#directory_browser#refresh_open_browsers.
   tabnew
@@ -27,14 +27,14 @@ function! s:refresh_open_browser(buffer_number)
   endtry
 endfunction
 
-function! strager#directory_browser#prompt_delete_file_under_cursor()
+function! strager#directory_browser#prompt_delete_file_under_cursor() abort
   let l:line = getline('.')
   " FIXME(strager): Handle when l:line is empty (e.g. if the browsed directory
   " is empty).
   call strager#directory_browser#prompt_delete_file(l:line)
 endfunction
 
-function! strager#directory_browser#prompt_delete_file(path)
+function! strager#directory_browser#prompt_delete_file(path) abort
   let l:response = input(printf('Delete %s? [yN] ', a:path))
   if l:response ==# 'y'
     call delete(a:path)
@@ -42,19 +42,19 @@ function! strager#directory_browser#prompt_delete_file(path)
   endif
 endfunction
 
-function strager#directory_browser#register_commands()
+function strager#directory_browser#register_commands() abort
   command -complete=dir -nargs=1 BrowserMkdir
     \ call <SID>browser_mkdir_command(<q-args>)
 endfunction
 
-function! s:browser_mkdir_command(path)
+function! s:browser_mkdir_command(path) abort
   call strager#file#mkdirp(a:path)
   call strager#directory_browser#refresh_open_browsers()
   " TODO(strager): Move the cursor only if the current buffer is a browser.
   call s:move_cursor_to_entry_if_possible(a:path)
 endfunction
 
-function! s:move_cursor_to_entry_if_possible(path)
+function! s:move_cursor_to_entry_if_possible(path) abort
   let l:absolute_path = resolve(a:path)
   let l:browser_path = resolve(bufname('%'))
   try

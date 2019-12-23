@@ -1,17 +1,17 @@
 " Example value of v:throwpoint:
 " 'function strager#test#run_all_tests[12]..strager#test#run_tests[10]..Test_throwpoint_location, line 3'
 
-function strager#exception#get_vim_error()
+function strager#exception#get_vim_error() abort
   return matchstr(v:exception, 'E.*$')
 endfunction
 
-function! strager#exception#format_throwpoint(throwpoint)
+function! strager#exception#format_throwpoint(throwpoint) abort
   let l:frames = strager#exception#parse_throwpoint(a:throwpoint)
   let l:lines = map(l:frames, {_, frame -> s:format_frame(frame)})
   return join(l:lines, "\n")
 endfunction
 
-function! s:format_frame(frame)
+function! s:format_frame(frame) abort
   if a:frame.script_path !=# v:none
     let l:output = a:frame.script_path.':'.a:frame.line.':'
   elseif type(a:frame.autocommand) !=# v:t_none
@@ -33,7 +33,7 @@ function! s:format_frame(frame)
   return l:output
 endfunction
 
-function! strager#exception#parse_throwpoint(throwpoint)
+function! strager#exception#parse_throwpoint(throwpoint) abort
   let l:match = matchlist(
     \ a:throwpoint,
     \ '^\%(function \(.*\)\|\(.\+\)\), line \([0-9]\+\)$',
@@ -63,7 +63,7 @@ function! strager#exception#parse_throwpoint(throwpoint)
   endif
 endfunction
 
-function! s:parse_autocommand_throwpoint(throwpoint)
+function! s:parse_autocommand_throwpoint(throwpoint) abort
   let l:match = matchlist(
     \ a:throwpoint,
     \ '^\([A-Za-z]\+\) Autocommands for "\(.*\)"$'
@@ -82,7 +82,7 @@ endfunction
 
 " Example value of a:frame_string:
 " 'strager#test#run_all_tests[12]'
-function! s:parse_calling_frame(frame_string)
+function! s:parse_calling_frame(frame_string) abort
   let l:match = matchlist(a:frame_string, '^\(.*\)\[\(\d\+\)\]$')
   if empty(l:match)
     throw 'Not a valid throwpoint frame: '.string(a:frame_string)
@@ -91,7 +91,7 @@ function! s:parse_calling_frame(frame_string)
   return s:frame(l:function_name, str2nr(l:function_line))
 endfunction
 
-function! s:frame(function_name, function_line)
+function! s:frame(function_name, function_line) abort
   let l:loc = strager#function#function_source_location(a:function_name)
   let l:line = v:none
   if type(l:loc.line) !=# v:t_none

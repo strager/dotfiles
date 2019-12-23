@@ -1,7 +1,7 @@
 let s:script_path = expand('<sfile>:p')
 
 " **MARKER Test_function_source_location_of_user_function MARKER**
-function! Test_function_source_location_of_user_function()
+function! Test_function_source_location_of_user_function() abort
   let l:local = {}
   function l:local.check(function)
     let l:loc = strager#function#function_source_location(a:function)
@@ -30,7 +30,7 @@ function! Test_function_source_location_of_user_function()
   \ ))
 endfunction
 
-function! Test_function_source_location_of_script_function()
+function! Test_function_source_location_of_script_function() abort
   let l:local = {}
   function l:local.check(function)
     let l:loc = strager#function#function_source_location(a:function)
@@ -55,7 +55,7 @@ function! Test_function_source_location_of_script_function()
   call l:local.check('<SNR>'.s:sid().'_script_function')
 endfunction
 
-function! Test_function_source_location_of_built_in_function()
+function! Test_function_source_location_of_built_in_function() abort
   " Built-in function by name string.
   let l:loc = strager#function#function_source_location('getbufinfo')
   call assert_equal(v:none, l:loc.line)
@@ -71,7 +71,7 @@ function! Test_function_source_location_of_built_in_function()
   call assert_equal(v:none, l:loc.source_name)
 endfunction
 
-function! Test_function_source_location_of_live_lambda()
+function! Test_function_source_location_of_live_lambda() abort
   " **MARKER Test_function_source_location_of_live_lambda lambda MARKER**
   let l:lambda = [{-> hello(world)}]
   let l:loc = strager#function#function_source_location(l:lambda[0])
@@ -87,7 +87,7 @@ function! Test_function_source_location_of_live_lambda()
   call assert_equal(s:script_path, l:loc.script_path)
 endfunction
 
-function! Test_function_source_location_of_dead_lambda()
+function! Test_function_source_location_of_dead_lambda() abort
   let l:lambda = [{-> hello(world)}]
   let l:lambda_name = get(l:lambda[0], 'name')
   let l:lambda[0] = v:none
@@ -107,7 +107,7 @@ function! Test_function_source_location_of_dead_lambda()
   \ )
 endfunction
 
-function! Test_function_source_location_of_unloaded_autoload_function()
+function! Test_function_source_location_of_unloaded_autoload_function() abort
   let l:loc = strager#function#function_source_location(
     \ 'strager#test_function_helper_unloaded#func',
   \ )
@@ -120,7 +120,7 @@ function! Test_function_source_location_of_unloaded_autoload_function()
   call assert_equal(v:none, l:loc.source_name)
 endfunction
 
-function! Test_function_source_location_of_loaded_autoload_function()
+function! Test_function_source_location_of_loaded_autoload_function() abort
   let l:local = {}
   function l:local.check(function)
     let l:loc = strager#function#function_source_location(a:function)
@@ -149,7 +149,7 @@ endfunction
 
 " Test that s:function_with_common_prefix isn't confused for
 " s:function_with_common_prefix2.
-function! Test_function_source_location_of_functions_with_common_prefix()
+function! Test_function_source_location_of_functions_with_common_prefix() abort
   let l:loc = strager#function#function_source_location(
     \ funcref('s:function_with_common_prefix'),
   \ )
@@ -159,7 +159,7 @@ function! Test_function_source_location_of_functions_with_common_prefix()
   \ )
 endfunction
 
-function! Test_parse_ex_function_output()
+function! Test_parse_ex_function_output() abort
   " Sample output of ':verbose function NetrwStatusLine' after Vim patch 8.1.0362:
   let l:ex_function_output = join([
     \ '   function NetrwStatusLine()',
@@ -180,7 +180,7 @@ function! Test_parse_ex_function_output()
   call assert_equal(167, l:function_info.line)
 endfunction
 
-function! Test_parse_ex_function_output_with_tilde_in_script_path()
+function! Test_parse_ex_function_output_with_tilde_in_script_path() abort
   " Sample output of ':verbose function fzf#shellescape'.
   let l:ex_function_output = join([
     \ '   function fzf#shellescape(arg, ...)',
@@ -197,7 +197,7 @@ function! Test_parse_ex_function_output_with_tilde_in_script_path()
   call assert_equal(77, l:function_info.line)
 endfunction
 
-function! Test_parse_old_ex_function_output()
+function! Test_parse_old_ex_function_output() abort
   " Sample output of ':verbose function NetrwStatusLine' before Vim patch 8.1.0362:
   let l:ex_function_output = join([
     \ '   function NetrwStatusLine()',
@@ -218,7 +218,7 @@ function! Test_parse_old_ex_function_output()
   call assert_equal(v:none, l:function_info.line)
 endfunction
 
-function! Test_parse_ex_function_output_with_missing_path()
+function! Test_parse_ex_function_output_with_missing_path() abort
   " Sample output of ':function NetrwStatusLine':
   let l:ex_function_output = join([
     \ '   function NetrwStatusLine()',
@@ -239,25 +239,25 @@ function! Test_parse_ex_function_output_with_missing_path()
 endfunction
 
 " **MARKER s:script_function MARKER**
-function! s:script_function()
+function! s:script_function() abort
 endfunction
 
-function! s:function_with_common_prefix_()
+function! s:function_with_common_prefix_() abort
 endfunction
 
 " **MARKER s:function_with_common_prefix MARKER**
-function! s:function_with_common_prefix()
+function! s:function_with_common_prefix() abort
 endfunction
 
-function! s:function_with_common_prefix2()
+function! s:function_with_common_prefix2() abort
 endfunction
 
-function! s:sid()
+function! s:sid() abort
   " See: :help <SID>
   return matchstr(expand('<sfile>'), '<SNR>\zs\d\+\ze_sid$')
 endfun
 
-function! s:test_marker_line_number(marker_name)
+function! s:test_marker_line_number(marker_name) abort
   " FIXME(strager): Is this the correct way to escape?
   let l:pattern = '\*\*MARKER '.escape(a:marker_name, '').' MARKER\*\*'
   let l:cur_line_number = 1

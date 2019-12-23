@@ -1,4 +1,4 @@
-function! strager#tag#go()
+function! strager#tag#go() abort
   let l:error_reporter = s:new_error_reporter()
   if s:go_lsp(l:error_reporter)
     return
@@ -19,7 +19,7 @@ endfunction
 
 let s:lsp_timeout_seconds = 5
 
-function! s:go_lsp(error_reporter)
+function! s:go_lsp(error_reporter) abort
   let l:start_reltime = reltime()
 
   let l:whitelisted_servers = lsp#get_whitelisted_servers()
@@ -104,7 +104,7 @@ function! s:go_lsp(error_reporter)
   return v:false
 endfunction
 
-function! s:go_ctags(error_reporter)
+function! s:go_ctags(error_reporter) abort
   try
     exec 'normal! '."\<C-]>"
     return v:true
@@ -119,7 +119,7 @@ function! s:go_ctags(error_reporter)
   endtry
 endfunction
 
-function! s:push_tag(path, line_number, column_number)
+function! s:push_tag(path, line_number, column_number) abort
   " TODO(strager): Figure out how to push onto the tag stack.
   " TODO(strager): How do we handle 'switchbuf?
   exec 'edit '.fnameescape(a:path)
@@ -127,7 +127,7 @@ function! s:push_tag(path, line_number, column_number)
   call cursor(a:line_number, a:column_number)
 endfunction
 
-function s:new_error_reporter()
+function s:new_error_reporter() abort
   let l:reporter = {
     \ 'provider_internal_errors': [],
     \ 'user_errors': [],

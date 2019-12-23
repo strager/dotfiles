@@ -1,4 +1,4 @@
-function Test_samples_match_reference_implementation()
+function Test_samples_match_reference_implementation() abort
   let l:seed = [0x0123, 0x0234, 0x0345, 0x0456]
   let l:rng = strager#random_mt19937#make_generator(l:seed)
   let l:index = 0
@@ -16,7 +16,7 @@ function Test_samples_match_reference_implementation()
   endfor
 endfunction
 
-function Test_matches_cxx11_standard()
+function Test_matches_cxx11_standard() abort
   let l:rng = strager#random_mt19937#make_generator(5489)
   let l:i = 0
   while l:i < 10000
@@ -26,7 +26,7 @@ function Test_matches_cxx11_standard()
   call assert_equal(4123659995, l:sample)
 endfunction
 
-function Test_random_integer_returns_integers_in_range()
+function Test_random_integer_returns_integers_in_range() abort
   for [l:minimum, l:maximum_plus_one] in [[0, 1], [0, 42], [10000, 20000]]
     let l:rng = strager#random_mt19937#make_generator(5489)
     let l:i = 0
@@ -52,7 +52,7 @@ function Test_random_integer_returns_integers_in_range()
   endfor
 endfunction
 
-function Test_random_integer_returns_integers_with_reasonable_distribution()
+function Test_random_integer_returns_integers_with_reasonable_distribution() abort
   let l:minimum = 10
   let l:maximum_plus_one = 42
   let l:width = l:maximum_plus_one - l:minimum

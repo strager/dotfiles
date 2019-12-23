@@ -1,6 +1,6 @@
 " TODO(strager): Closing help window with :q or :close should not close Vim.
 
-function! Test_help_replaces_open_current_help_window()
+function! Test_help_replaces_open_current_help_window() abort
   %bwipeout!
   help :function
   only
@@ -17,7 +17,7 @@ function! Test_help_replaces_open_current_help_window()
   call assert_equal('options.txt', s:get_current_buffer_help_file_name())
 endfunction
 
-function! Test_help_jumps_to_tag()
+function! Test_help_jumps_to_tag() abort
   %bwipeout!
   help :function
   let [l:_bufnum, l:expected_line, l:expected_column, l:expected_offset, l:_curswant] = getcurpos()
@@ -49,7 +49,7 @@ function! Test_help_jumps_to_tag()
   \ )
 endfunction
 
-function! Test_help_replaces_unmodified_buffer()
+function! Test_help_replaces_unmodified_buffer() abort
   %bwipeout!
   edit test_file.txt
   let l:old_layout = strager#layout#get_layout_of_windows_and_tabs()
@@ -64,7 +64,7 @@ function! Test_help_replaces_unmodified_buffer()
   call assert_equal('options.txt', s:get_current_buffer_help_file_name())
 endfunction
 
-function! Test_help_replaces_current_window_despite_help_in_other_window()
+function! Test_help_replaces_current_window_despite_help_in_other_window() abort
   %bwipeout!
   help :function
   only
@@ -88,7 +88,7 @@ function! Test_help_replaces_current_window_despite_help_in_other_window()
   \ )
 endfunction
 
-function! Test_help_fails_with_open_modified_unsaveable_buffer()
+function! Test_help_fails_with_open_modified_unsaveable_buffer() abort
   %bwipeout!
 
   normal ichanges
@@ -113,12 +113,12 @@ function! Test_help_fails_with_open_modified_unsaveable_buffer()
   \ )
 endfunction
 
-function Test_help_command_without_argument_fails()
+function Test_help_command_without_argument_fails() abort
   call strager#help#register_command({'force': v:true})
   call assert_fails('Help', 'E471:')
 endfunction
 
-function! Test_help_for_unknown_tag_fails()
+function! Test_help_for_unknown_tag_fails() abort
   %bwipeout!
 
   let l:old_layout = strager#layout#get_layout_of_windows_and_tabs()
@@ -141,13 +141,13 @@ function! Test_help_for_unknown_tag_fails()
   \ )
 endfunction
 
-function Test_help_command_completes_tags()
+function Test_help_command_completes_tags() abort
   call strager#help#register_command({'force': v:true})
   call feedkeys(":Help keypad-divi\<C-L>\<Esc>", 'tx')
   call assert_equal('Help keypad-divide', histget('cmd', -1))
 endfunction
 
-function! s:get_current_buffer_help_file_name()
+function! s:get_current_buffer_help_file_name() abort
   return fnamemodify(bufname('%'), ':t')
 endfunction
 

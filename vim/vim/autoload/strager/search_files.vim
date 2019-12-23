@@ -1,11 +1,11 @@
-function! strager#search_files#search_using_fzf()
+function! strager#search_files#search_using_fzf() abort
   let l:fzf_run_options =
     \ strager#search_files#get_fzf_run_options_for_searching_files()
   let l:fzf_run_options = fzf#wrap(l:fzf_run_options)
   call fzf#run(l:fzf_run_options)
 endfunction
 
-function! strager#search_files#get_fzf_run_options_for_searching_files()
+function! strager#search_files#get_fzf_run_options_for_searching_files() abort
   let l:prompt = pathshorten(fnamemodify(getcwd(), ':~'))
   if l:prompt !~# '/$'
     let l:prompt = l:prompt.'/'
@@ -16,7 +16,7 @@ function! strager#search_files#get_fzf_run_options_for_searching_files()
   \ }
 endfunction
 
-function! s:fzf_sink(lines)
+function! s:fzf_sink(lines) abort
   if len(a:lines) > 1
     throw 'ES013: Expected exactly zero or one lines'
   endif
