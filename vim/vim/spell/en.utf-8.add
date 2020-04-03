@@ -55,10 +55,12 @@ Homebrew
 IWYU/=
 JSON
 LLVM
+Logisim
 MessagePack
 NixOS
 NuGet
 Resilio Sync
+SNES
 STL
 TAPI
 cdschecker/=
