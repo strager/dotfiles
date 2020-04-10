@@ -9,6 +9,7 @@ os="$(uname)"
 expected_nix_files=(
     bin/black
     bin/clang-format
+    bin/exercism
     bin/flake8
     bin/fzf
     bin/git
@@ -38,6 +39,7 @@ esac
 
 nix_package_attrs=(
     nixpkgs.clang-tools
+    nixpkgs.exercism
     nixpkgs.fzf
     nixpkgs.gitAndTools.gitFull
     nixpkgs.gnupg

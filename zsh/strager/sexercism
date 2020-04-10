@@ -1,0 +1,22 @@
+sexercism() {
+    if strager_sexersism_is_download_command "${@}"; then
+        local temp_file="$(mktemp)"
+        exercism "${@}" 2>&1 | tee -- "${temp_file}"
+        if [ "${pipestatus[1]}" -ne 0 ]; then
+            return "${pipestatus[1]}"
+        fi
+        cd "$(tail -n1 "${temp_file}")"
+    else
+        exercism "${@}"
+    fi
+}
+
+strager_sexersism_is_download_command() {
+    while [ "${#}" -gt 0 ]; do
+        case "${1}" in
+            download) return 0 ;;
+            *) shift ;;
+        esac
+    done
+    return 1
+}

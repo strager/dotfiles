@@ -1,6 +1,7 @@
 # TODO(strager): Move into ~/.zshenv.
 fpath=(~/.zsh/strager "${fpath[@]}")
 autoload -Uk ls
+autoload -Uk sexercism
 autoload -Uk strager_define_auto_scm_aliases
 autoload -Uk strager_define_bzr_scm_aliases
 autoload -Uk strager_define_git_scm_aliases
