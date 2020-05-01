@@ -88,7 +88,7 @@ RunVimTest -NeedVimrc -TestScript vim/vim/test/test_CVE-2019-12735.vim
 
 RunVimTest -TestScript vim/vim/autoload/strager/test_assert.vim
 RunVimTest -TestScript vim/vim/autoload/strager/test_assert_throws.vim
-#RunVimTest -TestScript vim/vim/autoload/strager/test_buffer.vim
+RunVimTest -TestScript vim/vim/autoload/strager/test_buffer.vim
 RunVimTest -TestScript vim/vim/autoload/strager/test_check_syntax.vim
 RunVimTest -TestScript vim/vim/autoload/strager/test_check_syntax_internal.vim
 RunVimTest -TestScript vim/vim/autoload/strager/test_cxx_symbol.vim
@@ -99,7 +99,7 @@ RunVimTest -TestScript vim/vim/autoload/strager/test_file_sort.vim
 RunVimTest -TestScript vim/vim/autoload/strager/test_fzf.vim
 RunVimTest -TestScript vim/vim/autoload/strager/test_help.vim
 RunVimTest -TestScript vim/vim/autoload/strager/test_list.vim
-#RunVimTest -TestScript vim/vim/autoload/strager/test_messages.vim
+RunVimTest -TestScript vim/vim/autoload/strager/test_messages.vim
 #RunVimTest -TestScript vim/vim/autoload/strager/test_move_file.vim
 RunVimTest -TestScript vim/vim/autoload/strager/test_path.vim
 RunVimTest -TestScript vim/vim/autoload/strager/test_pattern.vim

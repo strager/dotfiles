@@ -2,10 +2,12 @@ function! strager#messages#get_messages() abort
   let l:messages_string = execute('messages')
   let l:message_lines = split(l:messages_string, "\n")
 
-  " Drop the following message:
-  "
-  " > Messages maintainer: Bram Moolenaar <Bram@vim.org>
-  call remove(l:message_lines, 0)
+  if has('unix')
+    " HACK(strager): Drop the following message:
+    "
+    " > Messages maintainer: Bram Moolenaar <Bram@vim.org>
+    call remove(l:message_lines, 0)
+  endif
 
   return l:message_lines
 endfunction
