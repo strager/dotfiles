@@ -253,8 +253,6 @@ nmap <unique> <Leader>S vip:sort iu<CR>
 vmap <unique> <Leader>S :sort iu<CR>
 map <unique> <Leader>w :wa<CR>
 
-set shell=/bin/bash
-
 " Paste toggle
 nmap <unique> <Leader>p :set paste!<CR>
 
