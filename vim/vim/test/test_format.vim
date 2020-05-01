@@ -19,15 +19,29 @@ function! s:set_up_python_helper_source() abort
 endfunction
 
 function! s:assert_buffer_contents_match_expected(expected_path) abort
-  exec 'silent write !cmp -b -- - '.fnameescape(a:expected_path)
+  let l:buffer_path = tempname()
+  exec 'silent write '.fnameescape(l:buffer_path)
+  if has('win32')
+    let l:compare_command_template = 'comp /M %s %s'
+  else
+    let l:compare_command_template = 'cmp -b -- %s %s'
+  endif
+  exec printf(
+    \ 'silent !'.l:compare_command_template,
+    \ shellescape(l:buffer_path),
+    \ shellescape(a:expected_path),
+  \ )
   if v:shell_error != 0
-    let l:diff_output = execute(
-      \ 'silent write !diff -u -- - '.fnameescape(a:expected_path),
-    \ )
+    let l:diff_output = execute(printf(
+      \ 'silent !diff -u -- %s %s',
+      \ shellescape(l:buffer_path),
+      \ shellescape(a:expected_path),
+    \ ))
     call assert_report(
       \ 'Expected the current buffer to have the same contents as the file '
         \ .a:expected_path,
     \ )
+    " FIXME(strager): This is broken on Windows and likely other platforms too.
     for l:diff_line in split(@", '\n')
       call add(v:errors, 'diff: '.l:diff_line)
     endfor
