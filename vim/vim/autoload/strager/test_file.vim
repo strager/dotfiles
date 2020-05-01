@@ -81,6 +81,11 @@ endfunction
 function! Test_find_file_upward_with_glob() abort
   let l:Find = {path, glob ->
     \ strager#file#find_file_upward_with_glob(path, glob)}
+  if has('win32')
+    let l:sep = '\'
+  else
+    let l:sep = '/'
+  endif
 
   let l:root_path = strager#file#make_directory_with_files([
     \ 'Makefile',
@@ -108,25 +113,25 @@ function! Test_find_file_upward_with_glob() abort
     \ 'parent_path': l:root_path,
   \ }], l:Find(l:root_path, 'README.txt'))
   call assert_equal([{
-    \ 'file_paths': ['src/main.c'],
+    \ 'file_paths': ['src'.l:sep.'main.c'],
     \ 'parent_path': l:root_path,
-  \ }], l:Find(l:root_path, 'src/main.c'))
+  \ }], l:Find(l:root_path, 'src'.l:sep.'main.c'))
   call assert_equal([{
     \ 'file_paths': ['src'],
     \ 'parent_path': l:root_path,
   \ }], l:Find(l:root_path, 'src'))
   call assert_equal([{
-    \ 'file_paths': ['src/'],
+    \ 'file_paths': ['src'.l:sep],
     \ 'parent_path': l:root_path,
-  \ }], l:Find(l:root_path, 'src/'))
+  \ }], l:Find(l:root_path, 'src'.l:sep))
   call assert_equal([{
-    \ 'file_paths': ['src/test'],
+    \ 'file_paths': ['src'.l:sep.'test'],
     \ 'parent_path': l:root_path,
-  \ }], l:Find(l:root_path, 'src/test'))
+  \ }], l:Find(l:root_path, 'src'.l:sep.'test'))
   call assert_equal([{
-    \ 'file_paths': ['src/test/'],
+    \ 'file_paths': ['src'.l:sep.'test'.l:sep],
     \ 'parent_path': l:root_path,
-  \ }], l:Find(l:root_path, 'src/test/'))
+  \ }], l:Find(l:root_path, 'src'.l:sep.'test'.l:sep))
 
   " Test globs.
   call assert_equal([{
@@ -134,56 +139,56 @@ function! Test_find_file_upward_with_glob() abort
     \ 'parent_path': l:root_path,
   \ }], l:Find(l:root_path, 'Make*'))
   call assert_equal([{
-    \ 'file_paths': ['src/main.c'],
+    \ 'file_paths': ['src'.l:sep.'main.c'],
     \ 'parent_path': l:root_path,
-  \ }], l:Find(l:root_path, 'src/*.c'))
+  \ }], l:Find(l:root_path, 'src'.l:sep.'*.c'))
   call assert_equal([{
-    \ 'file_paths': ['src/test/test0.c', 'src/test/test1.c'],
+    \ 'file_paths': ['src'.l:sep.'test'.l:sep.'test0.c', 'src'.l:sep.'test'.l:sep.'test1.c'],
     \ 'parent_path': l:root_path,
-  \ }], l:Find(l:root_path, 'src/test/*.c'))
+  \ }], l:Find(l:root_path, 'src'.l:sep.'test'.l:sep.'*.c'))
   call assert_equal([{
-    \ 'file_paths': ['src/main.c', 'src/test/test0.c', 'src/test/test1.c'],
+    \ 'file_paths': ['src'.l:sep.'main.c', 'src'.l:sep.'test'.l:sep.'test0.c', 'src'.l:sep.'test'.l:sep.'test1.c'],
     \ 'parent_path': l:root_path,
-  \ }], l:Find(l:root_path, 'src/**/*.c'))
+  \ }], l:Find(l:root_path, 'src'.l:sep.'**'.l:sep.'*.c'))
 
   " Test upward searches with exact file names.
   call assert_equal([{
     \ 'file_paths': ['README.txt'],
     \ 'parent_path': l:root_path,
-  \ }], l:Find(l:root_path.'/src', 'README.txt'))
+  \ }], l:Find(l:root_path.l:sep.'src', 'README.txt'))
   call assert_equal([{
     \ 'file_paths': ['README.txt'],
     \ 'parent_path': l:root_path,
-  \ }], l:Find(l:root_path.'/src/test', 'README.txt'))
+  \ }], l:Find(l:root_path.l:sep.'src'.l:sep.'test', 'README.txt'))
   call assert_equal([{
     \ 'file_paths': ['main.c'],
-    \ 'parent_path': l:root_path.'/src',
-  \ }], l:Find(l:root_path.'/src/test', 'main.c'))
+    \ 'parent_path': l:root_path.l:sep.'src',
+  \ }], l:Find(l:root_path.l:sep.'src'.l:sep.'test', 'main.c'))
   call assert_equal([{
-    \ 'file_paths': ['src/main.c'],
+    \ 'file_paths': ['src'.l:sep.'main.c'],
     \ 'parent_path': l:root_path,
-  \ }], l:Find(l:root_path.'/src', 'src/main.c'))
+  \ }], l:Find(l:root_path.l:sep.'src', 'src'.l:sep.'main.c'))
   call assert_equal([{
-    \ 'file_paths': ['src/main.c'],
+    \ 'file_paths': ['src'.l:sep.'main.c'],
     \ 'parent_path': l:root_path,
-  \ }], l:Find(l:root_path.'/src/test', 'src/main.c'))
+  \ }], l:Find(l:root_path.l:sep.'src'.l:sep.'test', 'src'.l:sep.'main.c'))
   call assert_equal([{
     \ 'file_paths': ['Makefile'],
-    \ 'parent_path': l:root_path.'/src',
+    \ 'parent_path': l:root_path.l:sep.'src',
   \ }, {
     \ 'file_paths': ['Makefile'],
     \ 'parent_path': l:root_path,
-  \ }], l:Find(l:root_path.'/src', 'Makefile'))
+  \ }], l:Find(l:root_path.l:sep.'src', 'Makefile'))
   call assert_equal([{
     \ 'file_paths': ['Makefile'],
-    \ 'parent_path': l:root_path.'/src/test',
+    \ 'parent_path': l:root_path.l:sep.'src'.l:sep.'test',
   \ }, {
     \ 'file_paths': ['Makefile'],
-    \ 'parent_path': l:root_path.'/src',
+    \ 'parent_path': l:root_path.l:sep.'src',
   \ }, {
     \ 'file_paths': ['Makefile'],
     \ 'parent_path': l:root_path,
-  \ }], l:Find(l:root_path.'/src/test', 'Makefile'))
+  \ }], l:Find(l:root_path.l:sep.'src'.l:sep.'test', 'Makefile'))
 endfunction
 
 function! Test_list_empty_directory() abort
@@ -201,23 +206,25 @@ function! Test_listing_directory_includes_subdirectories() abort
   call assert_equal(['.', '..', 'dir'], s:list(l:path))
 endfunction
 
-function! Test_listing_directory_includes_symlinks_to_directories() abort
-  let l:path = strager#file#make_directory_with_files(['dir'])
-  call strager#file#create_symbolic_link('dir', strager#path#join([l:path, 'symlink_to_dir']))
-  call assert_equal(['.', '..', 'dir', 'symlink_to_dir'], s:list(l:path))
-endfunction
+if !has('win32')
+  function! Test_listing_directory_includes_symlinks_to_directories() abort
+    let l:path = strager#file#make_directory_with_files(['dir'])
+    call strager#file#create_symbolic_link('dir', strager#path#join([l:path, 'symlink_to_dir']))
+    call assert_equal(['.', '..', 'dir', 'symlink_to_dir'], s:list(l:path))
+  endfunction
 
-function! Test_listing_directory_includes_symlinks_to_regular_files() abort
-  let l:path = strager#file#make_directory_with_files(['file'])
-  call strager#file#create_symbolic_link('file', strager#path#join([l:path, 'symlink_to_file']))
-  call assert_equal(['.', '..', 'file', 'symlink_to_file'], s:list(l:path))
-endfunction
+  function! Test_listing_directory_includes_symlinks_to_regular_files() abort
+    let l:path = strager#file#make_directory_with_files(['file'])
+    call strager#file#create_symbolic_link('file', strager#path#join([l:path, 'symlink_to_file']))
+    call assert_equal(['.', '..', 'file', 'symlink_to_file'], s:list(l:path))
+  endfunction
 
-function! Test_listing_directory_includes_symlinks_to_non_existing_paths() abort
-  let l:path = strager#file#make_directory_with_files([])
-  call strager#file#create_symbolic_link('does_not_exist', strager#path#join([l:path, 'broken_symlink']))
-  call assert_equal(['.', '..', 'broken_symlink'], s:list(l:path))
-endfunction
+  function! Test_listing_directory_includes_symlinks_to_non_existing_paths() abort
+    let l:path = strager#file#make_directory_with_files([])
+    call strager#file#create_symbolic_link('does_not_exist', strager#path#join([l:path, 'broken_symlink']))
+    call assert_equal(['.', '..', 'broken_symlink'], s:list(l:path))
+  endfunction
+endif
 
 function! Test_listing_directory_includes_dot_files() abort
   let l:path = strager#file#make_directory_with_files(['.vimrc', '.vim/'])
@@ -228,8 +235,10 @@ function! Test_listing_directory_with_name_containing_special_characters_lists_f
   " Check special characters: comma, space, \.
   let l:path = strager#file#make_directory_with_files(['stuff, things, and junk/closet.jpeg'])
   call assert_equal(['.', '..', 'closet.jpeg'], s:list(l:path.'/stuff, things, and junk'))
-  let l:path = strager#file#make_directory_with_files(['trailing-slash\/file.txt'])
-  call assert_equal(['.', '..', 'file.txt'], s:list(l:path.'/trailing-slash\'))
+  if !has('win32')
+    let l:path = strager#file#make_directory_with_files(['trailing-slash\/file.txt'])
+    call assert_equal(['.', '..', 'file.txt'], s:list(l:path.'/trailing-slash\'))
+  endif
 endfunction
 
 function! Test_listing_non_existing_path_fails() abort
@@ -250,16 +259,18 @@ endfunction
 
 function! Test_listing_filesystem_root_includes_dot_and_dotdot() abort
   let l:names = strager#file#list_directory('/')
-  call assert_notequal(-1, index(l:names, '.'))
-  call assert_notequal(-1, index(l:names, '..'))
+  if has('unix')
+    call assert_notequal(-1, index(l:names, '.'))
+    call assert_notequal(-1, index(l:names, '..'))
+  endif
 endfunction
 
 function! Test_listing_filesystem_root_includes_existing_files() abort
   let l:names = strager#file#list_directory('/')
   for l:name in l:names
     " TODO(strager): Escape wildcards.
-    let l:matches = glob('/'.l:name, v:true, v:true, v:true)
-    call assert_equal(['/'.l:name], l:matches)
+    let l:path = '/'.l:name
+    call assert_notequal(getftype(l:path), '', printf('%s should exist', l:path))
   endfor
 endfunction
 
@@ -290,21 +301,23 @@ function! Test_regular_files_are_same_with_mixed_absolute_relative_path() abort
   call assert_true(s:are_files_same_by_path(l:file_path, 'file.txt'))
 endfunction
 
-function! Test_regular_files_in_directory_symlinks_are_same() abort
-  let l:dir_path = strager#file#make_directory_with_files(['dir_a/file.txt'])
-  let l:dir_a_file_path = strager#path#join([l:dir_path, 'dir_a', 'file.txt'])
-  let l:dir_b_path = strager#path#join([l:dir_path, 'dir_b'])
-  let l:dir_b_file_path = strager#path#join([l:dir_path, 'dir_b', 'file.txt'])
-  call strager#file#create_symbolic_link('dir_a', l:dir_b_path)
-  call assert_true(s:are_files_same_by_path(
-    \ l:dir_a_file_path,
-    \ l:dir_b_file_path,
-  \ ))
-  call assert_true(s:are_files_same_by_path(
-    \ l:dir_b_file_path,
-    \ l:dir_a_file_path,
-  \ ))
-endfunction
+if !has('win32')
+  function! Test_regular_files_in_directory_symlinks_are_same() abort
+    let l:dir_path = strager#file#make_directory_with_files(['dir_a/file.txt'])
+    let l:dir_a_file_path = strager#path#join([l:dir_path, 'dir_a', 'file.txt'])
+    let l:dir_b_path = strager#path#join([l:dir_path, 'dir_b'])
+    let l:dir_b_file_path = strager#path#join([l:dir_path, 'dir_b', 'file.txt'])
+    call strager#file#create_symbolic_link('dir_a', l:dir_b_path)
+    call assert_true(s:are_files_same_by_path(
+      \ l:dir_a_file_path,
+      \ l:dir_b_file_path,
+    \ ))
+    call assert_true(s:are_files_same_by_path(
+      \ l:dir_b_file_path,
+      \ l:dir_a_file_path,
+    \ ))
+  endfunction
+endif
 
 function! Test_regular_files_are_different() abort
   let l:dir_path = strager#file#make_directory_with_files(['a.txt', 'b.txt'])
@@ -338,46 +351,48 @@ function! Test_files_are_not_same_if_either_path_is_missing() abort
   \ ))
 endfunction
 
-function! Test_broken_symlinks_are_same() abort
-  let l:dir_path = strager#file#make_directory_with_files([])
-  let l:symlink_path = strager#path#join([l:dir_path, 'symlink.txt'])
-  call strager#file#create_symbolic_link('file.txt', l:symlink_path)
-  call assert_true(s:are_files_same_by_path(l:symlink_path, l:symlink_path))
-endfunction
+if !has('win32')
+  function! Test_broken_symlinks_are_same() abort
+    let l:dir_path = strager#file#make_directory_with_files([])
+    let l:symlink_path = strager#path#join([l:dir_path, 'symlink.txt'])
+    call strager#file#create_symbolic_link('file.txt', l:symlink_path)
+    call assert_true(s:are_files_same_by_path(l:symlink_path, l:symlink_path))
+  endfunction
 
-function! Test_symlinks_are_same() abort
-  let l:dir_path = strager#file#make_directory_with_files(['file.txt'])
-  let l:symlink_path = strager#path#join([l:dir_path, 'symlink.txt'])
-  call strager#file#create_symbolic_link('file.txt', l:symlink_path)
-  call assert_true(s:are_files_same_by_path(l:symlink_path, l:symlink_path))
-endfunction
+  function! Test_symlinks_are_same() abort
+    let l:dir_path = strager#file#make_directory_with_files(['file.txt'])
+    let l:symlink_path = strager#path#join([l:dir_path, 'symlink.txt'])
+    call strager#file#create_symbolic_link('file.txt', l:symlink_path)
+    call assert_true(s:are_files_same_by_path(l:symlink_path, l:symlink_path))
+  endfunction
 
-function! Test_broken_symlink_and_target_are_different() abort
-  let l:dir_path = strager#file#make_directory_with_files([])
-  let l:target_path = strager#path#join([l:dir_path, 'target.txt'])
-  let l:symlink_path = strager#path#join([l:dir_path, 'symlink.txt'])
-  call strager#file#create_symbolic_link('target.txt', l:symlink_path)
-  call assert_false(s:are_files_same_by_path(l:symlink_path, l:target_path))
-  call assert_false(s:are_files_same_by_path(l:target_path, l:symlink_path))
-endfunction
+  function! Test_broken_symlink_and_target_are_different() abort
+    let l:dir_path = strager#file#make_directory_with_files([])
+    let l:target_path = strager#path#join([l:dir_path, 'target.txt'])
+    let l:symlink_path = strager#path#join([l:dir_path, 'symlink.txt'])
+    call strager#file#create_symbolic_link('target.txt', l:symlink_path)
+    call assert_false(s:are_files_same_by_path(l:symlink_path, l:target_path))
+    call assert_false(s:are_files_same_by_path(l:target_path, l:symlink_path))
+  endfunction
 
-function! Test_symlink_and_relative_target_are_different() abort
-  let l:dir_path = strager#file#make_directory_with_files(['target.txt'])
-  let l:target_path = strager#path#join([l:dir_path, 'target.txt'])
-  let l:symlink_path = strager#path#join([l:dir_path, 'symlink.txt'])
-  call strager#file#create_symbolic_link('target.txt', l:symlink_path)
-  call assert_false(s:are_files_same_by_path(l:symlink_path, l:target_path))
-  call assert_false(s:are_files_same_by_path(l:target_path, l:symlink_path))
-endfunction
+  function! Test_symlink_and_relative_target_are_different() abort
+    let l:dir_path = strager#file#make_directory_with_files(['target.txt'])
+    let l:target_path = strager#path#join([l:dir_path, 'target.txt'])
+    let l:symlink_path = strager#path#join([l:dir_path, 'symlink.txt'])
+    call strager#file#create_symbolic_link('target.txt', l:symlink_path)
+    call assert_false(s:are_files_same_by_path(l:symlink_path, l:target_path))
+    call assert_false(s:are_files_same_by_path(l:target_path, l:symlink_path))
+  endfunction
 
-function! Test_hard_links_are_different() abort
-  let l:dir_path = strager#file#make_directory_with_files(['a.txt'])
-  let l:a_path = strager#path#join([l:dir_path, 'a.txt'])
-  let l:b_path = strager#path#join([l:dir_path, 'b.txt'])
-  call strager#file#create_hard_link(l:a_path, l:b_path)
-  call assert_false(s:are_files_same_by_path(l:a_path, l:b_path))
-  call assert_false(s:are_files_same_by_path(l:b_path, l:a_path))
-endfunction
+  function! Test_hard_links_are_different() abort
+    let l:dir_path = strager#file#make_directory_with_files(['a.txt'])
+    let l:a_path = strager#path#join([l:dir_path, 'a.txt'])
+    let l:b_path = strager#path#join([l:dir_path, 'b.txt'])
+    call strager#file#create_hard_link(l:a_path, l:b_path)
+    call assert_false(s:are_files_same_by_path(l:a_path, l:b_path))
+    call assert_false(s:are_files_same_by_path(l:b_path, l:a_path))
+  endfunction
+endif
 
 function! Test_mkdirp_creates_single_empty_directory() abort
   let l:temp_dir_path = strager#file#make_directory_with_files([])

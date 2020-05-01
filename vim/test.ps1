@@ -93,7 +93,7 @@ RunVimTest -TestScript vim/vim/autoload/strager/test_check_syntax.vim
 RunVimTest -TestScript vim/vim/autoload/strager/test_check_syntax_internal.vim
 RunVimTest -TestScript vim/vim/autoload/strager/test_cxx_symbol.vim
 #RunVimTest -TestScript vim/vim/autoload/strager/test_exception.vim
-#RunVimTest -TestScript vim/vim/autoload/strager/test_file.vim
+RunVimTest -TestScript vim/vim/autoload/strager/test_file.vim
 RunVimTest -TestScript vim/vim/autoload/strager/test_file_sort.vim
 #RunVimTest -TestScript vim/vim/autoload/strager/test_function.vim
 RunVimTest -TestScript vim/vim/autoload/strager/test_fzf.vim

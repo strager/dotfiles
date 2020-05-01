@@ -82,13 +82,20 @@ function! s:file_exists_single_case_sensitive(path) abort
   return l:matches == 1
 endfunction
 
+if has('win32')
+  let s:runtimepath_characters_to_escape = ','
+else
+  let s:runtimepath_characters_to_escape = ',\'
+endif
+
 function! strager#file#list_directory(path) abort
-  let l:glob = escape(a:path, ',\')
+  let l:glob = escape(a:path, s:runtimepath_characters_to_escape)
   if fnamemodify(a:path, ':t') ==# ''
     let l:prefix_to_strip = a:path
   else
     let l:prefix_to_strip = a:path.'/'
   endif
+  let l:prefix_to_strip = s:normalize_path_as_glob_result(l:prefix_to_strip)
   let l:paths = globpath(l:glob, '*', v:true, v:true, v:true)
   let l:paths += globpath(l:glob, '.*', v:true, v:true, v:true)
   if empty(l:paths)
@@ -117,8 +124,14 @@ function! strager#file#find_file_upward_with_glob(path, glob) abort
   let l:matches = []
   for l:cur_path in strager#path#paths_upward(a:path)
     " FIXME(strager): How can we escape l:cur_path for glob()?
-    let l:cur_path_glob_prefix = l:cur_path.'/'
+    let l:cur_path_glob_prefix = s:normalize_path_as_glob_result(l:cur_path.'/')
     let l:cur_glob = l:cur_path_glob_prefix.a:glob
+    if has('win32')
+      " HACK(strager): For some reason, 'a/**/b' and 'a\**/b' match 'a\b' (i.e.
+      " 'a/b'), but 'a\**\b' doesn't match. Force the path component separator
+      " to / to work around this issue.
+      let l:cur_glob = substitute(l:cur_glob, '\\', '/', 'g')
+    endif
     let l:cur_matches = glob(l:cur_glob, v:true, v:true, v:true)
     if !empty(l:cur_matches)
       let l:file_paths = []
@@ -148,7 +161,20 @@ function! strager#file#find_file_upward_with_glob(path, glob) abort
   return l:matches
 endfunction
 
+" HACK(strager): On Windows, globpath returns paths with \ as the component
+" spearator, even if the input path uses /.
+function! s:normalize_path_as_glob_result(path) abort
+  if has('win32')
+    return substitute(a:path, '/', '\', 'g')
+  else
+    return a:path
+  endif
+endfunction
+
 function! strager#file#create_symbolic_link(target_path, symlink_path) abort
+  if has('win32')
+    throw 'Creating symbolic links is not yet implemented for Windows'
+  endif
   silent call system(printf(
     \ 'ln -s -- %s %s',
     \ shellescape(a:target_path),
@@ -160,6 +186,9 @@ function! strager#file#create_symbolic_link(target_path, symlink_path) abort
 endfunction
 
 function! strager#file#create_hard_link(old_path, new_path) abort
+  if has('win32')
+    throw 'Creating hard links is not yet implemented for Windows'
+  endif
   silent call system(printf(
     \ 'ln -- %s %s',
     \ shellescape(a:old_path),
@@ -186,7 +215,8 @@ function! strager#file#are_files_same_by_path(file_a_path, file_b_path) abort
 
   let l:file_a_full_path = s:absolute_path_with_parent_resolved(a:file_a_path)
   let l:file_b_full_path = s:absolute_path_with_parent_resolved(a:file_b_path)
-  if l:file_a_full_path ==# l:file_b_full_path
+  if s:normalize_path_component_separators(l:file_a_full_path)
+    \ ==# s:normalize_path_component_separators(l:file_b_full_path)
     return v:true
   endif
   return v:false
@@ -203,3 +233,13 @@ function! s:absolute_path_with_parent_resolved(path) abort
   endif
   return strager#path#join([l:parent_resolved_absolute_path, l:name])
 endfunction
+
+if has('win32')
+  function! s:normalize_path_component_separators(path) abort
+    return substitute(a:path, '/', '\', 'g')
+  endfunction
+else
+  function! s:normalize_path_component_separators(path) abort
+    return a:path
+  endfunction
+endif
