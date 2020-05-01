@@ -62,7 +62,7 @@ endfunction
 function! Test_tab_in_grep_completes_explicit_directory() abort
   call s:set_up_project(['somedir/'])
   call feedkeys(":Grep pattern somed\<C-L>\<Esc>", 'tx')
-  call assert_equal('Grep pattern somedir/', histget('cmd', -1))
+  call assert_match('^Grep pattern somedir[/\\]$', histget('cmd', -1))
 endfunction
 
 function! Test_grep_with_match_opens_quickfix_window() abort

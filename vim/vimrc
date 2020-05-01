@@ -105,7 +105,11 @@ command -complete=dir -nargs=+
   \ | call strager#window#open_quickfix_window()
 set grepformat=%f:%l:%c:%m
 set grepformat+=%-GNo\ files\ were\ searched\\,\ which\ means\ ripgrep\ probably\ applied\ a\ filter\ you\ didn't\ expect.\ Try\ running\ again\ with\ --debug.
-set grepprg=rg\ \</dev/null\ --color\ never\ --column\ --line-number\ --no-heading\ $*
+set grepprg=rg
+if has('unix')
+  set grepprg+=\ \</dev/null
+endif
+set grepprg+=\ --color\ never\ --column\ --line-number\ --no-heading\ $*
 nmap <unique> <Leader>a :Grep<SPACE>
 
 " Use space to find space

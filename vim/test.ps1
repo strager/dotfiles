@@ -84,7 +84,7 @@ RunVimTest -NeedVimrc -TestScript vim/vim/test/test_CVE-2019-12735.vim
 #RunVimTest -NeedVimrc -TestScript vim/vim/test/test_color_column.vim
 #RunVimTest -NeedVimrc -TestScript vim/vim/test/test_directory_browser.vim
 #RunVimTest -NeedVimrc -TestScript vim/vim/test/test_format.vim
-#RunVimTest -NeedVimrc -TestScript vim/vim/test/test_grep.vim
+RunVimTest -NeedVimrc -TestScript vim/vim/test/test_grep.vim
 #RunVimTest -NeedVimrc -TestScript vim/vim/test/test_indentation.vim
 
 RunVimTest -TestScript vim/vim/autoload/strager/test_assert.vim
