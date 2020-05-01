@@ -39,7 +39,8 @@ function LogAndRun {
     [parameter(ValueFromRemainingArguments = $true)]
     [string[]] $Arguments
   )
-  Write-Host -ForegroundColor Green (EscapeExecutableArguments $Executable @Arguments)
+  $CommandString = EscapeExecutableArguments $Executable @Arguments
+  Write-Host -ForegroundColor Green $CommandString
   $ArgumentList = (EscapeExecutableArguments @Arguments)
   $Process = Start-Process `
     -ArgumentList $ArgumentList `
@@ -48,7 +49,7 @@ function LogAndRun {
     -PassThru `
     -Wait
   if ($Process.ExitCode -ne 0) {
-    throw "Command failed with status $($Process.ExitCode): $($Executable) $($ArgumentList)"
+    throw "Command failed with status $($Process.ExitCode): ${CommandString}"
   }
 }
 
