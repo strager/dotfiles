@@ -24,7 +24,11 @@ function! s:update_cursor_shapes_now() abort
 endfunction
 
 function! s:cursor_shape_code(shape) abort
-  return s:iterm_cursor_shape_code(a:shape).s:linux_cursor_shape_code(a:shape)
+  if has('unix')
+    return s:iterm_cursor_shape_code(a:shape).s:linux_cursor_shape_code(a:shape)
+  else
+    return ''
+  endif
 endfunction
 
 function! s:iterm_cursor_shape_code(shape) abort
