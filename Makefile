@@ -34,7 +34,7 @@ check-vim:
 
 .PHONY: check-vim-lint
 check-vim-lint: $(python_env_dir)/bin/vint
-	VINT="$$(realpath "$(python_env_dir)/bin/vint")" vim/lint.sh
+	VINT="$$(cd $(python_env_dir) && pwd)/bin/vint" vim/lint.sh
 
 .PHONY: check-zsh
 check-zsh: $(python_site_packages)/pexpect
