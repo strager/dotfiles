@@ -51,6 +51,7 @@ FILECHECK/=
 FileCheck/=
 GCC
 GitHub/=
+GraphQL
 Homebrew
 IWYU/=
 JSON
@@ -69,6 +70,7 @@ dmesg
 efficios/=
 gcc
 github/=
+jsdom
 librseq/=
 libstdc++
 linux
@@ -131,5 +133,8 @@ progbits
 
 # Vim terms.
 quickfix
+
+# JavaScript terms.
+HTMLImageElement
 
 # Uncategorized terms.
