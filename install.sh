@@ -21,9 +21,11 @@ projects=(
   gnome-terminal
   iterm
   login
+  man
   nix
   nixpkgs
   ssh
+  systemd
   tmux
   vim
   xmonad
