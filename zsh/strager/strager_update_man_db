@@ -1,0 +1,20 @@
+strager_update_man_db() {
+    local command=()
+    if [ -x /usr/libexec/makewhatis ]; then
+        command=("${HOME}/.zsh/../man/update-whatis-db.sh")
+    elif { whence mandb && whence systemctl } >/dev/null; then
+        command=(systemctl --user start --no-block strager-update-mandb-db.service)
+    fi
+
+    if [ "${#command[@]}" -eq 0 ]; then
+        printf 'warning: updating man datbase failed: unrecognized man system\n' >&2
+    else
+        "${command[@]}" || {
+            {
+                printf 'warning: updating man database failed:'
+                printf ' %q' "${command[@]}"
+                printf ' exited with status %d\n' "${?}"
+            } >&2
+        }
+    fi
+}

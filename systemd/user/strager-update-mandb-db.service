@@ -1,0 +1,7 @@
+[Unit]
+Description = Update index for 'man -k'
+Documentation = man:mandb
+
+[Service]
+ExecStart = /usr/bin/env mandb --create --user-db
+Type = oneshot

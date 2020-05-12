@@ -24,6 +24,7 @@ autoload -Uk strager_search_history
 autoload -Uk strager_set_block_cursor
 autoload -Uk strager_set_vertical_bar_cursor
 autoload -Uk strager_update_cursor_during_edit
+autoload -Uk strager_update_man_db
 
 # Saved history.
 # N.B. Do not set HISTFILE here. HISTFILE is set by
@@ -140,6 +141,13 @@ title() {
 
 vobjdump() {
     objdump "${@}" | view -c 'set filetype=objdump' -
+}
+
+nix-env() {
+    command nix-env "${@}"
+    local exit_status="${?}"
+    strager_update_man_db
+    return "${exit_status}"
 }
 
 # Input styling.
