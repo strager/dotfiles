@@ -75,10 +75,12 @@ librseq/=
 libstdc++
 linux
 macOS
+mandb
 nixpkgs
 pthread/=
 relacy
 rseq/=
+systemd
 tvOS
 vcpkg
 zsh
