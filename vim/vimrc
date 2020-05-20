@@ -97,6 +97,11 @@ set incsearch
 set smartcase ignorecase
 nmap <silent> <unique> <Leader>l :nohlsearch<CR>
 
+" @@@ trying this out. will I like it?
+" @@@ what about centering when we first search?
+nnoremap n nzz
+nnoremap N Nzz
+
 " Save searches
 set viminfo+=/200
 
