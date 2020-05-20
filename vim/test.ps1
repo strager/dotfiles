@@ -87,6 +87,7 @@ RunVimTest -NeedVimrc -TestScript vim/vim/test/test_format.vim
 RunVimTest -NeedVimrc -TestScript vim/vim/test/test_grep.vim
 RunVimTest -NeedVimrc -TestScript vim/vim/test/test_identifier.vim
 #RunVimTest -NeedVimrc -TestScript vim/vim/test/test_indentation.vim
+RunVimTest -NeedVimrc -TestScript vim/vim/test/test_tab.vim
 
 RunVimTest -TestScript vim/vim/autoload/strager/test_assert.vim
 RunVimTest -TestScript vim/vim/autoload/strager/test_assert_throws.vim

@@ -143,6 +143,16 @@ set splitbelow splitright
 " Use <Leader>c to pop the "tab stack".
 nmap <unique> <Leader>c :tabclose<CR>
 
+let s:i = 1
+while s:i <= 10
+  execute printf(
+    \ 'nnoremap <unique> <Leader>%d :%dtabnext<CR>',
+    \ s:i == 10 ? 0 : s:i,
+    \ s:i,
+  \ )
+  let s:i += 1
+endwhile
+
 """ File management
 set autowrite 
 
