@@ -149,6 +149,7 @@ run_vim_test --need-vimrc vim/vim/test/test_color_column.vim
 run_vim_test --need-vimrc vim/vim/test/test_directory_browser.vim
 run_vim_test --need-vimrc vim/vim/test/test_format.vim
 run_vim_test --need-vimrc vim/vim/test/test_grep.vim
+run_vim_test --need-vimrc vim/vim/test/test_identifier.vim
 run_vim_test --need-vimrc vim/vim/test/test_indentation.vim
 run_vim_test vim/vim/autoload/strager/test_assert.vim
 run_vim_test vim/vim/autoload/strager/test_assert_throws.vim
