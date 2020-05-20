@@ -277,6 +277,9 @@ map <unique> <Leader>w :wa<CR>
 command -range GistLinesToChat call system('chatgist', getbufline('%', <line1>, <line2>))
 vnoremap <unique> <F2> :GistLinesToChat<CR>
 
+nnoremap <expr><unique> <Leader>r strager#replace#prompt_replace_current_word()
+vnoremap <unique> <Leader>r :call strager#replace#prompt_replace_visual_selection()<CR>
+
 " Turn off the K command. I keep accidentally triggering it, and I don't care
 " for its behavior right now.
 nnoremap <unique> K <Nop>

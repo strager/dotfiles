@@ -108,6 +108,7 @@ RunVimTest -TestScript vim/vim/autoload/strager/test_path.vim
 RunVimTest -TestScript vim/vim/autoload/strager/test_pattern.vim
 #RunVimTest -TestScript vim/vim/autoload/strager/test_project.vim
 RunVimTest -TestScript vim/vim/autoload/strager/test_random_mt19937.vim
+RunVimTest -TestScript vim/vim/autoload/strager/test_replace.vim
 #RunVimTest -TestScript vim/vim/autoload/strager/test_search_files.vim
 RunVimTest -TestScript vim/vim/autoload/strager/test_window.vim
 Write-Host "All tests passed!"
