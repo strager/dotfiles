@@ -1,4 +1,5 @@
 strager_set_vertical_bar_cursor() {
     strager_iterm_sequence CursorShape=1
     strager_linux_softcursor_sequence 3 0 0
+    strager_gnome_terminal_cursor_sequence 6
 }

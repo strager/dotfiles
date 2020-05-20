@@ -8,6 +8,7 @@ autoload -Uk strager_define_bzr_scm_aliases
 autoload -Uk strager_define_git_scm_aliases
 autoload -Uk strager_define_hg_scm_aliases
 autoload -Uk strager_ftcs_sequence
+autoload -Uk strager_gnome_terminal_cursor_sequence
 autoload -Uk strager_initialize_ls_colors
 autoload -Uk strager_initialize_menuselect
 autoload -Uk strager_initialize_post_prompt

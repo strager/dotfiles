@@ -1,0 +1,5 @@
+strager_gnome_terminal_cursor_sequence() {
+    local shape="${1}"
+    printf "\x1b[%s q" "${shape}"
+}
+
