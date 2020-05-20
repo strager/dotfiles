@@ -25,7 +25,7 @@ endfunction
 
 function! s:cursor_shape_code(shape) abort
   if has('unix')
-    return s:iterm_cursor_shape_code(a:shape).s:linux_cursor_shape_code(a:shape)
+    return s:iterm_cursor_shape_code(a:shape).s:linux_cursor_shape_code(a:shape).s:gnome_terminal_cursor_shape_code(a:shape)
   else
     return ''
   endif
@@ -64,6 +64,25 @@ function! s:linux_cursor_shape_id(shape) abort
     return 3
   elseif a:shape ==# 'underline'
     return 1
+  else
+    throw printf('ES006: Unsupported cursor shape: %s', a:shape)
+  endif
+endfunction
+
+function! s:gnome_terminal_cursor_shape_code(shape) abort
+  return printf(
+    \ "\<Esc>[%d q",
+    \ s:gnome_terminal_cursor_shape_id(a:shape),
+  \ )
+endfunction
+
+function! s:gnome_terminal_cursor_shape_id(shape) abort
+  if a:shape ==# 'block'
+    return 2
+  elseif a:shape ==# 'vertical bar'
+    return 6
+  elseif a:shape ==# 'underline'
+    return 4
   else
     throw printf('ES006: Unsupported cursor shape: %s', a:shape)
   endif
