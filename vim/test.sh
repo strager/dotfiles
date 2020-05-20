@@ -151,6 +151,7 @@ run_vim_test --need-vimrc vim/vim/test/test_format.vim
 run_vim_test --need-vimrc vim/vim/test/test_grep.vim
 run_vim_test --need-vimrc vim/vim/test/test_identifier.vim
 run_vim_test --need-vimrc vim/vim/test/test_indentation.vim
+run_vim_test --need-vimrc vim/vim/test/test_tab.vim
 run_vim_test vim/vim/autoload/strager/test_assert.vim
 run_vim_test vim/vim/autoload/strager/test_assert_throws.vim
 run_vim_test vim/vim/autoload/strager/test_buffer.vim
