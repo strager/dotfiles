@@ -260,6 +260,10 @@ map <unique> <Leader>w :wa<CR>
 command -range GistLinesToChat call system('chatgist', getbufline('%', <line1>, <line2>))
 vnoremap <unique> <F2> :GistLinesToChat<CR>
 
+" Turn off the K command. I keep accidentally triggering it, and I don't care
+" for its behavior right now.
+nnoremap <unique> K <Nop>
+
 " Paste toggle
 nmap <unique> <Leader>p :set paste!<CR>
 
