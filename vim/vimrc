@@ -89,6 +89,8 @@ endif
 set numberwidth=3
 set nostartofline
 
+autocmd CmdwinEnter * setlocal norelativenumber
+
 " Sane searching
 set hlsearch
 set incsearch
