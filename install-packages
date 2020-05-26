@@ -18,7 +18,7 @@ expected_nix_files=(
     bin/jq
     bin/python3
     bin/rg
-    bin/sqlite
+    bin/sqlite3
     bin/tmux
     bin/vim
     bin/wget
