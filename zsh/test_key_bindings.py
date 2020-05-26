@@ -140,3 +140,7 @@ common_symbols = b"~!@#$%^&*()_+~-={}|[]\\:\";'<>?,./"
 path_component_characters = (
     b"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-+._"
 )
+
+
+if __name__ == "__main__":
+    unittest.main()
