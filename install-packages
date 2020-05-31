@@ -8,6 +8,7 @@ os="$(uname)"
 
 expected_nix_files=(
     bin/black
+    bin/borg
     bin/clang-format
     bin/exercism
     bin/flake8
@@ -39,6 +40,7 @@ case "${os}" in
 esac
 
 nix_package_attrs=(
+    nixpkgs.borgbackup
     nixpkgs.clang-tools
     nixpkgs.exercism
     nixpkgs.fzf

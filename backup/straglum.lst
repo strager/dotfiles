@@ -1,0 +1,22 @@
+R /home/strager
+
+# Don't back up the backups.
+! /home/strager/.cache/borg
+! /home/strager/borg-backups
+
+# Avoid backing up root-owned unreadable directories.
+! /home/strager/.aptitude
+! /home/strager/.dbus
+
+# Conserve space.
+! /home/strager/.cache/electron
+! /home/strager/.cache/mozilla/firefox
+! /home/strager/.cache/pip
+! /home/strager/.cache/yarn
+! /home/strager/.npm/_cacache
+! /home/strager/.rustup/toolchains
+! /home/strager/.stack/programs
+! /home/strager/Projects/bitcoin
+! /home/strager/Projects/llvm-project
+! /home/strager/tmp/Projects/gcc-host/build
+! /home/strager/tmp/Projects/gcc-host/build-*

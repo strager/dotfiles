@@ -1,0 +1,12 @@
+[Unit]
+Description = Schedule file backups
+
+[Timer]
+AccuracySec = 1us
+OnCalendar = daily
+RandomizedDelaySec = 30min
+
+# Back up even if we powered down overnight.
+Persistent = true
+
+Unit = strager-back-up.service

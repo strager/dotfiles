@@ -1,4 +1,4 @@
-python_env_dir := python-env
+python_env_dir := $(PWD)/python-env
 python_version := 3.6
 python_site_packages := $(python_env_dir)/lib/python$(python_version)/site-packages
 PYTHON := $(python_env_dir)/bin/python3
@@ -21,12 +21,16 @@ zsh/strager/strager_initialize_menuselect: zsh/generate-strager-initialize-menus
 	$(<)
 
 .PHONY: check
-check: check-duplicity check-vim check-vim-lint check-zsh
+check: check-duplicity check-backup check-vim check-vim-lint check-zsh
 
 .PHONY: check-duplicity
 check-duplicity:
 	@# TODO(strager): Force doCheck=true.
 	nix-build --attr duplicity --no-out-link '<nixpkgs>'
+
+.PHONY: check-backup
+check-backup: $(PYTHON)
+	cd backup && $(PYTHON) -m unittest discover -p '*.py'
 
 .PHONY: check-vim
 check-vim:
@@ -45,7 +49,7 @@ format: format-python
 
 .PHONY: format-python
 format-python: $(python_env_dir)/bin/black
-	$(python_env_dir)/bin/black --quiet -- zsh/
+	$(python_env_dir)/bin/black --quiet -- backup/ zsh/
 
 %/doc/tags: always_run
 	vim \

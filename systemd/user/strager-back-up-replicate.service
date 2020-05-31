@@ -1,0 +1,26 @@
+[Unit]
+Description = Copy backed-up files to remote machine
+
+After = strager-back-up.service
+
+[Service]
+Type = oneshot
+
+ExecStart = /usr/bin/env python3 -m stragerbackup.replicate
+# TODO(strager): Don't hard-code this path.
+WorkingDirectory = /home/strager/Projects/dotfiles/backup
+
+Restart = no
+TimeoutStartSec = 3hour
+
+# Allow replication to lock the backup repositories.
+ProtectHome = false
+ProtectSystem = true
+
+# Don't hinder interactive system usage.
+Nice = 15
+CPUSchedulingPolicy = batch
+IOSchedulingClass = idle
+
+# TODO(strager): If a copy is running, does that prevent
+# system shutdown?

@@ -1,0 +1,28 @@
+[Unit]
+Description = Back up files using Borg
+
+Before = strager-back-up-replicate.service
+Wants = strager-back-up-replicate.service
+
+[Service]
+Type = oneshot
+
+ExecStart = /usr/bin/env python3 -m stragerbackup.archive
+# TODO(strager): Don't hard-code this path.
+WorkingDirectory = /home/strager/Projects/dotfiles/backup
+
+ProtectHome = false
+ProtectSystem = true
+Restart = no
+TimeoutStartSec = 60min
+
+# Don't hinder interactive system usage.
+Nice = 15
+CPUSchedulingPolicy = batch
+IOSchedulingClass = idle
+
+# Prevent many backups happening back-to-back (I think).
+RestartSec = 5min
+
+# TODO(strager): If a backup is running, does that prevent
+# system shutdown?
