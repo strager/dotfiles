@@ -1,4 +1,4 @@
-language: nix
+language: minimal
 
 os:
   - linux
@@ -7,11 +7,17 @@ os:
 script:
   - set -e
 
+  - wget --retry-connrefused --waitretry=1 -O nix-install https://nixos.org/releases/nix/nix-2.3.6/install
+  - yes | sh nix-install
+  - . ~/.nix-profile/etc/profile.d/nix.sh
+  - nix-env --version
+
   - rm -f ~/.zshrc
   - ./install.sh "${HOME}"
 
   - ./install-packages
-  - nix-env -i bazaar mercurial ninja
+  - nix-env -i mercurial ninja
+  - case "$(uname)" in Linux) sudo apt-get install bzr ;; Darwin) brew install bzr ;; esac
 
   - make
   - make check
