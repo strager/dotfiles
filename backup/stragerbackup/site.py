@@ -36,6 +36,13 @@ class Site(typing.NamedTuple):
         return pathlib.Path(__file__).parent / ".." / f"{self.name}.lst"
 
 
+straddler_site = Site(
+    name="straddler",
+    slow_backup_frequency=datetime.timedelta(days=7),
+    backups_directory=pathlib.PosixPath("/Users/strager/borg-backups"),
+    keys_directory=pathlib.PosixPath("/Users/strager/borg-keys"),
+)
+
 sites = {
     "straglum": Site(
         name="straglum",
@@ -43,6 +50,8 @@ sites = {
         backups_directory=pathlib.PosixPath("/home/strager/borg-backups"),
         keys_directory=pathlib.PosixPath("/home/strager/borg-keys"),
     ),
+    "straddler.lan": straddler_site,
+    "straddler.local": straddler_site,
 }
 
 

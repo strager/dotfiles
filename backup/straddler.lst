@@ -1,0 +1,19 @@
+R /Users/strager
+
+# Don't back up the backups.
+! /Users/strager/.cache/borg
+! /Users/strager/borg-backups
+
+# Conserve space.
+! /Users/strager/.cache/duplicity
+! /Users/strager/.cache/nix
+! /Users/strager/.cache/nix-review
+! /Users/strager/.cache/nixpkgs-review
+! /Users/strager/Applications/Xcode*.app
+! /Users/strager/Library/Application Support/Bitcoin
+! /Users/strager/Library/Application Support/Microsoft/Skype for Desktop/Cache
+! /Users/strager/Library/Application Support/Microsoft/Skype for Desktop/GPUCache
+! /Users/strager/Library/Application Support/iStat Menus/databases/iStatMenusStatus.db
+! /Users/strager/Library/Caches
+! /Users/strager/Saved Downloads
+! /Users/strager/duplicity-backups
