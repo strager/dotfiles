@@ -182,6 +182,7 @@ call strager#cursor_shape#set_cursor_shapes({
   \ 'normal': 'block',
   \ 'replace': 'underline',
 \ })
+set guicursor+=a:blinkon0
 
 " filename [Help][-][RO]
 set statusline=\ \ \ %<%f\ %h%m%r
@@ -291,6 +292,12 @@ endif
 
 " Thanks, woosaaahh.
 set nrformats-=octal
+
+let g:ale_javascript_quick_lint_js_executable = 'C:\Users\strager\Documents\Projects\quick-lint-js\out\build\x64-Debug\quick-lint-js.exe'
+
+" @@@ move
+" @@@ polish, research
+set guifont=Comic\ Code:h20:cANSI:qDRAFT
 
 " Must be last.  Forgot why.
 set exrc secure
