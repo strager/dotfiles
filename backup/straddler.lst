@@ -17,3 +17,6 @@ R /Users/strager
 ! /Users/strager/Library/Caches
 ! /Users/strager/Saved Downloads
 ! /Users/strager/duplicity-backups
+
+# Conserve space deliberately.
+! /Users/strager/tmp/nobackup
