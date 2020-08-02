@@ -165,7 +165,7 @@ def get_borg_archives(
         ],
         key_file=key_file,
         passphrase_file=key_passphrase_file,
-        capture_output=True,
+        stdout=subprocess.PIPE,
     )
     process.check_returncode()
     return parse_borg_list_output(json.loads(process.stdout))

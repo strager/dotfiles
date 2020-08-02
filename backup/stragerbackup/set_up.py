@@ -12,6 +12,7 @@ import shutil
 import stragerbackup.archive
 import stragerbackup.borg
 import stragerbackup.site
+import subprocess
 import tempfile
 import typing
 import unittest
@@ -113,7 +114,7 @@ class TestBackups(unittest.TestCase):
                 list_command = stragerbackup.borg.run_borg_command(
                     command=["borg", "list", "--json", "--", str(site.repository)],
                     passphrase="tacotruck",
-                    capture_output=True,
+                    stdout=subprocess.PIPE,
                 )
                 list_command.check_returncode()
                 manual_archives = stragerbackup.borg.parse_borg_list_output(
@@ -140,7 +141,7 @@ class TestBackups(unittest.TestCase):
                 list_command = stragerbackup.borg.run_borg_command(
                     command=["borg", "list", "--json", "--", str(site.repository)],
                     passphrase="tacotruck",
-                    capture_output=True,
+                    stdout=subprocess.PIPE,
                 )
                 list_command.check_returncode()  # Should not fail.
 
