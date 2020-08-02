@@ -52,6 +52,16 @@ sites = {
     ),
     "straddler.lan": straddler_site,
     "straddler.local": straddler_site,
+    "staler": Site(
+        name="staler",
+        slow_backup_frequency=datetime.timedelta(days=28),
+        backups_directory=pathlib.PosixPath(
+            "/cygdrive/c/Users/strager/Documents/borg-backups"
+        ),
+        keys_directory=pathlib.PosixPath(
+            "/cygdrive/c/Users/strager/Documents/borg-keys"
+        ),
+    ),
 }
 
 

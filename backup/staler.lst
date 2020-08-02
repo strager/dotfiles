@@ -1,0 +1,23 @@
+R /cygdrive/c/Users/strager
+
+# Don't back up the backups.
+! /home/strager/.cache/borg
+! /cygdrive/c/Users/strager/Documents/borg-backups
+
+# @@@
+! /cygdrive/c/Users/strager/duplicity-backups
+
+# Conserve space.
+! /cygdrive/c/Users/strager/AppData/Local/Battle.net/BrowserCache
+! /cygdrive/c/Users/strager/AppData/Local/Battle.net/Cache
+! /cygdrive/c/Users/strager/AppData/Local/Google/Chrome/User Data/Default/Cache
+! /cygdrive/c/Users/strager/AppData/Local/Microsoft/Windows/Explorer/*cache*.db
+! /cygdrive/c/Users/strager/AppData/Local/Microsoft/Windows/WebCache
+! /cygdrive/c/Users/strager/AppData/Local/Mozilla/Firefox/Profiles/*/cache2
+! /cygdrive/c/Users/strager/AppData/Local/Mozilla/Firefox/Profiles/*/startupCache
+! /cygdrive/c/Users/strager/AppData/Local/osu!/Songs
+! /cygdrive/c/Users/strager/AppData/Roaming/Bitcoin
+! /cygdrive/c/Users/strager/Documents/Projects/obs-studio/build
+! /cygdrive/c/Users/strager/Documents/borg-backups
+! /cygdrive/c/Users/strager/Videos
+! /cygdrive/c/Users/strager/duplicity-backups
