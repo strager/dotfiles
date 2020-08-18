@@ -17,7 +17,12 @@
         <key>ProcessType</key>
         <string>Background</string>
         <key>Program</key>
-        <string>/Users/strager/Projects/dotfiles/backup/archive.sh</string>
+        <string>/usr/bin/open</string>
+        <key>ProgramArguments</key>
+        <array>
+            <string>open</string>
+            <string>/Users/strager/Projects/dotfiles/backup/strager Archive macOS.app</string>
+        </array>
         <key>WorkingDirectory</key>
         <string>/</string>
         <key>RunAtLoad</key>

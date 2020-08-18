@@ -1,0 +1,8 @@
+#!/usr/bin/env sh
+set -e
+set -u
+
+exec >>~/Library/Logs/local.strager.back-up.log 2>&1
+
+cd "$(dirname "${0}")"
+exec ../../../archive.sh
