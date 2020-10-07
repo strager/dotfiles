@@ -1,5 +1,5 @@
 [user]
-	name = Matthew Glazar
+	name = Matthew \"strager\" Glazar
 	email = strager.nds@gmail.com
 [core]
 	excludesfile = ~/.gitignore
