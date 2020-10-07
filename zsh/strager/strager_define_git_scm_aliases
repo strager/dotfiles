@@ -1,6 +1,6 @@
 strager_define_git_scm_aliases() {
     gs() {
-        git status -s -b "${@}"
+        git status -s -b "${@}" && { git ql 2>/dev/null || : }
     }
     gc() {
         git commit -v "${@}"
