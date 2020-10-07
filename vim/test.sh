@@ -116,6 +116,10 @@ stall() {
 # FIXME(strager): Enable after rewriting clangd integration.
 #run_vim_test --need-vimrc vim/vim/autoload/strager/test_tag_c.vim
 
+run_vim_syntax_test vim/vim/syntax/test_cpp/boolean.cpp
+run_vim_syntax_test vim/vim/syntax/test_cpp/comment.cpp
+run_vim_syntax_test vim/vim/syntax/test_cpp/macro.cpp
+run_vim_syntax_test vim/vim/syntax/test_cpp/type.cpp
 run_vim_syntax_test vim/vim/syntax/test_dirvish/dirvish
 run_vim_syntax_test vim/vim/syntax/test_javascript/boolean.js
 run_vim_syntax_test vim/vim/syntax/test_javascript/control.js
