@@ -140,3 +140,8 @@ quickfix
 HTMLImageElement
 
 # Uncategorized terms.
+WebAssembly
+WASM
+emscripten
+quick-lint-js
+Node.js
