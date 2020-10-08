@@ -77,10 +77,12 @@ def change_borg_passphrase(
 
 
 def change_borg_passphrase_interactively(
-    repository: pathlib.Path, key_file: pathlib.Path,
+    repository: pathlib.Path,
+    key_file: pathlib.Path,
 ) -> None:
     passphrase_command = run_borg_command(
-        ["borg", "key", "change-passphrase", "--", str(repository)], key_file=key_file,
+        ["borg", "key", "change-passphrase", "--", str(repository)],
+        key_file=key_file,
     )
     passphrase_command.check_returncode()
 
@@ -92,7 +94,8 @@ def copy_key_to_default(repository: pathlib.Path, key_file: pathlib.Path) -> Non
             repository=repository, output_file=exported_key_file, key_file=key_file
         )
         import_borg_key(
-            repository=repository, input_file=exported_key_file,
+            repository=repository,
+            input_file=exported_key_file,
         )
 
 
@@ -111,7 +114,10 @@ def export_borg_key(
     key_file: typing.Optional[pathlib.Path] = None,
     mode: str = "key",
 ) -> None:
-    mode_options = {"key": [], "paper": ["--paper"],}[mode]
+    mode_options = {
+        "key": [],
+        "paper": ["--paper"],
+    }[mode]
     export_command = run_borg_command(
         ["borg", "key", "export"]
         + mode_options
@@ -151,7 +157,9 @@ def import_borg_key(
 
 
 def get_borg_archives(
-    repository: pathlib.Path, key_file: pathlib.Path, key_passphrase_file: pathlib.Path,
+    repository: pathlib.Path,
+    key_file: pathlib.Path,
+    key_passphrase_file: pathlib.Path,
 ) -> typing.List["BorgArchive"]:
     process = run_borg_command(
         command=[

@@ -102,26 +102,22 @@ def send_and_expect_byte_by_byte(zsh: pexpect.spawn, input: bytes) -> bytes:
 
 
 def expect_ftcs_prompt(zsh: pexpect.spawn) -> None:
-    """Match a FinalTerm FTCS_PROMPT escape sequence.
-    """
+    """Match a FinalTerm FTCS_PROMPT escape sequence."""
     zsh.expect(b"\x1b]133;A" + ftcs_extra_arguments_re + b"\x07")
 
 
 def expect_ftcs_command_start(zsh: pexpect.spawn) -> None:
-    """Match a FinalTerm FTCS_COMMAND_START escape sequence.
-    """
+    """Match a FinalTerm FTCS_COMMAND_START escape sequence."""
     zsh.expect(b"\x1b]133;B" + ftcs_extra_arguments_re + b"\x07")
 
 
 def expect_ftcs_command_executed(zsh: pexpect.spawn) -> None:
-    """Match a FinalTerm FTCS_COMMAND_EXECUTED escape sequence.
-    """
+    """Match a FinalTerm FTCS_COMMAND_EXECUTED escape sequence."""
     zsh.expect(b"\x1b]133;C" + ftcs_extra_arguments_re + b"\x07")
 
 
 def expect_ftcs_command_finished(zsh: pexpect.spawn) -> typing.Optional[int]:
-    """Match a FinalTerm FTCS_COMMAND_FINISHED escape sequence.
-    """
+    """Match a FinalTerm FTCS_COMMAND_FINISHED escape sequence."""
     zsh.expect(
         b"\x1b]133;D(?:;(?P<exit_status>[0-9]+))?" + ftcs_extra_arguments_re + b"\x07"
     )
@@ -132,8 +128,7 @@ def expect_ftcs_command_finished(zsh: pexpect.spawn) -> typing.Optional[int]:
 
 
 def expect_iterm_current_dir(zsh: pexpect.spawn) -> bytes:
-    """Match a iTerm CurrentDir escape sequence.
-    """
+    """Match a iTerm CurrentDir escape sequence."""
     zsh.expect(b"\x1b](?:1337|50);CurrentDir=(?P<iterm_current_dir_path>.*?)\x07")
     return zsh.match.group("iterm_current_dir_path")
 

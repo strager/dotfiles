@@ -62,17 +62,21 @@ def set_up_backups(site: stragerbackup.site.Site) -> None:
             repository=site.repository, key_file=temporary_key_file
         )
         stragerbackup.borg.change_borg_passphrase_interactively(
-            repository=site.repository, key_file=temporary_key_file,
+            repository=site.repository,
+            key_file=temporary_key_file,
         )
         stragerbackup.borg.copy_key_to_default(
             repository=site.repository, key_file=temporary_key_file
         )
 
     stragerbackup.borg.export_borg_key(
-        repository=site.repository, output_file=site.exported_key_file,
+        repository=site.repository,
+        output_file=site.exported_key_file,
     )
     stragerbackup.borg.export_borg_key(
-        repository=site.repository, output_file=site.paper_key_file, mode="paper",
+        repository=site.repository,
+        output_file=site.paper_key_file,
+        mode="paper",
     )
 
 
