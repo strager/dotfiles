@@ -28,9 +28,6 @@ expected_nix_files=(
 )
 case "${os}" in
     Darwin)
-        expected_nix_files+=(
-            bin/duplicity
-        )
         if [ "${TRAVIS:-}" != true ]; then
             expected_nix_files+=(
                 Applications/iTerm.app/Contents/MacOS/iTerm2
@@ -61,9 +58,6 @@ nix_package_attrs=(
 )
 case "${os}" in
     Darwin)
-        nix_package_attrs+=(
-            nixpkgs.duplicity
-        )
         if [ "${TRAVIS:-}" != true ]; then
             nix_package_attrs+=(
                 nixpkgs.iterm2

@@ -21,12 +21,7 @@ zsh/strager/strager_initialize_menuselect: zsh/generate-strager-initialize-menus
 	$(<)
 
 .PHONY: check
-check: check-duplicity check-backup check-vim check-vim-lint check-zsh
-
-.PHONY: check-duplicity
-check-duplicity:
-	@# TODO(strager): Force doCheck=true.
-	nix-build --attr duplicity --no-out-link '<nixpkgs>'
+check: check-backup check-vim check-vim-lint check-zsh
 
 .PHONY: check-backup
 check-backup: $(PYTHON)
