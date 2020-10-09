@@ -29,4 +29,7 @@ highlight SpellCap cterm=undercurl ctermfg=Red
 " Deemphasize tab indicators ('list).
 highlight SpecialKey cterm=NONE ctermfg=0 ctermbg=NONE
 
+" Make C++ modifiers like 'explicit' not look like types.
+highlight! link cppModifier cStorageClass
+
 let colors_name = 'strager'

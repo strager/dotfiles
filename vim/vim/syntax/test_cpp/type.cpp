@@ -2,6 +2,7 @@
 // CHECK-ALIAS: _ <none>
 // CHECK-ALIAS: b cType
 // CHECK-ALIAS: c cStorageClass
+// CHECK-ALIAS: m cppModifier
 // CHECK-ALIAS: t cInferredType
 
 // bbbb__ :CHECK-NEXT-LINE
@@ -52,3 +53,6 @@
 // TODO(strager): Don't highlight QLJS_FORCE_INLINE as a type in the code below:
   QLJS_FORCE_INLINE explicit bool_vector_16_sse2(__m128i data) noexcept
       : data_(data) {}
+
+// mmmmmmmm             :CHECK-NEXT-LINE
+   explicit MyClass() {}
