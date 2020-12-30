@@ -145,3 +145,13 @@ WASM
 emscripten
 quick-lint-js
 Node.js
+libc++
+simdjson
+signbit
+LIBCPP
+ABI
+inlined
+bitset
+typeof
+LSP
+URIs
