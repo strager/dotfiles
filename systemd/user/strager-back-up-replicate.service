@@ -6,7 +6,7 @@ After = strager-back-up.service
 [Service]
 Type = oneshot
 
-ExecStart = /usr/bin/env python3 -m stragerbackup.replicate
+ExecStart = /bin/sh -c 'PATH="${HOME}/.nix-profile/bin:${PATH}" ; python3 -m stragerbackup.replicate'
 # TODO(strager): Don't hard-code this path.
 WorkingDirectory = /home/strager/Projects/dotfiles/backup
 
