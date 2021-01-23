@@ -24,6 +24,7 @@ highlight StatusLine cterm=NONE ctermbg=Black ctermfg=Blue
 highlight StatusLineNC cterm=NONE ctermbg=Black ctermfg=Green
 
 highlight SpellBad cterm=undercurl ctermfg=Red
+highlight SpellCap cterm=undercurl ctermfg=Red
 
 " Deemphasize tab indicators ('list).
 highlight SpecialKey cterm=NONE ctermfg=0 ctermbg=NONE
