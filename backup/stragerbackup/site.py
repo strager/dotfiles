@@ -50,6 +50,12 @@ sites = {
         backups_directory=pathlib.PosixPath("/home/strager/borg-backups"),
         keys_directory=pathlib.PosixPath("/home/strager/borg-keys"),
     ),
+    "strapurp": Site(
+        name="strapurp",
+        slow_backup_frequency=datetime.timedelta(days=7),
+        backups_directory=pathlib.PosixPath("/home/strager/borg-backups"),
+        keys_directory=pathlib.PosixPath("/home/strager/borg-keys"),
+    ),
     "straddler.lan": straddler_site,
     "straddler.local": straddler_site,
     "staler": Site(
