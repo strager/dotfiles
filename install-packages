@@ -31,11 +31,6 @@ case "${os}" in
         expected_nix_files+=(
             bin/duplicity
         )
-        if [ "${TRAVIS:-}" != true ]; then
-            expected_nix_files+=(
-                Applications/iTerm.app/Contents/MacOS/iTerm2
-            )
-        fi
         ;;
 esac
 
@@ -64,11 +59,6 @@ case "${os}" in
         nix_package_attrs+=(
             nixpkgs.duplicity
         )
-        if [ "${TRAVIS:-}" != true ]; then
-            nix_package_attrs+=(
-                nixpkgs.iterm2
-            )
-        fi
         ;;
 esac
 
