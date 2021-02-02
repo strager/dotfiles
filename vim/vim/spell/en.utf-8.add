@@ -145,3 +145,8 @@ WASM
 emscripten
 quick-lint-js
 Node.js
+libFuzzer
+MSVC
+libFuzzer
+libFuzzer's
+Glazar
