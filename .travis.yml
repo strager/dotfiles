@@ -10,6 +10,11 @@ script:
   - wget --retry-connrefused --waitretry=1 -O nix-install https://nixos.org/releases/nix/nix-2.3.6/install
   - yes | sh nix-install
   - . ~/.nix-profile/etc/profile.d/nix.sh
+
+  - nix-channel --remove nixpkgs
+  - nix-channel --add https://nixos.org/channels/nixos-20.09 nixpkgs
+  - nix-channel --update
+  - nix-channel --list
   - nix-env --version
 
   - rm -f ~/.zshrc
