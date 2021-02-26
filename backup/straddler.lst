@@ -24,4 +24,5 @@ R /Users/strager
 ! /Users/strager/duplicity-backups
 
 # Conserve space deliberately.
+! /Users/strager/nobackup
 ! /Users/strager/tmp/nobackup
