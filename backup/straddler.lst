@@ -10,7 +10,8 @@ R /Users/strager
 ! /Users/strager/.cache/nix-review
 ! /Users/strager/.cache/nixpkgs-review
 ! /Users/strager/Applications/Xcode*.app
-! /Users/strager/Library/Application Support/Bitcoin
+! /Users/strager/Library/Application Support/Bitcoin/blocks
+! /Users/strager/Library/Application Support/Bitcoin/chainstate
 ! /Users/strager/Library/Application Support/Microsoft/Skype for Desktop/Cache
 ! /Users/strager/Library/Application Support/Microsoft/Skype for Desktop/GPUCache
 ! /Users/strager/Library/Application Support/ZeroNet/data/1*
