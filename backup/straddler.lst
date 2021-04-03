@@ -9,6 +9,8 @@ R /Users/strager
 ! /Users/strager/.cache/nix
 ! /Users/strager/.cache/nix-review
 ! /Users/strager/.cache/nixpkgs-review
+! /Users/strager/.hsd/chain
+! /Users/strager/.hsd/tree
 ! /Users/strager/.rustup
 ! /Users/strager/Applications/Xcode*.app
 ! /Users/strager/Library/Application Support/Bitcoin/blocks
