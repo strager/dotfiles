@@ -26,13 +26,6 @@ expected_nix_files=(
     bin/zsh
     share/zsh/site-functions/_caffeinate
 )
-case "${os}" in
-    Darwin)
-        expected_nix_files+=(
-            bin/duplicity
-        )
-        ;;
-esac
 
 nix_package_attrs=(
     nixpkgs.borgbackup
@@ -54,13 +47,6 @@ nix_package_attrs=(
     nixpkgs.zsh
     nixpkgs.zsh-completions
 )
-case "${os}" in
-    Darwin)
-        nix_package_attrs+=(
-            nixpkgs.duplicity
-        )
-        ;;
-esac
 
 main() {
     install_packages
