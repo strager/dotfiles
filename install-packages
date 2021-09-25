@@ -10,7 +10,6 @@ expected_nix_files=(
     bin/black
     bin/borg
     bin/clang-format
-    bin/exercism
     bin/flake8
     bin/fzf
     bin/git
@@ -30,7 +29,6 @@ expected_nix_files=(
 nix_package_attrs=(
     nixpkgs.borgbackup
     nixpkgs.clang-tools
-    nixpkgs.exercism
     nixpkgs.fzf
     nixpkgs.gitAndTools.gitFull
     nixpkgs.gnupg
