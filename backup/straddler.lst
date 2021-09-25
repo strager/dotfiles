@@ -9,9 +9,11 @@ R /Users/strager
 ! /Users/strager/.cache/nix
 ! /Users/strager/.cache/nix-review
 ! /Users/strager/.cache/nixpkgs-review
+! /Users/strager/.cargo
 ! /Users/strager/.hsd/chain
 ! /Users/strager/.hsd/tree
 ! /Users/strager/.rustup
+! /Users/strager/.stack
 ! /Users/strager/Applications/Xcode*.app
 ! /Users/strager/Library/Application Support/Bitcoin/blocks
 ! /Users/strager/Library/Application Support/Bitcoin/chainstate
@@ -27,6 +29,9 @@ R /Users/strager
 ! /Users/strager/Library/Caches
 ! /Users/strager/Saved Downloads
 ! /Users/strager/duplicity-backups
+! /Users/strager/tmp/Projects/emsdk/node
+! /Users/strager/tmp/Projects/emsdk/python
+! /Users/strager/tmp/Projects/emsdk/upstream
 
 # Conserve space deliberately.
 ! /Users/strager/nobackup
