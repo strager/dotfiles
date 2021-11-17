@@ -120,47 +120,6 @@ function! strager#file#list_directory(path) abort
   return l:names
 endfunction
 
-function! strager#file#find_file_upward_with_glob(path, glob) abort
-  let l:matches = []
-  for l:cur_path in strager#path#paths_upward(a:path)
-    " FIXME(strager): How can we escape l:cur_path for glob()?
-    let l:cur_path_glob_prefix = s:normalize_path_as_glob_result(l:cur_path.'/')
-    let l:cur_glob = l:cur_path_glob_prefix.a:glob
-    if has('win32')
-      " HACK(strager): For some reason, 'a/**/b' and 'a\**/b' match 'a\b' (i.e.
-      " 'a/b'), but 'a\**\b' doesn't match. Force the path component separator
-      " to / to work around this issue.
-      let l:cur_glob = substitute(l:cur_glob, '\\', '/', 'g')
-    endif
-    let l:cur_matches = glob(l:cur_glob, v:true, v:true, v:true)
-    if !empty(l:cur_matches)
-      let l:file_paths = []
-      for l:cur_match in l:cur_matches
-        if strpart(l:cur_match, 0, len(l:cur_path_glob_prefix))
-          \ !=# l:cur_path_glob_prefix
-          " FIXME(strager): We should use a proper function to make the path
-          " relative instead of string juggling.
-          throw 'Unexpected result from glob('.string(l:cur_glob).'): '
-            \ .string(l:cur_match)
-        endif
-        if strager#file#file_exists_case_sensitive(l:cur_match)
-          call add(
-            \ l:file_paths,
-            \ strpart(l:cur_match, len(l:cur_path_glob_prefix)),
-          \ )
-        endif
-      endfor
-      if !empty(l:file_paths)
-        call add(l:matches, {
-          \ 'file_paths': l:file_paths,
-          \ 'parent_path': l:cur_path,
-        \ })
-      endif
-    endif
-  endfor
-  return l:matches
-endfunction
-
 " HACK(strager): On Windows, globpath returns paths with \ as the component
 " spearator, even if the input path uses /.
 function! s:normalize_path_as_glob_result(path) abort
