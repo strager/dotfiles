@@ -10,12 +10,6 @@
 [submodule "vim/vim/bundle/fzf"]
 	path = vim/vim/pack/external/start/fzf
 	url = https://github.com/strager/fzf
-[submodule "vim/vim/bundle/async.vim"]
-	path = vim/vim/pack/external/start/async.vim
-	url = https://github.com/prabirshrestha/async.vim.git
-[submodule "vim/vim/bundle/vim-lsp"]
-	path = vim/vim/pack/external/start/vim-lsp
-	url = https://github.com/prabirshrestha/vim-lsp.git
 [submodule "vim/vim/bundle/ale"]
 	path = vim/vim/pack/external/start/ale
 	url = https://github.com/w0rp/ale.git
