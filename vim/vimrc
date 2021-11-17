@@ -107,6 +107,8 @@ command -complete=dir -nargs=+
   \ | call strager#window#open_quickfix_window()
 set grepformat=%f:%l:%c:%m
 set grepformat+=%-GNo\ files\ were\ searched\\,\ which\ means\ ripgrep\ probably\ applied\ a\ filter\ you\ didn't\ expect.\ Try\ running\ again\ with\ --debug.
+set grepformat+=%-GNo\ files\ were\ searched\\,\ which\ means\ ripgrep\ probably\ applied\ a\ filter\ you\ didn't\ expect.
+set grepformat+=%-GRunning\ with\ --debug\ will\ show\ why\ files\ are\ being\ skipped.
 set grepprg=rg
 if has('unix')
   set grepprg+=\ \</dev/null
