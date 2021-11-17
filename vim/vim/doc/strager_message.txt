@@ -42,7 +42,7 @@ yet, or the given path is malformed.
 							*ES006*  >
   Unsupported cursor shape
 
-|strager#cursor_shape#set_cursor_shape| was called with an invalid cursor
+|strager#cursor_shape#set_cursor_shapes| was called with an invalid cursor
 shape. The following cursor shapes are supported:
 	block
 	underline
