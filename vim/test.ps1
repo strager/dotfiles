@@ -77,7 +77,6 @@ function EscapeExecutableArguments {
 #RunVimTest -NeedVimrc -TestScript vim/vim/autoload/strager/test_directory_browser.vim
 #RunVimTest -NeedVimrc -TestScript vim/vim/autoload/strager/test_search_buffers.vim
 #RunVimTest -NeedVimrc -TestScript vim/vim/autoload/strager/test_syntax.vim
-#RunVimTest -NeedVimrc -TestScript vim/vim/autoload/strager/test_tag_c.vim
 RunVimTest -NeedVimrc -TestScript vim/vim/test/test_CVE-2019-12735.vim
 #RunVimTest -NeedVimrc -TestScript vim/vim/test/test_c_make_ninja.vim
 #RunVimTest -NeedVimrc -TestScript vim/vim/test/test_clipboard.vim
@@ -106,7 +105,6 @@ RunVimTest -TestScript vim/vim/autoload/strager/test_messages.vim
 #RunVimTest -TestScript vim/vim/autoload/strager/test_move_file.vim
 RunVimTest -TestScript vim/vim/autoload/strager/test_path.vim
 RunVimTest -TestScript vim/vim/autoload/strager/test_pattern.vim
-#RunVimTest -TestScript vim/vim/autoload/strager/test_project.vim
 RunVimTest -TestScript vim/vim/autoload/strager/test_random_mt19937.vim
 #RunVimTest -TestScript vim/vim/autoload/strager/test_search_files.vim
 RunVimTest -TestScript vim/vim/autoload/strager/test_window.vim

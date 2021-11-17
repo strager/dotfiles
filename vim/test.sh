@@ -113,9 +113,6 @@ stall() {
     zsh -c 'zmodload zsh/zselect; zselect -r 1 -e 1'
 }
 
-# FIXME(strager): Enable after rewriting clangd integration.
-#run_vim_test --need-vimrc vim/vim/autoload/strager/test_tag_c.vim
-
 run_vim_syntax_test vim/vim/syntax/test_cpp/boolean.cpp
 run_vim_syntax_test vim/vim/syntax/test_cpp/comment.cpp
 run_vim_syntax_test vim/vim/syntax/test_cpp/macro.cpp
@@ -173,7 +170,6 @@ run_vim_test vim/vim/autoload/strager/test_messages.vim
 run_vim_test vim/vim/autoload/strager/test_move_file.vim
 run_vim_test vim/vim/autoload/strager/test_path.vim
 run_vim_test vim/vim/autoload/strager/test_pattern.vim
-run_vim_test vim/vim/autoload/strager/test_project.vim
 run_vim_test vim/vim/autoload/strager/test_random_mt19937.vim
 run_vim_test vim/vim/autoload/strager/test_search_files.vim
 run_vim_test vim/vim/autoload/strager/test_window.vim
