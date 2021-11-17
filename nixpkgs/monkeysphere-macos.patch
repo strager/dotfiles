@@ -1,0 +1,10 @@
+--- a/Makefile
++++ b/Makefile
+@@ -17,7 +17,7 @@
+
+ CFLAGS += $(shell libassuan-config --cflags)
+ CFLAGS += $(shell libgcrypt-config --cflags)
+-CFLAGS += --pedantic -Wall -Werror -std=c99
++CFLAGS += --pedantic -Wall -std=c99
+ LIBS += $(shell libassuan-config --libs)
+ LIBS += $(shell libgcrypt-config --libs)

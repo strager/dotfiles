@@ -2,6 +2,12 @@
   android_sdk.accept_license = true;
 
   packageOverrides = pkgs: {
+    monkeysphere = pkgs.monkeysphere.overrideAttrs (attrs: {
+      patches = (attrs.patches or []) ++ [
+        ./monkeysphere-macos.patch
+      ];
+    });
+
     vim = pkgs.vim.overrideAttrs (attrs: rec {
       # Work around throwpoint bug in Vim v8.2.0499 (fixed in v8.2.0823).
       version = "8.2.0823";
