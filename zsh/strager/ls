@@ -11,7 +11,7 @@ ls() {
             ls_options+=(--color --literal)
             ;;
 
-        *'illegal option -- -'*)
+        *'illegal option -- -'*|*'unrecognized option `--version'*)
             # ls is from macOS/BSD.
             ls_options+=(-G)
             ;;
