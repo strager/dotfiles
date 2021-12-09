@@ -17,6 +17,8 @@ call strager#move_file#register_command({'force': v:false})
 
 au BufEnter *.hs compiler ghcx
 
+let g:EditorConfig_core_mode = 'vim_core'
+
 packloadall
 
 """ Whitespace, indention, etc.
@@ -28,6 +30,8 @@ set cin noai
 set tw=60 cc=60
 set nojoinspaces
 set formatoptions=cloqr
+
+let g:EditorConfig_disable_rules = ['trim_trailing_whitespace']
 
 " g:StragerGetCStyleComments returns a list of 'comments parts. Use this
 " function in ftplugin-s.
