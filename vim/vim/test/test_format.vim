@@ -32,8 +32,8 @@ function! s:assert_buffer_contents_match_expected(expected_path) abort
     \ shellescape(a:expected_path),
   \ )
   if v:shell_error != 0
-    let l:diff_output = execute(printf(
-      \ 'silent !diff -u -- %s %s',
+    let l:diff_lines = systemlist(printf(
+      \ 'diff -u -- %s %s',
       \ shellescape(l:buffer_path),
       \ shellescape(a:expected_path),
     \ ))
@@ -42,7 +42,7 @@ function! s:assert_buffer_contents_match_expected(expected_path) abort
         \ .a:expected_path,
     \ )
     " FIXME(strager): This is broken on Windows and likely other platforms too.
-    for l:diff_line in split(@", '\n')
+    for l:diff_line in l:diff_lines
       call add(v:errors, 'diff: '.l:diff_line)
     endfor
   endif
