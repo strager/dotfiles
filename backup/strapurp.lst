@@ -2,6 +2,7 @@ R /home/strager
 
 # Don't back up the backups.
 ! /home/strager/.cache/borg
+! /home/strager/backups
 ! /home/strager/borg-backups
 
 # Avoid backing up root-owned unreadable directories.
