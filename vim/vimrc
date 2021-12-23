@@ -30,6 +30,7 @@ set cin noai
 set tw=60 cc=60
 set nojoinspaces
 set formatoptions=cloqr
+set cinoptions=l1
 
 let g:EditorConfig_disable_rules = ['trim_trailing_whitespace']
 

@@ -13,9 +13,26 @@ function! Test_python_insert_does_not_wrap_lines() abort
 endfunction
 
 function! s:set_up_python_helper_source() abort
-  new
+  %bwipeout!
   exec 'edit '.fnameescape(s:script_dir_path.'/test_format_helper.py')
   setlocal readonly
+endfunction
+
+function! Test_c_indent_after_case() abort
+  call s:set_up_c_helper_source()
+  " Reindent 'int x;'.
+  call cursor(7, 1)
+  silent! normal! ==
+  call s:assert_buffer_contents_match_expected(
+    \ s:script_dir_path.'/test_format_helper.c',
+  \ )
+endfunction
+
+function! s:set_up_c_helper_source() abort
+  %bwipeout!
+  exec 'edit '.fnameescape(s:script_dir_path.'/test_format_helper.c')
+  setlocal readonly
+  setlocal sw=2
 endfunction
 
 function! s:assert_buffer_contents_match_expected(expected_path) abort
