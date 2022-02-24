@@ -8,6 +8,28 @@
       ];
     });
 
+    python3 = pkgs.python3.override {
+      packageOverrides = python-self: python-super: {
+        twitch-python = python-super.twitch-python.overrideAttrs (attrs: {
+          patches = (attrs.patches or []) ++ [
+            ./twitch-allow-no-token.patch
+          ];
+        });
+      };
+    };
+
+    twitch-chat-downloader = pkgs.twitch-chat-downloader.overrideAttrs (attrs: {
+      src = pkgs.fetchFromGitHub {
+        owner = "PetterKraabol";
+        repo = "Twitch-Chat-Downloader";
+        rev = "7d8b00d1836cbb804489a75b57d6af131fc2cc55";
+        sha256 = "sha256-2eO4TKuP2k2AqRnJAfcvIuX3UDrD9J823ud2l2wogvg";
+      };
+      patches = (attrs.patches or []) ++ [
+        ./twitch-chat-downloader-no-oauth.patch
+      ];
+    });
+
     vim = pkgs.vim.overrideAttrs (attrs: rec {
       # Work around throwpoint bug in Vim v8.2.0499 (fixed in v8.2.0823).
       version = "8.2.0823";

@@ -1,0 +1,40 @@
+Disable OAuth; use only auth-less APIs
+
+I'm having trouble using tcd with OAuth tokens. Disable the
+code generating an OAuth token, and instead use all Twitch
+APIs without authentication. This works for my use case, but
+might break other use cases (such as getting chat logs for
+unpublished highlights).
+diff --git a/tcd/__init__.py b/tcd/__init__.py
+index cac0748..8c99fdf 100644
+--- a/tcd/__init__.py
++++ b/tcd/__init__.py
+@@ -58,15 +58,8 @@ def main():
+     # Client ID
+     Settings().config['client_id'] = Arguments().client_id or Settings().config.get('client_id', None) or input(
+         'Twitch client ID: ').strip()
+-    Settings().config['client_secret'] = Arguments().client_secret or Settings().config.get('client_secret', None) or input(
+-        'Twitch client secret: ').strip()
+     Settings().save()
+ 
+-    Arguments().oauth_token = requests.post(f"https://id.twitch.tv/oauth2/token"
+-                                            f"?client_id={Settings().config['client_id']}"
+-                                            f"&client_secret={Settings().config['client_secret']}"
+-                                            f"&grant_type=client_credentials").json()['access_token']
+-
+     # List formats
+     if Arguments().print_formats:
+         for format_name in [f for f in Settings().config['formats'] if f not in ['all']]:
+diff --git a/tcd/downloader.py b/tcd/downloader.py
+index 720b202..f50ab7d 100644
+--- a/tcd/downloader.py
++++ b/tcd/downloader.py
+@@ -19,7 +19,7 @@ from .settings import Settings
+ class Downloader:
+ 
+     def __init__(self):
+-        self.helix_api = Helix(client_id=Settings().config['client_id'], bearer_token=Arguments().oauth_token, use_cache=True)
++        self.helix_api = Helix(client_id=Settings().config['client_id'], bearer_token=None, use_cache=True)
+ 
+         self.formats: List[str] = []
+         self.whitelist: List[str] = []
