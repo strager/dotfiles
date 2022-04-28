@@ -11,7 +11,8 @@ Data flow diagram:
 
 ## Client setup for backing up
 
-TODO
+1. `python -m stragerbackup.create_nas`
+2. `python -m stragerbackup.create_local`
 
 ## Back up
 

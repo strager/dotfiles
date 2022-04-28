@@ -7,6 +7,7 @@ import typing
 class Site(typing.NamedTuple):
     name: str
     backed_up_directory: str
+    local_directory: str
     nas_sftp_directory: str
     ssh_key_file: str
     ssh_known_hosts_file: str
@@ -20,6 +21,7 @@ sites = [
     Site(
         name="strapurp",
         backed_up_directory="/home/strager",
+        local_directory="/home/strager/backups/strapurp/",
         nas_sftp_directory="homes/strager/backups/strapurp/",
         ssh_key_file="/home/strager/.ssh/id_rsa",
         ssh_known_hosts_file="/home/strager/.ssh/known_hosts",
