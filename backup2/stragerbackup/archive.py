@@ -28,7 +28,6 @@ def main() -> None:
 
     check_kopiaignore(site=site)
 
-    exit(0)
     command = ["kopia", "snapshot", "--", site.backed_up_directory]
     logger.info(f"$ {stragerbackup.util.command_string(command)}")
     subprocess.check_call(command)
