@@ -1,0 +1,24 @@
+# This file is installed into /home/strager.
+
+# Don't back up the backups.
+/.cache/borg
+/backups
+/borg-backups
+
+# Avoid backing up root-owned unreadable directories.
+/.aptitude
+/.dbus
+
+# Conserve space.
+/.cache/electron
+/.cache/mozilla/firefox
+/.cache/pip
+/.cache/yarn
+/.npm/_cacache
+/.rustup/toolchains
+/.stack/programs
+/Documents/twitchleak
+/Projects/bitcoin
+/Projects/llvm-project/build*
+/tmp/Projects/gcc-host/build
+/tmp/Projects/gcc-host/build-*
