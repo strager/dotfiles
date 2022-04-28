@@ -1,0 +1,26 @@
+Allow different client ID when fetching comments
+
+As of February 28, 2022, the v5 comments API appears to have a client ID
+whitelist. The whitelisted client IDs I have found are blacklisted for
+Helix APIs. Therefore, we need one client ID for Helix APIs and another
+client ID for v5 APIs.
+
+Allow the caller of Video.comments to specify a different client ID
+through a new function, Video.get_comments.
+
+diff --git a/twitch/helix/models/video.py b/twitch/helix/models/video.py
+index 163dec6..b03a908 100644
+--- a/twitch/helix/models/video.py
++++ b/twitch/helix/models/video.py
+@@ -31,7 +31,10 @@ class Video(Model):
+ 
+     @property
+     def comments(self) -> 'v5.Comments':
+-        return v5.V5(client_id=self._api.client_id,
++        return self.get_comments(client_id=self._api.client_id)
++
++    def get_comments(self, client_id) -> 'v5.Comments':
++        return v5.V5(client_id=client_id,
+                      use_cache=self._api.use_cache,
+                      cache_duration=self._api.cache_duration).comments(self.id)
+ 

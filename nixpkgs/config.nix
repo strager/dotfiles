@@ -13,6 +13,7 @@
         twitch-python = python-super.twitch-python.overrideAttrs (attrs: {
           patches = (attrs.patches or []) ++ [
             ./twitch-allow-no-token.patch
+            ./twitch-custom-comments-client-id.patch
           ];
         });
       };
@@ -27,6 +28,7 @@
       };
       patches = (attrs.patches or []) ++ [
         ./twitch-chat-downloader-no-oauth.patch
+        ./twitch-chat-downloader-separate-client-ids.patch
       ];
     });
 

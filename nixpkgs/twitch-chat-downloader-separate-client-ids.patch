@@ -1,0 +1,70 @@
+Allow different client IDs for Helix and v5 requests
+
+Today (February 28, 2022), my v5-enabled client ID stopped working for
+Helix requests. Work around this issue by allowing the user to specify
+different client IDs for Helix and v5 requests.
+
+diff --git a/tcd/__init__.py b/tcd/__init__.py
+index 8c99fdf..5e6a54a 100644
+--- a/tcd/__init__.py
++++ b/tcd/__init__.py
+@@ -22,7 +22,8 @@ def main():
+     parser.add_argument('-c', f'--{Arguments.Name.CHANNEL}', type=str, help='Channel names separated by commas')
+     parser.add_argument('-u', f'--{Arguments.Name.USER}', type=str, help='Messages from users, separated by commas')
+     parser.add_argument(f'--{Arguments.Name.FIRST}', type=int, default=5, help='Download chat from the last n VODs')
+-    parser.add_argument(f'--{Arguments.Name.CLIENT_ID.replace("_", "-")}', type=str, help='Twitch client ID')
++    parser.add_argument(f'--{Arguments.Name.CLIENT_ID.replace("_", "-")}', type=str, help='Twitch client ID for Helix (modern) API requests')
++    parser.add_argument(f'--{Arguments.Name.V5_CLIENT_ID.replace("_", "-")}', type=str, help='Twitch client ID for v5 (legacy) API requests')
+     parser.add_argument(f'--{Arguments.Name.CLIENT_SECRET.replace("_", "-")}', type=str, help='Twitch client secret')
+     parser.add_argument(f'--{Arguments.Name.VERBOSE}', action='store_true', help='Verbose output')
+     parser.add_argument('-q', f'--{Arguments.Name.QUIET}', action='store_true')
+@@ -58,6 +59,8 @@ def main():
+     # Client ID
+     Settings().config['client_id'] = Arguments().client_id or Settings().config.get('client_id', None) or input(
+         'Twitch client ID: ').strip()
++    Settings().config['v5_client_id'] = Arguments().v5_client_id or Settings().config.get('v5_client_id', None) or input(
++        'v5 Twitch client ID (optional): ').strip() or Settings().config['client_id']
+     Settings().save()
+ 
+     # List formats
+diff --git a/tcd/arguments.py b/tcd/arguments.py
+index 32fda76..ed5a339 100644
+--- a/tcd/arguments.py
++++ b/tcd/arguments.py
+@@ -19,6 +19,7 @@ class Arguments(metaclass=Singleton):
+         VERSION: str = 'version'
+         OUTPUT: str = 'output'
+         CLIENT_ID: str = 'client_id'
++        V5_CLIENT_ID: str = 'v5_client_id'
+         CLIENT_SECRET: str = 'client_secret'
+         CHANNEL: str = 'channel'
+         USER: str = 'user'
+@@ -55,6 +56,7 @@ class Arguments(metaclass=Singleton):
+ 
+         # Optional or prompted arguments
+         self.client_id: Optional[str] = arguments[Arguments.Name.CLIENT_ID]
++        self.v5_client_id: Optional[str] = arguments[Arguments.Name.V5_CLIENT_ID]
+         self.client_secret: Optional[str] = arguments[Arguments.Name.CLIENT_SECRET]
+         self.oauth_token: Optional[str] = None
+         self.first: Optional[int] = arguments[Arguments.Name.FIRST]
+diff --git a/tcd/downloader.py b/tcd/downloader.py
+index f50ab7d..375a184 100644
+--- a/tcd/downloader.py
++++ b/tcd/downloader.py
+@@ -20,6 +20,7 @@ class Downloader:
+ 
+     def __init__(self):
+         self.helix_api = Helix(client_id=Settings().config['client_id'], bearer_token=None, use_cache=True)
++        self.v5_client_id = Settings().config['v5_client_id']
+ 
+         self.formats: List[str] = []
+         self.whitelist: List[str] = []
+@@ -97,7 +98,7 @@ class Downloader:
+                 'comments': []
+             }
+ 
+-            for comment in video.comments:
++            for comment in video.get_comments(client_id=self.v5_client_id):
+ 
+                 # Skip unspecified users if a list is provided.
+                 if Arguments().users and comment.commenter.name.lower() not in Arguments().users:
