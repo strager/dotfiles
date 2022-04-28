@@ -7,5 +7,10 @@ exec >>~/Library/Logs/local.strager.back-up.log 2>&1
 
 cd "$(dirname "${0}")/../../.."
 PATH="${HOME}/.nix-profile/bin:${PATH}"
-python3 -m stragerbackup.archive
+# HACK(strager): Ignore archive errors for now.
+exit_status=0
+python3 -m stragerbackup.archive || exit_status="${?}"
+# Replicate even if there were errors archiving. "operation not permitted" is a
+# common error due to Apple privacy jails.
 python3 -m stragerbackup.replicate
+exit "${exit_status}"
