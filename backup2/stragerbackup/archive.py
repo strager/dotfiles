@@ -33,25 +33,39 @@ def main() -> None:
     logger.info(f"$ {stragerbackup.util.command_string(command)}")
     subprocess.check_call(command)
 
+
 def check_kopiaignore(site: stragerbackup.site.Site) -> None:
     backup_ignore_file = pathlib.Path(site.backed_up_directory, ".kopiaignore")
     if backup_ignore_file.is_symlink():
-        logger.error("file %s is a symlink, which Kopia does not support; not backing up", backup_ignore_file)
+        logger.error(
+            "file %s is a symlink, which Kopia does not support; not backing up",
+            backup_ignore_file,
+        )
         exit(1)
 
     source_ignore_file = site.source_ignore_file.resolve()
     expected_ignore_data = source_ignore_file.read_bytes()
     if backup_ignore_file.exists():
         if backup_ignore_file.read_bytes() != expected_ignore_data:
-            logger.error("file %s is out of sync with %s; copying from %s", backup_ignore_file, source_ignore_file, source_ignore_file)
+            logger.error(
+                "file %s is out of sync with %s; copying from %s",
+                backup_ignore_file,
+                source_ignore_file,
+                source_ignore_file,
+            )
             copy = True
         else:
             copy = False
     else:
-        logger.info("file %s does not exist; copying from %s", backup_ignore_file, source_ignore_file)
+        logger.info(
+            "file %s does not exist; copying from %s",
+            backup_ignore_file,
+            source_ignore_file,
+        )
         copy = True
     if copy:
         atomic_write_read_only_file(backup_ignore_file, expected_ignore_data)
+
 
 def atomic_write_read_only_file(path: pathlib.Path, content: bytes) -> None:
     """Atomically create or overwrite a file. The file is marked as read-only.
@@ -63,8 +77,9 @@ def atomic_write_read_only_file(path: pathlib.Path, content: bytes) -> None:
     with tempfile.TemporaryDirectory() as temp_dir:
         temp_path = pathlib.Path(temp_dir) / "temp"
         temp_path.write_bytes(content)
-        os.chmod(temp_path, stat.S_IREAD|stat.S_IRGRP|stat.S_IROTH)
+        os.chmod(temp_path, stat.S_IREAD | stat.S_IRGRP | stat.S_IROTH)
         temp_path.replace(path)
+
 
 if __name__ == "__main__":
     main()
