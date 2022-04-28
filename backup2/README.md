@@ -11,8 +11,9 @@ Data flow diagram:
 
 ## Client setup for backing up
 
-1. `python -m stragerbackup.create_nas`
-2. `python -m stragerbackup.create_local`
+1. `python -m stragerbackup.create_local`
+2. `python -m stragerbackup.replicate`
+3. Change the password of the repository on strager-nas.
 
 ## Back up
 
