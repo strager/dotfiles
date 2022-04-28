@@ -1,0 +1,11 @@
+#!/usr/bin/env sh
+set -e
+set -u
+
+mkdir -p ~/Library/Logs/
+exec >>~/Library/Logs/local.strager.back-up.log 2>&1
+
+cd "$(dirname "${0}")/../../.."
+PATH="${HOME}/.nix-profile/bin:${PATH}"
+python3 -m stragerbackup.archive
+python3 -m stragerbackup.replicate

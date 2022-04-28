@@ -13,7 +13,7 @@ OUT="$1"
 cd "$HERE"
 
 projects=(
-  backup
+  backup2
   bash
   firefox
   fish

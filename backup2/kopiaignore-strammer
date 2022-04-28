@@ -1,0 +1,46 @@
+# This file is installed into /Users/strager.
+
+# Don't back up the backups.
+/.cache/borg
+/backups
+/borg-backups
+
+# Conserve space.
+/.cache/borg
+/.cache/duplicity
+/.cache/nix
+/.cache/nix-review
+/.cache/nixpkgs-review
+/.cargo
+/.hsd/chain
+/.hsd/tree
+/.rustup
+/.stack
+/Applications/Xcode*.app
+/Downloads/Xcode*.xip
+/Library/Application Support/Bitcoin/blocks
+/Library/Application Support/Bitcoin/chainstate
+/Library/Application Support/Daedalus Mainnet/Logs
+/Library/Application Support/Daedalus Mainnet/chain
+/Library/Application Support/Microsoft/Skype for Desktop/Cache
+/Library/Application Support/Microsoft/Skype for Desktop/GPUCache
+/Library/Application Support/ZeroNet/data/1*
+/Library/Application Support/iStat Menus/databases/iStatMenusStatus.db
+/Library/Application Support/lbry/Cache
+/Library/Application Support/lbry/Downloads
+/Library/Application Support/lbry/blobfiles
+/Library/Caches
+/Saved Downloads
+/duplicity-backups
+/tmp/Projects/emsdk/node
+/tmp/Projects/emsdk/python
+/tmp/Projects/emsdk/upstream
+/tmp/Projects/emsdk/upstream
+/tmp/Projects/nvm/.cache
+
+# Conserve space deliberately.
+/nobackup
+/tmp/nobackup
+
+# Work around 'permission denied' errors.
+/Library/Group Containers/group.com.apple.secure-control-center-preferences/Library/Preferences/group.com.apple.secure-control-center-preferences.av.plist

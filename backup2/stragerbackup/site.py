@@ -26,11 +26,19 @@ sites = [
         ssh_key_file="/home/strager/.ssh/id_rsa",
         ssh_known_hosts_file="/home/strager/.ssh/known_hosts",
     ),
+    Site(
+        name="strammer",
+        backed_up_directory="/Users/strager",
+        local_directory="/Users/strager/backups/strammer/",
+        nas_sftp_directory="homes/strager/backups/strammer/",
+        ssh_key_file="/Users/strager/.ssh/id_rsa",
+        ssh_known_hosts_file="/Users/strager/.ssh/known_hosts",
+    ),
 ]
 
 
 def get_site_for_current_machine() -> Site:
-    return get_site_for_hostname(platform.node())
+    return get_site_for_hostname(platform.node().replace(".lan", ""))
 
 
 def get_site_for_hostname(hostname: str) -> Site:
