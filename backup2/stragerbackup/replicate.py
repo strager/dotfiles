@@ -26,6 +26,7 @@ def main() -> None:
 
     command = [
         "kopia",
+        "--no-progress",
         "repository",
         "sync-to",
         "sftp",
