@@ -1,29 +1,10 @@
 function! strager#directory_browser#refresh_open_browsers() abort
-  let l:old_window_id = win_getid()
+  let l:old_tab_number = tabpagenr()
   try
-    for l:buffer in getbufinfo({'bufloaded': v:true})
-      let l:filetype = getbufvar(l:buffer.bufnr, '&filetype')
-      if l:filetype ==# 'dirvish'
-        call s:refresh_open_browser(l:buffer.bufnr)
-      endif
-    endfor
+    execute "tabdo windo normal \<c-l>"
   finally
-    " FIXME(strager): Does this change the scroll position or have other side
-    " effects?
-    call win_gotoid(l:old_window_id)
-  endtry
-endfunction
-
-function! s:refresh_open_browser(buffer_number) abort
-  " TODO(strager): Only create a temporary tab once per call to
-  " strager#directory_browser#refresh_open_browsers.
-  tabnew
-  let l:temporary_tab_number = tabpagenr()
-  try
-    execute printf('buffer %d', a:buffer_number)
-    Dirvish %
-  finally
-    execute printf('tabclose %d', l:temporary_tab_number)
+    execute printf('%dtabnext', l:old_tab_number)
+    " TODO(strager): Shouldn't we restore the current window too?
   endtry
 endfunction
 
@@ -45,6 +26,8 @@ endfunction
 function! strager#directory_browser#register_commands() abort
   command -complete=dir -nargs=1 BrowserMkdir
     \ call <SID>browser_mkdir_command(<q-args>)
+  command -nargs=0 BrowserUp
+    \ call <SID>browser_up_command()
 endfunction
 
 function! s:browser_mkdir_command(path) abort
@@ -54,9 +37,15 @@ function! s:browser_mkdir_command(path) abort
   call s:move_cursor_to_entry_if_possible(a:path)
 endfunction
 
+function! s:browser_up_command() abort
+  let l:path = expand('%:p')
+  Explore
+  call s:move_cursor_to_entry_if_possible(l:path)
+endfunction
+
 function! s:move_cursor_to_entry_if_possible(path) abort
   let l:absolute_path = resolve(a:path)
-  let l:browser_path = resolve(bufname('%'))
+  let l:browser_path = resolve(expand('%:p'))
   try
     let l:relative_path = strager#path#make_relative(
       \ l:browser_path,

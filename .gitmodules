@@ -13,9 +13,6 @@
 [submodule "vim/vim/bundle/ale"]
 	path = vim/vim/pack/external/start/ale
 	url = https://github.com/w0rp/ale.git
-[submodule "vim/vim/bundle/vim-dirvish"]
-	path = vim/vim/pack/external/start/vim-dirvish
-	url = https://github.com/strager/vim-dirvish.git
 [submodule "vim/vim/bundle/vim-nix"]
 	path = vim/vim/pack/external/start/vim-nix
 	url = https://github.com/LnL7/vim-nix.git

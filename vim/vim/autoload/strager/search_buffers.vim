@@ -13,7 +13,7 @@ function! strager#search_buffers#get_fzf_run_options_for_searching_buffers() abo
   elseif l:current_buffer_name ==# ''
     let l:header = '[No Name]'
   else
-    let l:header = s:pretty_buffer_name(l:current_buffer_name)
+    let l:header = s:pretty_buffer_name('%', l:current_buffer_name)
   endif
 
   let l:lines = map(
@@ -57,9 +57,9 @@ function! s:maybe_add_buffer(buffer_number, out_file_buffers, out_directory_buff
   if l:name ==# ''
     return
   endif
-  if s:is_directory_buffer(l:name)
-    let l:name = s:pretty_buffer_name(l:name)
-    if l:name ==# '.'
+  if s:is_directory_buffer(a:buffer_number)
+    let l:name = s:pretty_buffer_name(a:buffer_number, l:name)
+    if l:name ==# './'
       return
     endif
     let l:out_buffers = a:out_directory_buffers
@@ -72,9 +72,9 @@ function! s:maybe_add_buffer(buffer_number, out_file_buffers, out_directory_buff
   call add(l:out_buffers, {'name': l:name, 'number': a:buffer_number})
 endfunction
 
-function! s:pretty_buffer_name(buffer_name) abort
-  if s:is_directory_buffer(a:buffer_name)
-    return s:relative_path(a:buffer_name)
+function! s:pretty_buffer_name(buffer_number, buffer_name) abort
+  if s:is_directory_buffer(a:buffer_number)
+    return s:relative_path(a:buffer_name).'/'
   else
     return a:buffer_name
   endif
@@ -91,7 +91,9 @@ function! s:fzf_sink(lines) abort
   let [l:_, l:buffer_number_string; l:_] = matchlist(l:line, '^\(\d\+\) ')
   let l:buffer_number = str2nr(l:buffer_number_string)
   execute printf('buffer %s', l:buffer_number)
-  if s:is_directory_buffer(bufname('%'))
+  if s:is_directory_buffer('%')
+    " FIXME(strager): The below comment is from the Dirvish era and is probably
+    " outdated now that we use netrw.
     " HACK(strager): If we switch to a buffer whose name ends in '/', and there
     " is a 'try' block in the call stack, :buffer does not activate the
     " directory browser. (I suspect this is a bug in Vim.) We could use :silent!
@@ -102,8 +104,8 @@ function! s:fzf_sink(lines) abort
   endif
 endfunction
 
-function! s:is_directory_buffer(buffer_name) abort
-  return a:buffer_name =~# '/$'
+function! s:is_directory_buffer(buffer_number) abort
+  return getbufvar(a:buffer_number, 'netrw_browser_active', v:false)
 endfunction
 
 function! s:relative_path(path) abort

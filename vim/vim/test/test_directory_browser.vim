@@ -25,7 +25,7 @@ function! Test_browser_lists_symlinks_to_files() abort
   edit .
   let l:names = strager#buffer#get_current_buffer_lines()
   call sort(l:names)
-  call assert_equal(['file', 'symlink_to_file'], l:names)
+  call assert_equal(['file', "symlink_to_file@\t --> file"], l:names)
 endfunction
 
 function! Test_browser_lists_symlinks_to_directories() abort
@@ -34,7 +34,8 @@ function! Test_browser_lists_symlinks_to_directories() abort
   edit .
   let l:names = strager#buffer#get_current_buffer_lines()
   call sort(l:names)
-  call assert_equal(['dir/', 'symlink_to_dir/'], l:names)
+  " TODO(strager): Add '/' suffix.
+  call assert_equal(['dir/', "symlink_to_dir@\t --> dir"], l:names)
 endfunction
 
 function! Test_browser_lists_broken_symlinks() abort
@@ -42,7 +43,7 @@ function! Test_browser_lists_broken_symlinks() abort
   call strager#file#create_symbolic_link('does_not_exist', 'symlink')
   edit .
   let l:names = strager#buffer#get_current_buffer_lines()
-  call assert_equal(['symlink'], l:names)
+  call assert_equal(["symlink@\t --> does_not_exist"], l:names)
 endfunction
 
 function! Test_enter_opens_file_under_cursor() abort
@@ -69,7 +70,7 @@ function! Test_enter_key_opens_directory_under_cursor() abort
   edit .
   /sub
   execute "normal \<CR>"
-  call assert_equal('subdir/', s:get_relative_path_of_current_buffer())
+  call assert_equal('subdir', s:get_relative_path_of_current_buffer())
 endfunction
 
 function! Test_percent_key_prompts_file_name_then_opens_it() abort
@@ -215,8 +216,38 @@ function! Test_writing_new_file_does_not_change_focus_to_browser_in_split() abor
 
   split new_file.txt
   let l:file_buffer_number = bufnr('%')
+
+  split
+  execute "normal \<c-w>w\<c-w>w"
+
   write
   call assert_equal(l:file_buffer_number, bufnr('%'))
+endfunction
+
+function! Test_writing_new_file_does_not_change_focus_to_browser_in_tab() abort
+  call s:set_up_project([])
+  edit .
+
+  tabedit new_file.txt
+  let l:file_buffer_number = bufnr('%')
+
+  tabnew
+  tabprev
+
+  write
+  call assert_equal(l:file_buffer_number, bufnr('%'))
+endfunction
+
+function! Test_minus_in_file_opens_browser() abort
+  call s:set_up_project(['file1', 'file2', 'file3'])
+  edit file2
+
+  normal -
+
+  let l:names = strager#buffer#get_current_buffer_lines()
+  call sort(l:names)
+  call assert_equal(['file1', 'file2', 'file3'], l:names)
+  call assert_equal('file2', getline('.'))
 endfunction
 
 function! s:set_up_project(files_to_create) abort

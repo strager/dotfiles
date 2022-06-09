@@ -415,7 +415,7 @@ function! Test_selecting_unlisted_directory_in_fzf_reloads_directory() abort
   call strager#fzf#call_sink(l:run_options, [l:input_line])
 
   call assert_equal(
-    \ ['dir/file_a.txt', 'dir/file_b.txt'],
+    \ ['file_a.txt', 'file_b.txt'],
     \ strager#buffer#get_current_buffer_lines(),
   \ )
 endfunction

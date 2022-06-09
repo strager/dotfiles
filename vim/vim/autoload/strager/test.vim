@@ -13,6 +13,8 @@ function! strager#test#run_all_tests() abort
 endfunction
 
 function! strager#test#run_tests(test_function_names) abort
+  call strager#test#set_up()
+
   let l:failed_test_function_names = []
   " NOTE(strager): Emulate the output of Google Test's console reporter. This
   " lets us clearly see which test have which errors, for example.
@@ -60,4 +62,9 @@ function! strager#test#run_tests(test_function_names) abort
       cquit!
     endif
   endif
+endfunction
+
+function! strager#test#set_up() abort
+  " Load netrw.
+  doautocmd VimEnter *
 endfunction

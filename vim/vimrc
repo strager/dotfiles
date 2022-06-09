@@ -162,13 +162,14 @@ endwhile
 """ File management
 set autowrite 
 
-" Dirvish directory browser
-command! Explore echoerr 'Stop using :Ex. Use - instead!'
-let g:dirvish_relative_paths = 1
-let g:dirvish_mode = ':call strager#file_sort#sort_current_buffer()'
-let g:loaded_netrwPlugin = 1
+" netrw directory browser
+let g:netrw_banner = 0
+let g:netrw_list_hide = '^\.\.\?/$'
+let g:netrw_liststyle = 0
+let g:netrw_use_errorwindow = 0
 autocmd BufWritePost * call strager#directory_browser#refresh_open_browsers()
 call strager#directory_browser#register_commands()
+nnoremap <nowait><silent><unique> - :BrowserUp<CR>
 
 " Don't hide any files from completion.
 set wildignore=
