@@ -71,7 +71,7 @@ set smartcase ignorecase
 nmap <silent> <unique> <Leader>l :nohlsearch<CR>
 
 " Save searches
-set viminfo+=/200
+set viminfo+=/10000
 
 " :grep
 command -complete=dir -nargs=+
