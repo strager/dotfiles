@@ -56,9 +56,11 @@ vmap <unique> Y y
 """ Navigation
 set nofoldenable
 set foldmethod=marker
-set relativenumber
-set numberwidth=3
 set nostartofline
+
+" Line number gutter
+set norelativenumber
+set numberwidth=3
 
 autocmd CmdwinEnter * setlocal norelativenumber
 
