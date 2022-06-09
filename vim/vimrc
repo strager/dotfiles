@@ -12,7 +12,6 @@ set nocompatible
 set nomodeline
 
 """ Plugins
-call strager#help#register_command({'force': v:false})
 call strager#move_file#register_command({'force': v:false})
 
 au BufEnter *.hs compiler ghcx

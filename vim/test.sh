@@ -164,7 +164,6 @@ run_vim_test vim/vim/autoload/strager/test_file.vim
 run_vim_test vim/vim/autoload/strager/test_file_sort.vim
 run_vim_test vim/vim/autoload/strager/test_function.vim
 run_vim_test vim/vim/autoload/strager/test_fzf.vim
-run_vim_test vim/vim/autoload/strager/test_help.vim
 run_vim_test vim/vim/autoload/strager/test_list.vim
 run_vim_test vim/vim/autoload/strager/test_messages.vim
 run_vim_test vim/vim/autoload/strager/test_move_file.vim

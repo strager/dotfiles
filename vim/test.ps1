@@ -99,7 +99,6 @@ RunVimTest -TestScript vim/vim/autoload/strager/test_file.vim
 RunVimTest -TestScript vim/vim/autoload/strager/test_file_sort.vim
 #RunVimTest -TestScript vim/vim/autoload/strager/test_function.vim
 RunVimTest -TestScript vim/vim/autoload/strager/test_fzf.vim
-RunVimTest -TestScript vim/vim/autoload/strager/test_help.vim
 RunVimTest -TestScript vim/vim/autoload/strager/test_list.vim
 RunVimTest -TestScript vim/vim/autoload/strager/test_messages.vim
 #RunVimTest -TestScript vim/vim/autoload/strager/test_move_file.vim
