@@ -56,9 +56,7 @@ vmap <unique> Y y
 """ Navigation
 set nofoldenable
 set foldmethod=marker
-if v:version >= 703
-    set relativenumber
-endif
+set relativenumber
 set numberwidth=3
 set nostartofline
 
