@@ -93,10 +93,6 @@ nmap <unique> <Leader>a :Grep<SPACE>
 nnoremap <unique> <tab> %
 vnoremap <unique> <tab> %
 
-" Navigate jump list with \j, \k
-nnoremap <unique> <Leader>j <C-I>
-nnoremap <unique> <Leader>k <C-O>
-
 """ Window and tab management
 " Windows
 nmap <unique> th <C-W>h
