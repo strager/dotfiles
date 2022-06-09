@@ -50,6 +50,9 @@ command! -nargs=? -range Align <line1>,<line2>call strager#align#align_section('
 " Make Y consistent with D (i.e. D : d$ :: Y : y$)
 nmap <unique> Y y$
 
+" Make Y behave like y in visual mode.
+vmap <unique> Y y
+
 """ Navigation
 set nofoldenable
 set foldmethod=marker
