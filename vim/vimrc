@@ -207,9 +207,7 @@ colorscheme strager
 
 " Make the vertical split column and the status line blend
 " with the line number column. See also colors/strager.vim.
-set fillchars+=vert:\ 
-" FIXME(strager): This overrides the previous line...
-set fillchars=stl:\ ,stlnc:\ 
+set fillchars=stl:\ ,stlnc:\ ,vert:\ 
 
 let c_space_errors=1
 let c_no_comment_fold=1
