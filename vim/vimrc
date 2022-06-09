@@ -29,12 +29,12 @@ set cinoptions=l1
 let g:EditorConfig_disable_rules = ['trim_trailing_whitespace']
 
 " Copyright Saleem Abdulrasool <compnerd@compnerd.org>
-command! GNUFormat :setlocal
-    \ cinoptions=>2s,n-1s,{s,^-1s,:1s,=1s,g0,h1s,t0,+1s,(0,u0,w1,m1
-    \ noexpandtab
-    \ shiftwidth=2
-    \ softtabstop=2
-    \ tabstop=8
+execute 'command! GNUFormat :setlocal '.
+  \ 'cinoptions=>2s,n-1s,{s,^-1s,:1s,=1s,g0,h1s,t0,+1s,(0,u0,w1,m1 '.
+  \ 'noexpandtab '.
+  \ 'shiftwidth=2 '.
+  \ 'softtabstop=2 '.
+  \ 'tabstop=8'
 
 """ Text manipulation
 set bs=indent,eol,start
