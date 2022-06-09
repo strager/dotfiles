@@ -89,11 +89,6 @@ endif
 set grepprg+=\ --color\ never\ --column\ --line-number\ --no-heading\ $*
 nmap <unique> <Leader>a :Grep<SPACE>
 
-" Use space to find space
-" (Note the space after f, F)
-" Kinda broken right now...
-nmap <unique> <Space> ef<Space>
-
 " Use tab for %
 nnoremap <unique> <tab> %
 vnoremap <unique> <tab> %
