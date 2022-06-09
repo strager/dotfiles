@@ -11,8 +11,6 @@ set nocompatible
 """ Plugins
 call strager#move_file#register_command({'force': v:false})
 
-au BufEnter *.hs compiler ghcx
-
 let g:EditorConfig_core_mode = 'vim_core'
 
 packloadall
