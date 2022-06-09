@@ -3,6 +3,7 @@
 // CHECK-ALIAS: b cType
 // CHECK-ALIAS: c cStorageClass
 // CHECK-ALIAS: m cppModifier
+// CHECK-ALIAS: s cppStructure
 // CHECK-ALIAS: t cInferredType
 
 // bbbb__ :CHECK-NEXT-LINE
@@ -56,3 +57,13 @@
 
 // mmmmmmmm             :CHECK-NEXT-LINE
    explicit MyClass() {}
+
+// TODO(strager): Fix these tests.
+// sssss t      sssss t :DISABLED-CHECK-NEXT-LINE
+   class C {};  class C;
+// ssssss t _ tttt    :DISABLED-CHECK-NEXT-LINE
+   struct C : Base {};
+// sssss t _        ttttt_         ttttt    :DISABLED-CHECK-NEXT-LINE
+   class C : public Base1, private Base2 {};
+// sssss t mmmmm    :CHECK-NEXT-LINE
+   class C final {};
