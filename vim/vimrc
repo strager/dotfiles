@@ -147,7 +147,7 @@ set listchars=
 set listchars+=precedes:<,extends:>
 set listchars+=tab:⇥\ 
 set sidescroll=5
-set scrolloff=5
+set scrolloff=0
 set shortmess=a     " Abbreviate status line
 set shortmess+=tToO " Other crap
 
