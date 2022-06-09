@@ -13,6 +13,8 @@ call strager#move_file#register_command({'force': v:false})
 
 let g:EditorConfig_core_mode = 'vim_core'
 
+let loaded_matchparen = v:true
+
 packloadall
 
 """ Whitespace, indention, etc.
@@ -150,8 +152,6 @@ set sidescroll=5
 set scrolloff=0
 set shortmess=a     " Abbreviate status line
 set shortmess+=tToO " Other crap
-
-let loaded_matchparen = v:true
 
 call strager#color_column#set_up_sync_colorcolumn_with_textwidth()
 
