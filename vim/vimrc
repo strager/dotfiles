@@ -95,13 +95,6 @@ vnoremap <unique> <tab> %
 
 """ Window and tab management
 " Windows
-nmap <unique> th <C-W>h
-nmap <unique> tl <C-W>l
-nmap <unique> tj <C-W>j
-nmap <unique> tk <C-W>k
-nmap <unique> ts :split<SPACE>
-nmap <unique> tv :vsplit<SPACE>
-nmap <unique> tc <C-W>c
 set splitbelow splitright
 
 " Tabs
