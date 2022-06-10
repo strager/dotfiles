@@ -71,7 +71,7 @@ function! strager#check_syntax#check_syntax_generic(options, out_issues) abort
         continue
       endif
       let l:expected_syntax_items = l:aliases[l:check_char]
-      if type(l:expected_syntax_items) ==# v:t_none
+      if l:expected_syntax_items is v:null
         continue
       endif
       let l:actual_syntax_item = l:Get_syntax_item(
@@ -101,7 +101,7 @@ function! s:format_syntax_items(syntax_item_names) abort
 endfunction
 
 function! s:format_syntax_item(syntax_item_name) abort
-  if a:syntax_item_name ==# v:none
+  if a:syntax_item_name ==# v:null
     return '<none>'
   else
     return a:syntax_item_name

@@ -1,7 +1,7 @@
 let s:script_path = expand('<sfile>:p')
 
 function! Test_parse_throwpoint_from_user_function() abort
-  let l:throwpoint = v:none
+  let l:throwpoint = v:null
   try
     " **MARKER Test_parse_throwpoint_from_user_function MARKER**
     throw 'My error'
@@ -20,11 +20,11 @@ function! Test_parse_throwpoint_from_user_function() abort
     \ s:test_marker_line_number('Test_parse_throwpoint_from_user_function'),
     \ l:throw_frame.line,
   \ )
-  call assert_equal(v:none, l:throw_frame.autocommand)
+  call assert_equal(v:null, l:throw_frame.autocommand)
 endfunction
 
 function! Test_parse_throwpoint_from_built_in_function() abort
-  let l:throwpoint = v:none
+  let l:throwpoint = v:null
   try
     " **MARKER Test_parse_throwpoint_from_built_in_function MARKER**
     call split([])
@@ -43,11 +43,11 @@ function! Test_parse_throwpoint_from_built_in_function() abort
     \ s:test_marker_line_number('Test_parse_throwpoint_from_built_in_function'),
     \ l:throw_frame.line,
   \ )
-  call assert_equal(v:none, l:throw_frame.autocommand)
+  call assert_equal(v:null, l:throw_frame.autocommand)
 endfunction
 
 function! Test_parse_throwpoint_through_built_in_function() abort
-  let l:throwpoint = v:none
+  let l:throwpoint = v:null
   let l:function = [function('<SNR>'.s:sid().'_throw_error')]
   try
     " **MARKER Test_parse_throwpoint_through_built_in_function caller MARKER**
@@ -78,7 +78,7 @@ function! Test_parse_throwpoint_through_built_in_function() abort
 endfunction
 
 function! Test_parse_throwpoint_from_live_lambda() abort
-  let l:throwpoint = v:none
+  let l:throwpoint = v:null
   " **MARKER Test_parse_throwpoint_from_lambda MARKER**"
   let l:lambda = [{-> undefined_name}]
   try
@@ -90,7 +90,7 @@ function! Test_parse_throwpoint_from_live_lambda() abort
   let [l:throw_frame; _] = l:frames
 
   call assert_equal(
-    \ v:none,
+    \ v:null,
     \ l:throw_frame.function.source_name,
     \ 'Lambda frames should not have a name',
   \ )
@@ -101,37 +101,37 @@ function! Test_parse_throwpoint_from_live_lambda() abort
 endfunction
 
 function! Test_parse_throwpoint_from_dead_lambda() abort
-  let l:throwpoint = v:none
+  let l:throwpoint = v:null
   let l:lambda = [{-> undefined_name}]
   try
     call l:lambda[0]()
   catch
     let l:throwpoint = v:throwpoint
   endtry
-  let l:lambda[0] = v:none
+  let l:lambda[0] = v:null
   " The lambda function should now be undefined.
   let l:frames = strager#exception#parse_throwpoint(l:throwpoint)
   let [l:throw_frame; _] = l:frames
 
   call assert_equal(
-    \ v:none,
+    \ v:null,
     \ l:throw_frame.function.source_name,
     \ 'Lambda frame should not have a name',
   \ )
   call assert_equal(
-    \ v:none,
+    \ v:null,
     \ l:throw_frame.script_path,
     \ 'Lambda frame should not have a source location',
   \ )
   call assert_equal(
-    \ v:none,
+    \ v:null,
     \ l:throw_frame.line,
     \ 'Lambda frame should not have a source location',
   \ )
 endfunction
 
 function! Test_parse_throwpoint_from_script_function() abort
-  let l:throwpoint = v:none
+  let l:throwpoint = v:null
   try
     " **MARKER Test_parse_throwpoint_from_script_function MARKER**"
     call s:throw_error()
@@ -163,7 +163,7 @@ function! Test_parse_throwpoint_from_script_function() abort
 endfunction
 
 function! Test_parse_throwpoint_from_script_function_via_funcref() abort
-  let l:throwpoint = v:none
+  let l:throwpoint = v:null
   try
     " **MARKER Test_parse_throwpoint_from_script_function_via_funcref MARKER**"
     call s:call_throw_error_via_funcref()
@@ -205,7 +205,7 @@ endfunction
 
 function! Test_parse_throwpoint_from_script_body() abort
   let l:test_script_path = strager#path#join([fnamemodify(s:script_path, ':h'), 'test_exception_helper.vim'])
-  let l:throwpoint = v:none
+  let l:throwpoint = v:null
   try
     execute 'source '.fnameescape(l:test_script_path)
   catch
@@ -214,10 +214,10 @@ function! Test_parse_throwpoint_from_script_body() abort
   let l:frames = strager#exception#parse_throwpoint(l:throwpoint)
   let [l:throw_frame; _] = l:frames
 
-  call assert_equal(v:none, l:throw_frame.function)
+  call assert_equal(v:null, l:throw_frame.function)
   call assert_equal(l:test_script_path, l:throw_frame.script_path)
   call assert_equal(1, l:throw_frame.line)
-  call assert_equal(v:none, l:throw_frame.autocommand)
+  call assert_equal(v:null, l:throw_frame.autocommand)
 endfunction
 
 function! Test_parse_throwpoint_from_autocmd() abort
@@ -226,7 +226,7 @@ function! Test_parse_throwpoint_from_autocmd() abort
     autocmd User test_parse_throwpoint_from_autocmd throw 'My error'
   augroup END
 
-  let l:throwpoint = v:none
+  let l:throwpoint = v:null
   try
     doautocmd User test_parse_throwpoint_from_autocmd
   catch
@@ -235,9 +235,9 @@ function! Test_parse_throwpoint_from_autocmd() abort
   let l:frames = strager#exception#parse_throwpoint(l:throwpoint)
   let [l:throw_frame; _] = l:frames
 
-  call assert_equal(v:none, l:throw_frame.function)
-  call assert_equal(v:none, l:throw_frame.script_path)
-  call assert_equal(v:none, l:throw_frame.line)
+  call assert_equal(v:null, l:throw_frame.function)
+  call assert_equal(v:null, l:throw_frame.script_path)
+  call assert_equal(v:null, l:throw_frame.line)
   call assert_equal('User', l:throw_frame.autocommand.event)
   call assert_equal(
     \ 'test_parse_throwpoint_from_autocmd',
@@ -246,7 +246,7 @@ function! Test_parse_throwpoint_from_autocmd() abort
 endfunction
 
 function! Test_format_throwpoint() abort
-  let l:throwpoint = v:none
+  let l:throwpoint = v:null
   try
     " **MARKER Test_format_throwpoint MARKER**"
     call s:call_throw_error_via_funcref()
@@ -306,7 +306,7 @@ endfunction
 function! Test_format_dead_lamba_throwpoint() abort
   let l:lambda = [{-> 42}]
   let l:throwpoint = printf('function %s, line 1', get(l:lambda[0], 'name'))
-  let l:lambda[0] = v:none
+  let l:lambda[0] = v:null
   call assert_equal(
     \ '::(lambda):',
     \ strager#exception#format_throwpoint(l:throwpoint),

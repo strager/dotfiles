@@ -12,9 +12,9 @@ function! strager#exception#format_throwpoint(throwpoint) abort
 endfunction
 
 function! s:format_frame(frame) abort
-  if a:frame.script_path !=# v:none
+  if a:frame.script_path !=# v:null
     let l:output = a:frame.script_path.':'.a:frame.line.':'
-  elseif type(a:frame.autocommand) !=# v:t_none
+  elseif !(a:frame.autocommand is v:null)
     let l:output = printf(
       \ ':%s[%s]:',
       \ a:frame.autocommand.event,
@@ -23,7 +23,7 @@ function! s:format_frame(frame) abort
   else
     let l:output = '::'
   endif
-  if type(a:frame.function) !=# v:t_none
+  if !(a:frame.function is v:null)
     if strager#function#is_lambda_function_name(a:frame.function.real_name)
       let l:output .= '(lambda):'
     else
@@ -55,8 +55,8 @@ function! strager#exception#parse_throwpoint(throwpoint) abort
     return l:frames
   else
     return [{
-      \ 'autocommand': v:none,
-      \ 'function': v:none,
+      \ 'autocommand': v:null,
+      \ 'function': v:null,
       \ 'line': l:throwing_function_line,
       \ 'script_path': l:script_path,
     \ }]
@@ -74,9 +74,9 @@ function! s:parse_autocommand_throwpoint(throwpoint) abort
   let [_, l:event, l:name; _] = l:match
   return [{
     \ 'autocommand': {'event': l:event, 'name': l:name},
-    \ 'function': v:none,
-    \ 'line': v:none,
-    \ 'script_path': v:none,
+    \ 'function': v:null,
+    \ 'line': v:null,
+    \ 'script_path': v:null,
   \ }]
 endfunction
 
@@ -93,12 +93,12 @@ endfunction
 
 function! s:frame(function_name, function_line) abort
   let l:loc = strager#function#function_source_location(a:function_name)
-  let l:line = v:none
-  if type(l:loc.line) !=# v:t_none
+  let l:line = v:null
+  if !(l:loc.line is v:null)
     let l:line = l:loc.line + a:function_line
   endif
   return {
-    \ 'autocommand': v:none,
+    \ 'autocommand': v:null,
     \ 'function': l:loc,
     \ 'line': l:line,
     \ 'script_path': l:loc.script_path,

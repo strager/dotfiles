@@ -11,21 +11,21 @@ function! strager#function#function_source_location(function) abort
   if l:real_function_name !~# '^\(s:\|[A-Z]\|'."\x80\xfdR".'\|.*#\|<lambda>\)'
     " a:function refers to a built-in function.
     return {
-      \ 'line': v:none,
+      \ 'line': v:null,
       \ 'real_name': l:real_function_name,
-      \ 'script_path': v:none,
-      \ 'source_name': v:none,
+      \ 'script_path': v:null,
+      \ 'source_name': v:null,
     \ }
   endif
   let l:source_location = s:basic_function_source_location(l:real_function_name)
-  let l:script_path = v:none
-  let l:line = v:none
-  let l:source_function_name = v:none
-  if type(l:source_location) !=# v:t_none
+  let l:script_path = v:null
+  let l:line = v:null
+  let l:source_function_name = v:null
+  if !(l:source_location is v:null)
     let l:script_path = l:source_location.script_path
     let l:line = l:source_location.line
     let l:source_function_name = s:source_function_name(l:real_function_name)
-    if l:line ==# v:none
+    if l:line ==# v:null
       let l:line = s:function_source_line(l:source_function_name, l:script_path)
     endif
   endif
@@ -44,11 +44,11 @@ function! s:basic_function_source_location(real_function_name) abort
       \ string(a:real_function_name),
     \ ))
   catch /E123:/
-    return v:none
+    return v:null
   endtry
   let l:function_info = strager#function#parse_ex_function_output(l:function_output)
   let l:script_path = l:function_info.script_path
-  if l:script_path ==# v:none
+  if l:script_path ==# v:null
     throw 'Failed to parse file name for function: '.a:real_function_name
   endif
   return {
@@ -73,13 +73,13 @@ function! strager#function#parse_ex_function_output(function_output) abort
   let l:match = matchlist(l:last_set_line, 'Last set from \(.\{-1,\}\)\%( line \(\d\+\)\)\?$')
   if empty(l:match)
     return {
-      \ 'line': v:none,
-      \ 'script_path': v:none,
+      \ 'line': v:null,
+      \ 'script_path': v:null,
     \ }
   endif
   let [_, l:script_path, l:line_string; _] = l:match
   if l:line_string ==# ''
-    let l:line = v:none
+    let l:line = v:null
   else
     let l:line = str2nr(l:line_string)
   endif
@@ -94,7 +94,7 @@ function! s:function_source_line(source_function_name, function_script_path) abo
   " FIXME(strager): Use an escaping function from strager#pattern#.
   let l:pattern = '\mfunction!\? '.escape(a:source_function_name, '').'('
 
-  let l:found_line_number = v:none
+  let l:found_line_number = v:null
   let l:cur_line_number = 1
   for l:line in readfile(a:function_script_path)
     if match(l:line, l:pattern) != -1
@@ -107,7 +107,7 @@ endfunction
 
 function! s:source_function_name(real_function_name) abort
   if strager#function#is_lambda_function_name(a:real_function_name)
-    return v:none
+    return v:null
   endif
   " <SNR>123_ -> s:
   let l:match = matchlist(a:real_function_name, '^'."\x80\xfd".'R\d\+_\(.\+\)$')

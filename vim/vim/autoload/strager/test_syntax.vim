@@ -1,6 +1,6 @@
 function! Test_syntax_loaded_by_edit_uses_fast_regexp_engine() abort
   let l:expected_regexpengine = 1
-  let g:strager_test_syntax_regexpengine = v:none
+  let g:strager_test_syntax_regexpengine = v:null
 
   let l:test_runtime_path = strager#file#make_directory_with_files([[
     \ 'syntax/javascript.vim',

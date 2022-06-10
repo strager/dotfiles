@@ -1,6 +1,6 @@
 function! Test_with_message_fails_if_function_does_not_throw() abort
   call strager#assert#assert_throws(
-    \ {-> v:none},
+    \ {-> v:null},
     \ '(some exception)',
     \ 'Empty function should throw (not...)',
   \ )
@@ -10,7 +10,7 @@ endfunction
 
 function! Test_without_message_fails_if_function_does_not_throw() abort
   call strager#assert#assert_throws(
-    \ {-> v:none},
+    \ {-> v:null},
     \ '(some exception)',
   \ )
   let l:error_messages = strager#assert#take_assertion_failure_messages()

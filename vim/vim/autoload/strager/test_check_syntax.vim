@@ -132,7 +132,7 @@ function! Test_check_syntax_with_no_checks() abort
   call s:check_syntax_generic({
     \ 'aliases': {},
     \ 'checks': [],
-    \ 'get_syntax_item': {line, column -> v:none},
+    \ 'get_syntax_item': {line, column -> v:null},
   \ }, l:issues)
   call assert_equal([], l:issues)
 endfunction
@@ -143,7 +143,7 @@ function! Test_check_syntax_with_only_space_ignore_checks() abort
     \ 'aliases': {},
     \ 'checks': [{'line': 1, 'check_string': '   '}],
     \ 'get_syntax_item': {line, column ->
-      \ [v:none, 'vimLineComment', 'vimCommand'][column - 1]
+      \ [v:null, 'vimLineComment', 'vimCommand'][column - 1]
     \ },
   \ }, l:issues)
   call assert_equal([], l:issues)
@@ -155,7 +155,7 @@ function! Test_check_syntax_with_tab_ignore_checks() abort
     \ 'aliases': {},
     \ 'checks': [{'line': 1, 'check_string': "\t\t\t"}],
     \ 'get_syntax_item': {line, column ->
-      \ [v:none, 'vimLineComment', 'vimCommand'][column - 1]
+      \ [v:null, 'vimLineComment', 'vimCommand'][column - 1]
     \ },
   \ }, l:issues)
   call assert_equal([], l:issues)
@@ -164,10 +164,10 @@ endfunction
 function! Test_check_syntax_with_only_aliased_ignore_checks() abort
   let l:issues = []
   call s:check_syntax_generic({
-    \ 'aliases': {'_': v:none},
+    \ 'aliases': {'_': v:null},
     \ 'checks': [{'line': 1, 'check_string': '___'}],
     \ 'get_syntax_item': {line, column ->
-      \ [v:none, 'vimLineComment', 'vimCommand'][column - 1]
+      \ [v:null, 'vimLineComment', 'vimCommand'][column - 1]
     \ },
   \ }, l:issues)
   call assert_equal([], l:issues)
@@ -178,7 +178,7 @@ function! Test_check_syntax_with_undefined_aliases() abort
   call s:check_syntax_generic({
     \ 'aliases': {},
     \ 'checks': [{'line': 1, 'check_string': 'x y'}],
-    \ 'get_syntax_item': {line, column -> v:none},
+    \ 'get_syntax_item': {line, column -> v:null},
   \ }, l:issues)
   call assert_equal([
     \ s:syntax_issue(1, 1, 'Unspecified alias code: x'),
@@ -191,7 +191,7 @@ function! Test_check_syntax_with_failing_positive_check() abort
   call s:check_syntax_generic({
     \ 'aliases': {'c': ['vimLineComment']},
     \ 'checks': [{'line': 1, 'check_string': 'c'}],
-    \ 'get_syntax_item': {line, column -> v:none},
+    \ 'get_syntax_item': {line, column -> v:null},
   \ }, l:issues)
   call assert_equal([
     \ s:syntax_issue(1, 1, 'Expected vimLineComment but got <none>'),
@@ -211,7 +211,7 @@ endfunction
 function! Test_check_syntax_with_failing_negative_check() abort
   let l:issues = []
   call s:check_syntax_generic({
-    \ 'aliases': {'_': [v:none]},
+    \ 'aliases': {'_': [v:null]},
     \ 'checks': [{'line': 1, 'check_string': '_'}],
     \ 'get_syntax_item': {line, column -> 'vimLineComment'},
   \ }, l:issues)
@@ -223,9 +223,9 @@ endfunction
 function! Test_check_syntax_with_passing_negative_check() abort
   let l:issues = []
   call s:check_syntax_generic({
-    \ 'aliases': {'_': [v:none]},
+    \ 'aliases': {'_': [v:null]},
     \ 'checks': [{'line': 1, 'check_string': '_'}],
-    \ 'get_syntax_item': {line, column -> v:none},
+    \ 'get_syntax_item': {line, column -> v:null},
   \ }, l:issues)
   call assert_equal([], l:issues)
 endfunction
@@ -233,9 +233,9 @@ endfunction
 function! Test_check_syntax_with_many_passing_negative_checks() abort
   let l:issues = []
   call s:check_syntax_generic({
-    \ 'aliases': {'_': [v:none]},
+    \ 'aliases': {'_': [v:null]},
     \ 'checks': [{'line': 1, 'check_string': '____'}],
-    \ 'get_syntax_item': {line, column -> v:none},
+    \ 'get_syntax_item': {line, column -> v:null},
   \ }, l:issues)
   call assert_equal([], l:issues)
 endfunction
@@ -246,7 +246,7 @@ function! Test_check_syntax_with_failing_adjacent_positive_checks() abort
     \ 'aliases': {'c': ['vimLineComment']},
     \ 'checks': [{'line': 1, 'check_string': 'cccc'}],
     \ 'get_syntax_item': {line, column ->
-      \ [v:none, v:none, 'vimLineComment', 'vimLineComment'][column - 1]
+      \ [v:null, v:null, 'vimLineComment', 'vimLineComment'][column - 1]
     \ },
   \ }, l:issues)
   call assert_equal([
@@ -263,7 +263,7 @@ function! Test_no_syntax_mismatches_for_ignored_lines() abort
     \ 'get_syntax_item': {line, column -> [
       \ ['vimLineComment', 'vimLineComment', 'vimLineComment'],
       \ ['vimCommand', 'vimCommand', 'vimCommand', 'vimCommand'],
-      \ ['vimCommand', v:none, 'vimLineComment'],
+      \ ['vimCommand', v:null, 'vimLineComment'],
     \ ][line - 1][column - 1]},
   \ }, l:issues)
   call assert_equal([], l:issues)
@@ -277,7 +277,7 @@ function! Test_syntax_mismatches_on_third_line() abort
     \ 'get_syntax_item': {line, column -> [
       \ ['vimLineComment', 'vimLineComment', 'vimLineComment'],
       \ ['vimCommand', 'vimCommand', 'vimCommand', 'vimCommand'],
-      \ ['vimCommand', v:none, 'vimLineComment'],
+      \ ['vimCommand', v:null, 'vimLineComment'],
     \ ][line - 1][column - 1]},
   \ }, l:issues)
   call assert_equal([
@@ -303,7 +303,7 @@ function! Test_alias_with_alternatives_fails_match() abort
     \ 'aliases': {'c': ['vimComment', 'vimLineComment']},
     \ 'checks': [{'line': 1, 'check_string': 'ccc'}],
     \ 'get_syntax_item': {line, column ->
-      \ ['vimCommand', v:none, 'vimLineComment'][column - 1]
+      \ ['vimCommand', v:null, 'vimLineComment'][column - 1]
     \ },
   \ }, l:issues)
   call assert_equal([

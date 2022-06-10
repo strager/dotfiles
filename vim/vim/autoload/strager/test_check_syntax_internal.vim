@@ -30,14 +30,14 @@ function! Test_syntax_check_aliases_of_one_none_alias() abort
   let l:aliases = s:parse_syntax_aliases([
     \ 'CHECK-ALIAS: / <none>',
   \ ])
-  call assert_equal({'/': [v:none]}, l:aliases)
+  call assert_equal({'/': [v:null]}, l:aliases)
 endfunction
 
 function! Test_syntax_check_aliases_of_one_ignore_alias() abort
   let l:aliases = s:parse_syntax_aliases([
     \ 'CHECK-ALIAS: _ <ignore>'
   \ ])
-  call assert_equal({'_': v:none}, l:aliases)
+  call assert_equal({'_': v:null}, l:aliases)
 endfunction
 
 function! Test_parse_syntax_check_alias_with_space_alias_code() abort
@@ -76,7 +76,7 @@ function! Test_parse_syntax_check_alias_with_multiple_choices_including_none() a
   let l:aliases = s:parse_syntax_aliases([
     \ 'CHECK-ALIAS: " <none>|vimCommand',
   \ ], l:issues)
-  call assert_equal({'"': [v:none, 'vimCommand']}, l:aliases)
+  call assert_equal({'"': [v:null, 'vimCommand']}, l:aliases)
   call assert_equal([], l:issues)
 endfunction
 
@@ -176,7 +176,7 @@ endfunction
 function! Test_syntax_item_from_current_window_without_syntax() abort
   new
   silent! normal! ihello world
-  call assert_equal(v:none, s:syntax_item_from_current_window(1, 1))
+  call assert_equal(v:null, s:syntax_item_from_current_window(1, 1))
 endfunction
 
 function! Test_syntax_item_from_current_window_with_vim_syntax() abort
@@ -198,8 +198,8 @@ function! s:get_quickfix_item_for_issue(issue) abort
 endfunction
 
 function! s:parse_syntax_aliases(lines, ...) abort
-  let l:out_issues = get(a:000, 0, v:none)
-  if type(l:out_issues) ==# v:t_none
+  let l:out_issues = get(a:000, 0, v:null)
+  if l:out_issues is v:null
     let l:issues = []
     let l:aliases = strager#check_syntax_internal#parse_syntax_aliases(
       \ a:lines,

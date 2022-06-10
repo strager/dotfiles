@@ -36,7 +36,7 @@ function! strager#check_syntax_internal#parse_syntax_aliases(lines, out_issues) 
     endif
     let [l:_, l:alias, l:syntax_item_names_string; l:_] = l:match
     if l:syntax_item_names_string ==# '<ignore>'
-      let l:syntax_item_names = v:none
+      let l:syntax_item_names = v:null
     else
       let l:syntax_item_names = split(l:syntax_item_names_string, '|')
       call map(l:syntax_item_names, {_, name ->
@@ -50,7 +50,7 @@ endfunction
 
 function! s:parse_check_alias_syntax_item_name(syntax_item_name) abort
   if a:syntax_item_name ==# '<none>'
-    return v:none
+    return v:null
   else
     return a:syntax_item_name
   endif
@@ -74,7 +74,7 @@ endfunction
 function! strager#check_syntax_internal#syntax_item_from_current_window(line, column) abort
   let l:syntax_item_ids = synstack(a:line, a:column)
   if l:syntax_item_ids ==# []
-    return v:none
+    return v:null
   endif
   return synIDattr(l:syntax_item_ids[-1], 'name', 'term')
 endfunction

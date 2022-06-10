@@ -58,17 +58,17 @@ endfunction
 function! Test_function_source_location_of_built_in_function() abort
   " Built-in function by name string.
   let l:loc = strager#function#function_source_location('getbufinfo')
-  call assert_equal(v:none, l:loc.line)
+  call assert_equal(v:null, l:loc.line)
   call assert_equal('getbufinfo', l:loc.real_name)
-  call assert_equal(v:none, l:loc.script_path)
-  call assert_equal(v:none, l:loc.source_name)
+  call assert_equal(v:null, l:loc.script_path)
+  call assert_equal(v:null, l:loc.source_name)
 
   " Built-in function by dynamic funcref.
   let l:loc = strager#function#function_source_location(function('getbufinfo'))
-  call assert_equal(v:none, l:loc.line)
+  call assert_equal(v:null, l:loc.line)
   call assert_equal('getbufinfo', l:loc.real_name)
-  call assert_equal(v:none, l:loc.script_path)
-  call assert_equal(v:none, l:loc.source_name)
+  call assert_equal(v:null, l:loc.script_path)
+  call assert_equal(v:null, l:loc.source_name)
 endfunction
 
 function! Test_function_source_location_of_live_lambda() abort
@@ -83,25 +83,25 @@ function! Test_function_source_location_of_live_lambda() abort
   \ ) - 1, l:loc.line)
   let l:lambda_name = matchlist(string(l:lambda[0]), "function('\\(.*\\)')")[1]
   call assert_equal(l:lambda_name, l:loc.real_name)
-  call assert_equal(v:none, l:loc.source_name, 'Lambdas should have no name')
+  call assert_equal(v:null, l:loc.source_name, 'Lambdas should have no name')
   call assert_equal(s:script_path, l:loc.script_path)
 endfunction
 
 function! Test_function_source_location_of_dead_lambda() abort
   let l:lambda = [{-> hello(world)}]
   let l:lambda_name = get(l:lambda[0], 'name')
-  let l:lambda[0] = v:none
+  let l:lambda[0] = v:null
   let l:loc = strager#function#function_source_location(l:lambda_name)
 
   call assert_equal(
-    \ v:none,
+    \ v:null,
     \ l:loc.line,
     \ 'Dead lambdas should not have a source location',
   \ )
   call assert_equal(l:lambda_name, l:loc.real_name)
-  call assert_equal(v:none, l:loc.source_name, 'Lambdas should have no name')
+  call assert_equal(v:null, l:loc.source_name, 'Lambdas should have no name')
   call assert_equal(
-    \ v:none,
+    \ v:null,
     \ l:loc.script_path,
     \ 'Dead lambdas should not have a source location',
   \ )
@@ -111,13 +111,13 @@ function! Test_function_source_location_of_unloaded_autoload_function() abort
   let l:loc = strager#function#function_source_location(
     \ 'strager#test_function_helper_unloaded#func',
   \ )
-  call assert_equal(v:none, l:loc.line)
+  call assert_equal(v:null, l:loc.line)
   call assert_equal(
     \ 'strager#test_function_helper_unloaded#func',
     \ l:loc.real_name,
   \ )
-  call assert_equal(v:none, l:loc.script_path)
-  call assert_equal(v:none, l:loc.source_name)
+  call assert_equal(v:null, l:loc.script_path)
+  call assert_equal(v:null, l:loc.source_name)
 endfunction
 
 function! Test_function_source_location_of_loaded_autoload_function() abort
@@ -215,7 +215,7 @@ function! Test_parse_old_ex_function_output() abort
   \ ], "\n")
   let l:function_info = strager#function#parse_ex_function_output(l:ex_function_output)
   call assert_equal('/nix/store/880405p4px2lgjnizg5pd68gwcdv2w0q-vim-8.0.1655/share/vim/vim80/plugin/netrwPlugin.vim', l:function_info.script_path)
-  call assert_equal(v:none, l:function_info.line)
+  call assert_equal(v:null, l:function_info.line)
 endfunction
 
 function! Test_parse_ex_function_output_with_missing_path() abort
@@ -234,8 +234,8 @@ function! Test_parse_ex_function_output_with_missing_path() abort
     \ '   endfunction',
   \ ], "\n")
   let l:function_info = strager#function#parse_ex_function_output(l:ex_function_output)
-  call assert_equal(v:none, l:function_info.script_path)
-  call assert_equal(v:none, l:function_info.line)
+  call assert_equal(v:null, l:function_info.script_path)
+  call assert_equal(v:null, l:function_info.line)
 endfunction
 
 " **MARKER s:script_function MARKER**
