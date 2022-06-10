@@ -1,6 +1,7 @@
 " CHECK-ALIAS: " <ignore>
 " CHECK-ALIAS: + vimOper
 " CHECK-ALIAS: _ <none>|vimOperParen
+" CHECK-ALIAS: v <none>|vimVar
 
 " Arithmetic operators:
 "     +   +   +  :CHECK-NEXT-LINE
@@ -47,11 +48,11 @@ let x .= y
 " Not operators:
 "      _          :CHECK-NEXT-LINE
 if a =~~ b | endif
-"    ____         :CHECK-NEXT-LINE
+"    vvvv         :CHECK-NEXT-LINE
 if F(isnt) | endif
-"    _____         :CHECK-NEXT-LINE
+"    vvvvv         :CHECK-NEXT-LINE
 if F(notis) | endif
-"    ______         :CHECK-NEXT-LINE
+"    vvvvvv         :CHECK-NEXT-LINE
 if F(xisnot) | endif
 "      _     _          :CHECK-NEXT-LINE
 if a &&? b ||? c | endif

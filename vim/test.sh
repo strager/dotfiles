@@ -5,7 +5,23 @@ set -o pipefail
 set -u
 
 run_vim_syntax_test() {
-    local test_script="${1:-}"
+    local vim_only=false
+    local test_script=
+    for arg in "${@}"; do
+        case "${arg}" in
+            --vim-only)
+                vim_only=true
+                ;;
+            *)
+                if [ "${test_script}" = '' ]; then
+                    test_script="${arg}"
+                else
+                    printf '%s: error: unrecognized argument: %s\n' "${0}" "${arg}" >&2
+                    return 1
+                fi
+                ;;
+        esac
+    done
     if [ "${test_script}" = '' ]; then
         printf '%s: error: missing test script\n' "${0}" >&2
         return 1
@@ -138,7 +154,7 @@ run_vim_syntax_test vim/vim/syntax/test_vim/operator.vim
 run_vim_syntax_test vim/vim/syntax/test_vim/pattern.vim
 run_vim_syntax_test vim/vim/syntax/test_vim/statement.vim
 run_vim_syntax_test vim/vim/syntax/test_vim/string.vim
-run_vim_syntax_test vim/vim/syntax/test_vim/user_function.vim
+run_vim_syntax_test --vim-only vim/vim/syntax/test_vim/user_function.vim
 run_vim_syntax_test vim/vim/syntax/test_vim/variable.vim
 run_vim_test --need-vimrc vim/vim/autoload/strager/test_directory_browser.vim
 run_vim_test --need-vimrc vim/vim/autoload/strager/test_search_buffers.vim
