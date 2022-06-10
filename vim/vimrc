@@ -50,6 +50,9 @@ set clipboard=
 command! -nargs=? -range Align <line1>,<line2>call strager#align#align_section('<args>')
 
 " Make Y consistent with D (i.e. D : d$ :: Y : y$)
+if has('nvim')
+  nunmap Y
+endif
 nmap <unique> Y y$
 
 " Make Y behave like y in visual mode.
@@ -188,7 +191,9 @@ set t_Cs= t_Ce=
 
 " Handle <ESC> immediately in insert mode. Wait indefinitely for incomplete
 " mappings.
-set esckeys
+if !has('nvim')
+  set esckeys
+endif
 set notimeout ttimeout ttimeoutlen=0
 set showcmd
 
