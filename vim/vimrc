@@ -142,6 +142,15 @@ set directory=~/.vim/swap//,.
 " fzf
 nmap <unique> <Leader>b :call strager#search_buffers#search_using_fzf()<CR>
 nmap <unique> <C-P> :call strager#search_files#search_using_fzf()<CR>
+let g:fzf_layout = {
+  \ 'window': {
+    \ 'border': 'top',
+    \ 'height': 9,
+    \ 'relative': v:false,
+    \ 'width': 1,
+    \ 'yoffset': 1,
+  \ }
+\ }
 
 """ Display
 set nowrap
