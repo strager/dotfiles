@@ -57,7 +57,7 @@ function! s:maybe_add_buffer(buffer_number, out_file_buffers, out_directory_buff
   if l:name ==# ''
     return
   endif
-  if s:is_directory_buffer(a:buffer_number)
+  if s:is_directory_buffer(a:buffer_number, l:name)
     let l:name = s:pretty_buffer_name(a:buffer_number, l:name)
     if l:name ==# './'
       return
@@ -73,7 +73,7 @@ function! s:maybe_add_buffer(buffer_number, out_file_buffers, out_directory_buff
 endfunction
 
 function! s:pretty_buffer_name(buffer_number, buffer_name) abort
-  if s:is_directory_buffer(a:buffer_number)
+  if s:is_directory_buffer(a:buffer_number, a:buffer_name)
     return s:relative_path(a:buffer_name).'/'
   else
     return a:buffer_name
@@ -91,7 +91,7 @@ function! s:fzf_sink(lines) abort
   let [l:_, l:buffer_number_string; l:_] = matchlist(l:line, '^\(\d\+\) ')
   let l:buffer_number = str2nr(l:buffer_number_string)
   execute printf('buffer %s', l:buffer_number)
-  if s:is_directory_buffer('%')
+  if s:is_directory_buffer_assume_loaded('%')
     " FIXME(strager): The below comment is from the Dirvish era and is probably
     " outdated now that we use netrw.
     " HACK(strager): If we switch to a buffer whose name ends in '/', and there
@@ -104,7 +104,16 @@ function! s:fzf_sink(lines) abort
   endif
 endfunction
 
-function! s:is_directory_buffer(buffer_number) abort
+function! s:is_directory_buffer(buffer_number, buffer_name) abort
+  if bufloaded(a:buffer_number)
+    return s:is_directory_buffer_assume_loaded(a:buffer_number)
+  else
+    return isdirectory(a:buffer_name)
+  endif
+endfunction
+
+" Precondition: a:buffer_number refers to a loaded buffer.
+function! s:is_directory_buffer_assume_loaded(buffer_number) abort
   return getbufvar(a:buffer_number, 'netrw_browser_active', v:false)
 endfunction
 
