@@ -236,6 +236,7 @@ vmap <unique> <Leader>s :sort u<CR>
 nmap <unique> <Leader>S vip:sort iu<CR>
 vmap <unique> <Leader>S :sort iu<CR>
 map <unique> <Leader>w :wa<CR>
+nmap <unique><silent> <Leader>q :call strager#quickfix#toggle_quickfix_window()<CR>
 
 command -range GistLinesToChat call system('chatgist', getbufline('%', <line1>, <line2>))
 vnoremap <unique> <F2> :GistLinesToChat<CR>
