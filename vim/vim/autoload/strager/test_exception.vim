@@ -78,6 +78,11 @@ function! Test_parse_throwpoint_through_built_in_function() abort
 endfunction
 
 function! Test_parse_throwpoint_from_live_lambda() abort
+  " TODO(strager): Neovim doesn't include the lambda in the throwpoint.
+  if has('nvim')
+    return
+  endif
+
   let l:throwpoint = v:null
   " **MARKER Test_parse_throwpoint_from_lambda MARKER**"
   let l:lambda = [{-> undefined_name}]
@@ -101,6 +106,11 @@ function! Test_parse_throwpoint_from_live_lambda() abort
 endfunction
 
 function! Test_parse_throwpoint_from_dead_lambda() abort
+  " TODO(strager): Neovim doesn't include the lambda in the throwpoint.
+  if has('nvim')
+    return
+  endif
+
   let l:throwpoint = v:null
   let l:lambda = [{-> undefined_name}]
   try

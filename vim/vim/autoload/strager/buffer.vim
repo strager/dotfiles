@@ -4,7 +4,7 @@ function! strager#buffer#is_current_buffer_new() abort
   end
 
   silent file
-  let l:match_index = match(v:statusmsg, '\V\[New file\]\|\[Not edited\]')
+  let l:match_index = match(v:statusmsg, '\V\[New file\]\|\[New\]\|\[Not edited\]')
   if l:match_index !=# -1
     return v:true
   endif

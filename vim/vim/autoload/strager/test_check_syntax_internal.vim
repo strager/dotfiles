@@ -189,7 +189,7 @@ function! Test_syntax_item_from_current_window_with_vim_syntax() abort
   silent! normal! oset nocompatible " This is a comment.
   call assert_equal('vimLineComment', s:syntax_item_from_current_window(1, 1))
   call assert_equal('vimCommand', s:syntax_item_from_current_window(3, 1))
-  call assert_equal('vimOption', s:syntax_item_from_current_window(3, 5))
+  call assert_match('^\(vimOption\|vimSet\)$', s:syntax_item_from_current_window(3, 5))
   call assert_equal('vimComment', s:syntax_item_from_current_window(3, 18))
 endfunction
 

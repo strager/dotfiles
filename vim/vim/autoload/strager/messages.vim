@@ -2,7 +2,7 @@ function! strager#messages#get_messages() abort
   let l:messages_string = execute('messages')
   let l:message_lines = split(l:messages_string, "\n")
 
-  if has('unix') && !(has('patch-8.2.0636') && &helplang ==# '')
+  if has('unix') && !(has('patch-8.2.0636') && &helplang ==# '') && !has('nvim')
     " HACK(strager): Drop the following message:
     "
     " > Messages maintainer: Bram Moolenaar <Bram@vim.org>
