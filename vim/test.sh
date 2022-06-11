@@ -4,6 +4,8 @@ set -e
 set -o pipefail
 set -u
 
+test_neovim=true
+
 run_vim_syntax_test() {
     local vim_only=false
     local test_script=
@@ -27,6 +29,10 @@ run_vim_syntax_test() {
         return 1
     fi
 
+    if "${vim_only}" && "${test_neovim}"; then
+        return 0
+    fi
+
     local log_file_path="$(mktemp /tmp/vim-test-sh.XXXXXX)"
     local script_args=(
         # Respect mode lines in syntax test files.
@@ -43,11 +49,15 @@ run_vim_syntax_test() {
 
 run_vim_test() {
     local need_vimrc=false
+    local vim_only=false
     local test_script=
     for arg in "${@}"; do
         case "${arg}" in
             --need-vimrc)
                 need_vimrc=true
+                ;;
+            --vim-only)
+                vim_only=true
                 ;;
             *)
                 if [ "${test_script}" = '' ]; then
@@ -62,6 +72,10 @@ run_vim_test() {
     if [ "${test_script}" = '' ]; then
         printf '%s: error: missing test script\n' "${0}" >&2
         return 1
+    fi
+
+    if "${vim_only}" && "${test_neovim}"; then
+        return 0
     fi
 
     local log_file_path="$(mktemp /tmp/vim-test-sh.XXXXXX)"
@@ -85,9 +99,11 @@ run_vim_with_log_file() {
     # Clear the log file.
     printf '' >"${log_file_path}"
 
-    # HACK(strager): Prevent Vim from stalling because it's not attached to a
-    # terminal.
-    vim_args=(--not-a-term "${vim_args[@]}")
+    if ! "${test_neovim}"; then
+        # HACK(strager): Prevent Vim from stalling because it's not attached to a
+        # terminal.
+        vim_args=(--not-a-term "${vim_args[@]}")
+    fi
 
     # Log test output to a file. Also, tell the test framework to :cqall! on
     # failure.
@@ -95,7 +111,11 @@ run_vim_with_log_file() {
     vim_args+=(--cmd "set verbosefile=${log_file_path}")
 
     local vim_status=0
-    silence_log_and_run vim "${vim_args[@]}" || vim_status="${?}"
+    local vim_command=vim
+    if "${test_neovim}"; then
+        vim_command=nvim
+    fi
+    silence_log_and_run "${vim_command}" "${vim_args[@]}" || vim_status="${?}"
 
     cat "${log_file_path}" >&2
     printf '\n' >&2
@@ -159,10 +179,10 @@ run_vim_syntax_test vim/vim/syntax/test_vim/variable.vim
 run_vim_test --need-vimrc vim/vim/autoload/strager/test_directory_browser.vim
 run_vim_test --need-vimrc vim/vim/autoload/strager/test_search_buffers.vim
 run_vim_test --need-vimrc vim/vim/autoload/strager/test_syntax.vim
-run_vim_test --need-vimrc vim/vim/test/test_CVE-2019-12735.vim
+run_vim_test --need-vimrc --vim-only vim/vim/test/test_CVE-2019-12735.vim
 run_vim_test --need-vimrc vim/vim/test/test_c_make_ninja.vim
 run_vim_test --need-vimrc vim/vim/test/test_clipboard.vim
-run_vim_test --need-vimrc vim/vim/test/test_color_column.vim
+run_vim_test --need-vimrc --vim-only vim/vim/test/test_color_column.vim
 run_vim_test --need-vimrc vim/vim/test/test_directory_browser.vim
 run_vim_test --need-vimrc vim/vim/test/test_format.vim
 run_vim_test --need-vimrc vim/vim/test/test_grep.vim
