@@ -118,6 +118,7 @@ endwhile
 
 """ File management
 set autowrite 
+set nohidden
 
 " netrw directory browser
 let g:netrw_banner = 0
