@@ -28,6 +28,24 @@ function! Test_c_indent_after_case() abort
   \ )
 endfunction
 
+function! Test_c_opening_new_line_after_comment_line_comments_new_line() abort
+  call s:set_up_c_helper_source()
+  /Test line which is entirely a comment
+
+  normal otest
+
+  call assert_equal('// test', getline('.'))
+endfunction
+
+function! Test_c_opening_new_line_after_trailing_comment_does_not_comment_new_line() abort
+  call s:set_up_c_helper_source()
+  /Test line with a trailing comment
+
+  normal otest
+
+  call assert_equal('test', getline('.'))
+endfunction
+
 function! s:set_up_c_helper_source() abort
   %bwipeout!
   exec 'edit '.fnameescape(s:script_dir_path.'/test_format_helper.c')

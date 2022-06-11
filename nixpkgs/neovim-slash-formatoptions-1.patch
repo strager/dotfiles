@@ -1,0 +1,117 @@
+commit 0a00792332add35c23b7cf96618ea317e7383a11
+Author: Christian Clason <c.clason@uni-graz.at>
+Date:   Sat May 7 16:49:36 2022 +0200
+
+    vim-patch:8.2.4907: some users do not want a line comment always inserted (#18463)
+    
+    Problem:    Some users do not want a line comment always inserted.
+    Solution:   Add the '/' flag to 'formatoptions' to not repeat the comment
+                leader after a statement when using "o".
+    https://github.com/vim/vim/commit/2bf875f881f7c6f6900bc0eb2a93a552db894109
+
+diff --git a/runtime/doc/change.txt b/runtime/doc/change.txt
+index a868983a6..ccc1f59b9 100644
+--- a/runtime/doc/change.txt
++++ b/runtime/doc/change.txt
+@@ -1586,11 +1586,10 @@ You can use the 'formatoptions' option  to influence how Vim formats text.
+ can separate the option letters with commas for readability.
+ 
+ letter	 meaning when present in 'formatoptions'    ~
+-
+ 							*fo-t*
+-t	Auto-wrap text using textwidth
++t	Auto-wrap text using 'textwidth'
+ 							*fo-c*
+-c	Auto-wrap comments using textwidth, inserting the current comment
++c	Auto-wrap comments using 'textwidth', inserting the current comment
+ 	leader automatically.
+ 							*fo-r*
+ r	Automatically insert the current comment leader after hitting
+@@ -1599,6 +1598,9 @@ r	Automatically insert the current comment leader after hitting
+ o	Automatically insert the current comment leader after hitting 'o' or
+ 	'O' in Normal mode.  In case comment is unwanted in a specific place
+ 	use CTRL-U to quickly delete it. |i_CTRL-U|
++							*fo-/*
++/	When 'o' is included: do not insert the comment leader for a //
++	comment after a statement, only when // is at the start of the line.
+ 							*fo-q*
+ q	Allow formatting of comments with "gq".
+ 	Note that formatting will not change blank lines or lines containing
+@@ -1661,8 +1663,8 @@ B	When joining lines, don't insert a space between two multibyte
+ 1	Don't break a line after a one-letter word.  It's broken before it
+ 	instead (if possible).
+ 							*fo-]*
+-]	Respect textwidth rigorously. With this flag set, no line can be
+-	longer than textwidth, unless line-break-prohibition rules make this
++]	Respect 'textwidth' rigorously. With this flag set, no line can be
++	longer than 'textwidth', unless line-break-prohibition rules make this
+ 	impossible.  Mainly for CJK scripts and works only if 'encoding' is
+ 	"utf-8".
+ 							*fo-j*
+diff --git a/src/nvim/change.c b/src/nvim/change.c
+index bbb10d3a5..426310488 100644
+--- a/src/nvim/change.c
++++ b/src/nvim/change.c
+@@ -1186,7 +1186,8 @@ int open_line(int dir, int flags, int second_line_indent, bool *did_do_comment)
+   end_comment_pending = NUL;
+   if (flags & OPENLINE_DO_COM) {
+     lead_len = get_leader_len(saved_line, &lead_flags, dir == BACKWARD, true);
+-    if (lead_len == 0 && curbuf->b_p_cin && do_cindent && dir == FORWARD) {
++    if (lead_len == 0 && curbuf->b_p_cin && do_cindent && dir == FORWARD
++        && !has_format_option(FO_NO_OPEN_COMS)) {
+       // Check for a line comment after code.
+       comment_start = check_linecomment(saved_line);
+       if (comment_start != MAXCOL) {
+diff --git a/src/nvim/option_defs.h b/src/nvim/option_defs.h
+index 7ec53de2b..d90ed6812 100644
+--- a/src/nvim/option_defs.h
++++ b/src/nvim/option_defs.h
+@@ -67,6 +67,7 @@
+ #define FO_WRAP_COMS    'c'
+ #define FO_RET_COMS     'r'
+ #define FO_OPEN_COMS    'o'
++#define FO_NO_OPEN_COMS '/'
+ #define FO_Q_COMS       'q'
+ #define FO_Q_NUMBER     'n'
+ #define FO_Q_SECOND     '2'
+@@ -85,7 +86,7 @@
+ 
+ #define DFLT_FO_VI      "vt"
+ #define DFLT_FO_VIM     "tcqj"
+-#define FO_ALL          "tcroq2vlb1mMBn,aw]jp"   // for do_set()
++#define FO_ALL          "tcro/q2vlb1mMBn,aw]jp"   // for do_set()
+ 
+ // characters for the p_cpo option:
+ #define CPO_ALTREAD     'a'     // ":read" sets alternate file name
+@@ -118,7 +119,7 @@
+ #define CPO_REMMARK     'R'     // remove marks when filtering
+ #define CPO_BUFOPT      's'
+ #define CPO_BUFOPTGLOB  'S'
+-#define CPO_TAGPAT      't'
++#define CPO_TAGPAT      't'     // tag pattern is used for "n"
+ #define CPO_UNDO        'u'     // "u" undoes itself
+ #define CPO_BACKSPACE   'v'     // "v" keep deleted text
+ #define CPO_FWRITE      'W'     // "w!" doesn't overwrite readonly files
+diff --git a/src/nvim/testdir/test_textformat.vim b/src/nvim/testdir/test_textformat.vim
+index b6be3d886..714539d41 100644
+--- a/src/nvim/testdir/test_textformat.vim
++++ b/src/nvim/testdir/test_textformat.vim
+@@ -278,6 +278,18 @@ func Test_format_c_comment()
+                       //
+   END
+   call assert_equal(expected, getline(1, '$'))
++  3delete
++
++  " No comment repeated with a slash in 'formatoptions'
++  set fo+=/
++  normal 2Gox
++  let expected =<< trim END
++      nop;
++      val = val;      // This is a comment
++      x
++  END
++  call assert_equal(expected, getline(1, '$'))
++  set fo-=/
+ 
+   " using 'indentexpr' instead of 'cindent' does not repeat a comment
+   setl nocindent indentexpr=2

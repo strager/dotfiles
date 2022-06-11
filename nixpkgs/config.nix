@@ -32,6 +32,13 @@
       ];
     });
 
+    neovim-unwrapped = pkgs.neovim-unwrapped.overrideAttrs (attrs: rec {
+      patches = (attrs.patches or []) ++ [
+        ./neovim-slash-formatoptions-1.patch
+        ./neovim-slash-formatoptions-2.patch
+      ];
+    });
+
     vim = pkgs.vim.overrideAttrs (attrs: rec {
       # Work around throwpoint bug in Vim v8.2.0499 (fixed in v8.2.0823).
       version = "8.2.0823";

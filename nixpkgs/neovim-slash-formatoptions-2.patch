@@ -1,0 +1,92 @@
+commit 4b4643be07e4e9259b3cb05e511e5047778733c1
+Author: zeertzjq <zeertzjq@outlook.com>
+Date:   Mon May 23 21:27:57 2022 +0800
+
+    vim-patch:8.2.5008: when 'formatoptions' contains "/" wrongly wrapping comment (#18717)
+    
+    Problem:    When 'formatoptions' contains "/" wrongly wrapping a long trailing
+                comment.
+    Solution:   Pass the OPENLINE_FORMAT flag.
+    https://github.com/vim/vim/commit/7e667788150be617aeac42b0d668618ac33ab9da
+
+diff --git a/src/nvim/change.c b/src/nvim/change.c
+index 349f74e28..c1fe5bc40 100644
+--- a/src/nvim/change.c
++++ b/src/nvim/change.c
+@@ -1188,7 +1188,7 @@ int open_line(int dir, int flags, int second_line_indent, bool *did_do_comment)
+   if (flags & OPENLINE_DO_COM) {
+     lead_len = get_leader_len(saved_line, &lead_flags, dir == BACKWARD, true);
+     if (lead_len == 0 && curbuf->b_p_cin && do_cindent && dir == FORWARD
+-        && !has_format_option(FO_NO_OPEN_COMS)) {
++        && (!has_format_option(FO_NO_OPEN_COMS) || (flags & OPENLINE_FORMAT))) {
+       // Check for a line comment after code.
+       comment_start = check_linecomment(saved_line);
+       if (comment_start != MAXCOL) {
+diff --git a/src/nvim/change.h b/src/nvim/change.h
+index e7c8a2b03..fdfa8a29e 100644
+--- a/src/nvim/change.h
++++ b/src/nvim/change.h
+@@ -5,11 +5,12 @@
+ #include "nvim/pos.h"  // for linenr_T
+ 
+ // flags for open_line()
+-#define OPENLINE_DELSPACES  1   // delete spaces after cursor
+-#define OPENLINE_DO_COM     2   // format comments
+-#define OPENLINE_KEEPTRAIL  4   // keep trailing spaces
+-#define OPENLINE_MARKFIX    8   // fix mark positions
+-#define OPENLINE_COM_LIST  16   // format comments with list/2nd line indent
++#define OPENLINE_DELSPACES  0x01  // delete spaces after cursor
++#define OPENLINE_DO_COM     0x02  // format comments
++#define OPENLINE_KEEPTRAIL  0x04  // keep trailing spaces
++#define OPENLINE_MARKFIX    0x08  // fix mark positions
++#define OPENLINE_COM_LIST   0x10  // format comments with list/2nd line indent
++#define OPENLINE_FORMAT     0x20  // formatting long comment
+ 
+ #ifdef INCLUDE_GENERATED_DECLARATIONS
+ # include "change.h.generated.h"
+diff --git a/src/nvim/edit.c b/src/nvim/edit.c
+index 1cc60f995..568a8573d 100644
+--- a/src/nvim/edit.c
++++ b/src/nvim/edit.c
+@@ -6246,6 +6246,7 @@ static void internal_format(int textwidth, int second_indent, int flags, int for
+     open_line(FORWARD, OPENLINE_DELSPACES + OPENLINE_MARKFIX
+               + (fo_white_par ? OPENLINE_KEEPTRAIL : 0)
+               + (do_comments ? OPENLINE_DO_COM : 0)
++              + OPENLINE_FORMAT
+               + ((flags & INSCHAR_COM_LIST) ? OPENLINE_COM_LIST : 0),
+               ((flags & INSCHAR_COM_LIST) ? second_indent : old_indent),
+               &did_do_comment);
+diff --git a/src/nvim/testdir/test_textformat.vim b/src/nvim/testdir/test_textformat.vim
+index 92705cb69..748af199b 100644
+--- a/src/nvim/testdir/test_textformat.vim
++++ b/src/nvim/testdir/test_textformat.vim
+@@ -289,11 +289,28 @@ func Test_format_c_comment()
+       x
+   END
+   call assert_equal(expected, getline(1, '$'))
++
++  " Comment is formatted when it wraps
++  normal 2GA with some more text added
++  let expected =<< trim END
++      nop;
++      val = val;      // This is a comment
++                      // with some more text
++                      // added
++      x
++  END
++  call assert_equal(expected, getline(1, '$'))
++
+   set fo-=/
+ 
+   " using 'indentexpr' instead of 'cindent' does not repeat a comment
+   setl nocindent indentexpr=2
+-  3delete
++  %del
++  let text =<< trim END
++      nop;
++      val = val;      // This is a comment
++  END
++  call setline(1, text)
+   normal 2Gox
+   let expected =<< trim END
+       nop;

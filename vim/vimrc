@@ -26,6 +26,9 @@ set cin noai
 set tw=80 cc=80
 set nojoinspaces
 set formatoptions=cloqr
+if has('nvim') || has('patch-8.2.4907')
+  set formatoptions+=/
+endif
 set cinoptions=l1
 
 let g:EditorConfig_disable_rules = ['trim_trailing_whitespace']

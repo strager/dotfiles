@@ -11,3 +11,7 @@ int main(int argc, char **argv) {
 
   return 0;
 }
+
+// Test line which is entirely a comment
+
+int x; // Test line with a trailing comment
