@@ -1,7 +1,7 @@
 " CHECK-ALIAS: " <ignore>
 " CHECK-ALIAS: + vimOper
 " CHECK-ALIAS: _ <none>|vimOperParen
-" CHECK-ALIAS: v <none>|vimVar
+" CHECK-ALIAS: v <none>|vimOperParen|vimVar
 
 " Arithmetic operators:
 "     +   +   +  :CHECK-NEXT-LINE
