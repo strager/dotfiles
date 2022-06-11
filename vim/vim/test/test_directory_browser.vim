@@ -144,10 +144,14 @@ function! Test_shift_d_key_prompts_deletion_of_file_under_cursor() abort
   \ )
   call strager#subvim#run_ex_command(l:terminal, '3')
 
-  call term_sendkeys(l:terminal, 'D')
-  call term_wait(l:terminal)
-  call assert_equal(
-    \ 'Delete file_c? [yN] ',
+  call strager#subvim#send_keys(l:terminal, 'D')
+  if has('nvim')
+    sleep 200ms
+  else
+    call term_wait(l:terminal)
+  endif
+  call assert_match(
+    \ 'Delete file_c? \[yN\] \?',
     \ s:scrape_command_line_row_text_from_vim_terminal(l:terminal),
   \ )
 endfunction
@@ -204,6 +208,15 @@ function! Test_writing_new_file_updates_browser_in_split() abort
 
   split new_file.txt
   write
+
+  " HACK(strager): For some reason, in Neovim, when switching to the netrw
+  " window, the buffer number changes. (This happens manually too. It's not an
+  " artifact of testing.)
+  if has('nvim')
+    let l:browser_buffer_number = bufnr('^' . getcwd() . '$')
+    echomsg l:browser_buffer_number
+  endif
+
   call assert_equal(
     \ ['new_file.txt'],
     \ strager#buffer#get_buffer_lines(l:browser_buffer_number),
@@ -260,15 +273,21 @@ function! s:get_relative_path_of_current_buffer() abort
   return fnamemodify(bufname('%'), ':.')
 endfunction
 
-function s:scrape_command_line_row_text_from_vim_terminal(terminal) abort
-  let l:cells = s:scrape_command_line_row_from_vim_terminal(a:terminal)
-  call map(l:cells, {_, cell -> cell.chars})
-  return join(l:cells, '')
-endfunction
+if has('nvim')
+  function s:scrape_command_line_row_text_from_vim_terminal(terminal) abort
+    return getbufline(a:terminal, '$')[0]
+  endfunction
+else
+  function s:scrape_command_line_row_text_from_vim_terminal(terminal) abort
+    let l:cells = s:scrape_command_line_row_from_vim_terminal(a:terminal)
+    call map(l:cells, {_, cell -> cell.chars})
+    return join(l:cells, '')
+  endfunction
 
-function s:scrape_command_line_row_from_vim_terminal(terminal) abort
-  let [l:row_count, l:_column_count] = term_getsize(a:terminal)
-  return term_scrape(a:terminal, l:row_count)
-endfunction
+  function s:scrape_command_line_row_from_vim_terminal(terminal) abort
+    let [l:row_count, l:_column_count] = term_getsize(a:terminal)
+    return term_scrape(a:terminal, l:row_count)
+  endfunction
+endif
 
 call strager#test#run_all_tests()
