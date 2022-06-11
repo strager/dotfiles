@@ -119,6 +119,15 @@ run_vim_with_log_file() {
 
     cat "${log_file_path}" >&2
     printf '\n' >&2
+    if [ "${vim_status}" -ne 0 ]; then
+        {
+            printf '\n'
+            printf '%s: note: run the following command to reproduce the issue:\n' "${0}"
+            printf '$'
+            printf ' %q' "${vim_command}" "${vim_args[@]}"
+            printf '\n'
+        } >&2
+    fi
 
     return "${vim_status}"
 }
