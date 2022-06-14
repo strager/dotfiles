@@ -10,6 +10,15 @@ function! strager#align#align_section(regex) range
       let maxpos = pos
     endif
   endfor
-  call map(section, 'AlignLine(v:val, sep, maxpos, extra)')
+  call map(section, {_, val -> s:AlignLine(val, sep, maxpos, extra)})
   call setline(a:firstline, section)
+endfunction
+
+function! s:AlignLine(line, sep, maxpos, extra)
+  let m = matchlist(a:line, '\(.\{-}\) \{-}\('.a:sep.'.*\)')
+  if empty(m)
+    return a:line
+  endif
+  let spaces = repeat(' ', a:maxpos - strlen(m[1]) + a:extra)
+  return m[1] . spaces . m[2]
 endfunction
