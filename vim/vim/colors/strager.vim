@@ -21,8 +21,8 @@ highlight VertSplit cterm=NONE ctermbg=Black ctermfg=Green
 highlight StatusLine cterm=NONE ctermbg=Black ctermfg=Blue
 highlight StatusLineNC cterm=NONE ctermbg=Black ctermfg=Green
 
-highlight SpellBad cterm=undercurl ctermfg=Red
-highlight SpellCap cterm=undercurl ctermfg=Red
+highlight SpellBad cterm=undercurl ctermfg=Red guisp=#dc322f
+highlight SpellCap cterm=undercurl ctermfg=Red guisp=#dc322f
 
 " Deemphasize tab indicators ('list).
 highlight SpecialKey cterm=NONE ctermfg=0 ctermbg=NONE
