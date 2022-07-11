@@ -251,6 +251,11 @@ nnoremap <unique> K <Nop>
 " Paste toggle
 nmap <unique> <Leader>p :set paste!<CR>
 
+""" Embedded terminal emulator
+if has('nvim')
+  command! -nargs=* Terminal new +terminal | startinsert
+endif
+
 """ Linting
 let g:ale_echo_cursor = v:true
 let g:ale_lint_delay = 0
