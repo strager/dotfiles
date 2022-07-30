@@ -38,13 +38,6 @@
       ];
     });
 
-    neovim-unwrapped = pkgs.neovim-unwrapped.overrideAttrs (attrs: rec {
-      patches = (attrs.patches or []) ++ [
-        ./neovim-slash-formatoptions-1.patch
-        ./neovim-slash-formatoptions-2.patch
-      ];
-    });
-
     vim = pkgs.vim.overrideAttrs (attrs: rec {
       buildInputs = attrs.buildInputs ++ pkgs.lib.optionals pkgs.stdenv.isLinux [
         pkgs.xorg.libX11
