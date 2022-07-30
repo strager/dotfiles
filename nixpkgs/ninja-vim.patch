@@ -1,0 +1,33 @@
+Show one-line progress info in Vim
+
+--- a/src/line_printer.cc
++++ b/src/line_printer.cc
+@@ -35,7 +35,7 @@ using namespace std;
+ LinePrinter::LinePrinter() : have_blank_line_(true), console_locked_(false) {
+   const char* term = getenv("TERM");
+ #ifndef _WIN32
+-  smart_terminal_ = isatty(1) && term && string(term) != "dumb";
++  smart_terminal_ = isatty(0) && term && string(term) != "dumb";
+ #else
+   if (term && string(term) == "dumb") {
+     smart_terminal_ = false;
+@@ -45,6 +45,10 @@ LinePrinter::LinePrinter() : have_blank_line_(true), console_locked_(false) {
+     smart_terminal_ = GetConsoleScreenBufferInfo(console_, &csbi);
+   }
+ #endif
++  if (!smart_terminal_) {
++    const char* clismart_force = getenv("CLISMART_FORCE");
++    smart_terminal_ = clismart_force && string(clismart_force) != "0";
++  }
+   supports_color_ = smart_terminal_;
+   if (!supports_color_) {
+     const char* clicolor_force = getenv("CLICOLOR_FORCE");
+@@ -107,7 +111,7 @@ void LinePrinter::Print(string to_print, LineType type) {
+     // Limit output to width of the terminal if provided so we don't cause
+     // line-wrapping.
+     winsize size;
+-    if ((ioctl(STDOUT_FILENO, TIOCGWINSZ, &size) == 0) && size.ws_col) {
++    if ((ioctl(STDIN_FILENO, TIOCGWINSZ, &size) == 0) && size.ws_col) {
+       to_print = ElideMiddle(to_print, size.ws_col);
+     }
+     printf("%s", to_print.c_str());

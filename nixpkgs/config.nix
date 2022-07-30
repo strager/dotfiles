@@ -8,6 +8,12 @@
       ];
     });
 
+    ninja = pkgs.ninja.overrideAttrs (attrs: {
+      patches = (attrs.patches or []) ++ [
+        ./ninja-vim.patch
+      ];
+    });
+
     python3 = pkgs.python3.override {
       packageOverrides = python-self: python-super: {
         twitch-python = python-super.twitch-python.overrideAttrs (attrs: {
