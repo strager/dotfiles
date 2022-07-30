@@ -1,4 +1,8 @@
 function! strager#directory_browser#refresh_open_browsers() abort
+  " FIXME(strager): refresh_open_browsers seems to cause buffers to hide
+  " spuriously. For now, let's disable the feature.
+  return
+
   let l:old_tab_number = tabpagenr()
   try
     execute "tabdo windo normal \<c-l>"

@@ -190,7 +190,9 @@ function! Test_shift_d_key_then_enter_does_not_delete_file_under_cursor() abort
   \ )
 endfunction
 
-function! Test_deleting_file_with_shift_d_updates_browser() abort
+" FIXME(strager): The current implementation seems to cause buffers to hide
+" spuriously. For now, let's disable the the auto-updating of browsers.
+function! DISABLED_Test_deleting_file_with_shift_d_updates_browser() abort
   call s:set_up_project(['file_a', 'file_b', 'file_c'])
   edit .
   2
@@ -201,7 +203,7 @@ function! Test_deleting_file_with_shift_d_updates_browser() abort
   \ )
 endfunction
 
-function! Test_writing_new_file_updates_browser_in_split() abort
+function! DISABLED_Test_writing_new_file_updates_browser_in_split() abort
   call s:set_up_project([])
   edit .
   let l:browser_buffer_number = bufnr('%')
