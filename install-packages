@@ -34,6 +34,7 @@ nix_package_attrs=(
     nixpkgs.gnupg
     nixpkgs.htop
     nixpkgs.jq
+    nixpkgs.my-ninja
     nixpkgs.python3
     nixpkgs.python3Packages.black
     nixpkgs.python3Packages.flake8

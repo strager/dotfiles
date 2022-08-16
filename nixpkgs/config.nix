@@ -8,7 +8,7 @@
       ];
     });
 
-    ninja = pkgs.ninja.overrideAttrs (attrs: {
+    my-ninja = pkgs.ninja.overrideAttrs (attrs: {
       patches = (attrs.patches or []) ++ [
         ./ninja-vim.patch
       ];
