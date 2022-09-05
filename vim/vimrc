@@ -8,6 +8,8 @@ scriptencoding utf-8
 """ General
 set nocompatible
 
+let mapleader = ' '
+
 """ Plugins
 call strager#move_file#register_command({'force': v:false})
 
