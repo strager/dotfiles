@@ -127,6 +127,7 @@ set nohidden
 let g:netrw_banner = 0
 let g:netrw_list_hide = '^\.\.\?/$'
 let g:netrw_liststyle = 0
+let g:netrw_sort_sequence = '[\/]$'
 let g:netrw_use_errorwindow = 0
 autocmd BufWritePost * call strager#directory_browser#refresh_open_browsers()
 call strager#directory_browser#register_commands()
