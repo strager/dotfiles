@@ -1,6 +1,8 @@
 ConnectTimeout 30
 ForwardAgent yes
 
+ControlPath ~/.ssh/control-%h-%p-%r
+
 Host strappon
 	HostName home.strager.net
 	User strager
