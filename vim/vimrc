@@ -76,7 +76,7 @@ autocmd CmdwinEnter * setlocal norelativenumber
 set hlsearch
 set incsearch
 set smartcase ignorecase
-nmap <silent> <unique> <Leader>l :nohlsearch<CR>
+nmap <silent> <unique> <Leader>l :nohlsearch<CR>:syntax sync fromstart<CR>
 
 " Save searches
 set viminfo+=/10000
