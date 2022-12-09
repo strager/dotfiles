@@ -1,7 +1,7 @@
 strager_define_sl_scm_aliases() {
     gs() {
         sl status
-        sl
+        sl sl --pager=never
     }
     gc() {
         sl commit "${@}"
