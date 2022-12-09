@@ -7,6 +7,7 @@ autoload -Uk strager_define_auto_scm_aliases
 autoload -Uk strager_define_bzr_scm_aliases
 autoload -Uk strager_define_git_scm_aliases
 autoload -Uk strager_define_hg_scm_aliases
+autoload -Uk strager_define_sl_scm_aliases
 autoload -Uk strager_ftcs_sequence
 autoload -Uk strager_gnome_terminal_cursor_sequence
 autoload -Uk strager_initialize_ls_colors
@@ -21,6 +22,7 @@ autoload -Uk strager_prompt_cwd
 autoload -Uk strager_scm_in_bzr
 autoload -Uk strager_scm_in_git
 autoload -Uk strager_scm_in_hg
+autoload -Uk strager_scm_in_sl
 autoload -Uk strager_search_history
 autoload -Uk strager_set_block_cursor
 autoload -Uk strager_set_vertical_bar_cursor

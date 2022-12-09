@@ -1,0 +1,3 @@
+strager_scm_in_sl() {
+    sl root 2>/dev/null >&2
+}

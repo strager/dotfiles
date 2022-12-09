@@ -1,0 +1,32 @@
+strager_define_sl_scm_aliases() {
+    gs() {
+        sl status
+        sl
+    }
+    gc() {
+        sl commit "${@}"
+    }
+    g.() {
+        printf 'g.: fatal: not yet implemented for Sapling\n' >&2
+        return 1
+    }
+    gd() {
+        sl diff "${@}"
+    }
+    gp() {
+        printf 'gp: fatal: not yet implemented for Sapling\n' >&2
+        return 1
+    }
+    gr() {
+        sl rebase "${@}"
+    }
+    grc() {
+        sl rebase --continue "${@}"
+    }
+    gar() {
+        sl addremove "${@}"
+    }
+    ga() {
+        sl amend "${@}"
+    }
+}
