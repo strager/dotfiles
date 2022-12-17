@@ -25,6 +25,7 @@ projects=(
   man
   nix
   nixpkgs
+  sapling
   ssh
   systemd
   tmux
