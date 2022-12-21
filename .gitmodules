@@ -21,7 +21,7 @@
 	url = https://github.com/zsh-users/zsh-autosuggestions.git
 [submodule "vim/vim/pack/external/start/rust.vim"]
 	path = vim/vim/pack/external/start/rust.vim
-	url = https://github.com/rust-lang/rust.vim
+	url = https://github.com/strager/rust.vim
 [submodule "vim/vim/pack/external/start/editorconfig-vim"]
 	path = vim/vim/pack/external/start/editorconfig-vim
 	url = https://github.com/editorconfig/editorconfig-vim.git
