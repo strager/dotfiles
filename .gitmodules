@@ -25,3 +25,6 @@
 [submodule "vim/vim/pack/external/start/editorconfig-vim"]
 	path = vim/vim/pack/external/start/editorconfig-vim
 	url = https://github.com/editorconfig/editorconfig-vim.git
+[submodule "vim/vim/pack/external/start/vim-surround"]
+	path = vim/vim/pack/external/start/vim-surround
+	url = https://github.com/tpope/vim-surround.git
