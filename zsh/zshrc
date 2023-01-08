@@ -161,6 +161,10 @@ nix-env() {
     return "${exit_status}"
 }
 
+ncdu() {
+    command ncdu --color dark "${@}"
+}
+
 # Input styling.
 ZSH_HIGHLIGHT_HIGHLIGHTERS=(main)
 typeset -A ZSH_HIGHLIGHT_STYLES
