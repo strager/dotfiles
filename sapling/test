@@ -34,13 +34,13 @@ class TestSLStragerLogBase(unittest.TestCase, TestCaseCleanupMixin):
         short_commit_hash = commit_hash[0:10]
         self.assert_strager_log_regexp(r'''
             ^ @ [ ]+ {short_commit_hash} [ ]+ .* $
-        '''.format(short_commit_hash=re.escape(short_commit_hash)))
+        '''.format(short_commit_hash=re.escape(short_commit_hash)), anywhere=True)
 
     def test_draft_commit_without_phabricator_revision_shows_dashes_between_hash_and_message(self):
         self.commit('my commit')
         self.assert_strager_log_regexp(r'''
             ^ @ [ ]+ [0-9a-f]+ [ ]+ ───────── [ ] my[ ]commit $
-        ''')
+        ''', anywhere=True)
 
     @unittest.skip("feature relies on internal FB code")
     def test_draft_commit_with_phabricator_revision_shows_revision_between_hash_and_message(self):
@@ -77,7 +77,7 @@ Differential Revision: https://phabricator.intern.facebook.com/D123456
         '''.format(
             new_moved_short_commit_hash=re.escape(new_moved_short_commit_hash),
             old_moved_short_commit_hash=re.escape(old_moved_short_commit_hash),
-        ))
+        ), anywhere=True)
 
     def test_log_of_linear_history_shows_graph(self):
         self.add_public_commit()
@@ -104,6 +104,7 @@ Differential Revision: https://phabricator.intern.facebook.com/D123456
             ^ @[ ] .* $\n
             ^ │[ ]o[ ] .* $\n
             ^ ├─╯ $\n
+            ^ o[ ] .* $\n
             ^ o[ ] .* $\n
             ^ o[ ] .* $\n
         ''')
@@ -136,10 +137,11 @@ Differential Revision: https://phabricator.intern.facebook.com/D123456
         for message, column in column_by_commit.items():
             self.assertEqual(column, expected_column, "{message}'s message should be at the same column as commit A\n{log}\n{column_by_commit!r}".format(message=message, log=log, column_by_commit=column_by_commit))
 
-    def assert_strager_log_regexp(self, regexp_string):
+    def assert_strager_log_regexp(self, regexp_string, anywhere: bool = False):
         regexp = re.compile(regexp_string, re.MULTILINE | re.VERBOSE)
         log = self.strager_log()
-        self.assertRegex(log, regexp, "\n\n\n" + log)
+        match = regexp.search(log) if anywhere else regexp.fullmatch(log)
+        self.assertTrue(match, f"Expected log output to match pattern {regexp}:\n\n{log}")
 
     def add_public_commit(self):
         self.commit('public commit')
