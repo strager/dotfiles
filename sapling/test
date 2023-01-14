@@ -92,6 +92,17 @@ Differential Revision: https://phabricator.intern.facebook.com/D123456
             ^ o[ ] .* $\n
         ''')
 
+    def test_only_top_public_commit_is_shown(self):
+        self.add_public_commit()
+        self.add_public_commit()
+        self.add_public_commit()
+        self.commit('my commit')
+
+        self.assert_strager_log_regexp(r'''
+            ^ @[ ] .* my[ ]commit $\n
+            ^ o[ ] .* $\n
+        ''')
+
     def test_log_of_forked_draft_history_shows_graph(self):
         self.add_public_commit()
         self.commit('commit A')

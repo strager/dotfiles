@@ -1,0 +1,260 @@
+https://github.com/facebook/sapling/pull/456
+
+changeset:   e9707acc7915c79885b597d89369b3989a3bef37  (@)
+parent:      0220a6a16af3f86c6df093ff9b9ba8d8b79c4991
+user:        Matthew "strager" Glazar <strager.nds@gmail.com>
+date:        Sat, 14 Jan 2023 15:38:34 -0800
+
+    smartlog: add option to hide '~' marker for unlogged ancestors
+
+    Summary:
+    I made a template for 'sl smartlog' which is compact compared to the default:
+
+        o  a0f0b95622       my commit
+        o  10 hours ago     remote/main
+        |
+        ~
+
+    Unfortunately, the '|' and '~' lines take up a lot of space. Add an option to
+    disable these lines, making the output nice and tidy:
+
+        o  a0f0b95622       my commit
+        o  10 hours ago     remote/main
+
+    Test Plan:
+
+        $ cd tests
+        $ python run-tests.py test-log-graph-show-abbreviated-ancestors.t
+
+diff --git a/edenscm/cmdutil.py b/edenscm/cmdutil.py
+--- a/edenscm/cmdutil.py
++++ b/edenscm/cmdutil.py
+@@ -18,6 +18,8 @@
+ import re
+ import stat
+ import tempfile
++import typing
++from enum import Enum
+ from typing import Dict
+ 
+ import bindings
+@@ -61,6 +63,10 @@
+ from .node import hex, nullid, nullrev, short
+ from .pycompat import ensureunicode, range
+ 
++if typing.TYPE_CHECKING:
++    from .ui import ui
++    from .uiconfig import uiconfig
++
+ 
+ stringio = util.stringio
+ 
+@@ -3188,6 +3194,7 @@
+         for rev in reserved:
+             renderer.reserve(rev)
+ 
++    show_abbreviated_ancestors = ShowAbbreviatedAncestorsWhen.load_from_config(repo.ui)
+     for (rev, _type, ctx, parents) in dag:
+         char = formatnode(repo, ctx)
+         copies = None
+@@ -3200,6 +3207,11 @@
+         revmatchfn = None
+         if filematcher is not None:
+             revmatchfn = filematcher(ctx.rev())
++        if show_abbreviated_ancestors is ShowAbbreviatedAncestorsWhen.ONLYMERGE:
++            if len(parents) == 1 and parents[0][0] == graphmod.MISSINGPARENT:
++                parents = []
++        elif show_abbreviated_ancestors is ShowAbbreviatedAncestorsWhen.NEVER:
++            parents = [p for p in parents if p[0] != graphmod.MISSINGPARENT]
+         width = renderer.width(rev, parents)
+         displayer.show(
+             ctx, copies=copies, matchfn=revmatchfn, _graphwidth=width, **props
+@@ -3219,6 +3231,30 @@
+     displayer.close()
+ 
+ 
++class ShowAbbreviatedAncestorsWhen(Enum):
++    ALWAYS = "always"
++    ONLYMERGE = "onlymerge"
++    NEVER = "never"
++
++    @staticmethod
++    def load_from_config(config: "typing.Union[ui, uiconfig]") -> "ShowAbbreviatedAncestorsWhen":
++        section = "experimental"
++        setting_name = "graph.show-abbreviated-ancestors"
++        value = config.config(section, setting_name)
++        if value is None:
++            return ShowAbbreviatedAncestorsWhen.ALWAYS
++        try:
++            return ShowAbbreviatedAncestorsWhen(value)
++        except ValueError:
++            pass
++        b = util.parsebool(value)
++        if b is not None:
++            return ShowAbbreviatedAncestorsWhen.ALWAYS if b else ShowAbbreviatedAncestorsWhen.NEVER
++        raise error.ConfigError(
++            _("%s.%s is invalid; expected 'always' or 'never' or 'onlymerge', but got '%s'") % (section, setting_name, value)
++        )
++
++
+ def graphlog(ui, repo, pats, opts):
+     # Parameters are identical to log command ones
+     revs, expr, filematcher = getgraphlogrevs(repo, pats, opts)
+diff --git a/edenscm/helptext.py b/edenscm/helptext.py
+--- a/edenscm/helptext.py
++++ b/edenscm/helptext.py
+@@ -942,6 +942,45 @@
+   charsets = iso-8859-1, iso-8859-15, windows-1252
+ 
+ 
++``experimental``
++----------------
++
++``experimental.graph.show-abbreviated-ancestors``
++    When showing a commit graph, show or hide ancestor commits outside the
++    selected revset using a marker like '~'.
++
++    If set to "always" or True (default), then '~' is always shown if an
++    ancestor commit exists. For example:
++
++      o    merge commit
++      ├─╮
++      │ │
++      │ ~
++      │
++      o  commit
++      │
++      ~
++
++    If set to "onlymerge", then '~' is shown only there is a visible sibling
++    commit due to a merge. For example:
++
++      o    merge commit
++      ├─╮
++      │ │
++      │ ~
++      │
++      o  commit
++
++    If set to "never" or False, then '~' is never shown. For example:
++
++      o  merge commit
++      │
++      o  commit
++
++    To change the look of the '~' indicator, see the
++    ``experimental.graph.renderer`` setting.
++
++
+ ``extensions``
+ --------------
+ 
+diff --git a/tests/test-log-graph-show-abbreviated-ancestors.t b/tests/test-log-graph-show-abbreviated-ancestors.t
+new file mode 100644
+--- /dev/null
++++ b/tests/test-log-graph-show-abbreviated-ancestors.t
+@@ -0,0 +1,103 @@
++#chg-compatible
++#debugruntest-compatible
++
++  $ configure modern
++  $ disable commitcloud
++
++  $ newrepo
++  $ drawdag << 'EOS'
++  > C
++  > |
++  > B
++  > |
++  > A
++  > EOS
++  $ drawdag << 'EOS'
++  > P
++  > |\
++  > N O
++  > |/
++  > M
++  > EOS
++
++When showing B::C, A should be abbreviated with ~ or not:
++
++  $ hg log --graph -T '{desc}\n' -r $B::$C
++  o  C
++  │
++  o  B
++  │
++  ~
++  $ hg log --graph -T '{desc}\n' -r $B::$C --config experimental.graph.show-abbreviated-ancestors=always
++  o  C
++  │
++  o  B
++  │
++  ~
++  $ hg log --graph -T '{desc}\n' -r $B::$C --config experimental.graph.show-abbreviated-ancestors=True
++  o  C
++  │
++  o  B
++  │
++  ~
++
++  $ hg log --graph -T '{desc}\n' -r $B::$C --config experimental.graph.show-abbreviated-ancestors=False
++  o  C
++  │
++  o  B
++  $ hg log --graph -T '{desc}\n' -r $B::$C --config experimental.graph.show-abbreviated-ancestors=never
++  o  C
++  │
++  o  B
++  $ hg log --graph -T '{desc}\n' -r $B::$C --config experimental.graph.show-abbreviated-ancestors=onlymerge
++  o  C
++  │
++  o  B
++
++When showing P, its two parents (N and O) should be abbreviated with ~ or not:
++
++  $ hg log --graph -T '{desc}\n' -r $P::$P --config experimental.graph.show-abbreviated-ancestors=always
++  o    P
++  ├─╮
++  │ │
++  ~ ~
++  $ hg log --graph -T '{desc}\n' -r $P::$P --config experimental.graph.show-abbreviated-ancestors=onlymerge
++  o    P
++  ├─╮
++  │ │
++  ~ ~
++
++  $ hg log --graph -T '{desc}\n' -r $P::$P --config experimental.graph.show-abbreviated-ancestors=never
++  o  P
++
++When showing P and one of its parents, the other parent should be abbreviated
++with ~ or not:
++
++  $ hg log --graph -T '{desc}\n' -r $O::$P --config experimental.graph.show-abbreviated-ancestors=always
++  o    P
++  ├─╮
++  │ │
++  │ ~
++  │
++  o  O
++  │
++  ~
++
++  $ hg log --graph -T '{desc}\n' -r $O::$P --config experimental.graph.show-abbreviated-ancestors=onlymerge
++  o    P
++  ├─╮
++  │ │
++  │ ~
++  │
++  o  O
++
++  $ hg log --graph -T '{desc}\n' -r $O::$P --config experimental.graph.show-abbreviated-ancestors=never
++  o  P
++  │
++  o  O
++
++Invalid setting reports an error:
++
++  $ hg log --graph -T '{desc}\n' -r $O::$P --config experimental.graph.show-abbreviated-ancestors=invalid
++  abort: experimental.graph.show-abbreviated-ancestors is invalid; expected 'always' or 'never' or 'onlymerge', but got 'invalid'
++  [255]
+

@@ -25,6 +25,12 @@
       };
     };
 
+    sapling = pkgs.sapling.overrideAttrs (attrs: {
+      patches = (attrs.patches or []) ++ [
+        ./sapling-abbreviated-ancestors.patch
+      ];
+    });
+
     twitch-chat-downloader = pkgs.twitch-chat-downloader.overrideAttrs (attrs: {
       src = pkgs.fetchFromGitHub {
         owner = "PetterKraabol";
