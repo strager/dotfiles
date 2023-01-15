@@ -31,7 +31,7 @@ class TestSLStragerLogBase(unittest.TestCase, TestCaseCleanupMixin):
     def test_draft_commit_shows_short_hash_right_of_graph(self):
         commit_hash = self.commit('my commit')
 
-        short_commit_hash = commit_hash[0:10]
+        short_commit_hash = commit_hash[0:6]
         self.assert_strager_log_regexp(r'''
             ^ @ [ ]+ {short_commit_hash} [ ]+ .* $
         '''.format(short_commit_hash=re.escape(short_commit_hash)), anywhere=True)
@@ -44,8 +44,8 @@ class TestSLStragerLogBase(unittest.TestCase, TestCaseCleanupMixin):
         self.check_call(['sl', 'rebase', '--rev', old_moved_commit_hash, '--dest', initial_commit_hash])
         new_moved_commit_hash = self.commit_hash('successors({0}) & !{0}'.format(old_moved_commit_hash))
 
-        old_moved_short_commit_hash = old_moved_commit_hash[0:10]
-        new_moved_short_commit_hash = new_moved_commit_hash[0:10]
+        old_moved_short_commit_hash = old_moved_commit_hash[0:6]
+        new_moved_short_commit_hash = new_moved_commit_hash[0:6]
         self.assert_strager_log_regexp(r'''
             ^ .* \b{old_moved_short_commit_hash}\b .* moved[ ]commit[ ]\(successor:[ ]{new_moved_short_commit_hash}\) $
         '''.format(
