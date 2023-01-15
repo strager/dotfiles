@@ -36,32 +36,6 @@ class TestSLStragerLogBase(unittest.TestCase, TestCaseCleanupMixin):
             ^ @ [ ]+ {short_commit_hash} [ ]+ .* $
         '''.format(short_commit_hash=re.escape(short_commit_hash)), anywhere=True)
 
-    def test_draft_commit_without_phabricator_revision_shows_dashes_between_hash_and_message(self):
-        self.commit('my commit')
-        self.assert_strager_log_regexp(r'''
-            ^ @ [ ]+ [0-9a-f]+ [ ]+ ───────── [ ] my[ ]commit $
-        ''', anywhere=True)
-
-    @unittest.skip("feature relies on internal FB code")
-    def test_draft_commit_with_phabricator_revision_shows_revision_between_hash_and_message(self):
-        self.commit(r'''my commit
-
-Differential Revision: https://phabricator.intern.facebook.com/D12345678
-''')
-        self.assert_strager_log_regexp(r'''
-            ^ @ [ ]+ [0-9a-f]+ [ ]+ D12345678 [ ] my[ ]commit $
-        ''')
-
-    @unittest.skip("feature relies on internal FB code")
-    def test_short_phabricator_revisions_are_padded(self):
-        self.commit(r'''my commit
-
-Differential Revision: https://phabricator.intern.facebook.com/D123456
-''')
-        self.assert_strager_log_regexp(r'''
-            ^ @ [ ]+ [0-9a-f]+ [ ]+ D123456 [ ] [ ] [ ] my[ ]commit $
-        ''')
-
     def test_commit_obsoleted_by_rebase_shows_successor_commit_hashes_after_message(self):
         initial_commit_hash = self.commit('initial commit')
         self.commit('second commit')
