@@ -183,7 +183,7 @@ Differential Revision: https://phabricator.intern.facebook.com/D123456
 
 class TestSLStragerFullLog(TestSLStragerLogBase):
     def strager_log(self):
-        stdout = self.check_output(['sl', 'll'])
+        stdout = self.check_output(['sl', 'strager-fulllog'])
         stdout = stdout.decode('utf-8')
         return stdout
 
@@ -202,7 +202,7 @@ class TestSLStragerFullLog(TestSLStragerLogBase):
 
 class TestSLStragerFocusedLog(TestSLStragerLogBase):
     def strager_log(self):
-        stdout = self.check_output(['sl', 'l'])
+        stdout = self.check_output(['sl', 'strager-focusedlog'])
         stdout = stdout.decode('utf-8')
         return stdout
 
