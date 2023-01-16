@@ -122,14 +122,31 @@ class TestSLStragerLogBase(unittest.TestCase, TestCaseCleanupMixin):
         for message, column in column_by_commit.items():
             self.assertEqual(column, expected_column, "{message}'s message should be at the same column as commit A\n{log}\n{column_by_commit!r}".format(message=message, log=log, column_by_commit=column_by_commit))
 
+    def test_public_commit_message_is_shown_if_current(self) -> None:
+        self.add_public_commit()
+        self.add_public_commit(message='latest public commit')
+
+        self.assert_strager_log_regexp(r'''
+            ^ @\s+ .* \s+ latest[ ]public[ ]commit $\n
+        ''', anywhere=True)
+
+    def test_public_commit_message_is_hidden_if_not_current(self) -> None:
+        self.add_public_commit()
+        self.add_public_commit(message='latest public commit')
+        self.commit('first local commit')
+
+        self.assert_strager_log_regexp(r'''
+            ^ o\s+ \d+[ ]seconds?[ ]ago \s+ debugremote/fake_remote_branch$\n
+        ''', anywhere=True)
+
     def assert_strager_log_regexp(self, regexp_string, anywhere: bool = False):
         regexp = re.compile(regexp_string, re.MULTILINE | re.VERBOSE)
         log = self.strager_log()
         match = regexp.search(log) if anywhere else regexp.fullmatch(log)
         self.assertTrue(match, f"Expected log output to match pattern {regexp}:\n\n{log}")
 
-    def add_public_commit(self):
-        self.commit('public commit')
+    def add_public_commit(self, message='public commit'):
+        self.commit(message)
         self.check_call(['sl', 'debugremotebookmark', 'fake_remote_branch', '.'])
         sl_config_path = pathlib.Path(self.repo_path) / ".sl" / "config"
         sl_config_path.write_text(
