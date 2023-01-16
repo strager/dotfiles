@@ -28,3 +28,6 @@
 [submodule "vim/vim/pack/external/start/vim-surround"]
 	path = vim/vim/pack/external/start/vim-surround
 	url = https://github.com/tpope/vim-surround.git
+[submodule "vim/vim/pack/external/start/zig.vim"]
+	path = vim/vim/pack/external/start/zig.vim
+	url = https://github.com/ziglang/zig.vim.git
