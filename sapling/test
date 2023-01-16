@@ -139,6 +139,20 @@ class TestSLStragerLogBase(unittest.TestCase, TestCaseCleanupMixin):
             ^ o\s+ \d+[ ]seconds?[ ]ago \s+ debugremote/fake_remote_branch$\n
         ''', anywhere=True)
 
+    def test_commits_with_bookmarks_show_bookmarks_instead_of_hashes(self) -> None:
+        self.add_public_commit(message='latest public commit')
+        self.commit('first local commit')
+        self.check_call(['sl', 'debugremotebookmark', 'stagingbranch', '.'])
+        self.commit('second local commit')
+        self.check_call(['sl', 'bookmark', '--inactive', 'mybook'])
+        self.commit('third local commit')
+
+        self.assert_strager_log_regexp(r'''
+            ^ @\s+ [0-9a-f]+ \s+ third[ ]local[ ]commit$\n
+            ^ o\s+ mybook \s+ second[ ]local[ ]commit$\n
+            ^ o\s+ debugremote/stagingbranch \s+ first[ ]local[ ]commit$\n
+        ''', anywhere=True)
+
     def assert_strager_log_regexp(self, regexp_string, anywhere: bool = False):
         regexp = re.compile(regexp_string, re.MULTILINE | re.VERBOSE)
         log = self.strager_log()
