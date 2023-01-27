@@ -17,13 +17,52 @@ class TestCaseCleanupMixin(object):
         self.addCleanup(lambda: exit(None, None, None))
         return value
 
-class TestSLStragerLogBase(unittest.TestCase, TestCaseCleanupMixin):
+class TestSLBase(unittest.TestCase, TestCaseCleanupMixin):
     __counter = 0
 
     def setUp(self):
         super().setUp()
         self.repo_path = self.enter_context(empty_sl_repo())
 
+    def add_public_commit(self, message='public commit'):
+        self.commit(message)
+        self.check_call(['sl', 'debugremotebookmark', 'fake_remote_branch', '.'])
+        sl_config_path = pathlib.Path(self.repo_path) / ".sl" / "config"
+        sl_config_path.write_text(
+                sl_config_path.read_text() + '\n\n'
+                + '[remotenames]\n'
+                + 'publicheads=debugremote/fake_remote_branch'
+                + '\n')
+
+    def commit(self, message):
+        self.add_new_file()
+        self.check_call(['sl', 'commit', '--message', message])
+        return self.commit_hash('.')
+
+    def goto(self, revision):
+        self.check_call(['sl', 'goto', '--rev', revision])
+
+    def add_new_file(self):
+        self.add_file('file_{}'.format(self.__counter))
+        self.__counter += 1
+
+    def add_file(self, path):
+        with open(os.path.join(self.repo_path, path), 'wb'):
+            pass
+        self.check_call(['sl', 'add', '--', path])
+
+    def commit_hash(self, rev):
+        stdout = self.check_output(['sl', 'log', '--template', '{node}', '--rev', rev])
+        stdout = stdout.decode('utf-8')
+        return stdout.rstrip('\n')
+
+    def check_call(self, command):
+        subprocess.check_call(command, cwd=self.repo_path)
+
+    def check_output(self, command):
+        return subprocess.check_output(command, cwd=self.repo_path)
+
+class TestSLStragerLogBase(TestSLBase):
     def test_log_of_empty_repo_is_empty(self):
         log = self.strager_log()
         self.assertEqual(log, '')
@@ -158,44 +197,6 @@ class TestSLStragerLogBase(unittest.TestCase, TestCaseCleanupMixin):
         log = self.strager_log()
         match = regexp.search(log) if anywhere else regexp.fullmatch(log)
         self.assertTrue(match, f"Expected log output to match pattern {regexp}:\n\n{log}")
-
-    def add_public_commit(self, message='public commit'):
-        self.commit(message)
-        self.check_call(['sl', 'debugremotebookmark', 'fake_remote_branch', '.'])
-        sl_config_path = pathlib.Path(self.repo_path) / ".sl" / "config"
-        sl_config_path.write_text(
-                sl_config_path.read_text() + '\n\n'
-                + '[remotenames]\n'
-                + 'publicheads=debugremote/fake_remote_branch'
-                + '\n')
-
-    def commit(self, message):
-        self.add_new_file()
-        self.check_call(['sl', 'commit', '--message', message])
-        return self.commit_hash('.')
-
-    def goto(self, revision):
-        self.check_call(['sl', 'goto', '--rev', revision])
-
-    def add_new_file(self):
-        self.add_file('file_{}'.format(self.__counter))
-        self.__counter += 1
-
-    def add_file(self, path):
-        with open(os.path.join(self.repo_path, path), 'wb'):
-            pass
-        self.check_call(['sl', 'add', '--', path])
-
-    def commit_hash(self, rev):
-        stdout = self.check_output(['sl', 'log', '--template', '{node}', '--rev', rev])
-        stdout = stdout.decode('utf-8')
-        return stdout.rstrip('\n')
-
-    def check_call(self, command):
-        subprocess.check_call(command, cwd=self.repo_path)
-
-    def check_output(self, command):
-        return subprocess.check_output(command, cwd=self.repo_path)
 
 class TestSLStragerFullLog(TestSLStragerLogBase):
     def strager_log(self):
