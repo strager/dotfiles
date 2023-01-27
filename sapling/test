@@ -234,11 +234,33 @@ class TestSLStragerFocusedLog(TestSLStragerLogBase):
             ^ o[ ] .* $\n
         ''')
 
+class TestSLRemoteBranchURL(TestSLBase):
+    def test_github_branch_url_rewrites_git_uri(self):
+        with empty_git_repo() as remote_git_repo:
+            (pathlib.Path(remote_git_repo) / "hello").write_text("hi\n")
+            subprocess.check_call(['git', 'add', 'hello'], cwd=remote_git_repo)
+            subprocess.check_call(['git', 'commit', '-m', 'initial commit'], cwd=remote_git_repo)
+
+            self.check_call(['sl', 'paths', '--add', 'default', remote_git_repo])
+            self.check_call(['sl', 'pull', 'default', '-B', 'master'])
+
+            self.check_call(['sl', 'paths', '--delete', 'default'])
+            self.check_call(['sl', 'paths', '--add', 'default', 'ssh://git@github.com/strager/dotfiles.git'])
+
+            url = self.check_output(['sl', 'log', '-r', 'remote/master', '-T', '{strager_github_branch_url("remote/master")}']).decode("utf-8")
+            self.assertEqual(url, 'https://github.com/strager/dotfiles/tree/master')
+
 @contextlib.contextmanager
 def empty_sl_repo():
     with temporary_directory() as repo_dir_path:
         subprocess.check_call(['sl', 'init', '--git', 'repo'], cwd=repo_dir_path)
         yield os.path.join(repo_dir_path, 'repo')
+
+@contextlib.contextmanager
+def empty_git_repo():
+    with temporary_directory() as repo_dir_path:
+        subprocess.check_call(['git', 'init'], cwd=repo_dir_path)
+        yield os.path.join(repo_dir_path)
 
 @contextlib.contextmanager
 def temporary_directory():
