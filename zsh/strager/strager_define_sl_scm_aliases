@@ -1,6 +1,6 @@
 strager_define_sl_scm_aliases() {
     gs() {
-        sl status
+        sl status --pager=never
         sl strager-focusedlog --pager=never
     }
     gc() {
