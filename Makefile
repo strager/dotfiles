@@ -21,11 +21,15 @@ zsh/strager/strager_initialize_menuselect: zsh/generate-strager-initialize-menus
 	$(<)
 
 .PHONY: check
-check: check-backup check-vim check-vim-lint check-zsh
+check: check-backup check-srr check-vim check-vim-lint check-zsh
 
 .PHONY: check-backup
 check-backup: $(PYTHON)
 	cd backup && $(PYTHON) -m unittest discover -p '*.py'
+
+.PHONY: check-srr
+check-srr:
+	./bin/srr --self-test
 
 .PHONY: check-vim
 check-vim:

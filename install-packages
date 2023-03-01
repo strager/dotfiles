@@ -18,6 +18,7 @@ expected_nix_files=(
     bin/jq
     bin/python3
     bin/rg
+    bin/sd
     bin/sqlite3
     bin/tmux
     bin/vim
@@ -39,6 +40,7 @@ nix_package_attrs=(
     nixpkgs.python3Packages.black
     nixpkgs.python3Packages.flake8
     nixpkgs.ripgrep
+    nixpkgs.sd
     nixpkgs.sqlite-interactive
     nixpkgs.tmux
     nixpkgs.vim
