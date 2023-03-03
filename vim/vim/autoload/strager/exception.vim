@@ -5,6 +5,16 @@ function! strager#exception#get_vim_error() abort
   return matchstr(v:exception, 'E.*$')
 endfunction
 
+function! strager#exception#dump_stack_trace() abort
+  try
+    throw 'dump'
+  catch /dump/
+    for l:line in split(strager#exception#format_throwpoint(v:throwpoint), '\n')
+      echomsg l:line
+    endfor
+  endtry
+endfunction
+
 function! strager#exception#format_throwpoint(throwpoint) abort
   let l:frames = strager#exception#parse_throwpoint(a:throwpoint)
   let l:lines = map(l:frames, {_, frame -> s:format_frame(frame)})
