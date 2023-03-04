@@ -45,12 +45,12 @@
     });
 
     vim = pkgs.vim.overrideAttrs (attrs: rec {
-      version = "9.0.1157";
+      version = "9.0.1377";
       src = pkgs.fetchFromGitHub {
         owner = "vim";
         repo = "vim";
         rev = "v${version}";
-        sha256 = "sha256-k0Fp3Lvd5ufRnJaUBv51RvhzZorfKqbDaiEguNVmTH0=";
+        sha256 = "sha256-GjJKkF52YzRSbqlExwXpDg84SbesVlY5xUITG74su6U=";
       };
 
       buildInputs = attrs.buildInputs ++ pkgs.lib.optionals pkgs.stdenv.isLinux [
