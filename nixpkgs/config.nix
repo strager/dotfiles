@@ -45,7 +45,6 @@
     });
 
     vim = pkgs.vim.overrideAttrs (attrs: rec {
-      # Work around throwpoint bug in Vim v8.2.0499 (fixed in v8.2.0823).
       version = "9.0.1157";
       src = pkgs.fetchFromGitHub {
         owner = "vim";
