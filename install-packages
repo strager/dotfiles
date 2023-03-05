@@ -8,7 +8,6 @@ os="$(uname)"
 
 expected_nix_files=(
     bin/black
-    bin/borg
     bin/clang-format
     bin/flake8
     bin/fzf
@@ -28,7 +27,6 @@ expected_nix_files=(
 )
 
 nix_package_attrs=(
-    nixpkgs.borgbackup
     nixpkgs.clang-tools
     nixpkgs.fzf
     nixpkgs.gitAndTools.gitFull
