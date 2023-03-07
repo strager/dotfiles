@@ -53,6 +53,20 @@ function! s:set_up_c_helper_source() abort
   setlocal sw=2
 endfunction
 
+function! Test_line_break_after_parens_and_colon_does_not_indent_silly() abort
+  for l:filetype in ['hgcommit', 'gitcommit', 'markdown']
+    %bwipeout!
+    let &filetype = l:filetype
+    normal ifix(component): I did it
+
+    normal ohello
+    call assert_equal(
+      \ ['fix(component): I did it', 'hello'],
+      \ strager#buffer#get_current_buffer_lines(),
+    \ )
+  endfor
+endfunction
+
 function! s:assert_buffer_contents_match_expected(expected_path) abort
   let l:buffer_path = tempname()
   exec 'silent write '.fnameescape(l:buffer_path)
