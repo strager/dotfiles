@@ -67,6 +67,20 @@ function! Test_line_break_after_parens_and_colon_does_not_indent_silly() abort
   endfor
 endfunction
 
+function! Test_line_break_in_markdown_list_indents() abort
+  %bwipeout!
+  set filetype=markdown
+  normal i* first line
+
+  " FIXME(strager): Remove the manual indentation on the second line.
+  normal o  second line
+  normal othird line
+  call assert_equal(
+    \ ['* first line', '  second line', '  third line'],
+    \ strager#buffer#get_current_buffer_lines(),
+  \ )
+endfunction
+
 function! s:assert_buffer_contents_match_expected(expected_path) abort
   let l:buffer_path = tempname()
   exec 'silent write '.fnameescape(l:buffer_path)
