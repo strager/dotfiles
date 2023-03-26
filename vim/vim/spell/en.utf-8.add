@@ -281,3 +281,6 @@ perf
 algo
 gperf
 TODO
+glibc
+PKGBUILD
+namcap
