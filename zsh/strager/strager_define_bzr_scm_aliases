@@ -33,4 +33,8 @@ strager_define_bzr_scm_aliases() {
         printf 'ga: fatal: not yet implemented for Bazaar\n' >&2
         return 1
     }
+    ggo() {
+        printf 'ggo: fatal: not yet implemented for Bazaar\n' >&2
+        return 1
+    }
 }

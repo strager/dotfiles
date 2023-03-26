@@ -28,4 +28,8 @@ strager_define_hg_scm_aliases() {
     ga() {
         hg amend "${@}"
     }
+    ggo() {
+        printf 'ggo: fatal: not yet implemented for Hg\n' >&2
+        return 1
+    }
 }

@@ -26,4 +26,7 @@ strager_define_git_scm_aliases() {
     ga() {
         git commit --amend --reuse-message=HEAD
     }
+    ggo() {
+        git checkout "${1}"
+    }
 }
