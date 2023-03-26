@@ -3,6 +3,10 @@ strager_define_git_scm_aliases() {
         git status -s -b "${@}" && { git ql 2>/dev/null || : }
     }
     gc() {
+        if [ "${1-}" = -m ]; then
+            printf 'gc: fatal: STOP USING gc -m YOU FOOL!\n' >&2
+            return 1
+        fi
         git commit -v "${@}"
     }
     g.() {

@@ -4,6 +4,10 @@ strager_define_sl_scm_aliases() {
         sl strager-focusedlog --pager=never
     }
     gc() {
+        if [ "${1-}" = -m ]; then
+            printf 'gc: fatal: STOP USING gc -m YOU FOOL!\n' >&2
+            return 1
+        fi
         sl commit "${@}"
     }
     g.() {
