@@ -16,6 +16,44 @@ function! Test_grep_finds_single_match() abort
   call assert_equal(bufnr('readme.txt'), l:quickfix_items[0].bufnr)
 endfunction
 
+function! Test_grep_ignores_gitignored_files_in_git_repo() abort
+  call s:set_up_project([
+    \ ['.gitignore', '/ignoredfile.txt'],
+    \ ['ignoredfile.txt', 'hello world'],
+  \ ])
+  let l:output = system('git init')
+  if v:shell_error != 0
+    throw printf(
+      \ '"git init" failed with exit code %d: %s',
+      \ v:shell_error,
+      \ l:output,
+    \ )
+  endif
+
+  Grep hello
+  let l:quickfix_items = getqflist({'all': v:true}).items
+  call assert_equal([], l:quickfix_items)
+endfunction
+
+function! Test_grep_ignores_gitignored_files_in_sapling_repo() abort
+  call s:set_up_project([
+    \ ['.gitignore', '/ignoredfile.txt'],
+    \ ['ignoredfile.txt', 'hello world'],
+  \ ])
+  let l:output = system('sl init --git')
+  if v:shell_error != 0
+    throw printf(
+      \ '"sl init --git" failed with exit code %d: %s',
+      \ v:shell_error,
+      \ l:output,
+    \ )
+  endif
+
+  Grep hello
+  let l:quickfix_items = getqflist({'all': v:true}).items
+  call assert_equal([], l:quickfix_items)
+endfunction
+
 function! Test_grep_matches_with_location() abort
   call s:set_up_project([
     \ ['readme.txt', "first line\nsecond line\nthird line\nand the final line\n"],

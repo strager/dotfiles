@@ -94,7 +94,7 @@ set grepprg=rg
 if has('unix')
   set grepprg+=\ \</dev/null
 endif
-set grepprg+=\ --color\ never\ --column\ --line-number\ --no-heading\ $*
+set grepprg+=\ --color\ never\ --column\ --line-number\ --no-heading\ --ignore\ --no-require-git\ $*
 nmap <unique> <Leader>a :Grep<SPACE>
 
 " Use tab for %
