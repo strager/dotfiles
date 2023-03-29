@@ -35,6 +35,7 @@ strager_initialize_nix() {
     # $ nix-build --attr FOO '<nixpkgs>'
     # $ nix-env --install --attr FOO
     NIX_PATH="${HOME}/.nix-defexpr:${NIX_PATH}"
+    export NIX_PATH
 }
 
 strager_initialize_zsh_autosuggestions() {
