@@ -76,11 +76,9 @@ function! Test_function_source_location_of_live_lambda() abort
   let l:lambda = [{-> hello(world)}]
   let l:loc = strager#function#function_source_location(l:lambda[0])
 
-  " FIXME(strager): For some reason, :function reports the line *before* 'let
-  " l:lambda = ...' as the lambda's source line. Figure out why.
   call assert_equal(s:test_marker_line_number(
     \ 'Test_function_source_location_of_live_lambda lambda',
-  \ ) - 1, l:loc.line)
+  \ ), l:loc.line)
   let l:lambda_name = matchlist(string(l:lambda[0]), "function('\\(.*\\)')")[1]
   call assert_equal(l:lambda_name, l:loc.real_name)
   call assert_equal(v:null, l:loc.source_name, 'Lambdas should have no name')

@@ -44,61 +44,79 @@ function! s:format_frame(frame) abort
 endfunction
 
 function! strager#exception#parse_throwpoint(throwpoint) abort
-  let l:match = matchlist(
-    \ a:throwpoint,
-    \ '^\%(function \(.*\)\|\(.\+\)\), line \([0-9]\+\)$',
-  \ )
-  if empty(l:match)
-    return s:parse_autocommand_throwpoint(a:throwpoint)
-  endif
-  let [_, l:frames_string, l:script_path, l:throwing_function_line; _] = l:match
-  let l:throwing_function_line = str2nr(l:throwing_function_line)
-  if l:script_path ==# ''
-    let l:frame_strings = split(l:frames_string, '\.\.')
-    call reverse(l:frame_strings)
-    let [l:throwing_function_name; l:calling_frame_strings] = l:frame_strings
+  let l:frame_strings = split(a:throwpoint, '\.\.')
+  call reverse(l:frame_strings)
 
-    let l:frames = [s:frame(l:throwing_function_name, l:throwing_function_line)]
-    for l:frame_string in l:calling_frame_strings
-      call add(l:frames, s:parse_calling_frame(l:frame_string))
-    endfor
-    return l:frames
-  else
-    return [{
-      \ 'autocommand': v:null,
-      \ 'function': v:null,
-      \ 'line': l:throwing_function_line,
-      \ 'script_path': l:script_path,
-    \ }]
-  endif
-endfunction
-
-function! s:parse_autocommand_throwpoint(throwpoint) abort
-  let l:match = matchlist(
-    \ a:throwpoint,
-    \ '^\([A-Za-z]\+\) Autocommands for "\(.*\)"$'
-  \ )
-  if empty(l:match)
-    throw 'Not a valid throwpoint: '.string(a:throwpoint)
-  endif
-  let [_, l:event, l:name; _] = l:match
-  return [{
-    \ 'autocommand': {'event': l:event, 'name': l:name},
-    \ 'function': v:null,
-    \ 'line': v:null,
-    \ 'script_path': v:null,
-  \ }]
+  let l:frames = []
+  for l:frame_string in l:frame_strings
+    call add(l:frames, s:parse_frame(l:frame_string))
+  endfor
+  return l:frames
 endfunction
 
 " Example value of a:frame_string:
 " 'strager#test#run_all_tests[12]'
-function! s:parse_calling_frame(frame_string) abort
-  let l:match = matchlist(a:frame_string, '^\(.*\)\[\(\d\+\)\]$')
-  if empty(l:match)
-    throw 'Not a valid throwpoint frame: '.string(a:frame_string)
+" 'strager#test#run_all_tests, line 12'
+" 'function strager#test#run_all_tests[12]'
+" 'command line'
+" 'script /path/to/file.vim[123]'
+" 'User Autocommands for "test_parse_throwpoint_from_autocmd"'
+function! s:parse_frame(frame_string) abort
+  if a:frame_string ==# 'command line'
+    return {
+      \ 'autocommand': v:null,
+      \ 'function': v:null,
+      \ 'line': v:null,
+      \ 'script_path': '<command line>',
+    \ }
   endif
-  let [_, l:function_name, l:function_line; _] = l:match
-  return s:frame(l:function_name, str2nr(l:function_line))
+
+  let l:match = matchlist(a:frame_string, '^script \(.*\)\[\(\d\+\)\]$')
+  if !empty(l:match)
+    let [_, l:script_path, l:line; _] = l:match
+    return {
+      \ 'autocommand': v:null,
+      \ 'function': v:null,
+      \ 'line': str2nr(l:line),
+      \ 'script_path': l:script_path,
+    \ }
+  endif
+
+  let l:match = matchlist(a:frame_string, '^script \(.*\), line \(\d\+\)$')
+  if !empty(l:match)
+    let [_, l:script_path, l:line; _] = l:match
+    return {
+      \ 'autocommand': v:null,
+      \ 'function': v:null,
+      \ 'line': str2nr(l:line),
+      \ 'script_path': l:script_path,
+    \ }
+  endif
+
+  let l:match = matchlist(a:frame_string, '^\([A-Za-z]\+\) Autocommands for "\(.*\)"$')
+  if !empty(l:match)
+    let [_, l:event, l:name; _] = l:match
+    return {
+      \ 'autocommand': {'event': l:event, 'name': l:name},
+      \ 'function': v:null,
+      \ 'line': v:null,
+      \ 'script_path': v:null,
+    \ }
+  endif
+
+  let l:match = matchlist(a:frame_string, '^\%(function \)\?\(.*\)\[\(\d\+\)\]$')
+  if !empty(l:match)
+    let [_, l:function_name, l:function_line; _] = l:match
+    return s:frame(l:function_name, str2nr(l:function_line))
+  endif
+
+  let l:match = matchlist(a:frame_string, '^\%(function \)\?\(.*\), line \(\d\+\)$')
+  if !empty(l:match)
+    let [_, l:function_name, l:function_line; _] = l:match
+    return s:frame(l:function_name, str2nr(l:function_line))
+  endif
+
+  throw 'Not a valid throwpoint frame: '.string(a:frame_string)
 endfunction
 
 function! s:frame(function_name, function_line) abort
@@ -106,6 +124,9 @@ function! s:frame(function_name, function_line) abort
   let l:line = v:null
   if !(l:loc.line is v:null)
     let l:line = l:loc.line + a:function_line
+    if strager#function#is_lambda_function_name(a:function_name)
+      let l:line -= 1
+    endif
   endif
   return {
     \ 'autocommand': v:null,

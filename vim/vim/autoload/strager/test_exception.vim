@@ -284,7 +284,15 @@ function! Test_format_throwpoint() abort
 endfunction
 
 function! Test_format_script_throwpoint() abort
-  let l:throwpoint = '/myscript.vim, line 42'
+  let l:throwpoint = 'script /myscript.vim, line 42'
+  call assert_equal(
+    \ '/myscript.vim:42:',
+    \ strager#exception#format_throwpoint(l:throwpoint),
+  \ )
+endfunction
+
+function! Test_format_script_throwpoint_v2() abort
+  let l:throwpoint = 'script /myscript.vim[42]'
   call assert_equal(
     \ '/myscript.vim:42:',
     \ strager#exception#format_throwpoint(l:throwpoint),
