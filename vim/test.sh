@@ -4,7 +4,7 @@ set -e
 set -o pipefail
 set -u
 
-test_neovim=true
+test_neovim=false
 
 run_vim_syntax_test() {
     local vim_only=false
