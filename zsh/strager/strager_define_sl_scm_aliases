@@ -8,7 +8,7 @@ strager_define_sl_scm_aliases() {
             printf 'gc: fatal: STOP USING gc -m YOU FOOL!\n' >&2
             return 1
         fi
-        sl commit "${@}"
+        sl commit -v "${@}"
     }
     g.() {
         printf 'g.: fatal: not yet implemented for Sapling\n' >&2
