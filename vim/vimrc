@@ -258,6 +258,9 @@ vnoremap <unique> <F2> :GistLinesToChat<CR>
 " for its behavior right now.
 nnoremap <unique> K <Nop>
 
+" TODO(strager): Fall back to normal 'gd' if ALE doesn't work.
+nnoremap <unique> gd :ALEGoToDefinition<CR>
+
 " Paste toggle
 nmap <unique> <Leader>p :set paste!<CR>
 
