@@ -1,0 +1,5 @@
+/* Fix annoying "sign in plz" pop-up in Twitch chat.
+   https://www.twitch.tv/popout/strager/chat */
+.chat-signup-gate-overlay {
+    display: none;
+}

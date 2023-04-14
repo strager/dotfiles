@@ -29,4 +29,5 @@ profile_path="$(find_firefox_profile)"
 if [ -n "${profile_path}" ]; then
     mkdir -p "${profile_path}/chrome"
     "$S" "$HEREP/userChrome.css" "${profile_path}/chrome/userChrome.css"
+    "$S" "$HEREP/userContent.css" "${profile_path}/chrome/userContent.css"
 fi
