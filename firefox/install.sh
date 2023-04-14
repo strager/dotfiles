@@ -2,10 +2,13 @@
 
 find_firefox_profile() {
     all_profiles_path="$OUT/Library/Application Support/Firefox/Profiles"
+    if ! [ -d "${all_profiles_path}" ]; then
+        all_profiles_path="$OUT/.mozilla/firefox"
+    fi
     profile_path=
     old_IFS="${IFS}"
     IFS=
-    for cur_profile_path in ${all_profiles_path}/*; do
+    for cur_profile_path in ${all_profiles_path}/*.*; do
         if ! [ -d "${cur_profile_path}" ]; then
             continue
         fi
