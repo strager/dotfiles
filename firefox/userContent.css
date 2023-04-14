@@ -3,3 +3,11 @@
 .chat-signup-gate-overlay {
     display: none;
 }
+
+/* Hide annoying highlighting in Twitch chat.
+   https://www.twitch.tv/popout/strager/chat */
+.chat-line__message-highlight, .chat-line__reply-icon {
+    display: none !important;
+}
+
+/* * { font-family: "Comic Code" !important; } */
