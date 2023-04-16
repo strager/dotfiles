@@ -16,6 +16,26 @@ function! Test_grep_finds_single_match() abort
   call assert_equal(bufnr('readme.txt'), l:quickfix_items[0].bufnr)
 endfunction
 
+function! Test_grep_finds_inside_hidden_file() abort
+  call s:set_up_project([
+    \ ['.hidden.txt', 'hello there!'],
+  \ ])
+  Grep hello
+  let l:quickfix_items = getqflist({'all': v:true}).items
+  call assert_equal(1, len(l:quickfix_items))
+  call assert_equal(bufnr('.hidden.txt'), l:quickfix_items[0].bufnr)
+endfunction
+
+function! Test_grep_finds_inside_hidden_directory() abort
+  call s:set_up_project([
+    \ ['.hidden/hello.txt', 'hello there!'],
+  \ ])
+  Grep hello
+  let l:quickfix_items = getqflist({'all': v:true}).items
+  call assert_equal(1, len(l:quickfix_items))
+  call assert_equal(bufnr('.hidden/hello.txt'), l:quickfix_items[0].bufnr)
+endfunction
+
 function! Test_grep_ignores_gitignored_files_in_git_repo() abort
   call s:set_up_project([
     \ ['.gitignore', '/ignoredfile.txt'],
