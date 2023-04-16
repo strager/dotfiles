@@ -1,3 +1,5 @@
+let s:stop_on_first_failure = v:true
+
 function! strager#test#run_all_tests() abort
   let l:function_lines = split(execute('function /^Test_/'), '\n')
   let l:function_names = map(
@@ -41,9 +43,13 @@ function! strager#test#run_tests(test_function_names) abort
       endfor
       echomsg '[  FAILED  ] '.l:test_function_name
       call add(l:failed_test_function_names, l:test_function_name)
+      if s:stop_on_first_failure
+        break
+      endif
     endif
   endfor
   echomsg '[==========] '.len(a:test_function_names).' tests ran.'
+  " FIXME(strager): This count is wrong.
   echomsg '[  PASSED  ] '.len(a:test_function_names).' tests.'
   if len(l:failed_test_function_names) == 0
     " Quit Vim so developer iteration is faster.
