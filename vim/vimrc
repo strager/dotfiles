@@ -97,9 +97,12 @@ endif
 set grepprg+=\ --color\ never\ --column\ --line-number\ --no-heading\ --ignore\ --no-require-git\ --hidden\ $*
 nmap <unique> <Leader>a :Grep<SPACE>
 
+" Keep <CTRL-I>'s default behavior (forward in jump list). This must happen
+" before mapping <TAB>.
+nnoremap <unique> <c-i> <c-i>
 " Use tab for %
-nnoremap <unique> <tab> %
-vnoremap <unique> <tab> %
+nnoremap <tab> %
+vnoremap <tab> %
 
 """ Window and tab management
 " Windows
