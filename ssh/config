@@ -36,3 +36,7 @@ Host vm
 	HostName vm
 	User mg
 	Port 22
+
+Host stracle-linux
+	HostName 192.168.4.144
+	User parallels
