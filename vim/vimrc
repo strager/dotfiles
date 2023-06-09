@@ -122,6 +122,8 @@ while s:i <= 10
   let s:i += 1
 endwhile
 
+command Tab :tab vsplit
+
 """ File management
 set autowrite 
 set nohidden
