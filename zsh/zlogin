@@ -1,0 +1,10 @@
+_strager_motd_begging() {
+    local twitch_color='\x1b[38;5;99m'
+    local github_color='\x1b[38;5;39m'
+    local reset='\x1b[m'
+    printf "Hey! If you like my stream, please subscribe on ${twitch_color}Twitch${reset} or ${github_color}GitHub${reset}.\n"
+    printf "${twitch_color}Twitch: https://twitch.tv/strager${reset}\n"
+    printf "${github_color}GitHub: https://github.com/sponsors/strager${reset}\n"
+    printf '\n'
+}
+_strager_motd_begging
