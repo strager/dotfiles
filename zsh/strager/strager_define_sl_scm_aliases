@@ -17,6 +17,9 @@ strager_define_sl_scm_aliases() {
     gd() {
         sl diff "${@}"
     }
+    gme() {
+        sl metaedit -v "${@}"
+    }
     gp() {
         printf 'gp: fatal: not yet implemented for Sapling\n' >&2
         return 1

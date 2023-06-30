@@ -12,6 +12,10 @@ strager_define_hg_scm_aliases() {
     gd() {
         hg diff "${@}"
     }
+    gme() {
+        printf 'gme: fatal: not yet implemented for Hg\n' >&2
+        return 1
+    }
     gp() {
         printf 'gp: fatal: not yet implemented for Hg\n' >&2
         return 1

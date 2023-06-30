@@ -6,6 +6,7 @@ strager_define_auto_scm_aliases() {
         gc
         gd
         ggo
+        gme
         gp
         gr
         grc

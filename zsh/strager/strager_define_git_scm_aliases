@@ -15,6 +15,9 @@ strager_define_git_scm_aliases() {
     gd() {
         git diff "${@}"
     }
+    gme() {
+        git commit --amend -v "${@}"
+    }
     gp() {
         git checkout -p "${@}"
     }

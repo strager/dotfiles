@@ -13,6 +13,10 @@ strager_define_bzr_scm_aliases() {
     gd() {
         bzr diff "${@}"
     }
+    gme() {
+        printf 'gme: fatal: not yet implemented for Bazaar\n' >&2
+        return 1
+    }
     gp() {
         printf 'gp: fatal: not yet implemented for Bazaar\n' >&2
         return 1
