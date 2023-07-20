@@ -19,6 +19,7 @@
 /.stack/programs
 /Documents/twitchleak
 /Projects/bitcoin
+/Projects/chromium
 /Projects/llvm-project/build*
 /tmp/Projects/gcc-host/build
 /tmp/Projects/gcc-host/build-*
