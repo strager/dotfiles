@@ -38,3 +38,5 @@
 	conflictstyle = diff3
 [init]
 	defaultBranch = master
+[http]
+	cookiefile = /home/strager/.gitcookies
