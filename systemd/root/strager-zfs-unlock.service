@@ -1,0 +1,10 @@
+[Unit]
+Description=Mount encrypted ZFS datasets
+
+[Service]
+Type=oneshot
+ExecStart=zfs load-key -a
+ExecStart=zfs mount -a
+
+[Install]
+WantedBy=multi-user.target
