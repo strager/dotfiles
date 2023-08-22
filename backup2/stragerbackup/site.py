@@ -21,7 +21,7 @@ sites = [
     Site(
         name="strapurp",
         backed_up_directory="/home/strager",
-        local_directory="/home/strager/backups/strapurp/",
+        local_directory="/strapurp-secondary/backups/strager/strapurp/",
         nas_sftp_directory="homes/strager/backups/strapurp/",
         ssh_key_file="/home/strager/.ssh/id_rsa",
         ssh_known_hosts_file="/home/strager/.ssh/known_hosts",

@@ -6,7 +6,7 @@ snapshots are copied to a Kopia SFTP repository on strager-nas.
 Data flow diagram:
 
   strapurp:/home/strager
-    --kopia-> strapurp:/home/strager/backups/strapurp/
+    --kopia-> strapurp:/strapurp-secondary/backups/strager/strapurp/
                --kopia-> strager-nas:/volume2/homes/strager/backups/strapurp
 
 ## Client setup for backing up
