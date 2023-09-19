@@ -6,7 +6,7 @@
 
 /* Hide annoying highlighting in Twitch chat.
    https://www.twitch.tv/popout/strager/chat */
-.chat-line__message-highlight, .chat-line__reply-icon {
+.chat-line__message-highlight, .chat-line__reply-icon, .chat-line__pin-icon {
     display: none !important;
 }
 
