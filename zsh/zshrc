@@ -165,6 +165,10 @@ ncdu() {
     command ncdu --color dark "${@}"
 }
 
+dd() {
+    command dd status=progress
+}
+
 # Input styling.
 ZSH_HIGHLIGHT_HIGHLIGHTERS=(main)
 typeset -A ZSH_HIGHLIGHT_STYLES
