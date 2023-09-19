@@ -288,5 +288,8 @@ endif
 
 let g:ale_javascript_quick_lint_js_experimental_typescript = v:true
 
+" Thanks, woosaaahh.
+set nrformats-=octal
+
 " Must be last.  Forgot why.
 set exrc secure
