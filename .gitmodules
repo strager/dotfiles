@@ -31,3 +31,6 @@
 [submodule "vim/vim/pack/external/start/zig.vim"]
 	path = vim/vim/pack/external/start/zig.vim
 	url = https://github.com/ziglang/zig.vim.git
+[submodule "vim/vim/pack/external/start/sideways.vim"]
+	path = vim/vim/pack/external/start/sideways.vim
+	url = https://github.com/AndrewRadev/sideways.vim.git
