@@ -3,6 +3,6 @@ setlocal makeprg=make
 
 " For some reason, we get some garbage XML indentexpr by default.
 runtime! indent/javascript.vim
-set indentexpr=GetJsIndent()
+setlocal indentexpr=GetJsIndent()
 
 let b:ale_linters = ['quick-lint-js']
