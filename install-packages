@@ -23,8 +23,16 @@ expected_nix_files=(
     bin/vim
     bin/wget
     bin/zsh
-    share/zsh/site-functions/_caffeinate
 )
+case "${os}" in
+    Darwin)
+        expected_nix_files+=(
+            # FIXME(strager): Is this intentional? Where should this
+            # come from?
+            share/zsh/site-functions/_caffeinate
+        )
+        ;;
+esac
 
 nix_package_attrs=(
     nixpkgs.llvmPackages_9.clang-unwrapped  # for clang-format 9
