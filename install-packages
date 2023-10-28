@@ -47,9 +47,9 @@ nix_package_attrs=(
     nixpkgs.python3Packages.flake8
     nixpkgs.ripgrep
     nixpkgs.sd
+    nixpkgs.strager-vim
     nixpkgs.sqlite-interactive
     nixpkgs.tmux
-    nixpkgs.vim
     nixpkgs.wget
     nixpkgs.zsh
     nixpkgs.zsh-completions

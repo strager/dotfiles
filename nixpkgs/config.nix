@@ -44,7 +44,7 @@
       ];
     });
 
-    vim = pkgs.vim.overrideAttrs (attrs: rec {
+    strager-vim = pkgs.vim.overrideAttrs (attrs: rec {
       version = "9.0.1377";
       src = pkgs.fetchFromGitHub {
         owner = "vim";
