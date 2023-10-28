@@ -15,6 +15,7 @@ cd "$HERE"
 projects=(
   backup2
   bash
+  emacs
   firefox
   fish
   fzf
