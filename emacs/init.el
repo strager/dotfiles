@@ -3,54 +3,6 @@
 (package-initialize)
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
 
-;; Appearance:
-(load-theme 'solarized-dark t)
-(blink-cursor-mode -1)
-(tool-bar-mode -1)
-(menu-bar-mode -1)
-(whitespace-mode)
-(fringe-mode 0)
-
-;; Navigation:
-(require 'view)
-(keymap-global-set "C-v" 'View-scroll-half-page-forward)
-(keymap-global-set "M-v" 'View-scroll-half-page-backward)
-(add-hook 'vterm-mode-hook 'goto-address-mode)
-
-;; Window management:
-(defun strager-split-window-below ()
-  "Like split-window-below, but moves the cursor into the new window (like Vim)."
-  (interactive)
-  (select-window (split-window-below)))
-(keymap-global-set "C-x 2" 'strager-split-window-below)
-(keymap-global-unset "C-x t 1")
-
-(defun strager-make-emacs-directory (name)
-  "Return ~/.emacs.d/(name), creating it as a directory if missing."
-  (let ((dir (concat user-emacs-directory name)))
-    (condition-case e
-        (make-directory dir)
-      (file-already-exists nil))
-    dir))
-
-;; Auto-saving, backups, and lock files:
-(defvar strager-auto-save-directory (strager-make-emacs-directory "autosave"))
-(defun strager-make-auto-save-file-name ()
-  "Far simpler and more reliable than Emacs's built-in make-auto-save-file-name."
-  (let* ((full-name (if buffer-file-name (expand-file-name buffer-file-name) (buffer-name)))
-         (name (if buffer-file-name (file-name-nondirectory full-name) full-name))
-         (sanitized-name (url-hexify-string name))
-         (auto-save-name (format "#%s-%s#" sanitized-name (sha1 full-name))))
-    (expand-file-name auto-save-name strager-auto-save-directory)))
-(advice-add 'make-auto-save-file-name :override #'strager-make-auto-save-file-name)
-(setq auto-save-interval 1)
-(setq auto-save-timeout 1)
-(setq auto-save-no-message t)
-(setq make-backup-files nil)
-
-;; Clipboard:
-(xclip-mode 1)
-
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -99,6 +51,55 @@
  '(vterm-max-scrollback 100000)
  '(whitespace-style
    '(trailing tabs newline missing-newline-at-eof empty indentation space-after-tab space-before-tab tab-mark)))
+
+;; Appearance:
+(load-theme 'solarized-dark t)
+(blink-cursor-mode -1)
+(tool-bar-mode -1)
+(menu-bar-mode -1)
+(whitespace-mode)
+(fringe-mode 0)
+
+;; Navigation:
+(require 'view)
+(keymap-global-set "C-v" 'View-scroll-half-page-forward)
+(keymap-global-set "M-v" 'View-scroll-half-page-backward)
+(add-hook 'vterm-mode-hook 'goto-address-mode)
+
+;; Window management:
+(defun strager-split-window-below ()
+  "Like split-window-below, but moves the cursor into the new window (like Vim)."
+  (interactive)
+  (select-window (split-window-below)))
+(keymap-global-set "C-x 2" 'strager-split-window-below)
+(keymap-global-unset "C-x t 1")
+
+(defun strager-make-emacs-directory (name)
+  "Return ~/.emacs.d/(name), creating it as a directory if missing."
+  (let ((dir (concat user-emacs-directory name)))
+    (condition-case e
+        (make-directory dir)
+      (file-already-exists nil))
+    dir))
+
+;; Auto-saving, backups, and lock files:
+(defvar strager-auto-save-directory (strager-make-emacs-directory "autosave"))
+(defun strager-make-auto-save-file-name ()
+  "Far simpler and more reliable than Emacs's built-in make-auto-save-file-name."
+  (let* ((full-name (if buffer-file-name (expand-file-name buffer-file-name) (buffer-name)))
+         (name (if buffer-file-name (file-name-nondirectory full-name) full-name))
+         (sanitized-name (url-hexify-string name))
+         (auto-save-name (format "#%s-%s#" sanitized-name (sha1 full-name))))
+    (expand-file-name auto-save-name strager-auto-save-directory)))
+(advice-add 'make-auto-save-file-name :override #'strager-make-auto-save-file-name)
+(setq auto-save-interval 1)
+(setq auto-save-timeout 1)
+(setq auto-save-no-message t)
+(setq make-backup-files nil)
+
+;; Clipboard:
+(xclip-mode 1)
+
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
