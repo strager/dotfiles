@@ -34,3 +34,31 @@
 [submodule "vim/vim/pack/external/start/sideways.vim"]
 	path = vim/vim/pack/external/start/sideways.vim
 	url = https://github.com/AndrewRadev/sideways.vim.git
+[submodule "emacs/elpa/editorconfig"]
+	path = emacs/strager-packages/editorconfig
+	url = https://github.com/editorconfig/editorconfig-emacs.git
+[submodule "emacs/elpa/go-mode"]
+	path = emacs/strager-packages/go-mode
+	url = https://github.com/dominikh/go-mode.el.git
+[submodule "emacs/elpa/markdown-mode"]
+	path = emacs/strager-packages/markdown-mode
+	url = https://github.com/jrblevin/markdown-mode.git
+[submodule "emacs/elpa/nix-mode"]
+	path = emacs/strager-packages/nix-mode
+	url = https://github.com/NixOS/nix-mode.git
+[submodule "emacs/elpa/solarized-theme"]
+	path = emacs/strager-packages/solarized-theme
+	url = https://github.com/bbatsov/solarized-emacs.git
+[submodule "emacs/elpa/typescript-mode"]
+	path = emacs/strager-packages/typescript-mode
+	url = https://github.com/emacs-typescript/typescript.el.git
+[submodule "emacs/elpa/yaml-mode"]
+	path = emacs/strager-packages/yaml-mode
+	url = https://github.com/yoshiki/yaml-mode.git
+[submodule "emacs/elpa/cmake-mode"]
+	path = emacs/strager-packages/cmake-mode
+	url = https://gitlab.kitware.com/cmake/cmake.git
+[submodule "emacs/strager-packages/xclip"]
+	path = emacs/strager-packages/xclip
+	url = https://git.sv.gnu.org/git/emacs/elpa.git
+	branch = externals/xclip

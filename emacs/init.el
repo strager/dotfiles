@@ -3,6 +3,60 @@
 (package-initialize)
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
 
+; strager's custom package loader:
+(setq strager-packages-directory (expand-file-name "strager-packages" user-emacs-directory))
+(defun strager-package-ensure (package-name ensure-args state)
+  (if ensure-args
+      (let* ((package-directory (strager-package-root-directory package-name))
+             (scripts-relative-directory (cond
+                                          ((eq package-name 'cmake-mode) "Auxiliary")
+                                          (t ".")))
+             (scripts-directory (expand-file-name scripts-relative-directory package-directory))
+             (package-autoload-file (strager-package-generate-autoload package-name scripts-directory)))
+        (load package-autoload-file))))
+(defun strager-package-generate-autoload (package-name scripts-directory)
+  "Create the PACKAGE-autoload.el file given a directory containing .el scripts.
+
+scripts-directory must be an absolute path.
+
+Returns the path to the autoload file."
+  (let* ((autoload-temp (expand-file-name "strager-autoload-temp.el" scripts-directory))
+         (autoload-file (strager-package-autoload-file package-name)))
+    (loaddefs-generate
+     scripts-directory
+     autoload-temp
+     nil
+     (prin1-to-string
+      `(progn
+         (push ,scripts-directory load-path)
+         ; HACK(strager): Trick the autoload script into thinking it's
+         ; running inside scripts-directory. This is needed to make
+         ; solarized-theme's theme hooks work.
+         (setq load-file-name ,autoload-temp)))
+     nil
+     t)
+    (rename-file autoload-temp autoload-file t)
+    autoload-file))
+(defun strager-package-root-directory (package-name)
+  (expand-file-name (symbol-name package-name) strager-packages-directory))
+(defun strager-package-autoload-file (package-name)
+  "Return the path to the PACKAGE-autoload.el file, even if it doesn't exist."
+  (expand-file-name (format "%s-autoload.el" package-name) strager-packages-directory))
+
+(require 'use-package-ensure)
+(setq use-package-ensure-function 'strager-package-ensure)
+(setq use-package-always-defer t)
+(setq use-package-always-ensure t)
+(use-package cmake-mode)
+(use-package editorconfig)
+(use-package go-mode)
+(use-package markdown-mode)
+(use-package nix-mode)
+(use-package solarized-theme)
+(use-package typescript-mode)
+(use-package xclip)
+(use-package yaml-mode)
+
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -33,7 +87,16 @@
  '(mouse-wheel-progressive-speed nil)
  '(mouse-wheel-scroll-amount '(3 ((shift) . hscroll)))
  '(package-selected-packages
-   '(cmake-mode nix-mode go-mode xclip yaml-mode editorconfig solarized-theme markdown-mode typescript-mode vterm google-c-style))
+   '(cmake-mode
+     editorconfig
+     go-mode
+     markdown-mode
+     nix-mode
+     solarized-theme
+     typescript-mode
+     vterm
+     xclip
+     yaml-mode))
  '(project-vc-extra-root-markers '(".sl"))
  '(scroll-bar-mode nil)
  '(scroll-conservatively 1)
