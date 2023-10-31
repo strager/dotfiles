@@ -101,6 +101,7 @@ Returns the path to the autoload file."
  '(scroll-bar-mode nil)
  '(scroll-conservatively 1)
  '(scroll-preserve-screen-position 1)
+ '(sentence-end-double-space nil)
  '(tab-bar-auto-width nil)
  '(tab-bar-close-button-show nil)
  '(tab-bar-close-last-tab-choice 'delete-frame)
