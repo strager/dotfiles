@@ -70,10 +70,7 @@ Returns the path to the autoload file."
  '(compilation-skip-threshold 0)
  '(custom-safe-themes
    '("7f1d414afda803f3244c6fb4c2c64bea44dac040ed3731ec9d75275b9e831fe5" "fee7287586b17efbfda432f05539b58e86e059e78006ce9237b8732fde991b4c" "524fa911b70d6b94d71585c9f0c5966fe85fb3a9ddd635362bfabd1a7981a307" default))
- '(default-frame-alist
-   '((tab-bar-lines . 1)
-     (left-fringe . 200)
-     (right-fringe . 200)))
+ '(default-frame-alist '((tab-bar-lines . 1)))
  '(echo-keystrokes 0.001)
  '(flymake-quicklintjs-args '("--language=experimental-default"))
  '(flymake-quicklintjs-experimental-typescript t)
@@ -87,16 +84,7 @@ Returns the path to the autoload file."
  '(mouse-wheel-progressive-speed nil)
  '(mouse-wheel-scroll-amount '(3 ((shift) . hscroll)))
  '(package-selected-packages
-   '(cmake-mode
-     editorconfig
-     go-mode
-     markdown-mode
-     nix-mode
-     solarized-theme
-     typescript-mode
-     vterm
-     xclip
-     yaml-mode))
+   '(magit-section cmake-mode nix-mode go-mode xclip yaml-mode editorconfig solarized-theme markdown-mode typescript-mode vterm google-c-style))
  '(project-vc-extra-root-markers '(".sl"))
  '(scroll-bar-mode nil)
  '(scroll-conservatively 1)
