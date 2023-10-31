@@ -49,6 +49,7 @@ Returns the path to the autoload file."
 (setq use-package-always-ensure t)
 (use-package cmake-mode)
 (use-package editorconfig)
+(use-package evil)
 (use-package go-mode)
 (use-package markdown-mode)
 (use-package nix-mode)
@@ -72,6 +73,13 @@ Returns the path to the autoload file."
    '("7f1d414afda803f3244c6fb4c2c64bea44dac040ed3731ec9d75275b9e831fe5" "fee7287586b17efbfda432f05539b58e86e059e78006ce9237b8732fde991b4c" "524fa911b70d6b94d71585c9f0c5966fe85fb3a9ddd635362bfabd1a7981a307" default))
  '(default-frame-alist '((tab-bar-lines . 1)))
  '(echo-keystrokes 0.001)
+ '(evil-kill-on-visual-paste nil)
+ '(evil-search-module 'evil-search)
+ '(evil-split-window-below t)
+ '(evil-vsplit-window-right t)
+ '(evil-want-C-d-scroll t)
+ '(evil-want-C-u-scroll t)
+ '(evil-want-Y-yank-to-eol t)
  '(flymake-quicklintjs-args '("--language=experimental-default"))
  '(flymake-quicklintjs-experimental-typescript t)
  '(flymake-quicklintjs-program
@@ -103,6 +111,9 @@ Returns the path to the autoload file."
  '(vterm-max-scrollback 100000)
  '(whitespace-style
    '(trailing tabs newline missing-newline-at-eof empty indentation space-after-tab space-before-tab tab-mark)))
+
+;; Evil mode:
+(evil-mode 1)
 
 ;; Appearance:
 (load-theme 'solarized-dark t)
@@ -207,3 +218,4 @@ Returns the path to the autoload file."
                        'right
                      -1)))
 (add-hook 'window-selection-change-functions 'strager-show-scroll-bar-in-vterm)
+(add-hook 'vterm-mode-hook (lambda () (evil-local-mode -1)))

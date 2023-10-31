@@ -62,3 +62,6 @@
 	path = emacs/strager-packages/xclip
 	url = https://git.sv.gnu.org/git/emacs/elpa.git
 	branch = externals/xclip
+[submodule "emacs/strager-packages/evil"]
+	path = emacs/strager-packages/evil
+	url = https://github.com/emacs-evil/evil.git
