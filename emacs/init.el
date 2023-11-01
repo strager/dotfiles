@@ -88,6 +88,7 @@ Returns the path to the autoload file."
  '(ido-enable-flex-matching t)
  '(ido-show-dot-for-dired t)
  '(indent-tabs-mode nil)
+ '(inhibit-startup-screen t)
  '(lazy-highlight-no-delay-length 1)
  '(mouse-wheel-progressive-speed nil)
  '(mouse-wheel-scroll-amount '(3 ((shift) . hscroll)))
