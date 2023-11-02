@@ -1,3 +1,12 @@
+# Allow Emacs TRAMP to function. (For some reason it uses an interactive shell.)
+# Should be before [most] other settings.
+# https://blog.karssen.org/2016/03/02/fixing-emacs-tramp-mode-when-using-zsh/
+if [[ "${TERM}" == dumb ]]; then
+    unsetopt zle
+    PS1='$ '
+    return
+fi
+
 # TODO(strager): Move into ~/.zshenv.
 fpath=(~/.zsh/strager "${fpath[@]}")
 autoload -Uk ls
