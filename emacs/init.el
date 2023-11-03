@@ -116,7 +116,12 @@ Returns the path to the autoload file."
    '(trailing tabs newline missing-newline-at-eof empty indentation space-after-tab space-before-tab tab-mark)))
 
 ;; Evil mode:
-(evil-mode 1)
+(evil-mode -1)
+; Instead of enabling evil-mode globally then opting buffers out,
+; disable evil-mode globally then opt buffers in. This seems to be
+; more reliable.
+(add-hook 'prog-mode-hook 'evil-local-mode)
+(add-hook 'text-mode-hook 'evil-local-mode)
 
 ;; VCS commit messages:
 (setq-default global-git-commit-mode nil)
@@ -245,4 +250,3 @@ Returns the path to the autoload file."
                        'right
                      -1)))
 (add-hook 'window-selection-change-functions 'strager-show-scroll-bar-in-vterm)
-(add-hook 'vterm-mode-hook (lambda () (evil-local-mode -1)))
