@@ -130,6 +130,19 @@ Returns the path to the autoload file."
 (keymap-global-set "M-v" 'View-scroll-half-page-backward)
 (add-hook 'vterm-mode-hook 'goto-address-mode)
 
+;; Shortcuts:
+(define-key evil-normal-state-map (kbd "\\ w") 'evil-write-all)
+(define-key evil-normal-state-map (kbd "<tab>") 'evil-jump-item)
+(defun strager-clear-highlights ()
+  (interactive)
+  (evil-ex-delete-hl 'evil-ex-search))
+(define-key evil-normal-state-map (kbd "\\ l") 'strager-clear-highlights)
+(defun strager-sort-lines-visual ()
+  (interactive)
+  (let ((range (evil-ex-range (evil-ex-marker "<") (evil-ex-marker ">"))))
+    (evil-ex-sort (nth 0 range) (nth 1 range) "u")))
+(define-key evil-visual-state-map (kbd "\\ s") 'strager-sort-lines-visual)
+
 ;; Window management:
 (defun strager-split-window-below ()
   "Like split-window-below, but moves the cursor into the new window (like Vim)."
