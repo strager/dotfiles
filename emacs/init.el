@@ -10,6 +10,7 @@
       (let* ((package-directory (strager-package-root-directory package-name))
              (scripts-relative-directory (cond
                                           ((eq package-name 'cmake-mode) "Auxiliary")
+                                          ((eq package-name 'magit) "lisp")
                                           (t ".")))
              (scripts-directory (expand-file-name scripts-relative-directory package-directory))
              (package-autoload-file (strager-package-generate-autoload package-name scripts-directory)))
@@ -52,6 +53,7 @@ Returns the path to the autoload file."
 (use-package evil)
 (use-package go-mode)
 (use-package markdown-mode)
+(use-package magit)
 (use-package nix-mode)
 (use-package solarized-theme)
 (use-package typescript-mode)
@@ -115,6 +117,17 @@ Returns the path to the autoload file."
 
 ;; Evil mode:
 (evil-mode 1)
+
+;; VCS commit messages:
+(setq-default global-git-commit-mode nil)
+(defun strager-vcs-edit-mode ()
+  "Enable modes for editing VCS commit messages."
+  (interactive)
+  (load-library "git-commit")
+  (text-mode)
+  (git-commit-setup)
+  (git-commit-setup-font-lock-in-buffer))
+(add-to-list 'auto-mode-alist '("/COMMIT_EDITMSG" . strager-vcs-edit-mode))
 
 ;; Appearance:
 (load-theme 'solarized-dark t)

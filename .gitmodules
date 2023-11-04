@@ -65,3 +65,6 @@
 [submodule "emacs/strager-packages/evil"]
 	path = emacs/strager-packages/evil
 	url = https://github.com/emacs-evil/evil.git
+[submodule "emacs/strager-packages/magit"]
+	path = emacs/strager-packages/magit
+	url = https://github.com/strager/magit.git
