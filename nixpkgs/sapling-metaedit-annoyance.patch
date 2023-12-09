@@ -1,8 +1,8 @@
 Remove annoying 'SL: Commit message of changeset' text for 'sl metaedit'.
 
---- a/edenscm/ext/amend/metaedit.py
-+++ b/edenscm/ext/amend/metaedit.py
-@@ -289,13 +289,6 @@
+--- a/sapling/ext/amend/metaedit.py
++++ b/sapling/ext/amend/metaedit.py
+@@ -285,13 +285,6 @@
                      user = usermap.get(c.node())
                      if user is not None:
                          _commitopts["user"] = user
