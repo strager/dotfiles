@@ -77,6 +77,7 @@ Returns the path to the autoload file."
  '(dired-isearch-filenames t)
  '(echo-keystrokes 0.001)
  '(evil-kill-on-visual-paste nil)
+ '(evil-repeat-move-cursor t)
  '(evil-search-module 'evil-search)
  '(evil-split-window-below t)
  '(evil-vsplit-window-right t)
