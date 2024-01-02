@@ -163,6 +163,11 @@ Returns the path to the autoload file."
     (evil-ex-sort (nth 0 range) (nth 1 range) "u")))
 (define-key evil-visual-state-map (kbd "\\ s") 'strager-sort-lines-visual)
 
+;; Handy functions:
+(defun strager-copy-buffer-file-name ()
+  (interactive)
+  (kill-new buffer-file-name))
+
 ;; Window management:
 (defun strager-split-window-below ()
   "Like split-window-below, but moves the cursor into the new window (like Vim)."
