@@ -80,6 +80,7 @@ Returns the path to the autoload file."
  '(evil-repeat-move-cursor t)
  '(evil-search-module 'evil-search)
  '(evil-split-window-below t)
+ '(evil-symbol-word-search t)
  '(evil-vsplit-window-right t)
  '(evil-want-C-d-scroll t)
  '(evil-want-C-u-scroll t)
