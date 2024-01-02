@@ -68,3 +68,6 @@
 [submodule "emacs/strager-packages/magit"]
 	path = emacs/strager-packages/magit
 	url = https://github.com/strager/magit.git
+[submodule "emacs/strager-packages/php-mode"]
+	path = emacs/strager-packages/php-mode
+	url = https://github.com/emacs-php/php-mode.git
