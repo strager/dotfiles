@@ -234,6 +234,10 @@ Returns the path to the autoload file."
 (global-set-key [f1] 'strager-build)
 (global-set-key [f2] 'strager-build-f2)
 (add-hook 'compilation-filter-hook 'ansi-color-compilation-filter)
+(defun strager-disable-truncate-lines ()
+  (interactive)
+  (setq truncate-lines nil))
+(add-hook 'compilation-mode-hook 'strager-disable-truncate-lines)
 
 ;; JavaScript mode:
 (add-to-list 'load-path "~/Projects/quick-lint-js-sl/plugin/emacs")
