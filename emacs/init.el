@@ -258,6 +258,7 @@ Returns the path to the autoload file."
 (define-key vterm-mode-map (kbd "C-c C-c") 'vterm--self-insert)
 ; Allow copying text.
 (define-key vterm-mode-map (kbd "M-w") 'kill-ring-save)
+(define-key vterm-mode-map (kbd "C-q") 'vterm-send-next-key)
 (defun strager-show-scroll-bar-in-vterm (window-or-frame)
   "Show vertical scroll bars iff a VTerm window is active."
   (interactive)
