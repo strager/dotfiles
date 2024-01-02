@@ -160,6 +160,17 @@ Returns the path to the autoload file."
 (keymap-global-set "M-v" 'View-scroll-half-page-backward)
 (add-hook 'vterm-mode-hook 'goto-address-mode)
 
+; Based on: https://stackoverflow.com/a/36707038
+(define-key isearch-mode-map [remap isearch-delete-char] 'isearch-del-char)
+(defun strager-isearch-search ()
+  "Replacement for isearch-search which wraps if search yielded no results without wrapping."
+  (unless isearch-success
+    (advice-remove 'isearch-search #'strager-isearch-search)
+    (unwind-protect
+        (isearch-repeat (if isearch-forward 'forward)))
+    (advice-add 'isearch-search :after #'strager-isearch-search)))
+(advice-add 'isearch-search :after #'strager-isearch-search)
+
 ;; Shortcuts:
 (define-key evil-normal-state-map (kbd "\\ a") 'rgrep)
 (define-key evil-normal-state-map (kbd "\\ w") 'evil-write-all)
