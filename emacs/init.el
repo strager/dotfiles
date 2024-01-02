@@ -145,6 +145,11 @@ Returns the path to the autoload file."
 (whitespace-mode)
 (fringe-mode 0)
 
+; Try to improve syntax highlighting. I don't remember if these
+; settings do anything.
+(setq jit-lock-stealth-time 1)
+(setq jit-lock-contextually t)
+
 ;; Navigation:
 (require 'view)
 (keymap-global-set "C-v" 'View-scroll-half-page-forward)
