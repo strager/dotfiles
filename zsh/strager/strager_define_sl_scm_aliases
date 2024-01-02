@@ -37,6 +37,6 @@ strager_define_sl_scm_aliases() {
         sl amend "${@}"
     }
     ggo() {
-        sl goto -- "${1}"
+        sl goto "${@}"
     }
 }
