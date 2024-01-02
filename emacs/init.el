@@ -150,6 +150,7 @@ Returns the path to the autoload file."
 (add-hook 'vterm-mode-hook 'goto-address-mode)
 
 ;; Shortcuts:
+(define-key evil-normal-state-map (kbd "\\ a") 'rgrep)
 (define-key evil-normal-state-map (kbd "\\ w") 'evil-write-all)
 (define-key evil-normal-state-map (kbd "<tab>") 'evil-jump-item)
 (defun strager-clear-highlights ()
