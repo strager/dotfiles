@@ -286,8 +286,6 @@ if exists('#ALEEvents')
   call ale#events#Init()
 endif
 
-let g:ale_javascript_quick_lint_js_experimental_typescript = v:true
-
 " Thanks, woosaaahh.
 set nrformats-=octal
 
