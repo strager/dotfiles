@@ -224,11 +224,15 @@ Returns the path to the autoload file."
 (savehist-mode 1)
 
 ;; Compilation:
-(defun strager-build ()
+(defun strager-build (&rest args)
   (interactive)
   (let ((default-directory (project-root (project-current t))))
-    (compile "./make")))
+    (compile (combine-and-quote-strings (cons "./make" args)))))
+(defun strager-build-f2 ()
+  (interactive)
+  (strager-build "f2"))
 (global-set-key [f1] 'strager-build)
+(global-set-key [f2] 'strager-build-f2)
 (add-hook 'compilation-filter-hook 'ansi-color-compilation-filter)
 
 ;; JavaScript mode:
