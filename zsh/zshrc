@@ -175,7 +175,7 @@ ncdu() {
 }
 
 dd() {
-    command dd status=progress
+    command dd status=progress "${@}"
 }
 
 # Input styling.
