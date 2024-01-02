@@ -78,6 +78,7 @@ Returns the path to the autoload file."
  '(default-frame-alist '((tab-bar-lines . 1)))
  '(dired-auto-revert-buffer t)
  '(dired-isearch-filenames t)
+ '(dired-listing-switches "-al --group-directories-first")
  '(echo-keystrokes 0.001)
  '(evil-kill-on-visual-paste nil)
  '(evil-repeat-move-cursor t)
