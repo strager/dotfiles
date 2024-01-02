@@ -275,3 +275,10 @@ Returns the path to the autoload file."
                        'right
                      -1)))
 (add-hook 'window-selection-change-functions 'strager-show-scroll-bar-in-vterm)
+
+;; Dired mode:
+; Make left click open the file in the current window, not in the
+; other window.
+(require 'dired)
+(define-key dired-mode-map (kbd "<mouse-1>") 'dired-find-file)
+(define-key dired-mode-map (kbd "<mouse-2>") 'dired-find-file)
