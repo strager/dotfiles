@@ -146,7 +146,7 @@ Returns the path to the autoload file."
 (blink-cursor-mode -1)
 (tool-bar-mode -1)
 (menu-bar-mode -1)
-(whitespace-mode)
+(global-whitespace-mode)
 (fringe-mode 0)
 
 ; Try to improve syntax highlighting. I don't remember if these
