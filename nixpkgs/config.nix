@@ -44,6 +44,10 @@
       ];
     });
 
+    strager-emacs = (pkgs.emacsPackagesFor pkgs.emacs29-gtk3).emacsWithPackages (epkgs: [
+      epkgs.vterm
+    ]);
+
     strager-vim = pkgs.vim.overrideAttrs (attrs: rec {
       version = "9.0.1377";
       src = pkgs.fetchFromGitHub {

@@ -9,6 +9,8 @@ os="$(uname)"
 expected_nix_files=(
     bin/black
     bin/clang-format
+    bin/emacs
+    bin/emacsclient
     bin/flake8
     bin/fzf
     bin/git
@@ -47,6 +49,7 @@ nix_package_attrs=(
     nixpkgs.python3Packages.flake8
     nixpkgs.ripgrep
     nixpkgs.sd
+    nixpkgs.strager-emacs
     nixpkgs.strager-vim
     nixpkgs.sqlite-interactive
     nixpkgs.tmux
