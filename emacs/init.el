@@ -120,7 +120,7 @@ Returns the path to the autoload file."
    '("C-c" "C-x" "C-u" "C-g" "C-h" "C-l" "M-x" "M-o" "C-y" "M-y" "M-1" "M-2" "M-3" "M-4" "M-5" "M-6" "M-7" "M-8" "M-9"))
  '(vterm-max-scrollback 100000)
  '(whitespace-style
-   '(trailing tabs newline missing-newline-at-eof empty indentation space-after-tab space-before-tab tab-mark)))
+   '(face trailing tabs newline missing-newline-at-eof empty indentation space-after-tab space-before-tab tab-mark)))
 
 ;; Evil mode:
 (evil-mode -1)
