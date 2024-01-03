@@ -109,7 +109,7 @@ unsetopt auto_remove_slash
 zstyle ':completion:*' menu select
 
 # Environment.
-export EDITOR=emacs
+export EDITOR=emacsclient
 export PATH="${HOME}/bin:${PATH}"
 export PATH="${HOME}/.cargo/bin:${PATH}"
 # NOTE(strager): strager_initialize_nix adds
