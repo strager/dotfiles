@@ -156,6 +156,8 @@ Returns the path to the autoload file."
 (menu-bar-mode -1)
 (global-whitespace-mode)
 (fringe-mode 0)
+(column-number-mode)
+(line-number-mode)
 
 ; Try to improve syntax highlighting. I don't remember if these
 ; settings do anything.
