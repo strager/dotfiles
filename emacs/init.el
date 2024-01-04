@@ -12,6 +12,7 @@
                                           ((eq package-name 'cmake-mode) "Auxiliary")
                                           ((eq package-name 'magit) "lisp")
                                           ((eq package-name 'php-mode) "lisp")
+                                          ((eq package-name 'with-editor) "lisp")
                                           (t ".")))
              (scripts-directory (expand-file-name scripts-relative-directory package-directory))
              (package-autoload-file (strager-package-generate-autoload package-name scripts-directory)))
@@ -59,6 +60,7 @@ Returns the path to the autoload file."
 (use-package php-mode)
 (use-package solarized-theme)
 (use-package typescript-mode)
+(use-package with-editor)
 (use-package xclip)
 (use-package yaml-mode)
 

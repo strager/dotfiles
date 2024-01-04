@@ -71,3 +71,6 @@
 [submodule "emacs/strager-packages/php-mode"]
 	path = emacs/strager-packages/php-mode
 	url = https://github.com/emacs-php/php-mode.git
+[submodule "emacs/strager-packages/with-editor"]
+	path = emacs/strager-packages/with-editor
+	url = https://github.com/strager/with-editor.git
