@@ -94,11 +94,13 @@ Returns the path to the autoload file."
  '(flymake-quicklintjs-program
    "/home/strager/Projects/quick-lint-js-sl/build/quick-lint-js")
  '(global-auto-revert-mode t)
- '(ido-enable-flex-matching t)
- '(ido-show-dot-for-dired t)
+ '(icomplete-compute-delay 0)
+ '(ido-enable-flex-matching nil)
+ '(ido-show-dot-for-dired nil)
  '(indent-tabs-mode nil)
  '(inhibit-startup-screen t)
  '(lazy-highlight-no-delay-length 1)
+ '(max-mini-window-height 0.5)
  '(mouse-wheel-progressive-speed nil)
  '(mouse-wheel-scroll-amount '(3 ((shift) . hscroll)))
  '(package-selected-packages
@@ -242,7 +244,7 @@ Returns the path to the autoload file."
 (tab-bar-mode)
 
 ;; Minibuffer:
-(ido-mode)
+(fido-vertical-mode)
 (savehist-mode 1)
 
 ;; Compilation:
