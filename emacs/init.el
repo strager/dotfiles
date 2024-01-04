@@ -124,6 +124,10 @@ Returns the path to the autoload file."
  '(whitespace-style
    '(face trailing tabs newline missing-newline-at-eof empty indentation space-after-tab space-before-tab tab-mark)))
 
+;; Modes:
+(add-to-list 'auto-mode-alist '("\\.cjs\\'" . javascript-mode))
+(add-to-list 'auto-mode-alist '("\\.mjs\\'" . javascript-mode))
+
 ;; Evil mode:
 (evil-mode -1)
 ; Instead of enabling evil-mode globally then opting buffers out,
