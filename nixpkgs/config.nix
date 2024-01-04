@@ -44,9 +44,28 @@
       ];
     });
 
-    strager-emacs = (pkgs.emacsPackagesFor pkgs.emacs29-gtk3).emacsWithPackages (epkgs: [
-      epkgs.vterm
-    ]);
+    strager-emacs = let
+      strager-emacs-unwrapped = (pkgs.emacsPackagesFor pkgs.emacs29-gtk3).emacsWithPackages (epkgs: [
+        epkgs.vterm
+      ]);
+      in pkgs.runCommand "strager-emacs" {
+        emacsWrapper = ''
+          #!${pkgs.runtimeShell}
+          # On Linux Mint, my mouse pointer cursor icon is in /usr/share/icons.
+          XCURSOR_PATH=~/.icons:/usr/share/icons:/usr/share/pixmaps
+          export XCURSOR_PATH
+          exec ${strager-emacs-unwrapped}/bin/emacs "''${@}"
+        '';
+        meta = {
+          mainProgram = "emacs";
+        };
+      } ''
+        mkdir $out/
+        mkdir $out/bin/
+        printf '%s\n' "$emacsWrapper" >$out/bin/emacs
+        chmod +x $out/bin/emacs
+        ln -s ${strager-emacs-unwrapped}/bin/emacsclient $out/bin/emacsclient
+      '';
 
     strager-vim = pkgs.vim.overrideAttrs (attrs: rec {
       version = "9.0.1377";
