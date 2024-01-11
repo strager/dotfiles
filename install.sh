@@ -23,6 +23,7 @@ projects=(
   gnome-terminal
   iterm
   login
+  macos
   man
   nix
   nixpkgs
