@@ -95,8 +95,7 @@ Returns the path to the autoload file."
  '(evil-want-Y-yank-to-eol t)
  '(flymake-quicklintjs-args '("--language=experimental-default"))
  '(flymake-quicklintjs-experimental-typescript t)
- '(flymake-quicklintjs-program
-   "/home/strager/Projects/quick-lint-js-sl/build/quick-lint-js")
+ '(flymake-quicklintjs-program "quick-lint-js")
  '(global-auto-revert-mode t)
  '(icomplete-compute-delay 0)
  '(ido-enable-flex-matching nil)
