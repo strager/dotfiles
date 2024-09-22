@@ -84,7 +84,7 @@ Returns the path to the autoload file."
  '(dired-isearch-filenames t)
  '(dired-listing-switches "-al --group-directories-first")
  '(echo-keystrokes 0.001)
- '(evil-kill-on-visual-paste nil)
+ '(evil-kill-on-visual-paste t)
  '(evil-repeat-move-cursor t)
  '(evil-search-module 'evil-search)
  '(evil-split-window-below t)
