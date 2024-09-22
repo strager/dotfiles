@@ -138,6 +138,7 @@ Returns the path to the autoload file."
 ; more reliable.
 (add-hook 'prog-mode-hook 'evil-local-mode)
 (add-hook 'text-mode-hook 'evil-local-mode)
+(add-hook 'yaml-mode-hook 'evil-local-mode)
 
 ;; VCS commit messages:
 (setq-default global-git-commit-mode nil)
