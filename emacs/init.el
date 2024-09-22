@@ -93,6 +93,7 @@ Returns the path to the autoload file."
  '(evil-want-C-d-scroll t)
  '(evil-want-C-u-scroll t)
  '(evil-want-Y-yank-to-eol t)
+ '(fill-column 80)
  '(flymake-quicklintjs-args '("--language=experimental-default"))
  '(flymake-quicklintjs-experimental-typescript t)
  '(flymake-quicklintjs-program "quick-lint-js")
