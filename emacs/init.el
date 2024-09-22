@@ -313,3 +313,7 @@ Returns the path to the autoload file."
 (require 'dired)
 (define-key dired-mode-map (kbd "<mouse-1>") 'dired-find-file)
 (define-key dired-mode-map (kbd "<mouse-2>") 'dired-find-file)
+; Use coreutils ls on macOS.
+; FIXME(strager): This is slow. Run this on the first use of ls instead?
+(setq strager-coreutils-installation (string-trim-right (shell-command-to-string "nix-build -A coreutils ~/Projects/nixpkgs/")))
+(setq insert-directory-program (format "%s/bin/ls" strager-coreutils-installation))
