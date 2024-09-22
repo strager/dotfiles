@@ -200,6 +200,9 @@ Returns the path to the autoload file."
     (evil-ex-sort (nth 0 range) (nth 1 range) "u")))
 (define-key evil-visual-state-map (kbd "\\ s") 'strager-sort-lines-visual)
 
+(define-key global-map (kbd "s-{") 'tab-previous)
+(define-key global-map (kbd "s-}") 'tab-next)
+
 ;; Handy functions:
 (defun strager-copy-buffer-file-name ()
   (interactive)
