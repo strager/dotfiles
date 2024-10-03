@@ -80,3 +80,12 @@
 [submodule "emacs/strager-packages/rust-mode"]
 	path = emacs/strager-packages/rust-mode
 	url = https://github.com/rust-lang/rust-mode.git
+[submodule "emacs/strager-packages/vue-mode"]
+	path = emacs/strager-packages/vue-mode
+	url = https://github.com/AdamNiederer/vue-mode.git
+[submodule "emacs/strager-packages/mmm-mode"]
+	path = emacs/strager-packages/mmm-mode
+	url = https://github.com/dgutov/mmm-mode.git
+[submodule "emacs/strager-packages/vue-html-mode"]
+	path = emacs/strager-packages/vue-html-mode
+	url = https://github.com/AdamNiederer/vue-html-mode.git

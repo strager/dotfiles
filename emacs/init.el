@@ -57,11 +57,14 @@ Returns the path to the autoload file."
 (use-package ledger-mode)
 (use-package magit)
 (use-package markdown-mode)
+(use-package mmm-mode)
 (use-package nix-mode)
 (use-package php-mode)
 (use-package rust-mode)
 (use-package solarized-theme)
 (use-package typescript-mode)
+(use-package vue-html-mode)
+(use-package vue-mode)
 (use-package with-editor)
 (use-package xclip)
 (use-package yaml-mode)
@@ -328,6 +331,11 @@ Returns the path to the autoload file."
 ; FIXME(strager): This is slow. Run this on the first use of ls instead?
 (setq strager-coreutils-installation (string-trim-right (shell-command-to-string "nix-build -A coreutils ~/Projects/nixpkgs/")))
 (setq insert-directory-program (format "%s/bin/ls" strager-coreutils-installation))
+
+;; mmm mode:
+; Disable ugly background colors.
+(add-hook 'mmm-mode-hook
+          (lambda () (set-face-background 'mmm-default-submode-face nil)))
 
 (defun strager-run-background-command (buffer-name command)
   "Runs the shell command COMMAND in a buffer named BUFFER-NAME."
