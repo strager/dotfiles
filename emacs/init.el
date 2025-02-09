@@ -317,3 +317,7 @@ Returns the path to the autoload file."
 ; FIXME(strager): This is slow. Run this on the first use of ls instead?
 (setq strager-coreutils-installation (string-trim-right (shell-command-to-string "nix-build -A coreutils ~/Projects/nixpkgs/")))
 (setq insert-directory-program (format "%s/bin/ls" strager-coreutils-installation))
+
+(defun strager-run-background-command (buffer-name command)
+  "Runs the shell command COMMAND in a buffer named BUFFER-NAME."
+  (term-ansi-make-term buffer-name "sh" nil "-c" command))
