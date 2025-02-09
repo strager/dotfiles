@@ -28,7 +28,7 @@ expected_nix_files=(
 )
 
 nix_package_attrs=(
-    nixpkgs.llvmPackages_9.clang-unwrapped  # for clang-format 9
+    #nixpkgs.llvmPackages_9.clang-unwrapped  # for clang-format 9
     nixpkgs.fzf
     nixpkgs.gitAndTools.gitFull
     nixpkgs.gnupg
