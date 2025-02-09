@@ -112,6 +112,7 @@ zstyle ':completion:*' menu select
 export EDITOR=emacsclient
 export PATH="${HOME}/bin:${PATH}"
 export PATH="${HOME}/.cargo/bin:${PATH}"
+export PATH="${HOME}/go/bin:${PATH}"
 # NOTE(strager): strager_initialize_nix adds
 # ~/.nix-profile/bin to $PATH, among other things.
 
