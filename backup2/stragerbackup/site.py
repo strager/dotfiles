@@ -38,7 +38,7 @@ sites = [
 
 
 def get_site_for_current_machine() -> Site:
-    return get_site_for_hostname(platform.node().replace(".lan", ""))
+    return get_site_for_hostname(platform.node().replace(".lan", "").replace(".local", ""))
 
 
 def get_site_for_hostname(hostname: str) -> Site:
