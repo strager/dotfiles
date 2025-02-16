@@ -1,6 +1,6 @@
 [user]
-	name = Matthew \"strager\" Glazar
-	email = strager.nds@gmail.com
+	name = strager
+	email = s@strager.net
 [core]
 	excludesfile = ~/.gitignore
 [push]
