@@ -94,9 +94,6 @@ Returns the path to the autoload file."
  '(evil-want-C-u-scroll t)
  '(evil-want-Y-yank-to-eol t)
  '(fill-column 80)
- '(flymake-quicklintjs-args '("--language=experimental-default"))
- '(flymake-quicklintjs-experimental-typescript t)
- '(flymake-quicklintjs-program "quick-lint-js")
  '(global-auto-revert-mode t)
  '(icomplete-compute-delay 0)
  '(ido-enable-flex-matching nil)
@@ -281,16 +278,13 @@ Returns the path to the autoload file."
 
 ;; JavaScript mode:
 (add-to-list 'load-path "~/Projects/quick-lint-js-sl/plugin/emacs")
-(require 'flymake-quicklintjs)
-(defun my-flymake-quicklintjs-setup ()
-  "Configure flymake-quicklintjs for better experience."
-  (unless (derived-mode-p 'js-json-mode)
-    (unless (bound-and-true-p flymake-mode)
-      (flymake-mode))
-    (add-hook 'flymake-diagnostic-functions #'flymake-quicklintjs nil t)
-    (setq-local flymake-no-changes-timeout 0)))
-(add-hook 'js-mode-hook #'my-flymake-quicklintjs-setup)
-(add-hook 'typescript-mode-hook #'my-flymake-quicklintjs-setup)
+(require 'eglot-quicklintjs)
+(defun my-eglot-quicklintjs-setup ()
+  "Configure eglot-quicklintjs for better experience."
+  (setq-local eglot-send-changes-idle-time 0)
+  (eglot-ensure))
+(add-hook 'js-mode-hook #'my-eglot-quicklintjs-setup)
+(add-hook 'typescript-mode-hook #'my-eglot-quicklintjs-setup)
 
 ;; VTerm mode:
 (require 'vterm)
