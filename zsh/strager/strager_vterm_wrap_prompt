@@ -1,0 +1,8 @@
+# https://github.com/akermu/emacs-libvterm/blob/f64729ed8b59e46ce827d28222c4087c538de562/README.md#directory-tracking-and-prompt-tracking
+# https://zsh.sourceforge.io/Doc/Release/Prompt-Expansion.html
+strager_vterm_wrap_prompt() {
+    local prompt="${1}"
+    printf %s%s "${prompt}" '%{'
+    strager_vterm_sequence "51;A%n@%M:%0d"
+    printf %s '%}'
+}

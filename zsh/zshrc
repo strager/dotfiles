@@ -37,6 +37,8 @@ autoload -Uk strager_set_block_cursor
 autoload -Uk strager_set_vertical_bar_cursor
 autoload -Uk strager_update_cursor_during_edit
 autoload -Uk strager_update_man_db
+autoload -Uk strager_vterm_sequence
+autoload -Uk strager_vterm_wrap_prompt
 
 # Saved history.
 # N.B. Do not set HISTFILE here. HISTFILE is set by
@@ -139,6 +141,8 @@ PROMPT="${PROMPT}%(0?;; %F{red}%?%f)"
 PROMPT="${PROMPT}> "
 # iTerm 2 integration.
 PROMPT="$(strager_iterm_wrap_prompt "${PROMPT}")"
+# emacs-libvterm integration.
+PROMPT="$(strager_vterm_wrap_prompt "${PROMPT}")"
 preexec_functions=(strager_iterm_preexec "${preexec_functions[@]}")
 
 # Cursor style.

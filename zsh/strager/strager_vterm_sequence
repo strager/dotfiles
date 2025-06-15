@@ -1,0 +1,4 @@
+strager_vterm_sequence() {
+    # https://github.com/akermu/emacs-libvterm/blob/f64729ed8b59e46ce827d28222c4087c538de562/README.md#shell-side-configuration
+    printf '\x1b]%s\x1b\' "$1"
+}
