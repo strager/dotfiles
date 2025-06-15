@@ -45,7 +45,7 @@
     });
 
     strager-emacs = let
-      strager-emacs-unwrapped = (pkgs.emacsPackagesFor pkgs.emacs29-gtk3).emacsWithPackages (epkgs: [
+      strager-emacs-unwrapped = (pkgs.emacsPackagesFor pkgs.emacs30-gtk3).emacsWithPackages (epkgs: [
         epkgs.vterm
       ]);
       in pkgs.runCommand "strager-emacs" {
