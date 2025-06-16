@@ -11,3 +11,19 @@
 #sidebar-box[sidebarcommand="treestyletab_piro_sakura_ne_jp-sidebar-action"] > #sidebar-header {
     display: none;
 }
+
+/* Make vertical tabs compact. */
+#vertical-tabs {
+    --tab-min-height: 0;
+    --tab-block-margin: 0;
+    --tab-inner-inline-margin: 8px 2px;
+}
+#vertical-tabs .tab-text {
+    font-size: 14px;
+}
+#vertical-tabs .tab-background {
+    border-radius: 4px !important;
+}
+#vertical-tabs .tabbrowser-tab {
+    padding-block: 0 !important;
+}
