@@ -234,3 +234,6 @@ fi
 # Configure other programs.
 export FZF_DEFAULT_COMMAND="$(cat ~/.config/fzf/FZF_DEFAULT_COMMAND)"
 export FZF_DEFAULT_OPTS='--info=hidden --no-mouse'
+
+# bun completions
+[ -s "/Users/strager/.bun/_bun" ] && source "/Users/strager/.bun/_bun"
