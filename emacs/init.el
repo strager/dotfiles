@@ -77,7 +77,9 @@ Returns the path to the autoload file."
  '(compilation-scroll-output 'first-error)
  '(compilation-skip-threshold 0)
  '(custom-safe-themes
-   '("7f1d414afda803f3244c6fb4c2c64bea44dac040ed3731ec9d75275b9e831fe5" "fee7287586b17efbfda432f05539b58e86e059e78006ce9237b8732fde991b4c" "524fa911b70d6b94d71585c9f0c5966fe85fb3a9ddd635362bfabd1a7981a307" default))
+   '("7f1d414afda803f3244c6fb4c2c64bea44dac040ed3731ec9d75275b9e831fe5"
+     "fee7287586b17efbfda432f05539b58e86e059e78006ce9237b8732fde991b4c"
+     "524fa911b70d6b94d71585c9f0c5966fe85fb3a9ddd635362bfabd1a7981a307" default))
  '(dabbrev-case-distinction 'case-replace)
  '(dabbrev-case-fold-search nil)
  '(default-frame-alist '((tab-bar-lines . 1)))
@@ -108,7 +110,9 @@ Returns the path to the autoload file."
  '(mouse-wheel-progressive-speed nil)
  '(mouse-wheel-scroll-amount '(3 ((shift) . hscroll)))
  '(package-selected-packages
-   '(magit-section cmake-mode nix-mode go-mode xclip yaml-mode editorconfig solarized-theme markdown-mode typescript-mode vterm google-c-style))
+   '(magit-section cmake-mode nix-mode go-mode xclip yaml-mode editorconfig
+                   solarized-theme markdown-mode typescript-mode vterm
+                   google-c-style))
  '(project-vc-extra-root-markers '(".sl"))
  '(scroll-bar-mode nil)
  '(scroll-conservatively 1)
@@ -123,7 +127,8 @@ Returns the path to the autoload file."
  '(tab-bar-tab-hints t)
  '(truncate-lines t)
  '(vterm-keymap-exceptions
-   '("C-c" "C-x" "C-u" "C-g" "C-h" "C-l" "M-x" "M-o" "C-y" "M-y" "M-1" "M-2" "M-3" "M-4" "M-5" "M-6" "M-7" "M-8" "M-9"))
+   '("C-c" "C-x" "C-u" "C-g" "C-h" "C-l" "M-x" "M-o" "C-y" "M-y" "M-1" "M-2" "M-3"
+     "M-4" "M-5" "M-6" "M-7" "M-8" "M-9"))
  '(vterm-max-scrollback 100000)
  '(whitespace-style
    '(face trailing newline missing-newline-at-eof empty indentation space-after-tab
