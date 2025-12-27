@@ -4,6 +4,23 @@
 License: [Creative Commons Attribution-NonCommercial-NoDerivatives 4.0
 International License (CC-BY-NC-ND-4.0)](LICENSE)
 
-To install in `$HOME`:
+## Installation
 
-    ./install.sh $HOME
+These dotfiles are deployed using [Ansible][]. First, make sure Ansible is
+installed.
+
+Install or update dotfiles symlinks by running the Ansible playbook:
+
+```shell
+ansible-playbook site.yml
+```
+
+### Opt-in roles
+
+Some roles modify application preferences one-way. Syncing is not performed by
+default, so you need to manually run these roles:
+
+- `ansible-playbook site.yml --tags gnome-terminal`
+- `ansible-playbook site.yml --tags iterm`
+
+[Ansible]: https://docs.ansible.com/projects/ansible/latest/index.html

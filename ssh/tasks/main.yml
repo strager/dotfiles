@@ -1,0 +1,13 @@
+---
+- name: Ensure ssh directory exists
+  ansible.builtin.file:
+    path: "{{ home_dir }}/.ssh"
+    state: directory
+    mode: "0700"
+
+- name: Symlink ssh config
+  ansible.builtin.file:
+    src: "{{ dotfiles_dir }}/ssh/config"
+    dest: "{{ home_dir }}/.ssh/config"
+    state: link
+    force: false

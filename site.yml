@@ -1,0 +1,48 @@
+---
+- name: Install dotfiles
+  hosts: localhost
+  connection: local
+  gather_facts: true
+
+  vars:
+    dotfiles_dir: "{{ playbook_dir }}"
+    home_dir: '{{ ansible_facts["env"]["HOME"] }}'
+
+  roles:
+    - backup2
+    - bash
+    - dev-tools
+    - emacs
+    - firefox
+    - fish
+    - fzf
+    - git
+    - role: gnome-terminal
+      tags: [never, gnome-terminal]
+    - role: iterm
+      tags: [never, iterm]
+    - login
+    - macos
+    - man
+    - nix
+    - nixpkgs
+    - sapling
+    - ssh
+    - systemd
+    - tmux
+    - vim
+    - xmonad
+    - zsh
+
+  tasks:
+    - name: Initialize git submodules
+      ansible.builtin.command:
+        cmd: git submodule --quiet init
+        chdir: "{{ dotfiles_dir }}"
+      changed_when: false
+
+    - name: Update git submodules
+      ansible.builtin.command:
+        cmd: git submodule --quiet update
+        chdir: "{{ dotfiles_dir }}"
+      changed_when: false

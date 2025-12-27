@@ -1,0 +1,7 @@
+---
+- name: Create .manpath file
+  ansible.builtin.copy:
+    dest: "{{ home_dir }}/.manpath"
+    content: "MANDB_MAP {{ home_dir }}/.nix-profile/share/man {{ home_dir }}/man\n"
+    mode: "0644"
+    force: false

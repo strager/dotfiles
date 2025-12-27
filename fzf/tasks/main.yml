@@ -1,0 +1,15 @@
+---
+- name: Ensure fzf config directory exists
+  ansible.builtin.file:
+    path: "{{ home_dir }}/.config/fzf"
+    state: directory
+    mode: "0755"
+
+# NOTE(strager): fzf itself does not use the FZF_DEFAULT_COMMAND file. My zshrc
+# uses it.
+- name: Symlink FZF_DEFAULT_COMMAND
+  ansible.builtin.file:
+    src: "{{ dotfiles_dir }}/fzf/FZF_DEFAULT_COMMAND"
+    dest: "{{ home_dir }}/.config/fzf/FZF_DEFAULT_COMMAND"
+    state: link
+    force: false

@@ -1,0 +1,8 @@
+---
+- name: Symlink backup2 plist
+  ansible.builtin.file:
+    src: "{{ dotfiles_dir }}/backup2/local.strager.back-up.plist"
+    dest: "{{ home_dir }}/Library/LaunchAgents/local.strager.back-up.plist"
+    state: link
+    force: false
+  when: ansible_facts["system"] == "Darwin"

@@ -1,0 +1,13 @@
+---
+- name: Ensure .config directory exists
+  ansible.builtin.file:
+    path: "{{ home_dir }}/.config"
+    state: directory
+    mode: "0700"
+
+- name: Symlink emacs config
+  ansible.builtin.file:
+    src: "{{ dotfiles_dir }}/emacs"
+    dest: "{{ home_dir }}/.config/emacs"
+    state: link
+    force: false

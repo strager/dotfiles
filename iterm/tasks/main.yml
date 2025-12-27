@@ -1,0 +1,16 @@
+---
+- name: Backup iTerm2 settings
+  ansible.builtin.shell: |
+    backup_path=$(mktemp /tmp/iterm_config_backup.XXXXXXXX)
+    /usr/bin/defaults export com.googlecode.iterm2 "${backup_path}"
+    echo "note: restore old settings with:"
+    echo "      /usr/bin/defaults import com.googlecode.iterm2 ${backup_path}"
+  when: ansible_facts["system"] == "Darwin"
+  changed_when: false
+
+- name: Import iTerm2 settings
+  ansible.builtin.shell: |
+    /usr/bin/defaults import com.googlecode.iterm2 "{{ dotfiles_dir }}/iterm/com.googlecode.iterm2.plist"
+    echo "note: iterm config is not automatically updated"
+  when: ansible_facts["system"] == "Darwin"
+  changed_when: true

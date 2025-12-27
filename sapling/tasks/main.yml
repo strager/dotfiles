@@ -1,0 +1,28 @@
+---
+- name: Ensure Sapling config directory exists
+  ansible.builtin.file:
+    path: "{{ home_dir }}/.config/sapling"
+    state: directory
+    mode: "0755"
+
+- name: Symlink Sapling config
+  ansible.builtin.file:
+    src: "{{ dotfiles_dir }}/sapling/sapling.conf"
+    dest: "{{ home_dir }}/.config/sapling/sapling.conf"
+    state: link
+    force: false
+
+- name: Ensure macOS Sapling Preferences directory exists
+  ansible.builtin.file:
+    path: "{{ home_dir }}/Library/Preferences/sapling"
+    state: directory
+    mode: "0755"
+  when: ansible_facts["system"] == "Darwin"
+
+- name: Symlink Sapling config to Library/Preferences (macOS)
+  ansible.builtin.file:
+    src: "{{ dotfiles_dir }}/sapling/sapling.conf"
+    dest: "{{ home_dir }}/Library/Preferences/sapling/sapling.conf"
+    state: link
+    force: false
+  when: ansible_facts["system"] == "Darwin"

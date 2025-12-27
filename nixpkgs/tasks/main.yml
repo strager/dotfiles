@@ -1,0 +1,13 @@
+---
+- name: Ensure nixpkgs directory exists
+  ansible.builtin.file:
+    path: "{{ home_dir }}/.nixpkgs"
+    state: directory
+    mode: "0755"
+
+- name: Symlink nixpkgs config
+  ansible.builtin.file:
+    src: "{{ dotfiles_dir }}/nixpkgs/config.nix"
+    dest: "{{ home_dir }}/.nixpkgs/config.nix"
+    state: link
+    force: false

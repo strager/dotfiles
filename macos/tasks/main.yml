@@ -1,0 +1,12 @@
+---
+- name: Import NSGlobalDomain settings
+  ansible.builtin.command:
+    cmd: /usr/bin/defaults import NSGlobalDomain "{{ dotfiles_dir }}/macos/NSGlobalDomain.plist"
+  when: ansible_facts["system"] == "Darwin"
+  changed_when: true
+
+- name: Import universalaccess settings
+  ansible.builtin.command:
+    cmd: /usr/bin/defaults import com.apple.universalaccess "{{ dotfiles_dir }}/macos/com.apple.universalaccess.plist"
+  when: ansible_facts["system"] == "Darwin"
+  changed_when: true

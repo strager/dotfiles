@@ -1,0 +1,59 @@
+---
+- name: Install Nix packages
+  ansible.builtin.command:
+    cmd: >
+      nix-env -iA --
+      nixpkgs.fzf
+      nixpkgs.gnupg
+      nixpkgs.htop
+      nixpkgs.jq
+      nixpkgs.python3
+      nixpkgs.python3Packages.black
+      nixpkgs.python3Packages.flake8
+      nixpkgs.ripgrep
+      nixpkgs.sd
+      nixpkgs.strager-emacs
+      nixpkgs.strager-vim
+      nixpkgs.sqlite-interactive
+      nixpkgs.tmux
+      nixpkgs.wget
+      nixpkgs.zsh
+      nixpkgs.zsh-completions
+  #nixpkgs.my-ninja  # FIXME(strager)
+  #nixpkgs.gitAndTools.gitFull  # FIXME(strager)
+  changed_when: true
+
+- name: Verify installed packages
+  ansible.builtin.stat:
+    path: "{{ home_dir }}/.nix-profile/{{ item }}"
+  when: not ansible_check_mode
+  loop:
+    - bin/black
+    - bin/clang-format
+    - bin/emacs
+    - bin/emacsclient
+    - bin/flake8
+    - bin/fzf
+    - bin/git
+    - bin/gpg
+    - bin/htop
+    - bin/jq
+    - bin/python3
+    - bin/rg
+    - bin/sd
+    - bin/sqlite3
+    - bin/tmux
+    - bin/vim
+    - bin/wget
+    - bin/zsh
+  register: nix_files
+
+- name: Report missing packages
+  ansible.builtin.fail:
+    msg: "file {{ item.item }} not found (searched {{ home_dir }}/.nix-profile/{{ item.item }})"
+  when:
+    - not ansible_check_mode
+    - not item.stat.exists
+  loop: "{{ nix_files.results }}"
+  loop_control:
+    label: "{{ item.item }}"

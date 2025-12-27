@@ -1,0 +1,27 @@
+---
+- name: Symlink vim directory
+  ansible.builtin.file:
+    src: "{{ dotfiles_dir }}/vim/vim"
+    dest: "{{ home_dir }}/.vim"
+    state: link
+    force: false
+
+- name: Symlink vimrc
+  ansible.builtin.file:
+    src: "{{ dotfiles_dir }}/vim/vimrc"
+    dest: "{{ home_dir }}/.vimrc"
+    state: link
+    force: false
+
+- name: Ensure .config directory exists
+  ansible.builtin.file:
+    path: "{{ home_dir }}/.config"
+    state: directory
+    mode: "0700"
+
+#- name: Symlink vim as nvim config
+#  ansible.builtin.file:
+#    src: "{{ dotfiles_dir }}/vim/vim"
+#    dest: "{{ home_dir }}/.config/nvim"
+#    state: link
+#    force: false

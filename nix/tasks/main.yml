@@ -1,0 +1,13 @@
+---
+- name: Ensure nix config directory exists
+  ansible.builtin.file:
+    path: "{{ home_dir }}/.config/nix"
+    state: directory
+    mode: "0755"
+
+- name: Symlink nix.conf
+  ansible.builtin.file:
+    src: "{{ dotfiles_dir }}/nix/nix.conf"
+    dest: "{{ home_dir }}/.config/nix/nix.conf"
+    state: link
+    force: false

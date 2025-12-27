@@ -1,0 +1,15 @@
+---
+- name: Ensure xmonad directory exists
+  ansible.builtin.file:
+    path: "{{ home_dir }}/.xmonad"
+    state: directory
+    mode: "0755"
+  when: ansible_facts["system"] == "Linux"
+
+- name: Symlink xmonad.hs
+  ansible.builtin.file:
+    src: "{{ dotfiles_dir }}/xmonad/xmonad.hs"
+    dest: "{{ home_dir }}/.xmonad/xmonad.hs"
+    state: link
+    force: false
+  when: ansible_facts["system"] == "Linux"

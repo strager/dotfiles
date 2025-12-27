@@ -1,0 +1,7 @@
+---
+- name: Symlink hushlogin
+  ansible.builtin.file:
+    src: "{{ dotfiles_dir }}/login/hushlogin"
+    dest: "{{ home_dir }}/.hushlogin"
+    state: link
+    force: false
