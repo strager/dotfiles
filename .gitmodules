@@ -74,3 +74,6 @@
 [submodule "emacs/strager-packages/with-editor"]
 	path = emacs/strager-packages/with-editor
 	url = https://github.com/strager/with-editor.git
+[submodule "emacs/strager-packages/ledger-mode"]
+	path = emacs/strager-packages/ledger-mode
+	url = https://github.com/ledger/ledger-mode.git
