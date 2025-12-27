@@ -285,6 +285,9 @@ let g:ale_virtualtext_cursor = 0
 if exists('#ALEEvents')
   call ale#events#Init()
 endif
+if system('hostname') ==# 'strammer'
+  let g:ale_javascript_quick_lint_js_executable = '/Users/strager/Projects/quick-lint-js-sl/build/quick-lint-js'
+endif
 
 " Thanks, woosaaahh.
 set nrformats-=octal
