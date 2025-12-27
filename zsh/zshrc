@@ -117,6 +117,7 @@ export PATH="${HOME}/.cargo/bin:${PATH}"
 export PATH="${HOME}/go/bin:${PATH}"
 if [[ "${HOST}" = strammer ]]; then
   export PATH="/Users/strager/tmp/Projects/nvm/versions/node/v18.6.0/bin:${PATH}"
+  export PATH="/opt/homebrew/Cellar/watchman/2023.03.27.00/bin:${PATH}"
 fi
 # NOTE(strager): strager_initialize_nix adds
 # ~/.nix-profile/bin to $PATH, among other things.
