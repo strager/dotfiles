@@ -34,6 +34,14 @@ sites = [
         ssh_key_file="/Users/strager/.ssh/id_rsa",
         ssh_known_hosts_file="/Users/strager/.ssh/known_hosts",
     ),
+    Site(
+        name="staler",
+        backed_up_directory="C:/Users/strager",
+        local_directory="C:/Users/strager/backups/staler/",
+        nas_sftp_directory="homes/strager/backups/staler/",
+        ssh_key_file="C:/Users/strager/.ssh/id_rsa",
+        ssh_known_hosts_file="C:/Users/strager/.ssh/known_hosts",
+    ),
 ]
 
 

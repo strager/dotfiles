@@ -1,0 +1,40 @@
+# This file is installed into C:/Users/strager.
+
+# Don't back up the backups.
+/.cache/borg
+/backups
+/Documents/borg-backups
+
+# Conserve space.
+/AppData/Local/Battle.net/BrowserCache
+/AppData/Local/Battle.net/Cache
+/AppData/Local/Google/Chrome/User Data/Default/Cache
+/AppData/Local/Microsoft/Windows/Explorer/*cache*.db
+/AppData/Local/Microsoft/Windows/WebCache
+/AppData/Local/Mozilla/Firefox/Profiles/*/cache2
+/AppData/Local/Mozilla/Firefox/Profiles/*/startupCache
+/AppData/Local/osu!/Songs
+/AppData/Roaming/Bitcoin
+/Documents/Projects/obs-studio/build
+/Documents/borg-backups
+/Shared Downloads
+/Videos
+/duplicity-backups
+/J Dropbox
+/AppData/LocalLow/NVIDIA
+/AppData/Local/NVIDIA
+/AppData/Roaming/NVIDIA
+/AppData/Local/Programs
+/AppData/Local/Temp
+/AppData/Roaming/Adobe/Common/Media Cache Files
+/AppData/Roaming/Adobe/Common/Media Cache
+/AppData/Roaming/Adobe/Common/Team Projects Cache
+/.cache
+/.rustup
+/.bun
+
+/VirtualBox VMs
+/Documents/Virtual Machines
+
+# Avoid permission errors.
+/Documents/Projects/System Volume Information

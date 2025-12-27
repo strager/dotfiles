@@ -28,7 +28,16 @@ def main() -> None:
 
     check_kopiaignore(site=site)
 
-    command = ["kopia", "--no-progress", "snapshot", "create", "--", site.backed_up_directory]
+    if sys.platform == 'win32':
+        script_base = pathlib.Path(__file__).parent
+        before_script = script_base / "windows-snapshot-before.ps1"
+        after_script = script_base / "windows-snapshot-after.ps1"
+        logger.info(f"configuring snapshot actions: {before_script} and {after_script}")
+        # FIXME(strager): We should do proper escaping here.
+        subprocess.check_call(["kopia", "policy", "set", site.backed_up_directory, "--before-folder-action", f'powershell -WindowStyle Hidden -File "{before_script}"'])
+        subprocess.check_call(["kopia", "policy", "set", site.backed_up_directory, "--after-folder-action", f'powershell -WindowStyle Hidden -File "{after_script}"'])
+
+    command = ["kopia", "--no-progress", "snapshot", "create", "--force-enable-actions", "--", site.backed_up_directory]
     logger.info(f"$ {stragerbackup.util.command_string(command)}")
     subprocess.check_call(command)
 
@@ -77,6 +86,9 @@ def atomic_write_read_only_file(path: pathlib.Path, content: bytes) -> None:
         temp_path = pathlib.Path(temp_dir) / "temp"
         temp_path.write_bytes(content)
         os.chmod(temp_path, stat.S_IREAD | stat.S_IRGRP | stat.S_IROTH)
+        if sys.platform == 'win32':
+            # HACK(strager): Avoid ERROR_ACCESS_DENIED from SetRenameInformationFile() if the destination is read-only.
+            os.chmod(path, os.stat(path).st_mode | stat.S_IWRITE)
         temp_path.replace(path)
 
 
