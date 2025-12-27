@@ -115,6 +115,9 @@ export EDITOR=emacsclient
 export PATH="${HOME}/bin:${PATH}"
 export PATH="${HOME}/.cargo/bin:${PATH}"
 export PATH="${HOME}/go/bin:${PATH}"
+if [[ "${HOST}" = strammer ]]; then
+  export PATH="/Users/strager/tmp/Projects/nvm/versions/node/v18.6.0/bin:${PATH}"
+fi
 # NOTE(strager): strager_initialize_nix adds
 # ~/.nix-profile/bin to $PATH, among other things.
 
