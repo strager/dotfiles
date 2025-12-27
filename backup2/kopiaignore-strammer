@@ -45,6 +45,7 @@
 
 # Work around 'permission denied' errors.
 /Library/Group Containers/group.com.apple.secure-control-center-preferences/Library/Preferences/group.com.apple.secure-control-center-preferences.av.plist
+/Library/Application Support/FileProvider
 
 # Do not back up remote storage.
 /Library/CloudStorage
