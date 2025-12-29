@@ -1,13 +1,15 @@
 ---
+# Emacs config - Unix only for now (Windows uses different paths)
 - name: Ensure .config directory exists
   ansible.builtin.file:
     path: "{{ home_dir }}/.config"
     state: directory
     mode: "0700"
+  when: ansible_facts['os_family'] != 'Windows'
 
 - name: Symlink emacs config
-  ansible.builtin.file:
+  symlink:
     src: "{{ dotfiles_dir }}/emacs"
     dest: "{{ home_dir }}/.config/emacs"
-    state: link
     force: false
+  when: ansible_facts['os_family'] != 'Windows'

@@ -1,7 +1,8 @@
 ---
+# tmux - Unix only
 - name: Symlink tmux.conf
-  ansible.builtin.file:
+  symlink:
     src: "{{ dotfiles_dir }}/tmux/tmux.conf"
     dest: "{{ home_dir }}/.tmux.conf"
-    state: link
     force: false
+  when: ansible_facts['os_family'] != 'Windows'

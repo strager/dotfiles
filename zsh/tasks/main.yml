@@ -1,21 +1,22 @@
 ---
+# zsh - Unix only
 - name: Symlink zsh directory
-  ansible.builtin.file:
+  symlink:
     src: "{{ dotfiles_dir }}/zsh"
     dest: "{{ home_dir }}/.zsh"
-    state: link
     force: false
+  when: ansible_facts['os_family'] != 'Windows'
 
 - name: Symlink zlogin
-  ansible.builtin.file:
+  symlink:
     src: "{{ dotfiles_dir }}/zsh/zlogin"
     dest: "{{ home_dir }}/.zlogin"
-    state: link
     force: false
+  when: ansible_facts['os_family'] != 'Windows'
 
 - name: Symlink zshrc
-  ansible.builtin.file:
+  symlink:
     src: "{{ dotfiles_dir }}/zsh/zshrc"
     dest: "{{ home_dir }}/.zshrc"
-    state: link
     force: false
+  when: ansible_facts['os_family'] != 'Windows'

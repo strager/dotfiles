@@ -1,14 +1,12 @@
 ---
 - name: Symlink gitconfig
-  ansible.builtin.file:
+  symlink:
     src: "{{ dotfiles_dir }}/git/gitconfig"
     dest: "{{ home_dir }}/.gitconfig"
-    state: link
     force: false
 
 - name: Symlink gitignore
-  ansible.builtin.file:
+  symlink:
     src: "{{ dotfiles_dir }}/git/gitignore"
     dest: "{{ home_dir }}/.gitignore"
-    state: link
     force: false

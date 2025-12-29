@@ -1,7 +1,6 @@
 ---
 - name: Symlink bash_aliases
-  ansible.builtin.file:
+  symlink:
     src: "{{ dotfiles_dir }}/bash/bash_aliases"
     dest: "{{ home_dir }}/.bash_aliases"
-    state: link
     force: false

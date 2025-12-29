@@ -1,7 +1,8 @@
 ---
+# .hushlogin - Unix only
 - name: Symlink hushlogin
-  ansible.builtin.file:
+  symlink:
     src: "{{ dotfiles_dir }}/login/hushlogin"
     dest: "{{ home_dir }}/.hushlogin"
-    state: link
     force: false
+  when: ansible_facts['os_family'] != 'Windows'

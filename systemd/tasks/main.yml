@@ -1,4 +1,5 @@
 ---
+# systemd - Linux only
 - name: Ensure .config directory exists
   ansible.builtin.file:
     path: "{{ home_dir }}/.config"
@@ -7,10 +8,9 @@
   when: ansible_facts["system"] == "Linux"
 
 - name: Symlink systemd config
-  ansible.builtin.file:
+  symlink:
     src: "{{ dotfiles_dir }}/systemd"
     dest: "{{ home_dir }}/.config/systemd"
-    state: link
     force: false
   when: ansible_facts["system"] == "Linux"
 # TODO(strager): daemon-reload
