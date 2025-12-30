@@ -1,0 +1,10 @@
+---
+# This is an inventory file for Ansible.
+all:
+  hosts:
+    localhost:
+      ansible_host: 172.22.32.1
+      ansible_connection: ssh
+      ansible_shell_type: powershell
+      ansible_python_interpreter: "C:/Python311/python.exe"
+
