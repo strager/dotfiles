@@ -1,5 +1,4 @@
 ---
-# macOS LaunchAgent for backups
 - name: Symlink backup2 plist
   symlink:
     src: "{{ dotfiles_dir }}/backup2/local.strager.back-up.plist"

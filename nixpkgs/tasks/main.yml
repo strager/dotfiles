@@ -5,11 +5,11 @@
     path: "{{ home_dir }}/.nixpkgs"
     state: directory
     mode: "0755"
-  when: ansible_facts['os_family'] != 'Windows'
+  when: ansible_facts["os_family"] != "Windows"
 
 - name: Symlink nixpkgs config
   symlink:
     src: "{{ dotfiles_dir }}/nixpkgs/config.nix"
     dest: "{{ home_dir }}/.nixpkgs/config.nix"
     force: false
-  when: ansible_facts['os_family'] != 'Windows'
+  when: ansible_facts["os_family"] != "Windows"

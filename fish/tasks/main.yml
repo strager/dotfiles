@@ -1,15 +1,14 @@
 ---
-# fish - Unix only
 - name: Ensure fish config directory exists
   ansible.builtin.file:
     path: "{{ home_dir }}/.config/fish"
     state: directory
     mode: "0755"
-  when: ansible_facts['os_family'] != 'Windows'
+  when: ansible_facts["os_family"] != "Windows"
 
 - name: Symlink fish config
   symlink:
     src: "{{ dotfiles_dir }}/fish/config.fish"
     dest: "{{ home_dir }}/.config/fish/config.fish"
     force: false
-  when: ansible_facts['os_family'] != 'Windows'
+  when: ansible_facts["os_family"] != "Windows"

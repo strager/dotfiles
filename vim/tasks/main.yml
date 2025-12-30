@@ -1,41 +1,24 @@
 ---
-# Unix: ~/.vim and ~/.vimrc
 - name: Symlink vim directory
   symlink:
     src: "{{ dotfiles_dir }}/vim/vim"
     dest: "{{ home_dir }}/.vim"
     force: false
-  when: ansible_facts['os_family'] != 'Windows'
+  when: ansible_facts["os_family"] != "Windows"
 
 - name: Symlink vimrc
   symlink:
     src: "{{ dotfiles_dir }}/vim/vimrc"
     dest: "{{ home_dir }}/.vimrc"
     force: false
-  when: ansible_facts['os_family'] != 'Windows'
+  when: ansible_facts["os_family"] != "Windows"
 
-# Windows: ~/vimfiles and ~/_vimrc
-- name: Symlink vim directory (Windows)
-  symlink:
-    src: "{{ dotfiles_dir }}/vim/vim"
-    dest: "{{ home_dir }}/vimfiles"
-    force: false
-  when: ansible_facts['os_family'] == 'Windows'
-
-- name: Symlink vimrc (Windows)
-  symlink:
-    src: "{{ dotfiles_dir }}/vim/vimrc"
-    dest: "{{ home_dir }}/_vimrc"
-    force: false
-  when: ansible_facts['os_family'] == 'Windows'
-
-# For neovim (Unix only)
 - name: Ensure .config directory exists
   ansible.builtin.file:
     path: "{{ home_dir }}/.config"
     state: directory
     mode: "0700"
-  when: ansible_facts['os_family'] != 'Windows'
+  when: ansible_facts["os_family"] != "Windows"
 
 #- name: Symlink vim as nvim config
 #  symlink:

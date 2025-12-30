@@ -1,12 +1,9 @@
 ---
-# On Unix, ensure .ssh exists with proper permissions
-# On Windows, the symlink module creates parent directories automatically
 - name: Ensure ssh directory exists
   ansible.builtin.file:
     path: "{{ home_dir }}/.ssh"
     state: directory
     mode: "0700"
-  when: ansible_facts['os_family'] != 'Windows'
 
 - name: Symlink ssh config
   symlink:

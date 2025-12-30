@@ -1,5 +1,4 @@
 ---
-# systemd - Linux only
 - name: Ensure .config directory exists
   ansible.builtin.file:
     path: "{{ home_dir }}/.config"

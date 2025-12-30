@@ -1,11 +1,10 @@
 ---
-# FZF config - Unix only (used by zshrc)
 - name: Ensure fzf config directory exists
   ansible.builtin.file:
     path: "{{ home_dir }}/.config/fzf"
     state: directory
     mode: "0755"
-  when: ansible_facts['os_family'] != 'Windows'
+  when: ansible_facts["os_family"] != "Windows"
 
 # NOTE(strager): fzf itself does not use the FZF_DEFAULT_COMMAND file. My zshrc
 # uses it.
@@ -14,4 +13,4 @@
     src: "{{ dotfiles_dir }}/fzf/FZF_DEFAULT_COMMAND"
     dest: "{{ home_dir }}/.config/fzf/FZF_DEFAULT_COMMAND"
     force: false
-  when: ansible_facts['os_family'] != 'Windows'
+  when: ansible_facts["os_family"] != "Windows"

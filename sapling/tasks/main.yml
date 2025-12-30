@@ -1,20 +1,18 @@
 ---
-# Unix/Linux: ~/.config/sapling
 - name: Ensure Sapling config directory exists
   ansible.builtin.file:
     path: "{{ home_dir }}/.config/sapling"
     state: directory
     mode: "0755"
-  when: ansible_facts['os_family'] != 'Windows'
+  when: ansible_facts["os_family"] != "Windows"
 
 - name: Symlink Sapling config
   symlink:
     src: "{{ dotfiles_dir }}/sapling/sapling.conf"
     dest: "{{ home_dir }}/.config/sapling/sapling.conf"
     force: false
-  when: ansible_facts['os_family'] != 'Windows'
+  when: ansible_facts["os_family"] != "Windows"
 
-# macOS also uses Library/Preferences
 - name: Ensure macOS Sapling Preferences directory exists
   ansible.builtin.file:
     path: "{{ home_dir }}/Library/Preferences/sapling"
@@ -28,11 +26,3 @@
     dest: "{{ home_dir }}/Library/Preferences/sapling/sapling.conf"
     force: false
   when: ansible_facts["system"] == "Darwin"
-
-# Windows: %APPDATA%\sapling (symlink module creates parent dirs)
-- name: Symlink Sapling config (Windows)
-  symlink:
-    src: "{{ dotfiles_dir }}/sapling/sapling.conf"
-    dest: "{{ home_dir }}/AppData/Roaming/sapling/sapling.conf"
-    force: false
-  when: ansible_facts['os_family'] == 'Windows'

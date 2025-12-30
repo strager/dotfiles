@@ -1,5 +1,4 @@
 ---
-# Firefox profile customization - Unix only (profile discovery uses Unix modules)
 - name: Find Firefox profiles parent directories
   ansible.builtin.stat:
     path: "{{ item }}"
@@ -7,7 +6,7 @@
     - "{{ home_dir }}/Library/Application Support/Firefox/Profiles"
     - "{{ home_dir }}/.mozilla/firefox"
   register: firefox_profiles_dir_stats
-  when: ansible_facts['os_family'] != 'Windows'
+  when: ansible_facts["os_family"] != "Windows"
 
 - name: Find Firefox profiles
   ansible.builtin.find:
@@ -15,23 +14,23 @@
     file_type: directory
     patterns: "*.*"
   register: firefox_profiles
-  when: ansible_facts['os_family'] != 'Windows'
+  when: ansible_facts["os_family"] != "Windows"
 
 - name: Set Firefox profile path
   ansible.builtin.set_fact:
     firefox_profile_path: "{{ firefox_profiles.files[0].path if (firefox_profiles.files | length == 1) else '' }}"
-  when: ansible_facts['os_family'] != 'Windows'
+  when: ansible_facts["os_family"] != "Windows"
 
 - name: Warn if multiple Firefox profiles found
   ansible.builtin.fail:
     msg: "warning: too many Firefox profiles; ignoring Firefox"
-  when: ansible_facts['os_family'] != 'Windows' and firefox_profiles.files | length > 1
+  when: ansible_facts["os_family"] != "Windows" and firefox_profiles.files | length > 1
   ignore_errors: true
 
 - name: Warn if no Firefox profiles found
   ansible.builtin.fail:
     msg: "warning: could not find any Firefox profiles; ignoring Firefox"
-  when: ansible_facts['os_family'] != 'Windows' and firefox_profiles.files | length == 0
+  when: ansible_facts["os_family"] != "Windows" and firefox_profiles.files | length == 0
   ignore_errors: true
 
 - name: Ensure Firefox chrome directory exists
@@ -39,18 +38,18 @@
     path: "{{ firefox_profile_path }}/chrome"
     state: directory
     mode: "0755"
-  when: ansible_facts['os_family'] != 'Windows' and firefox_profile_path != ''
+  when: ansible_facts["os_family"] != "Windows" and firefox_profile_path != ""
 
 - name: Symlink userChrome.css
   symlink:
     src: "{{ dotfiles_dir }}/firefox/userChrome.css"
     dest: "{{ firefox_profile_path }}/chrome/userChrome.css"
     force: false
-  when: ansible_facts['os_family'] != 'Windows' and firefox_profile_path != ''
+  when: ansible_facts["os_family"] != "Windows" and firefox_profile_path != ""
 
 - name: Symlink userContent.css
   symlink:
     src: "{{ dotfiles_dir }}/firefox/userContent.css"
     dest: "{{ firefox_profile_path }}/chrome/userContent.css"
     force: false
-  when: ansible_facts['os_family'] != 'Windows' and firefox_profile_path != ''
+  when: ansible_facts["os_family"] != "Windows" and firefox_profile_path != ""

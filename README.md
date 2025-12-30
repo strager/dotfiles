@@ -12,7 +12,10 @@ installed.
 Install or update dotfiles symlinks by running the Ansible playbook:
 
 ```shell
+# Linux/macOS:
 ansible-playbook site.yml
+# Windows:
+.\deploy.ps1
 ```
 
 ### Opt-in roles

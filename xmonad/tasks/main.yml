@@ -1,5 +1,4 @@
 ---
-# xmonad - Linux only
 - name: Ensure xmonad directory exists
   ansible.builtin.file:
     path: "{{ home_dir }}/.xmonad"

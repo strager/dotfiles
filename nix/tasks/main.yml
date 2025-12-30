@@ -1,15 +1,14 @@
 ---
-# Nix - Unix only
 - name: Ensure nix config directory exists
   ansible.builtin.file:
     path: "{{ home_dir }}/.config/nix"
     state: directory
     mode: "0755"
-  when: ansible_facts['os_family'] != 'Windows'
+  when: ansible_facts["os_family"] != "Windows"
 
 - name: Symlink nix.conf
   symlink:
     src: "{{ dotfiles_dir }}/nix/nix.conf"
     dest: "{{ home_dir }}/.config/nix/nix.conf"
     force: false
-  when: ansible_facts['os_family'] != 'Windows'
+  when: ansible_facts["os_family"] != "Windows"
