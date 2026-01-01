@@ -1,0 +1,13 @@
+---
+- name: Ensure .claude directory exists
+  ansible.builtin.file:
+    path: "{{ home_dir }}/.claude"
+    state: directory
+    mode: "0700"
+
+- name: Symlink Claude Skills directory
+  ansible.builtin.file:
+    src: "{{ dotfiles_dir }}/claude/skills"
+    dest: "{{ home_dir }}/.claude/skills"
+    state: link
+    force: false
