@@ -6,7 +6,6 @@ import json
 import logging
 import os
 import pathlib
-import pipes
 import platform
 import stat
 import stragerbackup.site
