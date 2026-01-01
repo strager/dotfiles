@@ -96,6 +96,74 @@ Research note: Implementation intentions (if-then plans) have been shown to roug
 
 ---
 
+## When to Phase a Goal
+
+Sometimes the user's ultimate wish is too ambitious to tackle directly. The gap between where they are now and where they want to be is too large, or there's a foundational obstacle blocking everything downstream. In these cases, help them create a **phased WOOP** - a Phase 1 goal that builds toward their ultimate wish.
+
+### Signs a Goal Needs Phasing
+
+Watch for these indicators during the Obstacle phase:
+
+| Sign | Example |
+|------|---------|
+| The obstacle is upstream of the goal | User wants to "date consistently" but the real barrier is social anxiety that prevents approaching anyone |
+| Skills or confidence are missing | User wants to "give a TED talk" but has never spoken publicly |
+| The if-then plan feels unrealistic | When you propose actions, user says "I don't think I could actually do that" |
+| User needs evidence, not belief | User won't adopt positive self-talk; they need real-world data to shift their beliefs |
+| The gap feels paralyzing | User seems overwhelmed when discussing concrete next steps |
+
+### How to Introduce Phasing
+
+If you notice these signs, ask:
+
+> "It sounds like there might be a foundational step before [ultimate goal]. Would it help to break this into phases - a Phase 1 that builds the skills/confidence you need, then a Phase 2 that tackles the bigger goal?"
+
+If the user agrees, restructure the WOOP:
+
+1. **Keep the Ultimate Wish visible** - This is their north star. Don't lose it.
+2. **Create a Phase 1 Wish** - A stepping-stone goal that addresses the upstream obstacle
+3. **Define a clear success signal** - How will they know Phase 1 is complete and they're ready for Phase 2?
+4. **Complete the WOOP for Phase 1** - Outcome, Obstacle, and Plan all focus on this phase
+
+### Phased WOOP Format
+
+```
+## Your WOOP
+
+### Ultimate Wish
+[Their long-term goal - the north star]
+
+**Why it matters**: [Core motivation from Outcome phase]
+
+---
+
+### Phase 1: [Name the foundation being built]
+
+**WISH**: [Stepping-stone goal with clear success signal]
+
+**OUTCOME**: [Benefits of completing Phase 1, including readiness for Phase 2]
+
+**OBSTACLE**: [The foundational internal barrier]
+
+**PLAN**: "If [obstacle situation], then I will [specific action]."
+
+---
+
+### Key Reminders
+- [Personalized insights]
+- When [success signal], you're ready for Phase 2
+```
+
+### The Risk of Phasing
+
+Phasing can become a way to avoid the real goal indefinitely. Mitigate this by:
+
+- Always keeping the Ultimate Wish visible
+- Defining a concrete success signal for Phase 1
+- Reminding the user that Phase 1 is preparation *for* something, not an end in itself
+
+---
+
 ## Handling Users Who Get Off Track
 
 | Situation | Response |
@@ -104,6 +172,7 @@ Research note: Implementation intentions (if-then plans) have been shown to roug
 | Vague answers | "Let's get more specific. When exactly does this happen? What triggers it?" |
 | Wants to skip ahead | "Let's slow down - the research shows each step matters. Can you tell me more about [current step]?" |
 | Multiple obstacles at once | "Those are all valid. Let's explore each briefly, then identify which one is the biggest barrier." |
+| Goal seems too ambitious | "It sounds like there might be a foundational step first. Would it help to break this into phases?" |
 
 ---
 
