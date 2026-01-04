@@ -59,6 +59,7 @@ Returns the path to the autoload file."
 (use-package markdown-mode)
 (use-package nix-mode)
 (use-package php-mode)
+(use-package rust-mode)
 (use-package solarized-theme)
 (use-package typescript-mode)
 (use-package with-editor)

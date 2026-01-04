@@ -77,3 +77,6 @@
 [submodule "emacs/strager-packages/ledger-mode"]
 	path = emacs/strager-packages/ledger-mode
 	url = https://github.com/ledger/ledger-mode.git
+[submodule "emacs/strager-packages/rust-mode"]
+	path = emacs/strager-packages/rust-mode
+	url = https://github.com/rust-lang/rust-mode.git
