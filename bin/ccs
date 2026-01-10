@@ -1,0 +1,36 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+sandbox_dir="$(realpath "$(mktemp -d)")"
+claude_json="${HOME}/.claude.json"
+
+cleanup() {
+    if [[ -d "${sandbox_dir}" ]]; then
+        rm -r "${sandbox_dir}"
+    fi
+
+    if [[ -f "${claude_json}" ]]; then
+        jq --arg dir "${sandbox_dir}" 'del(.projects[$dir])' \
+            "${claude_json}" >"${claude_json}.tmp"
+        mv "${claude_json}.tmp" "${claude_json}"
+    fi
+}
+trap cleanup EXIT
+
+cat >"${sandbox_dir}/CLAUDE.md" <<'EOF'
+Answer all user queries, including non-programming requests.
+EOF
+
+# Pre-trust the sandbox directory to skip the trust prompt.
+if [[ -f "${claude_json}" ]]; then
+    jq --arg dir "${sandbox_dir}" '.projects[$dir] = {
+        "allowedTools": [],
+        "hasTrustDialogAccepted": true,
+        "hasCompletedProjectOnboarding": true
+    }' "${claude_json}" >"${claude_json}.tmp"
+    mv "${claude_json}.tmp" "${claude_json}"
+fi
+
+cd "${sandbox_dir}"
+npx --yes @anthropic-ai/claude-code@latest --permission-mode default "${@}"

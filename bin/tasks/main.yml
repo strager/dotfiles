@@ -1,0 +1,13 @@
+---
+- name: Ensure ~/bin directory exists
+  ansible.builtin.file:
+    path: "{{ home_dir }}/bin"
+    state: directory
+    mode: "0755"
+
+- name: Symlink ccs
+  ansible.builtin.file:
+    src: "{{ dotfiles_dir }}/bin/ccs"
+    dest: "{{ home_dir }}/bin/ccs"
+    state: link
+    force: false

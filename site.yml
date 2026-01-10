@@ -11,6 +11,7 @@
   roles:
     - backup2
     - bash
+    - bin
     - claude
     - dev-tools
     - emacs
