@@ -37,6 +37,7 @@
 /tmp/Projects/emsdk/upstream
 /tmp/Projects/emsdk/upstream
 /tmp/Projects/nvm/.cache
+/.ollama/models
 
 # Conserve space deliberately.
 /nobackup
