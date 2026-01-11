@@ -13,6 +13,13 @@
     state: link
     force: false
 
+- name: Symlink zprofile
+  ansible.builtin.file:
+    src: "{{ dotfiles_dir }}/zsh/zprofile"
+    dest: "{{ home_dir }}/.zprofile"
+    state: link
+    force: false
+
 - name: Symlink zshrc
   ansible.builtin.file:
     src: "{{ dotfiles_dir }}/zsh/zshrc"

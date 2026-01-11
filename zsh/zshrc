@@ -110,26 +110,6 @@ bindkey '^R' strager_search_history
 unsetopt auto_remove_slash
 zstyle ':completion:*' menu select
 
-# Environment.
-export EDITOR=emacsclient
-export PATH="${HOME}/bin:${PATH}"
-export PATH="${HOME}/.cargo/bin:${PATH}"
-export PATH="${HOME}/go/bin:${PATH}"
-if [[ "${HOST}" = strammer ]]; then
-  export PATH="/Users/strager/tmp/Projects/nvm/versions/node/v18.6.0/bin:${PATH}"
-  export PATH="/opt/homebrew/Cellar/watchman/2023.03.27.00/bin:${PATH}"
-fi
-# NOTE(strager): strager_initialize_nix adds
-# ~/.nix-profile/bin to $PATH, among other things.
-
-# Tell glibc in Nix-installed programs where to find locales.
-for file in /usr/lib/locale/locale-archive; do
-  if [ -f "${file}" ]; then
-    export LOCALE_ARCHIVE="${file}"
-    break
-  fi
-done
-
 # The prompt:
 #
 #     ~/Applications> false
@@ -234,10 +214,6 @@ if [[ "${STRAGER_INITIALIZE_POST_PROMPT:-1}" -eq 1 ]]; then
     }
     zle -N zle-line-init strager_zle-line-init
 fi
-
-# Configure other programs.
-export FZF_DEFAULT_COMMAND="$(cat ~/.config/fzf/FZF_DEFAULT_COMMAND)"
-export FZF_DEFAULT_OPTS='--info=hidden --no-mouse'
 
 # bun completions
 [ -s "/Users/strager/.bun/_bun" ] && source "/Users/strager/.bun/_bun"
