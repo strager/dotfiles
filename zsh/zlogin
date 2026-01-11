@@ -7,4 +7,6 @@ _strager_motd_begging() {
     printf "${github_color}GitHub: https://github.com/sponsors/strager${reset}\n"
     printf '\n'
 }
-_strager_motd_begging
+if [[ -o login && -o interactive ]]; then
+    _strager_motd_begging
+fi
