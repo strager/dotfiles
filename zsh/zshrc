@@ -139,6 +139,12 @@ zle -N zle-keymap-select
 
 strager_initialize_ls_colors
 
+if [[ -n "${INSIDE_EMACS:-}" ]]; then
+    export EDITOR=emacsclient
+else
+    export EDITOR=vim
+fi
+
 # Git and Hg aliases.
 chpwd_functions=("${chpwd_functions[@]}" strager_define_auto_scm_aliases)
 strager_define_auto_scm_aliases
