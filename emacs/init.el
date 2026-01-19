@@ -65,6 +65,7 @@ Returns the path to the autoload file."
 (use-package with-editor)
 (use-package xclip)
 (use-package yaml-mode)
+(require 'eglot)
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
@@ -286,6 +287,9 @@ Returns the path to the autoload file."
   (setq truncate-lines nil))
 (add-hook 'compilation-mode-hook 'strager-disable-truncate-lines)
 
+;; Go mode:
+(add-to-list 'eglot-server-programs '(go-mode . ("gopls" "serve")))
+
 ;; JavaScript mode:
 (add-to-list 'load-path "~/Projects/quick-lint-js-sl/plugin/emacs")
 (require 'eglot-quicklintjs)
@@ -325,3 +329,6 @@ Returns the path to the autoload file."
 (defun strager-run-background-command (buffer-name command)
   "Runs the shell command COMMAND in a buffer named BUFFER-NAME."
   (term-ansi-make-term buffer-name "sh" nil "-c" command))
+
+;; LSP:
+(define-key evil-normal-state-map (kbd "<M-RET>") 'eglot-code-action-quickfix)
