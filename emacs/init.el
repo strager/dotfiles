@@ -195,6 +195,7 @@ Returns the path to the autoload file."
 ;; Shortcuts:
 (define-key evil-normal-state-map (kbd "\\ a") 'project-find-regexp)
 (define-key evil-normal-state-map (kbd "\\ b") 'project-switch-to-buffer)
+(define-key evil-normal-state-map (kbd "\\ c") 'tab-bar-close-tab)
 (define-key evil-normal-state-map (kbd "\\ f") 'project-find-file)
 (define-key evil-normal-state-map (kbd "\\ w") 'evil-write-all)
 (define-key evil-normal-state-map (kbd "<tab>") 'evil-jump-item)
