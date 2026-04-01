@@ -115,6 +115,7 @@ Returns the path to the autoload file."
    '(magit-section cmake-mode nix-mode go-mode xclip yaml-mode editorconfig
                    solarized-theme markdown-mode typescript-mode vterm
                    google-c-style))
+ '(pixel-scroll-precision-mode t)
  '(project-vc-extra-root-markers '(".sl"))
  '(scroll-bar-mode nil)
  '(scroll-conservatively 1)
