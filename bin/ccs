@@ -33,4 +33,4 @@ if [[ -f "${claude_json}" ]]; then
 fi
 
 cd "${sandbox_dir}"
-npx --yes @anthropic-ai/claude-code@latest --permission-mode default "${@}"
+npx --yes @anthropic-ai/claude-code@latest --permission-mode default "${@:+${@}}"
