@@ -13,6 +13,7 @@ if [[ -o interactive ]]; then
     # strager_initialize_post_prompt calls strager_initialize_nix.
     :
 else
+    autoload -Uk strager_initialize_nix
     strager_initialize_nix
 fi
 
