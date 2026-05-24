@@ -29,7 +29,25 @@
       (delete-directory dir t))))
 
 (defvar strager-test-evil-files
-  '("README.md"
+  '(".clang-format"
+    ".gitignore"
+    "002-lips.caddy.j2"
+    "005-devtunnel.app.fire-lingo.com.caddy"
+    "Caddyfile"
+    "LICENSE"
+    "README.md"
+    "ZCCLink.proto"
+    "alertmanager.yml.j2"
+    "config.dev.toml"
+    "config.devtunnel.toml"
+    "devices.csv"
+    "go.mod"
+    "go.sum"
     "hello.c"
-    "main.go")
+    "iucu.csv"
+    "main.go"
+    "project.pbxproj"
+    "pyproject.toml"
+    "traduality-beedo-delete-data.service.j2"
+    "traduality-sharepoint.timer")
   "Filenames that should activate `evil-local-mode' when visited.")

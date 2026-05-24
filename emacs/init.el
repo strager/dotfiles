@@ -150,9 +150,15 @@ Returns the path to the autoload file."
 ; Instead of enabling evil-mode globally then opting buffers out,
 ; disable evil-mode globally then opt buffers in. This seems to be
 ; more reliable.
+(add-hook 'conf-mode-hook 'evil-local-mode)
+(add-hook 'go-dot-mod-mode-hook 'evil-local-mode)
 (add-hook 'prog-mode-hook 'evil-local-mode)
 (add-hook 'text-mode-hook 'evil-local-mode)
 (add-hook 'yaml-mode-hook 'evil-local-mode)
+(add-hook 'find-file-hook
+          (lambda ()
+            (when (eq major-mode 'fundamental-mode)
+              (evil-local-mode 1))))
 
 ;; VCS commit messages:
 (setq-default global-git-commit-mode nil)
