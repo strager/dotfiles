@@ -35,6 +35,10 @@ check-srr:
 check-vim:
 	vim/test.sh
 
+.PHONY: check-emacs
+check-emacs:
+	emacs --batch -l emacs/init.el -l emacs/test.el -f ert-run-tests-batch-and-exit
+
 .PHONY: check-vim-lint
 check-vim-lint: $(python_env_dir)/bin/vint
 	VINT="$$(cd $(python_env_dir) && pwd)/bin/vint" vim/lint.sh
