@@ -17,7 +17,6 @@
     - duck-key
     - emacs
     - firefox
-    - fish
     - fzf
     - git
     - role: gnome-terminal
