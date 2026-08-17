@@ -34,7 +34,6 @@
     - systemd
     - tmux
     - vim
-    - xmonad
     - zsh
 
   tasks:
