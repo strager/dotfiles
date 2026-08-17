@@ -1,0 +1,27 @@
+---
+- name: Build duck-key
+  community.general.make:
+    chdir: "{{ dotfiles_dir }}/duck-key"
+  when: ansible_facts["system"] == "Darwin"
+
+- name: Symlink duck-key plist
+  ansible.builtin.file:
+    src: "{{ dotfiles_dir }}/duck-key/local.strager.duck-key.plist"
+    dest: "{{ home_dir }}/Library/LaunchAgents/local.strager.duck-key.plist"
+    state: link
+    force: false
+  when: ansible_facts["system"] == "Darwin"
+
+- name: Bootout duck-key LaunchAgent
+  ansible.builtin.command:
+    cmd: launchctl bootout gui/{{ ansible_facts["user_uid"] }}/local.strager.duck-key
+  register: duck_key_bootout
+  failed_when: duck_key_bootout.rc != 0 and duck_key_bootout.rc != 36
+  changed_when: duck_key_bootout.rc == 0
+  when: ansible_facts["system"] == "Darwin"
+
+- name: Bootstrap duck-key LaunchAgent
+  ansible.builtin.command:
+    cmd: launchctl bootstrap gui/{{ ansible_facts["user_uid"] }} {{ home_dir }}/Library/LaunchAgents/local.strager.duck-key.plist
+  changed_when: true
+  when: ansible_facts["system"] == "Darwin"
