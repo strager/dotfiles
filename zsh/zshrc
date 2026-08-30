@@ -7,39 +7,6 @@ if [[ "${TERM}" == dumb ]]; then
     return
 fi
 
-# TODO(strager): Move into ~/.zshenv.
-fpath=(~/.zsh/strager "${fpath[@]}")
-autoload -Uk ls
-autoload -Uk strager_deduplicate_history_lines
-autoload -Uk strager_define_auto_scm_aliases
-autoload -Uk strager_define_bzr_scm_aliases
-autoload -Uk strager_define_git_scm_aliases
-autoload -Uk strager_define_hg_scm_aliases
-autoload -Uk strager_define_sl_scm_aliases
-autoload -Uk strager_ftcs_sequence
-autoload -Uk strager_gnome_terminal_cursor_sequence
-autoload -Uk strager_initialize_ls_colors
-autoload -Uk strager_initialize_menuselect
-autoload -Uk strager_initialize_nix
-autoload -Uk strager_initialize_post_prompt
-autoload -Uk strager_iterm_preexec
-autoload -Uk strager_iterm_sequence
-autoload -Uk strager_iterm_wrap_prompt
-autoload -Uk strager_linux_softcursor_sequence
-autoload -Uk strager_move_backward_shortword
-autoload -Uk strager_prompt_cwd
-autoload -Uk strager_scm_in_bzr
-autoload -Uk strager_scm_in_git
-autoload -Uk strager_scm_in_hg
-autoload -Uk strager_scm_in_sl
-autoload -Uk strager_search_history
-autoload -Uk strager_set_block_cursor
-autoload -Uk strager_set_vertical_bar_cursor
-autoload -Uk strager_update_cursor_during_edit
-autoload -Uk strager_update_man_db
-autoload -Uk strager_vterm_sequence
-autoload -Uk strager_vterm_wrap_prompt
-
 # Saved history.
 # N.B. Do not set HISTFILE here. HISTFILE is set by
 # strager_initialize_history.

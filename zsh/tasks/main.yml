@@ -20,6 +20,13 @@
     state: link
     force: false
 
+- name: Symlink zshenv
+  ansible.builtin.file:
+    src: "{{ dotfiles_dir }}/zsh/zshenv"
+    dest: "{{ home_dir }}/.zshenv"
+    state: link
+    force: false
+
 - name: Symlink zshrc
   ansible.builtin.file:
     src: "{{ dotfiles_dir }}/zsh/zshrc"
